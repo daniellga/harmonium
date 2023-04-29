@@ -1,0 +1,48 @@
+# Rust/Cargo
+**/target
+**/*.rs.bk
+**/Cargo.lock
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+*.lnk
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Linux
+*~
+.directory
+.fuse_hidden*
+.Trash-*
+.nfs*
+
+# Visual Studio Code
+*.code-workspace
+.vscode
+
+# Profiling data
+perf.data
+perf.data.old
+
+# R CMD check produces these files.
+**/..Rcheck/
+**/symbols.rds
+
+# R CMD INSTALL produces these files.
+**/*.o
+**/*.so
+.Rproj.user
+**/tasks.json
+
+# Rstudio temps.
+.RData
+.Rhistory
