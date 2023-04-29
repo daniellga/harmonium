@@ -1,0 +1,9 @@
+[workspace]
+members = [
+	"harmonium-core",
+	"harmonium-io",
+	"harmonium-fft",
+	"harmonium-resample",
+	"harmonium-window",
+]
+

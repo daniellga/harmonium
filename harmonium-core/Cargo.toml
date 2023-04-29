@@ -1,0 +1,20 @@
+[package]
+name = "harmonium-core"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+num-traits = "*"
+arrow2 = "0.17"
+rubato = "*"
+comfy-table = "*"
+ndarray = "0.15.6"
+symphonia = { version = "*", default-features = false }
+rodio = { git = "https://github.com/RustAudio/rodio.git", rev = "023ee21", default-features = false }
+
+[features]
+default = ["arrow"]
+arrow = []
+

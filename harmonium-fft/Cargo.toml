@@ -1,0 +1,19 @@
+[package]
+name = "harmonium-fft"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+harmonium-core = { path = "../harmonium-core" }
+harmonium-io = { path = "../harmonium-io" }
+arrow2 = "0.17"
+rustfft = "*"
+cached = "*"
+
+[features]
+default = ["arrow"]
+ndarray = []
+arrow = []
+
