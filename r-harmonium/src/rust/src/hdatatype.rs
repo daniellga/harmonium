@@ -37,15 +37,6 @@ impl HDataType {
     fn ne(&self, other: &HDataType) -> bool {
         std::cmp::PartialEq::ne(self, other)
     }
-
-    pub fn all_hdatatype() -> Vec<String> {
-        vec![
-            "Float32".into(),
-            "Float64".into(),
-            "Complex32".into(),
-            "Complex64".into(),
-        ]
-    }
 }
 
 impl fmt::Display for HDataType {

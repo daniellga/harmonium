@@ -1,7 +1,6 @@
 use crate::{
     harraydynamic::HArrayR, haudiodynamic::HAudioR, hdatatype::HDataType, hmatrixdynamic::HMatrixR,
 };
-use arrow2::array::PrimitiveArray;
 use harmonium_core::structs::{
     HComplexArray, HComplexMatrix, HFloatArray, HFloatAudio, HFloatMatrix,
 };
@@ -46,71 +45,23 @@ fn harray_equal_inner_harray(lhs: &dyn HArrayR, rhs: &dyn HArrayR) -> bool {
 
     match lhs.data_type() {
         HDataType::Float32 => {
-            let lhs = lhs
-                .as_any()
-                .downcast_ref::<HFloatArray<f32>>()
-                .unwrap()
-                .inner()
-                .values()
-                .as_slice();
-            let rhs = rhs
-                .as_any()
-                .downcast_ref::<HFloatArray<f32>>()
-                .unwrap()
-                .inner()
-                .values()
-                .as_slice();
+            let lhs = harr_as_slice_f32(lhs);
+            let rhs = harr_as_slice_f32(rhs);
             std::ptr::eq(lhs, rhs)
         }
         HDataType::Float64 => {
-            let lhs = lhs
-                .as_any()
-                .downcast_ref::<HFloatArray<f64>>()
-                .unwrap()
-                .inner()
-                .values()
-                .as_slice();
-            let rhs = rhs
-                .as_any()
-                .downcast_ref::<HFloatArray<f64>>()
-                .unwrap()
-                .inner()
-                .values()
-                .as_slice();
+            let lhs = harr_as_slice_f64(lhs);
+            let rhs = harr_as_slice_f64(rhs);
             std::ptr::eq(lhs, rhs)
         }
         HDataType::Complex32 => {
-            let lhs = lhs
-                .as_any()
-                .downcast_ref::<HComplexArray<f32>>()
-                .unwrap()
-                .inner()
-                .values()
-                .as_slice();
-            let rhs = rhs
-                .as_any()
-                .downcast_ref::<HComplexArray<f32>>()
-                .unwrap()
-                .inner()
-                .values()
-                .as_slice();
+            let lhs = harr_as_slice_c32(lhs);
+            let rhs = harr_as_slice_c32(rhs);
             std::ptr::eq(lhs, rhs)
         }
         HDataType::Complex64 => {
-            let lhs = lhs
-                .as_any()
-                .downcast_ref::<HComplexArray<f64>>()
-                .unwrap()
-                .inner()
-                .values()
-                .as_slice();
-            let rhs = rhs
-                .as_any()
-                .downcast_ref::<HComplexArray<f64>>()
-                .unwrap()
-                .inner()
-                .values()
-                .as_slice();
+            let lhs = harr_as_slice_c64(lhs);
+            let rhs = harr_as_slice_c64(rhs);
             std::ptr::eq(lhs, rhs)
         }
     }
@@ -123,85 +74,23 @@ fn harray_equal_inner_hmatrix(lhs: &dyn HArrayR, rhs: &dyn HMatrixR) -> bool {
 
     match lhs.data_type() {
         HDataType::Float32 => {
-            let lhs = lhs
-                .as_any()
-                .downcast_ref::<HFloatArray<f32>>()
-                .unwrap()
-                .inner()
-                .values()
-                .as_slice();
-            let rhs = rhs
-                .as_any()
-                .downcast_ref::<HFloatMatrix<f32>>()
-                .unwrap()
-                .inner()
-                .values()
-                .as_any()
-                .downcast_ref::<PrimitiveArray<f32>>()
-                .unwrap()
-                .values()
-                .as_slice();
+            let lhs = harr_as_slice_f32(lhs);
+            let rhs = hmat_as_slice_f32(rhs);
             std::ptr::eq(lhs, rhs)
         }
         HDataType::Float64 => {
-            let lhs = lhs
-                .as_any()
-                .downcast_ref::<HFloatArray<f64>>()
-                .unwrap()
-                .inner()
-                .values()
-                .as_slice();
-            let rhs = rhs
-                .as_any()
-                .downcast_ref::<HFloatMatrix<f64>>()
-                .unwrap()
-                .inner()
-                .values()
-                .as_any()
-                .downcast_ref::<PrimitiveArray<f64>>()
-                .unwrap()
-                .values()
-                .as_slice();
+            let lhs = harr_as_slice_f64(lhs);
+            let rhs = hmat_as_slice_f64(rhs);
             std::ptr::eq(lhs, rhs)
         }
         HDataType::Complex32 => {
-            let lhs = lhs
-                .as_any()
-                .downcast_ref::<HComplexArray<f32>>()
-                .unwrap()
-                .inner()
-                .values();
-            let rhs = rhs
-                .as_any()
-                .downcast_ref::<HComplexMatrix<f32>>()
-                .unwrap()
-                .inner()
-                .values()
-                .as_any()
-                .downcast_ref::<PrimitiveArray<f32>>()
-                .unwrap()
-                .values();
+            let lhs = harr_as_slice_c32(lhs);
+            let rhs = hmat_as_slice_c32(rhs);
             std::ptr::eq(lhs, rhs)
         }
         HDataType::Complex64 => {
-            let lhs = lhs
-                .as_any()
-                .downcast_ref::<HComplexArray<f64>>()
-                .unwrap()
-                .inner()
-                .values()
-                .as_slice();
-            let rhs = rhs
-                .as_any()
-                .downcast_ref::<HComplexMatrix<f64>>()
-                .unwrap()
-                .inner()
-                .values()
-                .as_any()
-                .downcast_ref::<PrimitiveArray<f64>>()
-                .unwrap()
-                .values()
-                .as_slice();
+            let lhs = harr_as_slice_c64(lhs);
+            let rhs = hmat_as_slice_c64(rhs);
             std::ptr::eq(lhs, rhs)
         }
     }
@@ -214,47 +103,13 @@ fn harray_equal_inner_haudio(lhs: &dyn HArrayR, rhs: &dyn HAudioR) -> bool {
 
     match lhs.data_type() {
         HDataType::Float32 => {
-            let lhs = lhs
-                .as_any()
-                .downcast_ref::<HFloatArray<f32>>()
-                .unwrap()
-                .inner()
-                .values()
-                .as_slice();
-            let rhs = rhs
-                .as_any()
-                .downcast_ref::<HFloatAudio<f32>>()
-                .unwrap()
-                .inner()
-                .inner()
-                .values()
-                .as_any()
-                .downcast_ref::<PrimitiveArray<f32>>()
-                .unwrap()
-                .values()
-                .as_slice();
+            let lhs = harr_as_slice_f32(lhs);
+            let rhs = haudio_as_slice_f32(rhs);
             std::ptr::eq(lhs, rhs)
         }
         HDataType::Float64 => {
-            let lhs = lhs
-                .as_any()
-                .downcast_ref::<HFloatArray<f64>>()
-                .unwrap()
-                .inner()
-                .values()
-                .as_slice();
-            let rhs = rhs
-                .as_any()
-                .downcast_ref::<HFloatAudio<f64>>()
-                .unwrap()
-                .inner()
-                .inner()
-                .values()
-                .as_any()
-                .downcast_ref::<PrimitiveArray<f64>>()
-                .unwrap()
-                .values()
-                .as_slice();
+            let lhs = harr_as_slice_f64(lhs);
+            let rhs = haudio_as_slice_f64(rhs);
             std::ptr::eq(lhs, rhs)
         }
         _ => unreachable!(),
@@ -297,103 +152,23 @@ fn hmatrix_equal_inner_hmatrix(lhs: &dyn HMatrixR, rhs: &dyn HMatrixR) -> bool {
 
     match lhs.data_type() {
         HDataType::Float32 => {
-            let lhs = lhs
-                .as_any()
-                .downcast_ref::<HFloatMatrix<f32>>()
-                .unwrap()
-                .inner()
-                .values()
-                .as_any()
-                .downcast_ref::<PrimitiveArray<f32>>()
-                .unwrap()
-                .values()
-                .as_slice();
-            let rhs = rhs
-                .as_any()
-                .downcast_ref::<HFloatMatrix<f32>>()
-                .unwrap()
-                .inner()
-                .values()
-                .as_any()
-                .downcast_ref::<PrimitiveArray<f32>>()
-                .unwrap()
-                .values()
-                .as_slice();
+            let lhs = hmat_as_slice_f32(lhs);
+            let rhs = hmat_as_slice_f32(rhs);
             std::ptr::eq(lhs, rhs)
         }
         HDataType::Float64 => {
-            let lhs = lhs
-                .as_any()
-                .downcast_ref::<HFloatMatrix<f64>>()
-                .unwrap()
-                .inner()
-                .values()
-                .as_any()
-                .downcast_ref::<PrimitiveArray<f64>>()
-                .unwrap()
-                .values()
-                .as_slice();
-            let rhs = rhs
-                .as_any()
-                .downcast_ref::<HFloatMatrix<f64>>()
-                .unwrap()
-                .inner()
-                .values()
-                .as_any()
-                .downcast_ref::<PrimitiveArray<f64>>()
-                .unwrap()
-                .values()
-                .as_slice();
+            let lhs = hmat_as_slice_f64(lhs);
+            let rhs = hmat_as_slice_f64(rhs);
             std::ptr::eq(lhs, rhs)
         }
         HDataType::Complex32 => {
-            let lhs = lhs
-                .as_any()
-                .downcast_ref::<HComplexMatrix<f32>>()
-                .unwrap()
-                .inner()
-                .values()
-                .as_any()
-                .downcast_ref::<PrimitiveArray<f32>>()
-                .unwrap()
-                .values()
-                .as_slice();
-            let rhs = rhs
-                .as_any()
-                .downcast_ref::<HComplexMatrix<f32>>()
-                .unwrap()
-                .inner()
-                .values()
-                .as_any()
-                .downcast_ref::<PrimitiveArray<f32>>()
-                .unwrap()
-                .values()
-                .as_slice();
+            let lhs = hmat_as_slice_c32(lhs);
+            let rhs = hmat_as_slice_c32(rhs);
             std::ptr::eq(lhs, rhs)
         }
         HDataType::Complex64 => {
-            let lhs = lhs
-                .as_any()
-                .downcast_ref::<HComplexMatrix<f64>>()
-                .unwrap()
-                .inner()
-                .values()
-                .as_any()
-                .downcast_ref::<PrimitiveArray<f64>>()
-                .unwrap()
-                .values()
-                .as_slice();
-            let rhs = rhs
-                .as_any()
-                .downcast_ref::<HComplexMatrix<f64>>()
-                .unwrap()
-                .inner()
-                .values()
-                .as_any()
-                .downcast_ref::<PrimitiveArray<f64>>()
-                .unwrap()
-                .values()
-                .as_slice();
+            let lhs = hmat_as_slice_c64(lhs);
+            let rhs = hmat_as_slice_c64(rhs);
             std::ptr::eq(lhs, rhs)
         }
     }
@@ -406,88 +181,23 @@ fn hmatrix_equal_inner_harray(lhs: &dyn HMatrixR, rhs: &dyn HArrayR) -> bool {
 
     match lhs.data_type() {
         HDataType::Float32 => {
-            let lhs = lhs
-                .as_any()
-                .downcast_ref::<HFloatMatrix<f32>>()
-                .unwrap()
-                .inner()
-                .values()
-                .as_any()
-                .downcast_ref::<PrimitiveArray<f32>>()
-                .unwrap()
-                .values()
-                .as_slice();
-
-            let rhs = rhs
-                .as_any()
-                .downcast_ref::<HFloatArray<f32>>()
-                .unwrap()
-                .inner()
-                .values()
-                .as_slice();
+            let lhs = hmat_as_slice_f32(lhs);
+            let rhs = harr_as_slice_f32(rhs);
             std::ptr::eq(lhs, rhs)
         }
         HDataType::Float64 => {
-            let lhs = lhs
-                .as_any()
-                .downcast_ref::<HFloatMatrix<f64>>()
-                .unwrap()
-                .inner()
-                .values()
-                .as_any()
-                .downcast_ref::<PrimitiveArray<f64>>()
-                .unwrap()
-                .values()
-                .as_slice();
-            let rhs = rhs
-                .as_any()
-                .downcast_ref::<HFloatArray<f64>>()
-                .unwrap()
-                .inner()
-                .values()
-                .as_slice();
+            let lhs = hmat_as_slice_f64(lhs);
+            let rhs = harr_as_slice_f64(rhs);
             std::ptr::eq(lhs, rhs)
         }
         HDataType::Complex32 => {
-            let lhs = lhs
-                .as_any()
-                .downcast_ref::<HComplexMatrix<f32>>()
-                .unwrap()
-                .inner()
-                .values()
-                .as_any()
-                .downcast_ref::<PrimitiveArray<f32>>()
-                .unwrap()
-                .values()
-                .as_slice();
-            let rhs = rhs
-                .as_any()
-                .downcast_ref::<HComplexArray<f32>>()
-                .unwrap()
-                .inner()
-                .values()
-                .as_slice();
+            let lhs = hmat_as_slice_c32(lhs);
+            let rhs = harr_as_slice_c32(rhs);
             std::ptr::eq(lhs, rhs)
         }
         HDataType::Complex64 => {
-            let lhs = lhs
-                .as_any()
-                .downcast_ref::<HComplexMatrix<f64>>()
-                .unwrap()
-                .inner()
-                .values()
-                .as_any()
-                .downcast_ref::<PrimitiveArray<f64>>()
-                .unwrap()
-                .values()
-                .as_slice();
-            let rhs = rhs
-                .as_any()
-                .downcast_ref::<HComplexArray<f64>>()
-                .unwrap()
-                .inner()
-                .values()
-                .as_slice();
+            let lhs = hmat_as_slice_c64(lhs);
+            let rhs = harr_as_slice_c64(rhs);
             std::ptr::eq(lhs, rhs)
         }
     }
@@ -500,55 +210,13 @@ fn hmatrix_equal_inner_haudio(lhs: &dyn HMatrixR, rhs: &dyn HAudioR) -> bool {
 
     match lhs.data_type() {
         HDataType::Float32 => {
-            let lhs = lhs
-                .as_any()
-                .downcast_ref::<HFloatMatrix<f32>>()
-                .unwrap()
-                .inner()
-                .values()
-                .as_any()
-                .downcast_ref::<PrimitiveArray<f32>>()
-                .unwrap()
-                .values()
-                .as_slice();
-            let rhs = rhs
-                .as_any()
-                .downcast_ref::<HFloatAudio<f32>>()
-                .unwrap()
-                .inner()
-                .inner()
-                .values()
-                .as_any()
-                .downcast_ref::<PrimitiveArray<f32>>()
-                .unwrap()
-                .values()
-                .as_slice();
+            let lhs = hmat_as_slice_f32(lhs);
+            let rhs = haudio_as_slice_f32(rhs);
             std::ptr::eq(lhs, rhs)
         }
         HDataType::Float64 => {
-            let lhs = lhs
-                .as_any()
-                .downcast_ref::<HFloatMatrix<f64>>()
-                .unwrap()
-                .inner()
-                .values()
-                .as_any()
-                .downcast_ref::<PrimitiveArray<f64>>()
-                .unwrap()
-                .values()
-                .as_slice();
-            let rhs = rhs
-                .as_any()
-                .downcast_ref::<HFloatAudio<f64>>()
-                .unwrap()
-                .inner()
-                .inner()
-                .values()
-                .as_any()
-                .downcast_ref::<PrimitiveArray<f64>>()
-                .unwrap()
-                .values()
-                .as_slice();
+            let lhs = hmat_as_slice_f64(lhs);
+            let rhs = haudio_as_slice_f64(rhs);
             std::ptr::eq(lhs, rhs)
         }
         _ => unreachable!(),
@@ -585,57 +253,13 @@ fn haudio_equal_inner_haudio(lhs: &dyn HAudioR, rhs: &dyn HAudioR) -> bool {
 
     match lhs.data_type() {
         HDataType::Float32 => {
-            let lhs = lhs
-                .as_any()
-                .downcast_ref::<HFloatAudio<f32>>()
-                .unwrap()
-                .inner()
-                .inner()
-                .values()
-                .as_any()
-                .downcast_ref::<PrimitiveArray<f32>>()
-                .unwrap()
-                .values()
-                .as_slice();
-            let rhs = rhs
-                .as_any()
-                .downcast_ref::<HFloatAudio<f32>>()
-                .unwrap()
-                .inner()
-                .inner()
-                .values()
-                .as_any()
-                .downcast_ref::<PrimitiveArray<f32>>()
-                .unwrap()
-                .values()
-                .as_slice();
+            let lhs = haudio_as_slice_f32(lhs);
+            let rhs = haudio_as_slice_f32(rhs);
             std::ptr::eq(lhs, rhs)
         }
         HDataType::Float64 => {
-            let lhs = lhs
-                .as_any()
-                .downcast_ref::<HFloatAudio<f64>>()
-                .unwrap()
-                .inner()
-                .inner()
-                .values()
-                .as_any()
-                .downcast_ref::<PrimitiveArray<f64>>()
-                .unwrap()
-                .values()
-                .as_slice();
-            let rhs = rhs
-                .as_any()
-                .downcast_ref::<HFloatAudio<f64>>()
-                .unwrap()
-                .inner()
-                .inner()
-                .values()
-                .as_any()
-                .downcast_ref::<PrimitiveArray<f64>>()
-                .unwrap()
-                .values()
-                .as_slice();
+            let lhs = haudio_as_slice_f64(lhs);
+            let rhs = haudio_as_slice_f64(rhs);
             std::ptr::eq(lhs, rhs)
         }
         _ => unreachable!(),
@@ -649,47 +273,13 @@ fn haudio_equal_inner_harray(lhs: &dyn HAudioR, rhs: &dyn HArrayR) -> bool {
 
     match lhs.data_type() {
         HDataType::Float32 => {
-            let lhs = lhs
-                .as_any()
-                .downcast_ref::<HFloatAudio<f32>>()
-                .unwrap()
-                .inner()
-                .inner()
-                .values()
-                .as_any()
-                .downcast_ref::<PrimitiveArray<f32>>()
-                .unwrap()
-                .values()
-                .as_slice();
-            let rhs = rhs
-                .as_any()
-                .downcast_ref::<HFloatArray<f32>>()
-                .unwrap()
-                .inner()
-                .values()
-                .as_slice();
+            let lhs = haudio_as_slice_f32(lhs);
+            let rhs = harr_as_slice_f32(rhs);
             std::ptr::eq(lhs, rhs)
         }
         HDataType::Float64 => {
-            let lhs = lhs
-                .as_any()
-                .downcast_ref::<HFloatAudio<f64>>()
-                .unwrap()
-                .inner()
-                .inner()
-                .values()
-                .as_any()
-                .downcast_ref::<PrimitiveArray<f64>>()
-                .unwrap()
-                .values()
-                .as_slice();
-            let rhs = rhs
-                .as_any()
-                .downcast_ref::<HFloatArray<f64>>()
-                .unwrap()
-                .inner()
-                .values()
-                .as_slice();
+            let lhs = haudio_as_slice_f64(lhs);
+            let rhs = harr_as_slice_f64(rhs);
             std::ptr::eq(lhs, rhs)
         }
         _ => unreachable!(),
@@ -703,60 +293,53 @@ fn haudio_equal_inner_hmatrix(lhs: &dyn HAudioR, rhs: &dyn HMatrixR) -> bool {
 
     match lhs.data_type() {
         HDataType::Float32 => {
-            let lhs = lhs
-                .as_any()
-                .downcast_ref::<HFloatAudio<f32>>()
-                .unwrap()
-                .inner()
-                .inner()
-                .values()
-                .as_any()
-                .downcast_ref::<PrimitiveArray<f32>>()
-                .unwrap()
-                .values()
-                .as_slice();
-            let rhs = rhs
-                .as_any()
-                .downcast_ref::<HFloatMatrix<f32>>()
-                .unwrap()
-                .inner()
-                .values()
-                .as_any()
-                .downcast_ref::<PrimitiveArray<f32>>()
-                .unwrap()
-                .values()
-                .as_slice();
+            let lhs = haudio_as_slice_f32(lhs);
+            let rhs = hmat_as_slice_f32(rhs);
             std::ptr::eq(lhs, rhs)
         }
         HDataType::Float64 => {
-            let lhs = lhs
-                .as_any()
-                .downcast_ref::<HFloatAudio<f64>>()
-                .unwrap()
-                .inner()
-                .inner()
-                .values()
-                .as_any()
-                .downcast_ref::<PrimitiveArray<f64>>()
-                .unwrap()
-                .values()
-                .as_slice();
-            let rhs = rhs
-                .as_any()
-                .downcast_ref::<HFloatMatrix<f64>>()
-                .unwrap()
-                .inner()
-                .values()
-                .as_any()
-                .downcast_ref::<PrimitiveArray<f64>>()
-                .unwrap()
-                .values()
-                .as_slice();
+            let lhs = haudio_as_slice_f64(lhs);
+            let rhs = hmat_as_slice_f64(rhs);
             std::ptr::eq(lhs, rhs)
         }
         _ => unreachable!(),
     }
 }
+
+macro_rules! harray_or_hmat_as_slice {
+    ($(($name:ident, $t1:ty, $t2:ty, $t3:ty)),+) => {
+        $(
+        fn $name(obj: $t3) -> &[$t2] {
+            obj.as_any().downcast_ref::<$t1>().unwrap().as_slice()
+        }
+        )+
+    };
+}
+
+harray_or_hmat_as_slice!(
+    (harr_as_slice_f32, HFloatArray<f32>, f32, &dyn HArrayR),
+    (harr_as_slice_f64, HFloatArray<f64>, f64, &dyn HArrayR),
+    (harr_as_slice_c32, HComplexArray<f32>, f32, &dyn HArrayR),
+    (harr_as_slice_c64, HComplexArray<f64>, f64, &dyn HArrayR),
+    (hmat_as_slice_f32, HFloatMatrix<f32>, f32, &dyn HMatrixR),
+    (hmat_as_slice_f64, HFloatMatrix<f64>, f64, &dyn HMatrixR),
+    (hmat_as_slice_c32, HComplexMatrix<f32>, f32, &dyn HMatrixR),
+    (hmat_as_slice_c64, HComplexMatrix<f64>, f64, &dyn HMatrixR)
+);
+
+macro_rules! haudio_as_slice {
+    ($(($name:ident, $t1:ty, $t2:ty, $t3:ty)),+) => {
+        $(
+        fn $name(obj: $t3) -> &[$t2] {
+            obj.as_any().downcast_ref::<$t1>().unwrap().inner().as_slice()
+        }
+        )+
+    };
+}
+haudio_as_slice!(
+    (haudio_as_slice_f32, HFloatAudio<f32>, f32, &dyn HAudioR),
+    (haudio_as_slice_f64, HFloatAudio<f64>, f64, &dyn HAudioR)
+);
 
 impl PartialEq for dyn HArrayR + '_ {
     fn eq(&self, other: &dyn HArrayR) -> bool {

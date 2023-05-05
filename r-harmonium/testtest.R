@@ -1,18 +1,35 @@
 rextendr::document()
 devtools::load_all(".")
-tinytest::test_all()
+devtools::test()
 devtools::check()
 
+haudio = HAudio$new_from_file("../testfiles/gs-16b-1c-44100hz.flac", dtype = HDataType$float32)
+res = HResampler$new_fft(haudio$sr(), 22050, 1000, 2, haudio$nchannels(), HResamplerType$fft_fixed_in, HDataType$float32)
+res$resampler_type()
+res$data_type()
+res$process(haudio, sr_out = 22050)
 
-a = HFile$metadata_from_file("../testfiles/gs-16b-1c-44100hz.flac", HMetadataType$text())
-a = HFile$metadata_from_file("../testfiles/gs-16b-1c-44100hz.wav", HMetadataType$text())
-a = HFile$metadata_from_file("../testfiles/aa.MP3", HMetadataType$text())
-a = HFile$metadata_from_file("../testfiles/aa.mp4", HMetadataType$text())
-a = HFile$metadata_from_file("../testfiles/aa.MP3", HMetadataType$visual())
-a = HFile$metadata_from_file("../testfiles/aa.mp4", HMetadataType$visual())
 
-b = HAudio$new_from_file("../harmonium/testfiles/gs-16b-1c-44100hz.flac", dtype = HDataType$float64())
-b = HAudio$new_from_file("../harmonium/testfiles/gs-16b-1c-44100hz.wav", dtype = HDataType$float64())
+haudio = HAudio$new_from_values(matrix(0, nrow = 1024, ncol = 2), 44100, dtype = HDataType$float64)
+hparams = HInterpolationParams$new(256, 0.95, 256, "linear", "blackmanharris2")
+res = HResampler$new_sinc(48000 / 44100, 2, hparams, 1024, 2, HResamplerType$sinc_fixed_in, HDataType$float64)
+res$resampler_type()
+res$data_type()
+res$process(haudio, sr_out = 48000)
+haudio$len() == 1948
+haudio$sr() == 48000
+
+
+
+res = HResampler$new_fft(haudio$sr(), 22050, 1000, 2, haudio$nchannels(), HResamplerType$fft_fixed_in, HDataType$float32)
+
+
+a = HFile$metadata_from_file("../testfiles/gs-16b-1c-44100hz.flac", HMetadataType$text)
+a = HFile$metadata_from_file("../testfiles/gs-16b-1c-44100hz.wav", HMetadataType$text)
+
+
+b = HAudio$new_from_file("../testfiles/gs-16b-1c-44100hz.flac", dtype = HDataType$float64)
+b = HAudio$new_from_file("../testfiles/gs-16b-1c-44100hz.wav", dtype = HDataType$float64)
 
 values = matrix(as.numeric(c(1:1000000)), ncol = 1000)
 hmatrix = HMatrix$new_from_values(values, HDataType$float32())

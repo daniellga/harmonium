@@ -11,7 +11,7 @@ use arrow2::{
     types::PrimitiveType,
 };
 use extendr_api::{prelude::*, AsTypedSlice};
-use harmonium_core::structs::{self, HComplexArray, HFloatArray};
+use harmonium_core::structs::{HComplexArray, HFloatArray};
 use harmonium_fft::fft::fft_arrow::{FftComplexArray, FftFloatArray};
 use std::{any::Any, sync::Arc};
 
@@ -26,27 +26,26 @@ pub trait HArrayR: Send + Sync {
     fn data_type(&self) -> HDataType;
     fn export_c_arrow(&self) -> (ArrowArray, ArrowSchema);
     fn fft(&self) -> Arc<dyn HArrayR>;
+    fn clone_inner(&self) -> Arc<dyn HArrayR>;
 }
 
 #[derive(Clone)]
 pub struct HArray(pub Arc<dyn HArrayR>);
 
-#[extendr(use_try_from = true)]
+#[extendr]
 impl HArray {
     pub fn new_from_values(robj: Robj, dtype: &HDataType) -> HArray {
         match (robj.rtype(), dtype) {
             (Rtype::Doubles, HDataType::Float32) => {
                 let slice = robj.as_real_slice().unwrap();
                 let v = slice.iter().map(|x| *x as f32).collect();
-                let array = PrimitiveArray::from_vec(v);
-                let hfloatarray = HFloatArray::<f32>::new(array);
+                let hfloatarray = HFloatArray::<f32>::new_from_vec(v);
                 let data = Arc::new(hfloatarray);
                 HArray(data)
             }
             (Rtype::Doubles, HDataType::Float64) => {
                 let v = robj.as_real_vector().unwrap();
-                let array = PrimitiveArray::from_vec(v);
-                let hfloatarray = HFloatArray::<f64>::new(array);
+                let hfloatarray = HFloatArray::<f64>::new_from_vec(v);
                 let data = Arc::new(hfloatarray);
                 HArray(data)
             }
@@ -58,8 +57,7 @@ impl HArray {
                     v.push(x.re().0 as f32);
                     v.push(x.im().0 as f32);
                 });
-                let array = PrimitiveArray::from_vec(v);
-                let hcomplexarray = HComplexArray::<f32>::new(array);
+                let hcomplexarray = HComplexArray::<f32>::new_from_vec(v);
                 let data = Arc::new(hcomplexarray);
                 HArray(data)
             }
@@ -71,8 +69,7 @@ impl HArray {
                     v.push(x.re().0);
                     v.push(x.im().0);
                 });
-                let array = PrimitiveArray::from_vec(v);
-                let hcomplexarray = HComplexArray::<f64>::new(array);
+                let hcomplexarray = HComplexArray::<f64>::new_from_vec(v);
                 let data = Arc::new(hcomplexarray);
                 HArray(data)
             }
@@ -132,7 +129,7 @@ impl HArray {
     /// Sliced by an offset and length.
     /// This operation is O(1) as it amounts to increase two ref counts.
     pub fn slice(&mut self, offset: i32, length: i32) {
-        let inner_mut = self._get_inner_mut();
+        let inner_mut = self.get_inner_mut();
         inner_mut.slice(offset, length);
     }
 
@@ -186,13 +183,8 @@ impl HArray {
     }
 
     /// The inner array's data type.
-    pub fn data_type(&self) -> &str {
-        match self.0.data_type() {
-            HDataType::Float32 => "Float32",
-            HDataType::Float64 => "Float64",
-            HDataType::Complex32 => "Complex32",
-            HDataType::Complex64 => "Complex64",
-        }
+    pub fn data_type(&self) -> HDataType {
+        self.0.data_type()
     }
 
     /// Returns true if the inner Arc is shared.
@@ -231,48 +223,9 @@ impl HArray {
 
 impl HArray {
     #[doc(hidden)]
-    pub fn _get_inner_mut(&mut self) -> &mut dyn HArrayR {
+    pub fn get_inner_mut(&mut self) -> &mut dyn HArrayR {
         if Arc::weak_count(&self.0) + Arc::strong_count(&self.0) != 1 {
-            let harray: Arc<dyn HArrayR> = match self.0.data_type() {
-                HDataType::Float32 => {
-                    let harray = self
-                        .0
-                        .as_any()
-                        .downcast_ref::<structs::HFloatArray<f32>>()
-                        .unwrap()
-                        .clone();
-                    Arc::new(harray)
-                }
-                HDataType::Float64 => {
-                    let harray = self
-                        .0
-                        .as_any()
-                        .downcast_ref::<structs::HFloatArray<f64>>()
-                        .unwrap()
-                        .clone();
-                    Arc::new(harray)
-                }
-                HDataType::Complex32 => {
-                    let harray = self
-                        .0
-                        .as_any()
-                        .downcast_ref::<structs::HComplexArray<f32>>()
-                        .unwrap()
-                        .clone();
-                    Arc::new(harray)
-                }
-                HDataType::Complex64 => {
-                    let harray = self
-                        .0
-                        .as_any()
-                        .downcast_ref::<structs::HComplexArray<f64>>()
-                        .unwrap()
-                        .clone();
-                    Arc::new(harray)
-                }
-            };
-
-            self.0 = harray;
+            self.0 = self.0.clone_inner();
         }
         Arc::get_mut(&mut self.0).expect("implementation error")
     }
@@ -329,6 +282,10 @@ impl HArrayR for HFloatArray<f32> {
         let harray = FftFloatArray::<f32>::fft(self);
         Arc::new(harray)
     }
+
+    fn clone_inner(&self) -> Arc<dyn HArrayR> {
+        Arc::new(self.clone())
+    }
 }
 
 impl HArrayR for HFloatArray<f64> {
@@ -378,6 +335,10 @@ impl HArrayR for HFloatArray<f64> {
     fn fft(&self) -> Arc<dyn HArrayR> {
         let harray = FftFloatArray::<f64>::fft(self);
         Arc::new(harray)
+    }
+
+    fn clone_inner(&self) -> Arc<dyn HArrayR> {
+        Arc::new(self.clone())
     }
 }
 
@@ -432,6 +393,10 @@ impl HArrayR for HComplexArray<f32> {
         let harray = FftComplexArray::fft(self);
         Arc::new(harray)
     }
+
+    fn clone_inner(&self) -> Arc<dyn HArrayR> {
+        Arc::new(self.clone())
+    }
 }
 
 impl HArrayR for HComplexArray<f64> {
@@ -484,6 +449,10 @@ impl HArrayR for HComplexArray<f64> {
     fn fft(&self) -> Arc<dyn HArrayR> {
         let harray = FftComplexArray::fft(self);
         Arc::new(harray)
+    }
+
+    fn clone_inner(&self) -> Arc<dyn HArrayR> {
+        Arc::new(self.clone())
     }
 }
 

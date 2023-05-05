@@ -7,7 +7,7 @@
 #'
 print.HArray = function(x) {
   cat(class(x), sep = "\n")
-  cat(paste0("dtype: ", x$data_type()), sep = "\n")
+  x$data_type()$print()
   x$print()
 }
 
@@ -25,7 +25,7 @@ print.HArray = function(x) {
 #'
 print.HMatrix = function(x) {
   cat(class(x), sep = "\n")
-  cat(paste0("dtype: ", x$data_type()), sep = "\n")
+  x$data_type()$print()
   x$print()
 }
 
@@ -43,7 +43,7 @@ print.HMatrix = function(x) {
 #'
 print.HAudio = function(x) {
   cat(class(x), sep = "\n")
-  cat(paste0("dtype: ", x$data_type()), sep = "\n")
+  x$data_type()$print()
   x$print()
 }
 
@@ -67,3 +67,47 @@ print.HDataType = function(x) {
 "==.HDataType" <- function(e1,e2) e1$eq(e2)
 #' @export
 "!=.HDataType" <- function(e1,e2) e1$ne(e2)
+
+#' print a HMetadataType
+#'
+#' @param x HMetadataType
+#'
+#' @return self
+#' @export
+#'
+print.HMetadataType = function(x) {
+  x$print()
+}
+
+#' @export
+"==.HMetadataType" <- function(e1,e2) e1$eq(e2)
+#' @export
+"!=.HMetadataType" <- function(e1,e2) e1$ne(e2)
+
+#' print a HResampler
+#'
+#' @param x HResampler
+#'
+#' @return self
+#' @export
+#'
+print.HResampler = function(x) {
+  x$print()
+}
+
+#' print a HResamplerType
+#'
+#' @param x HResamplerType
+#'
+#' @return self
+#' @export
+#'
+print.HResamplerType = function(x) {
+  x$print()
+}
+
+#' @export
+"==.HResamplerType" <- function(e1,e2) e1$eq(e2)
+#' @export
+"!=.HResamplerType" <- function(e1,e2) e1$ne(e2)
+

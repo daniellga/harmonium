@@ -10,3 +10,4 @@ harmonium-core = {path = "../harmonium-core"}
 num-traits = "*"
 realfft = "*"
 rustfft = "*"
+arrow2 = "*"

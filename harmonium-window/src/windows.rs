@@ -1,4 +1,8 @@
-use harmonium_core::errors::{HError, HResult};
+use arrow2::types::NativeType;
+use harmonium_core::{
+    errors::{HError, HResult},
+    structs::HFloatArray,
+};
 use num_traits::Float;
 use realfft::{num_complex::Complex, FftNum, RealFftPlanner};
 use rustfft::FftPlanner;
@@ -42,9 +46,9 @@ pub enum WindowType {
 /// `npoints` - Number of points in the output window.
 /// `window_type` - When `WindowType::Symmetric`, generates a symmetric window, for use in filter design.
 ///                 When `WindowType::Periodic`, generates a periodic window, for use in spectral analysis.
-pub fn barthann<T>(npoints: usize, window_type: WindowType) -> Vec<T>
+pub fn barthann<T>(npoints: usize, window_type: WindowType) -> HFloatArray<T>
 where
-    T: Float + FloatConst,
+    T: Float + FloatConst + NativeType,
 {
     let np_f = match window_type {
         WindowType::Symmetric => T::from(npoints - 1).unwrap(),
@@ -65,7 +69,7 @@ where
         })
         .collect();
 
-    window
+    HFloatArray::new_from_vec(window)
 }
 
 /// Return a Bartlett window.
@@ -95,9 +99,9 @@ where
 /// `npoints` - Number of points in the output window.
 /// `window_type` - When `WindowType::Symmetric`, generates a symmetric window, for use in filter design.
 ///                 When `WindowType::Periodic`, generates a periodic window, for use in spectral analysis.
-pub fn bartlett<T>(npoints: usize, window_type: WindowType) -> Vec<T>
+pub fn bartlett<T>(npoints: usize, window_type: WindowType) -> HFloatArray<T>
 where
-    T: Float,
+    T: Float + NativeType,
 {
     let np_f = match window_type {
         WindowType::Symmetric => T::from(npoints - 1).unwrap(),
@@ -117,7 +121,7 @@ where
         })
         .collect();
 
-    window
+    HFloatArray::new_from_vec(window)
 }
 
 /// Return a Blackman window.
@@ -150,9 +154,9 @@ where
 /// `npoints` - Number of points in the output window.
 /// `window_type` - When `WindowType::Symmetric`, generates a symmetric window, for use in filter design.
 ///                 When `WindowType::Periodic`, generates a periodic window, for use in spectral analysis.
-pub fn blackman<T>(npoints: usize, window_type: WindowType) -> Vec<T>
+pub fn blackman<T>(npoints: usize, window_type: WindowType) -> HFloatArray<T>
 where
-    T: Float + FloatConst,
+    T: Float + FloatConst + NativeType,
 {
     let np_f = match window_type {
         WindowType::Symmetric => T::from(npoints - 1).unwrap(),
@@ -172,7 +176,7 @@ where
         })
         .collect();
 
-    window
+    HFloatArray::new_from_vec(window)
 }
 
 /// Return a minimum 4-term Blackman-Harris window.
@@ -184,9 +188,9 @@ where
 /// `npoints` - Number of points in the output window.
 /// `window_type` - When `WindowType::Symmetric`, generates a symmetric window, for use in filter design.
 ///                 When `WindowType::Periodic`, generates a periodic window, for use in spectral analysis.
-pub fn blackmanharris<T>(npoints: usize, window_type: WindowType) -> Vec<T>
+pub fn blackmanharris<T>(npoints: usize, window_type: WindowType) -> HFloatArray<T>
 where
-    T: Float + FloatConst,
+    T: Float + FloatConst + NativeType,
 {
     let np_f = match window_type {
         WindowType::Symmetric => T::from(npoints - 1).unwrap(),
@@ -209,7 +213,7 @@ where
         })
         .collect();
 
-    window
+    HFloatArray::new_from_vec(window)
 }
 
 /// Return a Bohman window.
@@ -221,9 +225,9 @@ where
 /// `npoints` - Number of points in the output window.
 /// `window_type` - When `WindowType::Symmetric`, generates a symmetric window, for use in filter design.
 ///                 When `WindowType::Periodic`, generates a periodic window, for use in spectral analysis.
-pub fn bohman<T>(npoints: usize, window_type: WindowType) -> Vec<T>
+pub fn bohman<T>(npoints: usize, window_type: WindowType) -> HFloatArray<T>
 where
-    T: Float + FloatConst,
+    T: Float + FloatConst + NativeType,
 {
     let np_f = match window_type {
         WindowType::Symmetric => T::from(npoints - 1).unwrap(),
@@ -249,7 +253,7 @@ where
         }
     }
 
-    window
+    HFloatArray::new_from_vec(window)
 }
 
 /// Return a boxcar or rectangular window.
@@ -258,14 +262,14 @@ where
 ///
 /// # Arguments
 /// `npoints` - Number of points in the output window.
-pub fn boxcar<T>(npoints: usize) -> Vec<T>
+pub fn boxcar<T>(npoints: usize) -> HFloatArray<T>
 where
-    T: Float,
+    T: Float + NativeType,
 {
     let one = T::from(1.0).unwrap();
     let window: Vec<T> = (0..npoints).map(|_| one).collect();
 
-    window
+    HFloatArray::new_from_vec(window)
 }
 
 /// Return a window with a simple cosine shape.
@@ -277,9 +281,9 @@ where
 /// `npoints` - Number of points in the output window.
 /// `window_type` - When `WindowType::Symmetric`, generates a symmetric window, for use in filter design.
 ///                 When `WindowType::Periodic`, generates a periodic window, for use in spectral analysis.
-pub fn cosine<T>(npoints: usize, window_type: WindowType) -> Vec<T>
+pub fn cosine<T>(npoints: usize, window_type: WindowType) -> HFloatArray<T>
 where
-    T: Float + FloatConst,
+    T: Float + FloatConst + NativeType,
 {
     let np_f = match window_type {
         WindowType::Symmetric => T::from(npoints).unwrap(),
@@ -293,7 +297,7 @@ where
         .map(|x| (pi / (np_f) * (T::from(x).unwrap() + half)).sin())
         .collect();
 
-    window
+    HFloatArray::new_from_vec(window)
 }
 
 /// Return a Dolph-Chebyshev window.
@@ -331,9 +335,9 @@ where
 /// `at` - Attenuation in dB.
 /// `window_type` - When `WindowType::Symmetric`, generates a symmetric window, for use in filter design.
 ///                 When `WindowType::Periodic`, generates a periodic window, for use in spectral analysis.
-pub fn chebwin<T>(npoints: usize, at: T, window_type: WindowType) -> Vec<T>
+pub fn chebwin<T>(npoints: usize, at: T, window_type: WindowType) -> HFloatArray<T>
 where
-    T: Float + FloatConst + FftNum,
+    T: Float + FloatConst + FftNum + NativeType,
 {
     let np_f = match window_type {
         WindowType::Symmetric => T::from(npoints).unwrap(),
@@ -409,7 +413,7 @@ where
         *z = *z / max;
     });
 
-    window
+    HFloatArray::new_from_vec(window)
 }
 
 /// Return an exponential (or Poisson) window.
@@ -444,9 +448,9 @@ pub fn exponential<T>(
     center: Option<T>,
     tau: T,
     window_type: WindowType,
-) -> HResult<Vec<T>>
+) -> HResult<HFloatArray<T>>
 where
-    T: Float + FloatConst,
+    T: Float + FloatConst + NativeType,
 {
     let np_f = match window_type {
         WindowType::Symmetric if center.is_none() => T::from(npoints - 1).unwrap(),
@@ -468,7 +472,7 @@ where
         })
         .collect();
 
-    Ok(window)
+    Ok(HFloatArray::new_from_vec(window))
 }
 
 /// Return a Hann window.
@@ -485,9 +489,9 @@ where
 /// `npoints` - Number of points in the output window.
 /// `window_type` - When `WindowType::Symmetric`, generates a symmetric window, for use in filter design.
 ///                 When `WindowType::Periodic`, generates a periodic window, for use in spectral analysis.
-pub fn hann<T>(npoints: usize, window_type: WindowType) -> Vec<T>
+pub fn hann<T>(npoints: usize, window_type: WindowType) -> HFloatArray<T>
 where
-    T: Float + FloatConst,
+    T: Float + FloatConst + NativeType,
 {
     let np_f = match window_type {
         WindowType::Symmetric => T::from(npoints - 1).unwrap(),
@@ -501,7 +505,7 @@ where
         .map(|x| half - half * (pi2 * T::from(x).unwrap() / (np_f)).cos())
         .collect();
 
-    window
+    HFloatArray::new_from_vec(window)
 }
 
 /// Return a triangular window.
@@ -513,9 +517,9 @@ where
 /// `npoints` - Number of points in the output window.
 /// `window_type` - When `WindowType::Symmetric`, generates a symmetric window, for use in filter design.
 ///                 When `WindowType::Periodic`, generates a periodic window, for use in spectral analysis.
-pub fn triangle<T>(npoints: usize, window_type: WindowType) -> Vec<T>
+pub fn triangle<T>(npoints: usize, window_type: WindowType) -> HFloatArray<T>
 where
-    T: Float,
+    T: Float + NativeType,
 {
     let np_f = T::from(npoints).unwrap();
     let one = T::from(1.0).unwrap();
@@ -550,7 +554,7 @@ where
         }
     }
 
-    window
+    HFloatArray::new_from_vec(window)
 }
 
 //pub fn kaiser<T>(npoints: usize, beta: T, window_type: WindowType) -> Vec<T>
@@ -586,36 +590,36 @@ mod tests {
 
     #[test]
     fn bartlett_test() {
-        let v_symmetric: Vec<f32> = bartlett(8, WindowType::Symmetric);
-        let rhs = vec![
+        let v_symmetric: HFloatArray<f32> = bartlett(8, WindowType::Symmetric);
+        let rhs = HFloatArray::new_from_vec(vec![
             0.0, 0.2857143, 0.5714286, 0.85714287, 0.8571428, 0.57142854, 0.28571427, 0.0,
-        ];
+        ]);
         assert_eq!(v_symmetric, rhs);
 
-        let v_periodic: Vec<f32> = bartlett(8, WindowType::Periodic);
-        let rhs = vec![0., 0.25, 0.5, 0.75, 1., 0.75, 0.5, 0.25];
+        let v_periodic: HFloatArray<f32> = bartlett(8, WindowType::Periodic);
+        let rhs = HFloatArray::new_from_vec(vec![0., 0.25, 0.5, 0.75, 1., 0.75, 0.5, 0.25]);
         assert_eq!(v_periodic, rhs);
     }
 
     #[test]
     fn barthann_test() {
-        let v_symmetric: Vec<f32> = barthann(8, WindowType::Symmetric);
-        let rhs = vec![
+        let v_symmetric: HFloatArray<f32> = barthann(8, WindowType::Symmetric);
+        let rhs = HFloatArray::new_from_vec(vec![
             0.0, 0.21164526, 0.60170084, 0.92808247, 0.9280824, 0.6017007, 0.21164526, 0.0,
-        ];
+        ]);
         assert_eq!(v_symmetric, rhs);
 
-        let v_periodic: Vec<f32> = barthann(8, WindowType::Periodic);
-        let rhs = vec![
+        let v_periodic: HFloatArray<f32> = barthann(8, WindowType::Periodic);
+        let rhs = HFloatArray::new_from_vec(vec![
             0.0, 0.17129943, 0.49999997, 0.82870054, 1.0, 0.82870054, 0.49999997, 0.17129943,
-        ];
+        ]);
         assert_eq!(v_periodic, rhs);
     }
 
     #[test]
     fn blackman_test() {
-        let v_symmetric: Vec<f32> = blackman(8, WindowType::Symmetric);
-        let rhs = vec![
+        let v_symmetric: HFloatArray<f32> = blackman(8, WindowType::Symmetric);
+        let rhs = HFloatArray::new_from_vec(vec![
             -1.4901161e-8,
             0.090453416,
             0.45918298,
@@ -624,11 +628,11 @@ mod tests {
             0.4591827,
             0.090453446,
             -1.4901161e-8,
-        ];
+        ]);
         assert_eq!(v_symmetric, rhs);
 
-        let v_periodic: Vec<f32> = blackman(8, WindowType::Periodic);
-        let rhs = vec![
+        let v_periodic: HFloatArray<f32> = blackman(8, WindowType::Periodic);
+        let rhs = HFloatArray::new_from_vec(vec![
             -1.4901161e-8,
             0.0664466,
             0.34000003,
@@ -637,14 +641,14 @@ mod tests {
             0.7735533,
             0.33999997,
             0.066446535,
-        ];
+        ]);
         assert_eq!(v_periodic, rhs);
     }
 
     #[test]
     fn blackmanharris_test() {
-        let v_symmetric: Vec<f32> = blackmanharris(8, WindowType::Symmetric);
-        let rhs = vec![
+        let v_symmetric: HFloatArray<f32> = blackmanharris(8, WindowType::Symmetric);
+        let rhs = HFloatArray::new_from_vec(vec![
             5.9968792e-5,
             0.033391707,
             0.3328335,
@@ -653,11 +657,11 @@ mod tests {
             0.33283323,
             0.03339171,
             5.9968792e-5,
-        ];
+        ]);
         assert_eq!(v_symmetric, rhs);
 
-        let v_periodic: Vec<f32> = blackmanharris(8, WindowType::Periodic);
-        let rhs = vec![
+        let v_periodic: HFloatArray<f32> = blackmanharris(8, WindowType::Periodic);
+        let rhs = HFloatArray::new_from_vec(vec![
             5.9968792e-5,
             0.02173582,
             0.21747002,
@@ -666,14 +670,14 @@ mod tests {
             0.69576406,
             0.21746999,
             0.021735793,
-        ];
+        ]);
         assert_eq!(v_periodic, rhs);
     }
 
     #[test]
     fn bohman_test() {
-        let v_symmetric: Vec<f32> = bohman(8, WindowType::Symmetric);
-        let rhs = vec![
+        let v_symmetric: HFloatArray<f32> = bohman(8, WindowType::Symmetric);
+        let rhs = HFloatArray::new_from_vec(vec![
             0.0,
             0.070724666,
             0.43748394,
@@ -682,11 +686,11 @@ mod tests {
             0.4374839,
             0.070724666,
             0.0,
-        ];
+        ]);
         assert_eq!(v_symmetric, rhs);
 
-        let v_periodic: Vec<f32> = bohman(8, WindowType::Periodic);
-        let rhs = vec![
+        let v_periodic: HFloatArray<f32> = bohman(8, WindowType::Periodic);
+        let rhs = HFloatArray::new_from_vec(vec![
             0.0,
             0.048302367,
             0.31830984,
@@ -695,40 +699,40 @@ mod tests {
             0.7554091,
             0.31830984,
             0.0,
-        ];
+        ]);
         assert_eq!(v_periodic, rhs);
     }
 
     #[test]
     fn boxcar_test() {
-        let v: Vec<f32> = boxcar(8);
-        let rhs = vec![1., 1., 1., 1., 1., 1., 1., 1.];
+        let v: HFloatArray<f32> = boxcar(8);
+        let rhs = HFloatArray::new_from_vec(vec![1., 1., 1., 1., 1., 1., 1., 1.]);
         assert_eq!(v, rhs);
     }
 
     #[test]
     fn chebwin_test() {
-        let v_symmetric: Vec<f32> = chebwin(8, 70., WindowType::Symmetric);
-        let rhs = vec![
+        let v_symmetric: HFloatArray<f32> = chebwin(8, 70., WindowType::Symmetric);
+        let rhs = HFloatArray::new_from_vec(vec![
             0.05397676, 0.27194428, 0.66340005, 1.0, 1.0, 0.66340005, 0.27194428, 0.05397676,
-        ];
+        ]);
         assert_eq!(v_symmetric, rhs);
 
-        let v_symmetric: Vec<f32> = chebwin(9, 70., WindowType::Symmetric);
-        let rhs = vec![
+        let v_symmetric: HFloatArray<f32> = chebwin(9, 70., WindowType::Symmetric);
+        let rhs = HFloatArray::new_from_vec(vec![
             0.03807165, 0.19412002, 0.5034264, 0.8467195, 1.0, 0.8467195, 0.5034264, 0.19412002,
             0.03807165,
-        ];
+        ]);
         assert_eq!(v_symmetric, rhs);
 
-        let v_periodic: Vec<f32> = chebwin(8, 70., WindowType::Periodic);
-        let rhs = vec![
+        let v_periodic: HFloatArray<f32> = chebwin(8, 70., WindowType::Periodic);
+        let rhs = HFloatArray::new_from_vec(vec![
             0.03807165, 0.19412002, 0.5034264, 0.8467195, 1.0, 0.8467195, 0.5034264, 0.19412002,
-        ];
+        ]);
         assert_eq!(v_periodic, rhs);
 
-        let v_periodic: Vec<f32> = chebwin(9, 70., WindowType::Periodic);
-        let rhs = vec![
+        let v_periodic: HFloatArray<f32> = chebwin(9, 70., WindowType::Periodic);
+        let rhs = HFloatArray::new_from_vec(vec![
             0.030656429,
             0.15511018,
             0.41670975,
@@ -738,37 +742,41 @@ mod tests {
             0.75451595,
             0.41670975,
             0.15511018,
-        ];
+        ]);
         assert_eq!(v_periodic, rhs);
     }
 
     #[test]
     fn exponential_test() {
-        let v_symmetric: HResult<Vec<f32>> = exponential(8, Some(1.0), 3.0, WindowType::Symmetric);
+        let v_symmetric: HResult<HFloatArray<f32>> =
+            exponential(8, Some(1.0), 3.0, WindowType::Symmetric);
         assert!(v_symmetric.is_err());
 
-        let v_symmetric: Vec<f32> = exponential(8, None, 3.0, WindowType::Symmetric).unwrap();
-        let rhs = vec![
+        let v_symmetric: HFloatArray<f32> =
+            exponential(8, None, 3.0, WindowType::Symmetric).unwrap();
+        let rhs = HFloatArray::new_from_vec(vec![
             0.31140324, 0.4345982, 0.60653067, 0.84648174, 0.84648174, 0.60653067, 0.4345982,
             0.31140324,
-        ];
+        ]);
         assert_eq!(v_symmetric, rhs);
 
-        let v_periodic: Vec<f32> = exponential(8, Some(1.0), 3.0, WindowType::Periodic).unwrap();
-        let rhs = vec![
+        let v_periodic: HFloatArray<f32> =
+            exponential(8, Some(1.0), 3.0, WindowType::Periodic).unwrap();
+        let rhs = HFloatArray::new_from_vec(vec![
             0.7165313, 1.0, 0.7165313, 0.5134171, 0.36787945, 0.26359713, 0.18887562, 0.13533528,
-        ];
+        ]);
         assert_eq!(v_periodic, rhs);
 
-        let v_periodic: Vec<f32> = exponential(8, None, 3.0, WindowType::Periodic).unwrap();
-        let rhs = vec![
+        let v_periodic: HFloatArray<f32> = exponential(8, None, 3.0, WindowType::Periodic).unwrap();
+        let rhs = HFloatArray::new_from_vec(vec![
             0.26359713, 0.36787945, 0.5134171, 0.7165313, 1.0, 0.7165313, 0.5134171, 0.36787945,
-        ];
+        ]);
         assert_eq!(v_periodic, rhs);
 
         // test with center = 0.
-        let v_periodic: Vec<f32> = exponential(8, Some(0.0), 3.0, WindowType::Periodic).unwrap();
-        let rhs = vec![
+        let v_periodic: HFloatArray<f32> =
+            exponential(8, Some(0.0), 3.0, WindowType::Periodic).unwrap();
+        let rhs = HFloatArray::new_from_vec(vec![
             1.0,
             0.7165313,
             0.5134171,
@@ -777,12 +785,13 @@ mod tests {
             0.18887562,
             0.13533528,
             0.096971974,
-        ];
+        ]);
         assert_eq!(v_periodic, rhs);
 
         // test with center = 0.
-        let v_periodic: Vec<f32> = exponential(9, Some(0.0), 3.0, WindowType::Periodic).unwrap();
-        let rhs = vec![
+        let v_periodic: HFloatArray<f32> =
+            exponential(9, Some(0.0), 3.0, WindowType::Periodic).unwrap();
+        let rhs = HFloatArray::new_from_vec(vec![
             1.0,
             0.7165313,
             0.5134171,
@@ -792,63 +801,63 @@ mod tests {
             0.13533528,
             0.096971974,
             0.069483444,
-        ];
+        ]);
         assert_eq!(v_periodic, rhs);
     }
 
     #[test]
     fn cosine_test() {
-        let v_symmetric: Vec<f32> = cosine(8, WindowType::Symmetric);
-        let rhs = vec![
+        let v_symmetric: HFloatArray<f32> = cosine(8, WindowType::Symmetric);
+        let rhs = HFloatArray::new_from_vec(vec![
             0.19509032, 0.55557024, 0.83146966, 0.9807853, 0.98078525, 0.83146954, 0.5555702,
             0.19509031,
-        ];
+        ]);
         assert_eq!(v_symmetric, rhs);
 
-        let v_periodic: Vec<f32> = cosine(8, WindowType::Periodic);
-        let rhs = vec![
+        let v_periodic: HFloatArray<f32> = cosine(8, WindowType::Periodic);
+        let rhs = HFloatArray::new_from_vec(vec![
             0.1736482, 0.5, 0.7660445, 0.9396927, 1.0, 0.9396926, 0.76604444, 0.49999982,
-        ];
+        ]);
         assert_eq!(v_periodic, rhs);
     }
 
     #[test]
     fn hann_test() {
-        let v_symmetric: Vec<f32> = hann(8, WindowType::Symmetric);
-        let rhs = vec![
+        let v_symmetric: HFloatArray<f32> = hann(8, WindowType::Symmetric);
+        let rhs = HFloatArray::new_from_vec(vec![
             0., 0.1882551, 0.6112605, 0.9504844, 0.9504844, 0.6112603, 0.18825516, 0.,
-        ];
+        ]);
         assert_eq!(v_symmetric, rhs);
 
-        let v_periodic: Vec<f32> = hann(8, WindowType::Periodic);
-        let rhs = vec![
+        let v_periodic: HFloatArray<f32> = hann(8, WindowType::Periodic);
+        let rhs = HFloatArray::new_from_vec(vec![
             0., 0.14644662, 0.5, 0.8535534, 1., 0.8535533, 0.5, 0.1464465,
-        ];
+        ]);
         assert_eq!(v_periodic, rhs);
     }
 
     #[test]
     fn triangle_test() {
-        let v_symmetric: Vec<f32> = triangle(10, WindowType::Symmetric);
-        let rhs = vec![0.1, 0.3, 0.5, 0.7, 0.9, 0.9, 0.7, 0.5, 0.3, 0.1];
+        let v_symmetric: HFloatArray<f32> = triangle(10, WindowType::Symmetric);
+        let rhs = HFloatArray::new_from_vec(vec![0.1, 0.3, 0.5, 0.7, 0.9, 0.9, 0.7, 0.5, 0.3, 0.1]);
         assert_eq!(v_symmetric, rhs);
 
-        let v_symmetric: Vec<f32> = triangle(11, WindowType::Symmetric);
-        let rhs = vec![
+        let v_symmetric: HFloatArray<f32> = triangle(11, WindowType::Symmetric);
+        let rhs = HFloatArray::new_from_vec(vec![
             0.16666667, 0.33333333, 0.5, 0.66666667, 0.83333333, 1., 0.83333333, 0.66666667, 0.5,
             0.33333333, 0.16666667,
-        ];
+        ]);
         assert_eq!(v_symmetric, rhs);
 
-        let v_periodic: Vec<f32> = triangle(10, WindowType::Periodic);
-        let rhs = vec![
+        let v_periodic: HFloatArray<f32> = triangle(10, WindowType::Periodic);
+        let rhs = HFloatArray::new_from_vec(vec![
             0.16666667, 0.33333333, 0.5, 0.66666667, 0.83333333, 1., 0.83333333, 0.66666667, 0.5,
             0.33333333,
-        ];
+        ]);
         assert_eq!(v_periodic, rhs);
 
-        let v_periodic: Vec<f32> = triangle(11, WindowType::Periodic);
-        let rhs = vec![
+        let v_periodic: HFloatArray<f32> = triangle(11, WindowType::Periodic);
+        let rhs = HFloatArray::new_from_vec(vec![
             0.083333336,
             0.25,
             0.41666667,
@@ -860,7 +869,7 @@ mod tests {
             0.58333333,
             0.41666667,
             0.25,
-        ];
+        ]);
         assert_eq!(v_periodic, rhs);
     }
 }

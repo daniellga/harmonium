@@ -1,0 +1,4 @@
+remove rubato from rharmonium
+check if make rubato an external pointer, since it benefits from having a struct
+remove libsoxr
+add license

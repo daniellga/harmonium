@@ -14,6 +14,7 @@ use std::{any::Any, sync::Arc};
 
 pub trait HAudioR: Send + Sync {
     fn as_any(&self) -> &dyn Any;
+    fn as_any_mut(&mut self) -> &mut dyn Any;
     fn len(&self) -> i32;
     fn nchannels(&self) -> i32;
     fn nframes(&self) -> i32;
@@ -24,6 +25,7 @@ pub trait HAudioR: Send + Sync {
     fn mem_adress(&self) -> String;
     fn data_type(&self) -> HDataType;
     fn as_mono(&mut self);
+    fn clone_inner(&self) -> Arc<dyn HAudioR>;
     fn resample_fftfixedin(&mut self, sr_out: i32, chunk_size_in: i32, sub_chunks: i32);
     fn resample_fftfixedinout(&mut self, sr_out: i32, chunk_size_in: i32);
     fn resample_fftfixedout(&mut self, sr_out: i32, chunk_size_out: i32, sub_chunks: i32);
@@ -138,18 +140,14 @@ impl HAudio {
         self.0.mem_adress()
     }
 
-    pub fn data_type(&self) -> &str {
-        match self.0.data_type() {
-            HDataType::Float32 => "Float32",
-            HDataType::Float64 => "Float64",
-            _ => unreachable!(),
-        }
+    pub fn data_type(&self) -> HDataType {
+        self.0.data_type()
     }
 
     /// Convert to 1 channel taking the average across channels. A new inner array is created.
     /// The operation is done in-place.
     pub fn as_mono(&mut self) {
-        let inner_mut = self._get_inner_mut();
+        let inner_mut = self.get_inner_mut();
         inner_mut.as_mono();
     }
 
@@ -171,7 +169,7 @@ impl HAudio {
     /// //decoded_audio.resample_fftfixedin(22000, 1024, 2).unwrap();
     /// ```
     fn resample_fftfixedin(&mut self, sr_out: i32, chunk_size_in: i32, sub_chunks: i32) {
-        let inner_mut = self._get_inner_mut();
+        let inner_mut = self.get_inner_mut();
         inner_mut.resample_fftfixedin(sr_out, chunk_size_in, sub_chunks);
     }
 
@@ -192,7 +190,7 @@ impl HAudio {
     /// //decoded_audio.resample_fftfixedinout(22000, 1024).unwrap();
     /// ```
     fn resample_fftfixedinout(&mut self, sr_out: i32, chunk_size_in: i32) {
-        let inner_mut = self._get_inner_mut();
+        let inner_mut = self.get_inner_mut();
         inner_mut.resample_fftfixedinout(sr_out, chunk_size_in);
     }
 
@@ -214,7 +212,7 @@ impl HAudio {
     /// //decoded_audio.resample_fftfixedout(22000, 1024, 2).unwrap();
     /// ```
     fn resample_fftfixedout(&mut self, sr_out: i32, chunk_size_out: i32, sub_chunks: i32) {
-        let inner_mut = self._get_inner_mut();
+        let inner_mut = self.get_inner_mut();
         inner_mut.resample_fftfixedout(sr_out, chunk_size_out, sub_chunks);
     }
 
@@ -276,7 +274,7 @@ impl HAudio {
         window: &str,
         chunk_size_in: i32,
     ) {
-        let inner_mut = self._get_inner_mut();
+        let inner_mut = self.get_inner_mut();
         inner_mut.resample_sincfixedin(
             sr_out,
             max_resample_ratio_relative,
@@ -347,7 +345,7 @@ impl HAudio {
         window: &str,
         chunk_size_out: i32,
     ) {
-        let inner_mut = self._get_inner_mut();
+        let inner_mut = self.get_inner_mut();
         inner_mut.resample_sincfixedout(
             sr_out,
             max_resample_ratio_relative,
@@ -363,31 +361,9 @@ impl HAudio {
 
 impl HAudio {
     #[doc(hidden)]
-    pub fn _get_inner_mut(&mut self) -> &mut dyn HAudioR {
+    pub fn get_inner_mut(&mut self) -> &mut dyn HAudioR {
         if Arc::weak_count(&self.0) + Arc::strong_count(&self.0) != 1 {
-            let haudio: Arc<dyn HAudioR> = match self.0.data_type() {
-                HDataType::Float32 => {
-                    let haudio = self
-                        .0
-                        .as_any()
-                        .downcast_ref::<structs::HFloatAudio<f32>>()
-                        .unwrap()
-                        .clone();
-                    Arc::new(haudio)
-                }
-                HDataType::Float64 => {
-                    let haudio = self
-                        .0
-                        .as_any()
-                        .downcast_ref::<structs::HFloatAudio<f64>>()
-                        .unwrap()
-                        .clone();
-                    Arc::new(haudio)
-                }
-                _ => panic!(),
-            };
-
-            self.0 = haudio;
+            self.0 = self.0.clone_inner();
         }
         Arc::get_mut(&mut self.0).expect("implementation error")
     }
@@ -395,6 +371,10 @@ impl HAudio {
 
 impl HAudioR for structs::HFloatAudio<f32> {
     fn as_any(&self) -> &dyn Any {
+        self
+    }
+
+    fn as_any_mut(&mut self) -> &mut dyn Any {
         self
     }
 
@@ -460,6 +440,10 @@ impl HAudioR for structs::HFloatAudio<f32> {
 
     fn as_mono(&mut self) {
         self.as_mono().unwrap();
+    }
+
+    fn clone_inner(&self) -> Arc<dyn HAudioR> {
+        Arc::new(self.clone())
     }
 
     fn resample_fftfixedin(&mut self, sr_out: i32, chunk_size_in: i32, sub_chunks: i32) {
@@ -589,6 +573,10 @@ impl HAudioR for structs::HFloatAudio<f64> {
         self
     }
 
+    fn as_any_mut(&mut self) -> &mut dyn Any {
+        self
+    }
+
     fn len(&self) -> i32 {
         i32::try_from(self.len()).unwrap()
     }
@@ -651,6 +639,10 @@ impl HAudioR for structs::HFloatAudio<f64> {
 
     fn as_mono(&mut self) {
         self.as_mono().unwrap();
+    }
+
+    fn clone_inner(&self) -> Arc<dyn HAudioR> {
+        Arc::new(self.clone())
     }
 
     fn resample_fftfixedin(&mut self, sr_out: i32, chunk_size_in: i32, sub_chunks: i32) {

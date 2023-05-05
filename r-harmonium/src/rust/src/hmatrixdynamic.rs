@@ -9,7 +9,7 @@ use arrow2::{
     ffi::{import_array_from_c, import_field_from_c, ArrowArray, ArrowSchema},
 };
 use extendr_api::prelude::*;
-use harmonium_core::structs::{self, HComplexArray, HComplexMatrix, HFloatArray, HFloatMatrix};
+use harmonium_core::structs::{HComplexArray, HComplexMatrix, HFloatArray, HFloatMatrix};
 use harmonium_fft::fft::fft_arrow::{FftComplexMatrix, FftFloatMatrix};
 use std::{any::Any, sync::Arc};
 
@@ -28,6 +28,7 @@ pub trait HMatrixR: Send + Sync {
     fn export_c_arrow(&self) -> (ArrowArray, ArrowSchema);
     fn fft(&self) -> Arc<dyn HMatrixR>;
     fn mean_cols(&mut self);
+    fn clone_inner(&self) -> Arc<dyn HMatrixR>;
 }
 
 #[derive(Clone)]
@@ -41,8 +42,9 @@ impl HMatrix {
                 let rmatrix: RMatrix<f64> = robj.try_into().expect("not valid input types");
                 let ncols = rmatrix.ncols();
                 let v: Vec<f32> = rmatrix.data().iter().map(|z| *z as f32).collect();
-                let array = PrimitiveArray::from_vec(v);
-                let hfloatmatrix = HFloatArray::<f32>::new(array).into_hmatrix(ncols).unwrap();
+                let hfloatmatrix = HFloatArray::<f32>::new_from_vec(v)
+                    .into_hmatrix(ncols)
+                    .unwrap();
                 let inner = Arc::new(hfloatmatrix);
                 HMatrix(inner)
             }
@@ -65,8 +67,7 @@ impl HMatrix {
                     v.push(x.re().0 as f32);
                     v.push(x.im().0 as f32);
                 });
-                let array = PrimitiveArray::from_vec(v);
-                let hcomplexmatrix = HComplexArray::<f32>::new(array)
+                let hcomplexmatrix = HComplexArray::<f32>::new_from_vec(v)
                     .into_hmatrix(ncols)
                     .unwrap();
                 let inner = Arc::new(hcomplexmatrix);
@@ -82,8 +83,7 @@ impl HMatrix {
                     v.push(x.re().0);
                     v.push(x.im().0);
                 });
-                let array = PrimitiveArray::from_vec(v);
-                let hcomplexmatrix = HComplexArray::<f64>::new(array)
+                let hcomplexmatrix = HComplexArray::<f64>::new_from_vec(v)
                     .into_hmatrix(ncols)
                     .unwrap();
                 let inner = Arc::new(hcomplexmatrix);
@@ -142,7 +142,7 @@ impl HMatrix {
     }
 
     fn slice(&mut self, offset: i32, length: i32) {
-        let inner_mut = self._get_inner_mut();
+        let inner_mut = self.get_inner_mut();
         inner_mut.slice(offset, length);
     }
 
@@ -204,13 +204,8 @@ impl HMatrix {
         self.0.mem_adress()
     }
 
-    pub fn data_type(&self) -> &str {
-        match self.0.data_type() {
-            HDataType::Float32 => "Float32",
-            HDataType::Float64 => "Float64",
-            HDataType::Complex32 => "Complex32",
-            HDataType::Complex64 => "Complex64",
-        }
+    pub fn data_type(&self) -> HDataType {
+        self.0.data_type()
     }
 
     /// Returns true if the inner Arc is shared.
@@ -249,55 +244,16 @@ impl HMatrix {
     /// Take the average across columns. A new inner array is created.
     /// The operation is done in-place.
     pub fn mean_cols(&mut self) {
-        let inner_mut = self._get_inner_mut();
+        let inner_mut = self.get_inner_mut();
         inner_mut.mean_cols();
     }
 }
 
 impl HMatrix {
     #[doc(hidden)]
-    pub fn _get_inner_mut(&mut self) -> &mut dyn HMatrixR {
+    pub fn get_inner_mut(&mut self) -> &mut dyn HMatrixR {
         if Arc::weak_count(&self.0) + Arc::strong_count(&self.0) != 1 {
-            let hmatrix: Arc<dyn HMatrixR> = match self.0.data_type() {
-                HDataType::Float32 => {
-                    let hmatrix = self
-                        .0
-                        .as_any()
-                        .downcast_ref::<structs::HFloatMatrix<f32>>()
-                        .unwrap()
-                        .clone();
-                    Arc::new(hmatrix)
-                }
-                HDataType::Float64 => {
-                    let hmatrix = self
-                        .0
-                        .as_any()
-                        .downcast_ref::<structs::HFloatMatrix<f64>>()
-                        .unwrap()
-                        .clone();
-                    Arc::new(hmatrix)
-                }
-                HDataType::Complex32 => {
-                    let hmatrix = self
-                        .0
-                        .as_any()
-                        .downcast_ref::<structs::HComplexMatrix<f32>>()
-                        .unwrap()
-                        .clone();
-                    Arc::new(hmatrix)
-                }
-                HDataType::Complex64 => {
-                    let hmatrix = self
-                        .0
-                        .as_any()
-                        .downcast_ref::<structs::HComplexMatrix<f64>>()
-                        .unwrap()
-                        .clone();
-                    Arc::new(hmatrix)
-                }
-            };
-
-            self.0 = hmatrix;
+            self.0 = self.0.clone_inner();
         }
         Arc::get_mut(&mut self.0).expect("implementation error")
     }
@@ -384,6 +340,10 @@ impl HMatrixR for HFloatMatrix<f32> {
     fn mean_cols(&mut self) {
         HFloatMatrix::<f32>::mean_cols(self).unwrap();
     }
+
+    fn clone_inner(&self) -> Arc<dyn HMatrixR> {
+        Arc::new(self.clone())
+    }
 }
 
 impl HMatrixR for HFloatMatrix<f64> {
@@ -467,6 +427,10 @@ impl HMatrixR for HFloatMatrix<f64> {
     fn mean_cols(&mut self) {
         HFloatMatrix::<f64>::mean_cols(self).unwrap();
     }
+
+    fn clone_inner(&self) -> Arc<dyn HMatrixR> {
+        Arc::new(self.clone())
+    }
 }
 
 impl HMatrixR for HComplexMatrix<f32> {
@@ -548,6 +512,10 @@ impl HMatrixR for HComplexMatrix<f32> {
     fn mean_cols(&mut self) {
         HComplexMatrix::<f32>::mean_cols(self).unwrap();
     }
+
+    fn clone_inner(&self) -> Arc<dyn HMatrixR> {
+        Arc::new(self.clone())
+    }
 }
 
 impl HMatrixR for HComplexMatrix<f64> {
@@ -628,6 +596,10 @@ impl HMatrixR for HComplexMatrix<f64> {
 
     fn mean_cols(&mut self) {
         HComplexMatrix::<f64>::mean_cols(self).unwrap();
+    }
+
+    fn clone_inner(&self) -> Arc<dyn HMatrixR> {
+        Arc::new(self.clone())
     }
 }
 

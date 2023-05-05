@@ -11,6 +11,20 @@
 #' @useDynLib harmonium, .registration = TRUE
 NULL
 
+inttimes2_or_error <- function(x) .Call(wrap__inttimes2_or_error, x)
+
+HError <- new.env(parent = emptyenv())
+
+HError$to_error1 <- function() .Call(wrap__HError__to_error1)
+
+HError$to_error2 <- function() .Call(wrap__HError__to_error2)
+
+#' @export
+`$.HError` <- function (self, name) { func <- HError[[name]]; environment(func) <- environment(); func }
+
+#' @export
+`[[.HError` <- `$.HError`
+
 HArray <- new.env(parent = emptyenv())
 
 HArray$new_from_values <- function(robj, dtype) .Call(wrap__HArray__new_from_values, robj, dtype)
@@ -54,6 +68,18 @@ HArray$fft <- function() .Call(wrap__HArray__fft, self)
 
 #' @export
 `[[.HArray` <- `$.HArray`
+
+HInterpolationParams <- new.env(parent = emptyenv())
+
+HInterpolationParams$new <- function(sinc_len, f_cutoff, oversampling_factor, interpolation, window) .Call(wrap__HInterpolationParams__new, sinc_len, f_cutoff, oversampling_factor, interpolation, window)
+
+HInterpolationParams$print <- function() invisible(.Call(wrap__HInterpolationParams__print, self))
+
+#' @export
+`$.HInterpolationParams` <- function (self, name) { func <- HInterpolationParams[[name]]; environment(func) <- environment(); func }
+
+#' @export
+`[[.HInterpolationParams` <- `$.HInterpolationParams`
 
 HAudio <- new.env(parent = emptyenv())
 
@@ -167,28 +193,6 @@ HFile$verify_file <- function(fpath) .Call(wrap__HFile__verify_file, fpath)
 #' @export
 `[[.HFile` <- `$.HFile`
 
-HMetadataType <- new.env(parent = emptyenv())
-
-HMetadataType$all <- function() .Call(wrap__HMetadataType__all)
-
-HMetadataType$text <- function() .Call(wrap__HMetadataType__text)
-
-HMetadataType$visual <- function() .Call(wrap__HMetadataType__visual)
-
-HMetadataType$print <- function() invisible(.Call(wrap__HMetadataType__print, self))
-
-HMetadataType$eq <- function(other) .Call(wrap__HMetadataType__eq, self, other)
-
-HMetadataType$ne <- function(other) .Call(wrap__HMetadataType__ne, self, other)
-
-HMetadataType$all_hmetadatatype <- function() .Call(wrap__HMetadataType__all_hmetadatatype)
-
-#' @export
-`$.HMetadataType` <- function (self, name) { func <- HMetadataType[[name]]; environment(func) <- environment(); func }
-
-#' @export
-`[[.HMetadataType` <- `$.HMetadataType`
-
 HDataType <- new.env(parent = emptyenv())
 
 HDataType$float32 <- function() .Call(wrap__HDataType__float32)
@@ -204,8 +208,6 @@ HDataType$print <- function() invisible(.Call(wrap__HDataType__print, self))
 HDataType$eq <- function(other) .Call(wrap__HDataType__eq, self, other)
 
 HDataType$ne <- function(other) .Call(wrap__HDataType__ne, self, other)
-
-HDataType$all_hdatatype <- function() .Call(wrap__HDataType__all_hdatatype)
 
 #' @export
 `$.HDataType` <- function (self, name) { func <- HDataType[[name]]; environment(func) <- environment(); func }
@@ -267,15 +269,77 @@ HMatrix$mean_cols <- function() invisible(.Call(wrap__HMatrix__mean_cols, self))
 
 HWindow <- new.env(parent = emptyenv())
 
-HWindow$blackman <- function(npoints, sym, data_type) .Call(wrap__HWindow__blackman, npoints, sym, data_type)
-
-HWindow$all_hwindow <- function() .Call(wrap__HWindow__all_hwindow)
+HWindow$blackman <- function(npoints, sym, dtype) .Call(wrap__HWindow__blackman, npoints, sym, dtype)
 
 #' @export
 `$.HWindow` <- function (self, name) { func <- HWindow[[name]]; environment(func) <- environment(); func }
 
 #' @export
 `[[.HWindow` <- `$.HWindow`
+
+HMetadataType <- new.env(parent = emptyenv())
+
+HMetadataType$all <- function() .Call(wrap__HMetadataType__all)
+
+HMetadataType$text <- function() .Call(wrap__HMetadataType__text)
+
+HMetadataType$visual <- function() .Call(wrap__HMetadataType__visual)
+
+HMetadataType$print <- function() invisible(.Call(wrap__HMetadataType__print, self))
+
+HMetadataType$eq <- function(other) .Call(wrap__HMetadataType__eq, self, other)
+
+HMetadataType$ne <- function(other) .Call(wrap__HMetadataType__ne, self, other)
+
+#' @export
+`$.HMetadataType` <- function (self, name) { func <- HMetadataType[[name]]; environment(func) <- environment(); func }
+
+#' @export
+`[[.HMetadataType` <- `$.HMetadataType`
+
+HResampler <- new.env(parent = emptyenv())
+
+HResampler$new_fft <- function(sr_in, sr_out, chunk_size, sub_chunks, nbr_channels, resampler_type, data_type) .Call(wrap__HResampler__new_fft, sr_in, sr_out, chunk_size, sub_chunks, nbr_channels, resampler_type, data_type)
+
+HResampler$new_sinc <- function(resample_ratio, max_resample_ratio_relative, parameters, chunk_size, nbr_channels, resampler_type, data_type) .Call(wrap__HResampler__new_sinc, resample_ratio, max_resample_ratio_relative, parameters, chunk_size, nbr_channels, resampler_type, data_type)
+
+HResampler$process <- function(haudio, sr_out) invisible(.Call(wrap__HResampler__process, self, haudio, sr_out))
+
+HResampler$resampler_type <- function() .Call(wrap__HResampler__resampler_type, self)
+
+HResampler$data_type <- function() .Call(wrap__HResampler__data_type, self)
+
+HResampler$print <- function() invisible(.Call(wrap__HResampler__print, self))
+
+#' @export
+`$.HResampler` <- function (self, name) { func <- HResampler[[name]]; environment(func) <- environment(); func }
+
+#' @export
+`[[.HResampler` <- `$.HResampler`
+
+HResamplerType <- new.env(parent = emptyenv())
+
+HResamplerType$fft_fixed_in <- function() .Call(wrap__HResamplerType__fft_fixed_in)
+
+HResamplerType$fft_fixed_in_out <- function() .Call(wrap__HResamplerType__fft_fixed_in_out)
+
+HResamplerType$fft_fixed_out <- function() .Call(wrap__HResamplerType__fft_fixed_out)
+
+HResamplerType$sinc_fixed_in <- function() .Call(wrap__HResamplerType__sinc_fixed_in)
+
+HResamplerType$sinc_fixed_out <- function() .Call(wrap__HResamplerType__sinc_fixed_out)
+
+HResamplerType$print <- function() invisible(.Call(wrap__HResamplerType__print, self))
+
+HResamplerType$eq <- function(other) .Call(wrap__HResamplerType__eq, self, other)
+
+HResamplerType$ne <- function(other) .Call(wrap__HResamplerType__ne, self, other)
+
+#' @export
+`$.HResamplerType` <- function (self, name) { func <- HResamplerType[[name]]; environment(func) <- environment(); func }
+
+#' @export
+`[[.HResamplerType` <- `$.HResamplerType`
 
 
 # nolint end

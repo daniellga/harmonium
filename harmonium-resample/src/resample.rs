@@ -1,6 +1,6 @@
 use arrow2::{array::PrimitiveArray, types::NativeType};
 use harmonium_core::{
-    errors::HResult,
+    errors::{HError, HResult},
     structs::{HFloatArray, HFloatAudio},
 };
 use libsoxr::{IOSpec, QualitySpec, RuntimeSpec, Soxr};
@@ -64,6 +64,7 @@ where
             .unwrap()
             .values()
             .as_slice();
+        let mult = (nchannels - 1) * nrows;
 
         loop {
             (0..nchannels).for_each(|ch| {
@@ -85,17 +86,19 @@ where
                 FixedType::NotFixedIn => self.input_frames_next(),
             };
 
-            if (nchannels - 1) * nrows + idx + nbr_frames_next > nsamples {
+            if mult + idx + nbr_frames_next > nsamples {
                 break;
             }
         }
 
-        let array = PrimitiveArray::<T>::from_vec(v_out.into_iter().flatten().collect());
-        let harray = HFloatArray::<T>::new(array);
+        let v = v_out.into_iter().flatten().collect();
+        let harray = HFloatArray::<T>::new_from_vec(v);
         let hmatrix = harray.into_hmatrix(nchannels)?;
 
         haudio.inner = hmatrix;
-        haudio.sr = sr_out as u32;
+        haudio.sr = sr_out
+            .try_into()
+            .map_err(|_| HError::OutOfSpecError("sr_out overflow".into()))?;
 
         Ok(())
     }
@@ -411,10 +414,14 @@ where
     ) -> HResult<()> {
         let sr_in = self.sr() as f64;
 
+        let nchannels = self
+            .nchannels()
+            .try_into()
+            .map_err(|_| HError::OutOfSpecError("sr_out overflow".into()))?;
         let soxr = Soxr::create(
             sr_in,
             sr_out,
-            self.nchannels().try_into().unwrap(),
+            nchannels,
             io_spec,
             quality_spec,
             runtime_spec,
@@ -445,8 +452,7 @@ where
         v_out.truncate(nsamples_output * self.nchannels()); // TODO wait for github response from
                                                             // author
 
-        let array = PrimitiveArray::<T>::from_vec(v_out);
-        let harray = HFloatArray::<T>::new(array);
+        let harray = HFloatArray::<T>::new_from_vec(v_out);
         let hmatrix = harray.into_hmatrix(self.nchannels())?;
 
         self.inner = hmatrix;
