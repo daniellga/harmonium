@@ -8,12 +8,12 @@ test_that(
 
     res = HResampler$new_sinc(48000 / 44100, 2, hparams, 1024, 2, HResamplerType$sinc_fixed_in, HDataType$float32)
     expect_error(res$process(haudio, sr_out = 48000))
-    
+
     res = HResampler$new_sinc(48000 / 44100, 2, hparams, 1024, 2, HResamplerType$sinc_fixed_in, HDataType$float64)
     expect_true(res$resampler_type() == HResamplerType$sinc_fixed_in)
     expect_true(res$data_type() == HDataType$float64)
     res$process(haudio, sr_out = 48000)
-    
+
     expect_equal(haudio$len(), 1948)
     expect_equal(haudio$sr(), 48000)
   }

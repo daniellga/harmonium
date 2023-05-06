@@ -119,16 +119,6 @@ HAudio$data_type <- function() .Call(wrap__HAudio__data_type, self)
 
 HAudio$as_mono <- function() invisible(.Call(wrap__HAudio__as_mono, self))
 
-HAudio$resample_fftfixedin <- function(sr_out, chunk_size_in, sub_chunks) invisible(.Call(wrap__HAudio__resample_fftfixedin, self, sr_out, chunk_size_in, sub_chunks))
-
-HAudio$resample_fftfixedinout <- function(sr_out, chunk_size_in) invisible(.Call(wrap__HAudio__resample_fftfixedinout, self, sr_out, chunk_size_in))
-
-HAudio$resample_fftfixedout <- function(sr_out, chunk_size_out, sub_chunks) invisible(.Call(wrap__HAudio__resample_fftfixedout, self, sr_out, chunk_size_out, sub_chunks))
-
-HAudio$resample_sincfixedin <- function(sr_out, max_resample_ratio_relative, sinc_len, f_cutoff, oversampling_factor, interpolation, window, chunk_size_in) invisible(.Call(wrap__HAudio__resample_sincfixedin, self, sr_out, max_resample_ratio_relative, sinc_len, f_cutoff, oversampling_factor, interpolation, window, chunk_size_in))
-
-HAudio$resample_sincfixedout <- function(sr_out, max_resample_ratio_relative, sinc_len, f_cutoff, oversampling_factor, interpolation, window, chunk_size_out) invisible(.Call(wrap__HAudio__resample_sincfixedout, self, sr_out, max_resample_ratio_relative, sinc_len, f_cutoff, oversampling_factor, interpolation, window, chunk_size_out))
-
 #' @export
 `$.HAudio` <- function (self, name) { func <- HAudio[[name]]; environment(func) <- environment(); func }
 

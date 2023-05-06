@@ -4,7 +4,7 @@ use crate::{
 };
 use extendr_api::prelude::*;
 use harmonium_core::structs::HFloatAudio;
-use harmonium_resample::resample2::ProcessResampler;
+use harmonium_resample::resample::ProcessResampler;
 use rubato::{FftFixedIn, FftFixedInOut, FftFixedOut, SincFixedIn, SincFixedOut};
 use std::any::Any;
 
@@ -161,10 +161,7 @@ impl HResampler {
     fn process(&mut self, haudio: &mut HAudio, sr_out: i32) {
         assert!(self.data_type() == haudio.data_type());
 
-        self.0.process(haudio, sr_out)
-        //let inner_mut = self.get_inner_mut();
-        //let haudio_inner_mut = haudio.get_inner_mut();
-        //inner_mut.process(haudio_inner_mut, sr_out);
+        self.0.process(haudio, sr_out);
     }
 
     fn resampler_type(&self) -> HResamplerType {
@@ -195,11 +192,11 @@ macro_rules! impl_hresamplerfftr {
                 }
 
                 fn set_resample_ratio(&mut self, _: f64) {
-                    panic!("not implemented");
+                    panic!("not available for fft resamplers");
                 }
 
                 fn set_resample_ratio_relative(&mut self, _: f64) {
-                    panic!("not implemented");
+                    panic!("not available for fft resamplers");
                 }
 
                 fn resampler_type(&self) -> HResamplerType {
