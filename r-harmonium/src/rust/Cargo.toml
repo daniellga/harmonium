@@ -28,3 +28,7 @@ harmonium-window = { path = "../../../harmonium-window" }
 #harmonium-fft = { git = "https://github.com/daniellga/harmonium.git" }
 arrow2 = "0.17"
 rubato = "*"
+
+[[bin]]
+name = "generate_r_docs"
+path = "src/generate_r_docs.rs"

@@ -1,13 +1,14 @@
 use extendr_api::prelude::*;
 
-mod harraydynamic;
-mod haudiodynamic;
+mod generate_r_docs;
+mod harray;
+mod haudio;
 mod haudiosink;
 mod hdatatype;
 mod herror;
 mod hfile;
 mod hinterpolationparams;
-mod hmatrixdynamic;
+mod hmatrix;
 mod hmetadatatype;
 mod hresampler;
 mod hresamplertype;
@@ -20,13 +21,13 @@ mod partialeq;
 extendr_module! {
     mod harmonium;
     use herror;
-    use harraydynamic;
+    use harray;
     use hinterpolationparams;
-    use haudiodynamic;
+    use haudio;
     use haudiosink;
     use hfile;
     use hdatatype;
-    use hmatrixdynamic;
+    use hmatrix;
     use hwindow;
     use hmetadatatype;
     use hresampler;

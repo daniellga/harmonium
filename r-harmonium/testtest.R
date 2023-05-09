@@ -10,6 +10,10 @@ res$data_type()
 res$process(haudio, sr_out = 22050)
 
 
+
+
+
+
 haudio = HAudio$new_from_values(matrix(0, nrow = 1024, ncol = 2), 44100, dtype = HDataType$float64)
 hparams = HInterpolationParams$new(256, 0.95, 256, "linear", "blackmanharris2")
 res = HResampler$new_sinc(48000 / 44100, 2, hparams, 1024, 2, HResamplerType$sinc_fixed_in, HDataType$float64)

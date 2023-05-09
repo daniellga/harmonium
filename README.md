@@ -2,7 +2,8 @@
 
 Harmonium is an audio interface inspired by Python's [librosa](https://github.com/librosa/librosa).
 
-- Decode, get metadata and play many different types of audio files
+- Cross-platform audio IO
+- Decode and get audio metadata
 - Asynchronous and Synchronous resampling
 - Arrow interface with zero copy integration
 

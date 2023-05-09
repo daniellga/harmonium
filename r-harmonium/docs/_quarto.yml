@@ -1,0 +1,11 @@
+project:
+  type: docusaurus
+  execute-dir: project
+  render:
+    - /docs/info.qmd
+    - /docs/[!_]*.qmd
+
+format:
+  docusaurus-md:
+    df-print: kable
+    code-line-numbers: true

@@ -77,7 +77,7 @@ where
     }
 
     /// Returns a clone of this HArray sliced by an offset and length.
-    /// This operation is O(1) as it amounts to increase ref counts.
+    /// This operation is O(1).
     pub fn slice(&mut self, offset: usize, length: usize) {
         self.inner.slice(offset, length);
     }
@@ -141,7 +141,7 @@ where
     }
 
     /// Returns a clone of this HArray sliced by an offset and length.
-    /// This operation is O(1) as it amounts to increase ref counts.
+    /// This operation is O(1).
     pub fn slice(&mut self, offset: usize, length: usize) {
         self.inner.slice(offset * 2, length * 2);
     }
@@ -209,7 +209,7 @@ impl<T: NativeType + Float> HFloatMatrix<T> {
     }
 
     /// Returns a clone of this HMatrix sliced by an offset and length in the columns dimension.
-    /// This operation is O(1) as it amounts to increase ref counts.
+    /// This operation is O(1).
     pub fn slice(&mut self, offset: usize, length: usize) {
         self.inner.slice(offset, length);
     }
@@ -367,7 +367,7 @@ impl<T: NativeType + Float> HComplexMatrix<T> {
     }
 
     /// Returns a clone of this HMatrix sliced by an offset and length.
-    /// This operation is O(1) as it amounts to increase ref counts.
+    /// This operation is O(1).
     pub fn slice(&mut self, offset: usize, length: usize) {
         self.inner.slice(offset, length);
     }

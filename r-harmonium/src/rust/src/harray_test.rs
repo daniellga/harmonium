@@ -1,7 +1,7 @@
 use crate::{
-    haudiodynamic::HAudio,
+    haudio::HAudio,
     hdatatype::HDataType,
-    hmatrixdynamic::{HMatrix, HMatrixR},
+    hmatrix::{HMatrix, HMatrixR},
     partialeq::PartialEqInner,
 };
 use arrow2::{
@@ -29,6 +29,12 @@ pub trait HArrayR: Send + Sync {
     fn clone_inner(&self) -> Arc<dyn HArrayR>;
 }
 
+/// HArray
+/// Structure to represent an array.
+/// Let's itemize:
+///     1: ok
+///     2: not ok
+/// is that good?
 #[derive(Clone)]
 pub struct HArray(pub Arc<dyn HArrayR>);
 
@@ -121,13 +127,17 @@ impl HArray {
         }
     }
 
+    /// HArray
+    /// len method()
+    /// # Returns
     /// Returns the length of this Harray.
     pub fn len(&self) -> i32 {
         self.0.len()
     }
 
+    /// HArray
     /// Sliced by an offset and length.
-    /// This operation is O(1) as it amounts to increase two ref counts.
+    /// This operation is O(1).
     pub fn slice(&mut self, offset: i32, length: i32) {
         let inner_mut = self.get_inner_mut();
         inner_mut.slice(offset, length);
@@ -137,61 +147,73 @@ impl HArray {
         self.0.print();
     }
 
+    /// HArray
     /// Equality.
     pub fn eq(&self, other: &HArray) -> bool {
         self.0.eq(&other.0)
     }
 
+    /// HArray
     /// Not equality.
     pub fn ne(&self, other: &HArray) -> bool {
         self.0.ne(&other.0)
     }
 
+    /// HArray
     /// Compares underlying data with an HArray.
     pub fn eq_inner(&self, other: &HArray) -> bool {
         self.0.eq_inner(&*other.0)
     }
 
+    /// HArray
     /// Compares underlying data with an HMatrix.
     pub fn eq_inner_hmatrix(&self, other: &HMatrix) -> bool {
         self.0.eq_inner(&*other.0)
     }
 
+    /// HArray
     /// Compares underlying data with an HAudio.
     pub fn eq_inner_haudio(&self, other: &HAudio) -> bool {
         self.0.eq_inner(&*other.0)
     }
 
+    /// HArray
     /// Creates a new HArray, with the underlying data pointing to the same place in memory.
     pub fn clone(&self) -> HArray {
         std::clone::Clone::clone(self)
     }
 
+    /// HArray
     /// Converts to HMatrix. The new HMatrix Uses the same underlying data as the HArray.
     pub fn as_hmatrix(&self, ncols: i32) -> HMatrix {
         HMatrix(self.0.as_hmatrix(ncols))
     }
 
+    /// HArray
     /// Collect to an atomic vector.
     pub fn collect(&self) -> Robj {
         self.0.collect()
     }
 
+    /// HArray
     /// The inner array's memory adress.
     pub fn mem_adress(&self) -> String {
         self.0.mem_adress()
     }
 
+    /// HArray
     /// The inner array's data type.
     pub fn data_type(&self) -> HDataType {
         self.0.data_type()
     }
 
+    /// HArray
     /// Returns true if the inner Arc is shared.
     pub fn is_shared(&self) -> bool {
         Arc::weak_count(&self.0) + Arc::strong_count(&self.0) != 1
     }
 
+    /// HArray
     /// Export the underlying array to Arrow C interface.
     pub fn to_c_arrow(&self, array_ptr: &str, schema_ptr: &str) {
         let (mut array_ffi, mut schema_ffi) = self.0.export_c_arrow();
@@ -216,6 +238,8 @@ impl HArray {
         }
     }
 
+    /// HArray
+    /// Calculate fft.
     pub fn fft(&self) -> HArray {
         HArray(self.0.fft())
     }
@@ -457,6 +481,6 @@ impl HArrayR for HComplexArray<f64> {
 }
 
 extendr_module! {
-    mod harraydynamic;
+    mod harray;
     impl HArray;
 }

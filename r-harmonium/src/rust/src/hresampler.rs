@@ -1,5 +1,5 @@
 use crate::{
-    haudiodynamic::HAudio, hdatatype::HDataType, hinterpolationparams::HInterpolationParams,
+    haudio::HAudio, hdatatype::HDataType, hinterpolationparams::HInterpolationParams,
     hresamplertype::HResamplerType,
 };
 use extendr_api::prelude::*;

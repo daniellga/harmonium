@@ -1,6 +1,4 @@
-use crate::{
-    harraydynamic::HArrayR, haudiodynamic::HAudioR, hdatatype::HDataType, hmatrixdynamic::HMatrixR,
-};
+use crate::{harray::HArrayR, haudio::HAudioR, hdatatype::HDataType, hmatrix::HMatrixR};
 use harmonium_core::structs::{
     HComplexArray, HComplexMatrix, HFloatArray, HFloatAudio, HFloatMatrix,
 };

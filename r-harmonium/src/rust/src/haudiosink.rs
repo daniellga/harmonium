@@ -1,4 +1,4 @@
-use crate::{haudiodynamic::HAudio, hdatatype::HDataType};
+use crate::{haudio::HAudio, hdatatype::HDataType};
 use extendr_api::prelude::*;
 use harmonium_core::structs::HFloatAudio;
 use harmonium_io::{decode::decode_arrow::decode, play};

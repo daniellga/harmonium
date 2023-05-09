@@ -1,417 +1,693 @@
-use crate::hmatrix::{HComplex32MatrixR, HComplex64MatrixR, HFloat32MatrixR, HFloat64MatrixR};
-use arrow2::array::PrimitiveArray;
-use extendr_api::prelude::*;
+use crate::{
+    haudio::HAudio,
+    hdatatype::HDataType,
+    hmatrix::{HMatrix, HMatrixR},
+    partialeq::PartialEqInner,
+};
+use arrow2::{
+    array::PrimitiveArray,
+    datatypes::PhysicalType,
+    ffi::{import_array_from_c, import_field_from_c, ArrowArray, ArrowSchema},
+    types::PrimitiveType,
+};
+use extendr_api::{prelude::*, AsTypedSlice};
 use harmonium_core::structs::{HComplexArray, HFloatArray};
 use harmonium_fft::fft::fft_arrow::{FftComplexArray, FftFloatArray};
-use std::fmt;
+use std::{any::Any, sync::Arc};
 
-#[derive(Debug)]
-pub struct HFloat32ArrayR {
-    inner: HFloatArray<f32>,
+pub trait HArrayR: Send + Sync {
+    fn as_any(&self) -> &dyn Any;
+    fn len(&self) -> i32;
+    fn slice(&mut self, offset: i32, length: i32);
+    fn print(&self);
+    fn as_hmatrix(&self, ncols: i32) -> Arc<dyn HMatrixR>;
+    fn collect(&self) -> Robj;
+    fn mem_adress(&self) -> String;
+    fn data_type(&self) -> HDataType;
+    fn export_c_arrow(&self) -> (ArrowArray, ArrowSchema);
+    fn fft(&self) -> Arc<dyn HArrayR>;
+    fn clone_inner(&self) -> Arc<dyn HArrayR>;
 }
 
-#[derive(Debug)]
-pub struct HFloat64ArrayR {
-    inner: HFloatArray<f64>,
-}
+/// HArray
+/// An array representation.
+/// Supports Float32, Float64, Complex32 and Complex64 types.
+#[derive(Clone)]
+pub struct HArray(pub Arc<dyn HArrayR>);
 
-#[derive(Debug)]
-pub struct HComplex32ArrayR {
-    inner: HComplexArray<f32>,
-}
-
-#[derive(Debug)]
-pub struct HComplex64ArrayR {
-    inner: HComplexArray<f64>,
-}
-
-impl HFloat32ArrayR {
-    pub(crate) fn new(inner: HFloatArray<f32>) -> Self {
-        Self { inner }
+#[extendr]
+impl HArray {
+    /// HArray
+    /// `new_from_values(robj: atomicvector, dtype: HDataType)`
+    /// Creates a new `HArray` from an R atomic vector.
+    ///
+    /// # Arguments
+    ///
+    /// * `robj` - A double or complex atomic vector.
+    /// * `dtype` - An `HDataType` to indicate which type of `HArray` to be created.
+    ///             For float dtypes, the atomic vector must be a double. For complex dtypes, a
+    ///             complex atomic vector.
+    ///
+    /// # Returns
+    ///
+    /// An `HArray` external pointer
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// robj = c(1,2,3,4,5,6,7,8,9,10,11,12)
+    /// dtype = HDataType$float32
+    /// HArray$new_from_values(robj, dtype)
+    /// ```
+    ///
+    pub fn new_from_values(robj: Robj, dtype: &HDataType) -> HArray {
+        match (robj.rtype(), dtype) {
+            (Rtype::Doubles, HDataType::Float32) => {
+                let slice = robj.as_real_slice().unwrap();
+                let v = slice.iter().map(|x| *x as f32).collect();
+                let hfloatarray = HFloatArray::<f32>::new_from_vec(v);
+                let data = Arc::new(hfloatarray);
+                HArray(data)
+            }
+            (Rtype::Doubles, HDataType::Float64) => {
+                let v = robj.as_real_vector().unwrap();
+                let hfloatarray = HFloatArray::<f64>::new_from_vec(v);
+                let data = Arc::new(hfloatarray);
+                HArray(data)
+            }
+            (Rtype::Complexes, HDataType::Complex32) => {
+                let slice: &[Rcplx] = robj.as_typed_slice().unwrap();
+                let length = slice.len() * 2;
+                let mut v: Vec<f32> = Vec::with_capacity(length);
+                slice.iter().for_each(|x| {
+                    v.push(x.re().0 as f32);
+                    v.push(x.im().0 as f32);
+                });
+                let hcomplexarray = HComplexArray::<f32>::new_from_vec(v);
+                let data = Arc::new(hcomplexarray);
+                HArray(data)
+            }
+            (Rtype::Complexes, HDataType::Complex64) => {
+                let slice: &[Rcplx] = robj.as_typed_slice().unwrap();
+                let length = slice.len() * 2;
+                let mut v: Vec<f64> = Vec::with_capacity(length);
+                slice.iter().for_each(|x| {
+                    v.push(x.re().0);
+                    v.push(x.im().0);
+                });
+                let hcomplexarray = HComplexArray::<f64>::new_from_vec(v);
+                let data = Arc::new(hcomplexarray);
+                HArray(data)
+            }
+            _ => panic!("not valid input types"),
+        }
     }
 
-    pub(crate) fn inner(&self) -> &HFloatArray<f32> {
-        &self.inner
-    }
-}
-impl HFloat64ArrayR {
-    pub(crate) fn new(inner: HFloatArray<f64>) -> Self {
-        Self { inner }
+    /// HArray
+    /// `new_from_values(robj: Array, dtype: HDataType)`
+    /// Creates a new `HArray` from an R's arrow `Array`.
+    /// The conversion is zero copy.
+    ///
+    /// # Arguments
+    ///
+    /// * `robj` - A float32 or float64 arrow `Array`.
+    /// * `dtype` - An `HDataType` to indicate which type of `HArray` to be created.
+    ///
+    /// # Returns
+    ///
+    /// An `HArray` external pointer
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// robj = arrow::Array$create(1:10, type = float32())
+    /// dtype = HDataType$complex32
+    /// HArray$new_from_arrow(robj, dtype)
+    /// ```
+    ///
+    pub fn new_from_arrow(robj: Robj, dtype: &HDataType) -> HArray {
+        if !robj.class().unwrap().any(|x| x == "Array") {
+            panic!("wrong type");
+        }
+
+        let array = ArrowArray::empty();
+        let schema = ArrowSchema::empty();
+
+        let array_ptr = (&array as *const ArrowArray) as usize;
+        let schema_ptr = (&schema as *const ArrowSchema) as usize;
+
+        robj.dollar("export_to_c")
+            .unwrap()
+            .call(pairlist!(array_ptr, schema_ptr))
+            .unwrap();
+
+        let field = unsafe { import_field_from_c(&schema).unwrap() };
+        let arr = unsafe { import_array_from_c(array, field.data_type).unwrap() };
+
+        match (dtype, arr.data_type().to_physical_type()) {
+            (HDataType::Float32, PhysicalType::Primitive(PrimitiveType::Float32)) => {
+                let arr = arr.as_any().downcast_ref::<PrimitiveArray<f32>>().unwrap();
+                let harray = HFloatArray::new(arr.clone());
+                HArray(Arc::new(harray))
+            }
+            (HDataType::Float64, PhysicalType::Primitive(PrimitiveType::Float64)) => {
+                let arr = arr.as_any().downcast_ref::<PrimitiveArray<f64>>().unwrap();
+                let harray = HFloatArray::new(arr.clone());
+                HArray(Arc::new(harray))
+            }
+            (HDataType::Complex32, PhysicalType::Primitive(PrimitiveType::Float32)) => {
+                let arr = arr.as_any().downcast_ref::<PrimitiveArray<f32>>().unwrap();
+                let harray = HComplexArray::new(arr.clone());
+                HArray(Arc::new(harray))
+            }
+            (HDataType::Complex64, PhysicalType::Primitive(PrimitiveType::Float64)) => {
+                let arr = arr.as_any().downcast_ref::<PrimitiveArray<f64>>().unwrap();
+                let harray = HComplexArray::new(arr.clone());
+                HArray(Arc::new(harray))
+            }
+            _ => panic!("not valid input"),
+        }
     }
 
-    pub(crate) fn inner(&self) -> &HFloatArray<f64> {
-        &self.inner
-    }
-}
-impl HComplex32ArrayR {
-    pub(crate) fn new(inner: HComplexArray<f32>) -> Self {
-        Self { inner }
-    }
-
-    pub(crate) fn inner(&self) -> &HComplexArray<f32> {
-        &self.inner
-    }
-}
-impl HComplex64ArrayR {
-    pub(crate) fn new(inner: HComplexArray<f64>) -> Self {
-        Self { inner }
-    }
-
-    pub(crate) fn inner(&self) -> &HComplexArray<f64> {
-        &self.inner
-    }
-}
-
-#[extendr(use_try_from = true)]
-impl HFloat32ArrayR {
-    pub fn new_from_values(rvec: Doubles) -> Self {
-        let v: Vec<f32> = rvec.iter().map(|x| x.0 as f32).collect();
-        let array = PrimitiveArray::from_vec(v);
-        let harray = HFloatArray::<f32>::new(array);
-        Self::new(harray)
-    }
-
+    /// HArray
+    /// `len() -> integer`
+    /// Returns the length of this Harray.
+    ///
+    /// # Returns
+    ///
+    /// An integer.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// harray$len()
+    /// ```
+    ///
     pub fn len(&self) -> i32 {
-        i32::try_from(self.inner().inner().len()).unwrap()
+        self.0.len()
     }
 
+    /// HArray
+    /// `slice(offset: integer, length: integer)`
+    /// Slice the HArray by an offset and length.
+    /// This operation is O(1).
+    /// The function will modify in place the current HArray. If a clone of the HArray has been
+    /// made, it will create a new one sliced one.
+    ///
+    /// # Arguments
+    ///
+    /// * `offset` - An integer representing the offset starting from 0.
+    /// * `length` - An integer representing the desired length.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// harray = HArray$new_from_values(c(1,2,3,4,5,6,7), HDataType$float32)
+    /// harray$slice(2, 3)
+    /// print(harray)
+    /// ```
+    ///
+    pub fn slice(&mut self, offset: i32, length: i32) {
+        let inner_mut = self.get_inner_mut();
+        inner_mut.slice(offset, length);
+    }
+
+    /// HArray
+    /// `print()`
+    /// Print the HArray.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// harray$print()
+    ///
+    /// # or similarly:
+    /// print(harray)
+    /// ```
+    ///
     pub fn print(&self) {
+        self.0.print();
+    }
+
+    /// HArray
+    /// `eq(other: HArray) -> logical`
+    /// Equality with another HArray.
+    /// The comparison only checks if the dtype and the values are the same. To compare if the
+    /// underlying data is the same in memory, check `eq_inner`.
+    ///
+    /// # Returns
+    ///
+    /// A logical.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// harray1 = HArray$new_from_values(c(1,2,3,4,5,6,7), HDataType$float32)
+    /// harray2 = HArray$new_from_values(c(1,2,3,4,5,6,7), HDataType$float32)
+    /// harray1$eq(harray2) # TRUE
+    ///
+    /// # or similarly:
+    /// harray1 == harray2
+    /// ```
+    ///
+    pub fn eq(&self, other: &HArray) -> bool {
+        self.0.eq(&other.0)
+    }
+
+    /// HArray
+    /// `ne(other: HArray) -> logical`
+    /// Difference with another HArray.
+    /// The comparison only checks if the dtype and the values are the same. To compare if the
+    /// underlying data is the same in memory, check `eq_inner`.
+    ///
+    /// # Returns
+    ///
+    /// A logical.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// harray1 = HArray$new_from_values(c(1,2,3,4,5,6,7), HDataType$float32)
+    /// harray2 = HArray$new_from_values(c(1,2,3,4,5,6,7), HDataType$float32)
+    /// harray1$ne(harray2) # FALSE
+    ///
+    /// # or similarly:
+    /// harray1 != harray2
+    /// ```
+    ///
+    pub fn ne(&self, other: &HArray) -> bool {
+        self.0.ne(&other.0)
+    }
+
+    /// HArray
+    /// `eq_inner(other: HArray) -> logical`
+    /// Inner equality with another HArray.
+    /// The comparison checks if the underlying data is the same in memory. To compare if the
+    /// HArrays are the same regarding values and dtype, check `eq` and `ne`.
+    ///
+    /// # Returns
+    ///
+    /// A logical.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// harray1 = HArray$new_from_values(c(1,2,3,4,5,6,7), HDataType$float32)
+    /// harray2 = HArray$new_from_values(c(1,2,3,4,5,6,7), HDataType$float32)
+    /// harray1$eq_inner(harray2) # FALSE
+    ///
+    /// harray1 = HArray$new_from_values(c(1,2,3,4,5,6,7), HDataType$float32)
+    /// harray2 = harray1$clone()
+    /// harray1$eq_inner(harray2) # TRUE
+    /// ```
+    ///
+    pub fn eq_inner(&self, other: &HArray) -> bool {
+        self.0.eq_inner(&*other.0)
+    }
+
+    /// HArray
+    /// `eq_inner_hmatrix(other: HMatrix) -> logical`
+    /// Inner equality with an HMatrix.
+    /// The comparison checks if the underlying data is the same in memory.
+    ///
+    /// # Returns
+    ///
+    /// A logical.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// harray = HArray$new_from_values(c(1,2,3,4,5,6,7,8), HDataType$float32)
+    /// hmatrix = HMatrix$new_from_values(matrix(c(1,2,3,4,5,6,7,8), 2, 4), HDataType$float32)
+    /// harray$eq_inner_hmatrix(hmatrix) # FALSE
+    ///
+    /// harray = HArray$new_from_values(c(1,2,3,4,5,6,7,8), HDataType$float32)
+    /// hmatrix = harray$as_hmatrix(ncols = 4)
+    /// harray$eq_inner_hmatrix(hmatrix) # TRUE
+    /// ```
+    ///
+    pub fn eq_inner_hmatrix(&self, other: &HMatrix) -> bool {
+        self.0.eq_inner(&*other.0)
+    }
+
+    /// HArray
+    /// `eq_inner_haudio(other: HAudio) -> logical`
+    /// Inner equality with an HAudio.
+    /// The comparison checks if the underlying data is the same in memory.
+    ///
+    /// # Returns
+    ///
+    /// A logical.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// harray = HArray$new_from_values(c(1,2,3,4,5,6,7,8), HDataType$float32)
+    /// haudio = HMatrix$new_from_values(matrix(c(1,2,3,4,5,6,7,8), 2, 4), HDataType$float32)$as_haudio(sr = 44100)
+    /// harray$eq_inner_haudio(haudio) # FALSE
+    ///
+    /// harray = HArray$new_from_values(c(1,2,3,4,5,6,7,8), HDataType$float32)
+    /// haudio = harray$as_hmatrix(ncols = 4)$as_haudio(sr = 44100)
+    /// harray$eq_inner_haudio(haudio) # TRUE
+    /// ```
+    ///
+    pub fn eq_inner_haudio(&self, other: &HAudio) -> bool {
+        self.0.eq_inner(&*other.0)
+    }
+
+    /// HArray
+    /// `clone() -> HArray`
+    /// Creates a new HArray, with the underlying data pointing to the same place in memory.
+    ///
+    /// # Returns
+    ///
+    /// An HArray.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// harray = HArray$new_from_values(c(1,2,3,4,5,6,7,8), HDataType$float32)
+    /// harray2 = harray$clone()
+    ///
+    /// harray == harray2 # TRUE
+    /// harray$eq_inner(harray2) # TRUE
+    /// ```
+    ///
+    pub fn clone(&self) -> HArray {
+        std::clone::Clone::clone(self)
+    }
+
+    /// HArray
+    /// `as_hmatrix(ncols: integer) -> HMatrix`
+    /// Creates a new HMatrix, with the underlying data pointing to the same place in memory.
+    ///
+    /// # Returns
+    ///
+    /// An HMatrix.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// harray = HArray$new_from_values(c(1,2,3,4,5,6,7,8), HDataType$float32)
+    /// hmatrix = harray$as_hmatrix(ncols = 2)
+    ///
+    /// harray$eq_inner_hmatrix(hmatrix) # TRUE
+    /// ```
+    ///
+    pub fn as_hmatrix(&self, ncols: i32) -> HMatrix {
+        HMatrix(self.0.as_hmatrix(ncols))
+    }
+
+    /// HArray
+    /// Collect to an atomic vector.
+    pub fn collect(&self) -> Robj {
+        self.0.collect()
+    }
+
+    /// HArray
+    /// The inner array's memory adress.
+    pub fn mem_adress(&self) -> String {
+        self.0.mem_adress()
+    }
+
+    /// HArray
+    /// The inner array's data type.
+    pub fn data_type(&self) -> HDataType {
+        self.0.data_type()
+    }
+
+    /// HArray
+    /// Returns true if the inner Arc is shared.
+    pub fn is_shared(&self) -> bool {
+        Arc::weak_count(&self.0) + Arc::strong_count(&self.0) != 1
+    }
+
+    /// HArray
+    /// Export the underlying array to Arrow C interface.
+    pub fn to_c_arrow(&self, array_ptr: &str, schema_ptr: &str) {
+        let (mut array_ffi, mut schema_ffi) = self.0.export_c_arrow();
+
+        let array_out_ptr_addr: usize = array_ptr.parse().unwrap();
+        let array_out_ptr = array_out_ptr_addr as *mut arrow2::ffi::ArrowArray;
+
+        let schema_out_ptr_addr: usize = schema_ptr.parse().unwrap();
+        let schema_out_ptr = schema_out_ptr_addr as *mut arrow2::ffi::ArrowSchema;
+
+        unsafe {
+            std::ptr::swap_nonoverlapping(
+                array_out_ptr,
+                &mut array_ffi as *mut arrow2::ffi::ArrowArray,
+                1,
+            );
+            std::ptr::swap_nonoverlapping(
+                schema_out_ptr,
+                &mut schema_ffi as *mut arrow2::ffi::ArrowSchema,
+                1,
+            );
+        }
+    }
+
+    pub fn fft(&self) -> HArray {
+        HArray(self.0.fft())
+    }
+}
+
+impl HArray {
+    #[doc(hidden)]
+    pub fn get_inner_mut(&mut self) -> &mut dyn HArrayR {
+        if Arc::weak_count(&self.0) + Arc::strong_count(&self.0) != 1 {
+            self.0 = self.0.clone_inner();
+        }
+        Arc::get_mut(&mut self.0).expect("implementation error")
+    }
+}
+
+impl HArrayR for HFloatArray<f32> {
+    fn as_any(&self) -> &dyn Any {
+        self
+    }
+
+    fn len(&self) -> i32 {
+        i32::try_from(self.len()).unwrap()
+    }
+
+    fn slice(&mut self, offset: i32, length: i32) {
+        HFloatArray::slice(self, offset.try_into().unwrap(), length.try_into().unwrap());
+    }
+
+    fn print(&self) {
         rprintln!("{}", self);
     }
 
-    pub fn eq(&self, other: &HFloat32ArrayR) -> bool {
-        self.inner().eq(other.inner())
-    }
-
-    pub fn ne(&self, other: &HFloat32ArrayR) -> bool {
-        self.inner().ne(other.inner())
-    }
-
-    /// Creates a new HFloat32ArrayR, with the underlying data pointing to the same place in memory.
-    pub fn clone(&self) -> Self {
-        Self::new(self.inner().clone())
-    }
-
-    /// Creates a new HFloat32ArrayR, similar to the first one, but with the underlying data pointing to a different place in memory.
-    pub fn copy(&self) -> Self {
-        let slice = self.inner().inner().values().as_slice();
-        let array = PrimitiveArray::<f32>::from_slice(slice);
-        let harray = HFloatArray::<f32>::new(array);
-        Self::new(harray)
-    }
-
-    pub fn fft(&self) -> HComplex32ArrayR {
-        HComplex32ArrayR::new(self.inner().fft())
-    }
-
-    /// Converts to HFloat32MatrixR. The new HFloat32MatrixR Uses the same underlying data as the HFloat32ArrayR.
-    pub fn as_hmatrix(&self, ncols: i32) -> HFloat32MatrixR {
+    fn as_hmatrix(&self, ncols: i32) -> Arc<dyn HMatrixR> {
         let hmatrix = self
-            .inner()
-            .clone()
+            .clone() // ARC clone for the underlying data (O(1)). Underlying data is not copied.
             .into_hmatrix(usize::try_from(ncols).unwrap())
             .unwrap();
-        HFloat32MatrixR::new(hmatrix)
+        Arc::new(hmatrix)
     }
 
-    pub fn collect(&self) -> Doubles {
-        let values = self.inner.inner().values();
+    fn collect(&self) -> Robj {
+        let values = self.inner().values();
         let doubles = values
             .iter()
             .map(|x| Rfloat(*x as f64))
             .collect::<Doubles>();
-        doubles
+        doubles.try_into().unwrap()
     }
 
-    pub fn mem_adress(&self) -> String {
-        let p = self.inner().inner().values().as_slice();
+    fn mem_adress(&self) -> String {
+        let p = self.inner().values().as_slice();
         format!("{:p}", p)
+    }
+
+    fn data_type(&self) -> HDataType {
+        HDataType::Float32
+    }
+
+    fn export_c_arrow(&self) -> (ArrowArray, ArrowSchema) {
+        HFloatArray::export_c_arrow(self)
+    }
+
+    fn fft(&self) -> Arc<dyn HArrayR> {
+        let harray = FftFloatArray::<f32>::fft(self);
+        Arc::new(harray)
+    }
+
+    fn clone_inner(&self) -> Arc<dyn HArrayR> {
+        Arc::new(self.clone())
     }
 }
 
-#[extendr(use_try_from = true)]
-impl HFloat64ArrayR {
-    pub fn new_from_values(rvec: Doubles) -> Self {
-        let v: Vec<f64> = rvec.iter().map(|x| x.0).collect();
-        let array = PrimitiveArray::from_vec(v);
-        let harray = HFloatArray::<f64>::new(array);
-        Self::new(harray)
+impl HArrayR for HFloatArray<f64> {
+    fn as_any(&self) -> &dyn Any {
+        self
     }
 
-    pub fn len(&self) -> i32 {
-        i32::try_from(self.inner().inner().len()).unwrap()
+    fn len(&self) -> i32 {
+        i32::try_from(self.len()).unwrap()
     }
 
-    pub fn print(&self) {
+    fn slice(&mut self, offset: i32, length: i32) {
+        HFloatArray::slice(self, offset.try_into().unwrap(), length.try_into().unwrap());
+    }
+
+    fn print(&self) {
         rprintln!("{}", self);
     }
 
-    pub fn eq(&self, other: &HFloat64ArrayR) -> bool {
-        self.inner().eq(other.inner())
-    }
-
-    pub fn ne(&self, other: &HFloat64ArrayR) -> bool {
-        self.inner().ne(other.inner())
-    }
-
-    /// Creates a new HFloat64ArrayR, with the underlying data pointing to the same place in memory.
-    pub fn clone(&self) -> Self {
-        Self::new(self.inner().clone())
-    }
-
-    /// Creates a new HFloat64ArrayR, similar to the first one, but with the underlying data pointing to a different place in memory.
-    pub fn copy(&self) -> Self {
-        let slice = self.inner().inner().values().as_slice();
-        let array = PrimitiveArray::<f64>::from_slice(slice);
-        let harray = HFloatArray::<f64>::new(array);
-        Self::new(harray)
-    }
-
-    pub fn fft(&self) -> HComplex64ArrayR {
-        HComplex64ArrayR::new(self.inner().fft())
-    }
-
-    /// Converts to HFloat64MatrixR. The new HFloat64MatrixR Uses the same underlying data as the HFloat64ArrayR.
-    pub fn as_hmatrix(&self, ncols: i32) -> HFloat64MatrixR {
+    fn as_hmatrix(&self, ncols: i32) -> Arc<dyn HMatrixR> {
         let hmatrix = self
-            .inner()
-            .clone()
+            .clone() // ARC clone for the underlying data (O(1)). Underlying data is not copied.
             .into_hmatrix(usize::try_from(ncols).unwrap())
             .unwrap();
-        HFloat64MatrixR::new(hmatrix)
+        Arc::new(hmatrix)
     }
 
-    pub fn collect(&self) -> Doubles {
-        let values = self.inner.inner().values();
+    fn collect(&self) -> Robj {
+        let values = self.inner().values();
         let doubles = values.iter().map(|x| Rfloat(*x)).collect::<Doubles>();
-        doubles
+        doubles.try_into().unwrap()
     }
 
-    pub fn mem_adress(&self) -> String {
-        let p = self.inner().inner().values().as_slice();
+    fn mem_adress(&self) -> String {
+        let p = self.inner().values().as_slice();
         format!("{:p}", p)
+    }
+
+    fn data_type(&self) -> HDataType {
+        HDataType::Float64
+    }
+
+    fn export_c_arrow(&self) -> (ArrowArray, ArrowSchema) {
+        HFloatArray::export_c_arrow(self)
+    }
+
+    fn fft(&self) -> Arc<dyn HArrayR> {
+        let harray = FftFloatArray::<f64>::fft(self);
+        Arc::new(harray)
+    }
+
+    fn clone_inner(&self) -> Arc<dyn HArrayR> {
+        Arc::new(self.clone())
     }
 }
 
-#[extendr(use_try_from = true)]
-impl HComplex32ArrayR {
-    pub fn new_from_values(rvec: Complexes) -> Self {
-        let length = rvec.len() * 2;
-        let mut v: Vec<f32> = Vec::with_capacity(length);
-        for x in rvec.iter() {
-            v.push(x.re().0 as f32);
-            v.push(x.im().0 as f32);
-        }
-        let arr = PrimitiveArray::from_vec(v);
-        let harray = HComplexArray::<f32>::new(arr);
-        Self::new(harray)
+impl HArrayR for HComplexArray<f32> {
+    fn as_any(&self) -> &dyn Any {
+        self
     }
 
-    pub fn len(&self) -> i32 {
-        i32::try_from(self.inner().inner().len()).unwrap()
+    fn len(&self) -> i32 {
+        i32::try_from(self.len()).unwrap()
     }
 
-    pub fn print(&self) {
+    fn slice(&mut self, offset: i32, length: i32) {
+        HComplexArray::slice(self, offset.try_into().unwrap(), length.try_into().unwrap());
+    }
+
+    fn print(&self) {
         rprintln!("{}", self);
     }
 
-    pub fn eq(&self, other: &HComplex32ArrayR) -> bool {
-        self.inner().eq(other.inner())
-    }
-
-    pub fn ne(&self, other: &HComplex32ArrayR) -> bool {
-        self.inner().ne(other.inner())
-    }
-
-    /// Creates a new HComplex32ArrayR, with the underlying data pointing to the same place in memory.
-    pub fn clone(&self) -> Self {
-        Self::new(self.inner().clone())
-    }
-
-    /// Creates a new HComplex32ArrayR, similar to the first one, but with the underlying data pointing to a different place in memory.
-    pub fn copy(&self) -> Self {
-        let slice = self.inner().inner().values().as_slice();
-        let array = PrimitiveArray::<f32>::from_slice(slice);
-        let harray = HComplexArray::<f32>::new(array);
-        Self::new(harray)
-    }
-
-    pub fn fft(&self) -> Self {
-        Self::new(self.inner().fft())
-    }
-
-    /// Converts to HComplex32MatrixR. The new HComplex32MatrixR Uses the same underlying data as the HComplex32ArrayR.
-    pub fn as_hmatrix(&self, ncols: i32) -> HComplex32MatrixR {
+    fn as_hmatrix(&self, ncols: i32) -> Arc<dyn HMatrixR> {
         let hmatrix = self
-            .inner()
-            .clone()
+            .clone() // ARC clone for the underlying data (O(1)). Underlying data is not copied.
             .into_hmatrix(usize::try_from(ncols).unwrap())
             .unwrap();
-        HComplex32MatrixR::new(hmatrix)
+        Arc::new(hmatrix)
     }
 
-    pub fn collect(&self) -> Complexes {
-        let values = self.inner.inner().values();
+    fn collect(&self) -> Robj {
+        let values = self.inner().values();
         let complexes = values
             .chunks_exact(2)
             .map(|x| Rcplx::new((*x)[0] as f64, (*x)[1] as f64))
             .collect::<Complexes>();
-        complexes
+        complexes.try_into().unwrap()
     }
 
-    pub fn mem_adress(&self) -> String {
-        let p = self.inner().inner().values().as_slice();
+    fn mem_adress(&self) -> String {
+        let p = self.inner().values().as_slice();
         format!("{:p}", p)
+    }
+
+    fn data_type(&self) -> HDataType {
+        HDataType::Complex32
+    }
+
+    fn export_c_arrow(&self) -> (ArrowArray, ArrowSchema) {
+        HComplexArray::export_c_arrow(self)
+    }
+
+    fn fft(&self) -> Arc<dyn HArrayR> {
+        let harray = FftComplexArray::fft(self);
+        Arc::new(harray)
+    }
+
+    fn clone_inner(&self) -> Arc<dyn HArrayR> {
+        Arc::new(self.clone())
     }
 }
 
-#[extendr(use_try_from = true)]
-impl HComplex64ArrayR {
-    pub fn new_from_values(rvec: Complexes) -> Self {
-        let length = rvec.len() * 2;
-        let mut v: Vec<f64> = Vec::with_capacity(length);
-        for x in rvec.iter() {
-            v.push(x.re().0);
-            v.push(x.im().0);
-        }
-        let arr = PrimitiveArray::from_vec(v);
-        let harray = HComplexArray::<f64>::new(arr);
-        Self::new(harray)
+impl HArrayR for HComplexArray<f64> {
+    fn as_any(&self) -> &dyn Any {
+        self
     }
 
-    pub fn len(&self) -> i32 {
-        i32::try_from(self.inner().inner().len()).unwrap()
+    fn len(&self) -> i32 {
+        i32::try_from(self.len()).unwrap()
     }
 
-    pub fn print(&self) {
+    fn slice(&mut self, offset: i32, length: i32) {
+        HComplexArray::slice(self, offset.try_into().unwrap(), length.try_into().unwrap());
+    }
+
+    fn print(&self) {
         rprintln!("{}", self);
     }
 
-    pub fn eq(&self, other: &HComplex64ArrayR) -> bool {
-        self.inner().eq(other.inner())
-    }
-
-    pub fn ne(&self, other: &HComplex64ArrayR) -> bool {
-        self.inner().ne(other.inner())
-    }
-
-    /// Creates a new HComplex64ArrayR, with the underlying data pointing to the same place in memory.
-    pub fn clone(&self) -> Self {
-        Self::new(self.inner().clone())
-    }
-
-    /// Creates a new HComplex64ArrayR, similar to the first one, but with the underlying data pointing to a different place in memory.
-    pub fn copy(&self) -> Self {
-        let slice = self.inner().inner().values().as_slice();
-        let array = PrimitiveArray::<f64>::from_slice(slice);
-        let harray = HComplexArray::<f64>::new(array);
-        Self::new(harray)
-    }
-
-    pub fn fft(&self) -> Self {
-        Self::new(self.inner().fft())
-    }
-
-    /// Converts to HComplex64MatrixR. The new HComplex64MatrixR Uses the same underlying data as the HComplex64ArrayR.
-    pub fn as_hmatrix(&self, ncols: i32) -> HComplex64MatrixR {
+    fn as_hmatrix(&self, ncols: i32) -> Arc<dyn HMatrixR> {
         let hmatrix = self
-            .inner
-            .clone()
+            .clone() // ARC clone for the underlying data (O(1)). Underlying data is not copied.
             .into_hmatrix(usize::try_from(ncols).unwrap())
             .unwrap();
-        HComplex64MatrixR::new(hmatrix)
+        Arc::new(hmatrix)
     }
 
-    pub fn collect(&self) -> Complexes {
-        let values = self.inner.inner().values();
+    fn collect(&self) -> Robj {
+        let values = self.inner().values();
         let complexes = values
             .chunks_exact(2)
             .map(|x| Rcplx::new((*x)[0], (*x)[1]))
             .collect::<Complexes>();
-        complexes
+        complexes.try_into().unwrap()
     }
 
-    pub fn mem_adress(&self) -> String {
-        let p = self.inner().inner().values().as_slice();
+    fn mem_adress(&self) -> String {
+        let p = self.inner().values().as_slice();
         format!("{:p}", p)
     }
+
+    fn data_type(&self) -> HDataType {
+        HDataType::Complex64
+    }
+
+    fn export_c_arrow(&self) -> (ArrowArray, ArrowSchema) {
+        HComplexArray::export_c_arrow(self)
+    }
+
+    fn fft(&self) -> Arc<dyn HArrayR> {
+        let harray = FftComplexArray::fft(self);
+        Arc::new(harray)
+    }
+
+    fn clone_inner(&self) -> Arc<dyn HArrayR> {
+        Arc::new(self.clone())
+    }
 }
-
-macro_rules! impl_display_harrayr_float {
-    ($($t:ty),+) => {
-        $(
-            impl fmt::Display for $t {
-                fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-                    let length = self.inner().inner().len();
-                    let values = self.inner().inner().values();
-                    let mut first = true;
-                    for item in values.iter().take(5) {
-                        if !first {
-                            write!(f, ", {}", item)?;
-                        } else {
-                            write!(f, "[{}", item)?;
-                        }
-                        first = false;
-                    }
-                    if length > 5 {
-                        write!(f, ", ...]\nlen = {}", length)?;
-                    } else {
-
-                        write!(f, "]\nlen = {}", length)?;
-                    }
-                    Ok(())
-                }
-            }
-        )+
-    };
-}
-
-impl_display_harrayr_float!(HFloat32ArrayR, HFloat64ArrayR);
-
-macro_rules! impl_display_harrayr_complex {
-    ($($t:ty),+) => {
-        $(
-            impl fmt::Display for $t {
-                fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-                    let length = self.inner().inner().len();
-                    let values = self.inner().inner().values();
-                    let mut first = true;
-                    for item in values.chunks_exact(2).take(5) {
-                        if !first {
-                            write!(f, ", {}", item[0])?;
-                            if item[1] >= 0. || item[1].is_nan() {
-                                write!(f, "+{}i", item[1])?;
-                            } else {
-                                write!(f, "-{}i", item[1].abs())?;
-                            }
-                        } else {
-                            write!(f, "[{}", item[0])?;
-                            if item[1] >= 0. || item[1].is_nan() {
-                                write!(f, "+{}i", item[1])?;
-                            } else {
-                                write!(f, "-{}i", item[1].abs())?;
-                            }
-                        }
-                        first = false;
-                    }
-                    if length > 10 {
-                        write!(f, ", ...]\nlen = {}", length / 2)?;
-                    } else {
-                        write!(f, "]\nlen = {}", length / 2)?;
-                    }
-                    Ok(())
-                }
-            }
-        )+
-    };
-}
-
-impl_display_harrayr_complex!(HComplex32ArrayR, HComplex64ArrayR);
 
 extendr_module! {
     mod harray;
-    impl HFloat32ArrayR;
-    impl HFloat64ArrayR;
-    impl HComplex32ArrayR;
-    impl HComplex64ArrayR;
+    impl HArray;
 }

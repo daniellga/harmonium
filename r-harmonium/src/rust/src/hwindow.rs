@@ -1,4 +1,4 @@
-use crate::{harraydynamic::HArray, hdatatype::HDataType};
+use crate::{harray::HArray, hdatatype::HDataType};
 use extendr_api::prelude::*;
 use harmonium_window::windows::*;
 use std::sync::Arc;
