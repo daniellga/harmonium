@@ -4,7 +4,7 @@ test_that(
     check_harray = function(values, dtype, dtype_result) {
       harray = HArray$new_from_values(values, dtype)
 
-      expect_true(harray$data_type() == dtype_result)
+      expect_true(harray$dtype() == dtype_result)
       expect_equal(harray$len(), length(values))
       expect_equal(harray$collect(), values)
       expect_true(is.character(harray$mem_adress()))

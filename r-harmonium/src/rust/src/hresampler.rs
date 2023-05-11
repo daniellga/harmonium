@@ -14,7 +14,7 @@ pub trait HResamplerR: Send {
     fn set_resample_ratio(&mut self, new_ratio: f64);
     fn set_resample_ratio_relative(&mut self, rel_ratio: f64);
     fn resampler_type(&self) -> HResamplerType;
-    fn data_type(&self) -> HDataType;
+    fn dtype(&self) -> HDataType;
     fn print(&self);
 }
 
@@ -29,9 +29,9 @@ impl HResampler {
         sub_chunks: i32,
         nbr_channels: i32,
         resampler_type: &HResamplerType,
-        data_type: &HDataType,
+        dtype: &HDataType,
     ) -> HResampler {
-        match (resampler_type, data_type) {
+        match (resampler_type, dtype) {
             (HResamplerType::FftFixedIn, HDataType::Float32) => {
                 let resampler = FftFixedIn::<f32>::new(
                     sr_in.try_into().unwrap(),
@@ -107,9 +107,9 @@ impl HResampler {
         chunk_size: i32,
         nbr_channels: i32,
         resampler_type: &HResamplerType,
-        data_type: &HDataType,
+        dtype: &HDataType,
     ) -> HResampler {
-        match (resampler_type, data_type) {
+        match (resampler_type, dtype) {
             (HResamplerType::SincFixedIn, HDataType::Float32) => {
                 let resampler = SincFixedIn::<f32>::new(
                     resample_ratio,
@@ -159,7 +159,7 @@ impl HResampler {
     }
 
     fn process(&mut self, haudio: &mut HAudio, sr_out: i32) {
-        assert!(self.data_type() == haudio.data_type());
+        assert!(self.dtype() == haudio.dtype());
 
         self.0.process(haudio, sr_out);
     }
@@ -168,8 +168,8 @@ impl HResampler {
         self.0.resampler_type()
     }
 
-    fn data_type(&self) -> HDataType {
-        self.0.data_type()
+    fn dtype(&self) -> HDataType {
+        self.0.dtype()
     }
 
     fn print(&self) {
@@ -203,7 +203,7 @@ macro_rules! impl_hresamplerfftr {
                     $e1
                 }
 
-                fn data_type(&self) -> HDataType {
+                fn dtype(&self) -> HDataType {
                     $e2
                 }
 
@@ -286,7 +286,7 @@ macro_rules! impl_hresamplersincr {
                     $e1
                 }
 
-                fn data_type(&self) -> HDataType {
+                fn dtype(&self) -> HDataType {
                     $e2
                 }
 

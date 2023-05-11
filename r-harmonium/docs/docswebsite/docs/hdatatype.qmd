@@ -1,0 +1,147 @@
+---
+title: HDataType
+---
+
+A type representation. \
+Supports Float32, Float64, Complex32 and Complex64 types. \
+
+## Methods
+
+### float32[source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/hdatatype.rs#L38)
+
+`float32 -> HDataType` \
+
+Creates a Float32 `HDataType`.
+
+#### Returns
+
+An `HDataType`.
+
+#### Examples
+
+```r
+dtype = HDataType$float32
+```
+
+_________
+### float64[source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/hdatatype.rs#L60)
+
+`float64 -> HDataType` \
+
+Creates a Float64 `HDataType`.
+
+#### Returns
+
+An `HDataType`.
+
+#### Examples
+
+```r
+dtype = HDataType$float64
+```
+
+_________
+### complex32[source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/hdatatype.rs#L82)
+
+`complex32 -> HDataType` \
+
+Creates a Complex32 `HDataType`.
+
+#### Returns
+
+An `HDataType`.
+
+#### Examples
+
+```r
+dtype = HDataType$complex32
+```
+
+_________
+### complex64[source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/hdatatype.rs#L104)
+
+`complex64 -> HDataType` \
+
+Creates a Complex64 `HDataType`.
+
+#### Returns
+
+An `HDataType`.
+
+#### Examples
+
+```r
+dtype = HDataType$complex64
+```
+
+_________
+### print[source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/hdatatype.rs#L125)
+
+`print()` \
+
+Prints the `HDataType`.
+
+#### Examples
+
+```r
+hdatatype$print()
+
+# or similarly:
+print(hdatatype)
+```
+
+_________
+### eq[source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/hdatatype.rs#L157)
+
+`eq(other: HDataType) -> logical` \
+
+Equality with another `HDataType`.
+
+#### Arguments
+
+* `other` \
+An `HDataType`.
+
+#### Returns
+
+A logical.
+
+#### Examples
+
+```r
+hdatatype1 = HDataType$float32
+hdatatype2 = HDataType$float32
+hdatatype1$eq(hdatatype2) # TRUE
+
+# or similarly:
+hdatatype1 == hdatatype2
+```
+
+_________
+### ne[source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/hdatatype.rs#L189)
+
+`ne(other: HDataType) -> logical` \
+
+Difference with another `HDataType`.
+
+#### Arguments
+
+* `other` \
+An `HDataType`.
+
+#### Returns
+
+A logical.
+
+#### Examples
+
+```r
+hdatatype1 = HDataType$float32
+hdatatype2 = HDataType$float64
+hdatatype1$ne(hdatatype2) # TRUE
+
+# or similarly:
+hdatatype1 != hdatatype2
+```
+
+_________

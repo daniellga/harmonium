@@ -1,0 +1,93 @@
+[
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "docswebsite",
+    "section": "",
+    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites."
+  },
+  {
+    "objectID": "docs/harray.html",
+    "href": "docs/harray.html",
+    "title": "HArray",
+    "section": "",
+    "text": "An array representation.\nSupports Float32, Float64, Complex32 and Complex64 types."
+  },
+  {
+    "objectID": "docs/hdatatype.html",
+    "href": "docs/hdatatype.html",
+    "title": "HDataType",
+    "section": "",
+    "text": "A type representation.\nSupports Float32, Float64, Complex32 and Complex64 types."
+  },
+  {
+    "objectID": "docs/harray.html#arguments",
+    "href": "docs/harray.html#arguments",
+    "title": "HArray",
+    "section": "Arguments",
+    "text": "Arguments\n\nrobj - A double or complex atomic vector.\ndtype - An HDataType to indicate which type of HArray to be created. For float dtypes, the atomic vector must be a double. For complex dtypes, a complex atomic vector."
+  },
+  {
+    "objectID": "docs/harray.html#returns",
+    "href": "docs/harray.html#returns",
+    "title": "HArray",
+    "section": "Returns",
+    "text": "Returns\nAn HArray external pointer"
+  },
+  {
+    "objectID": "docs/harray.html#examples",
+    "href": "docs/harray.html#examples",
+    "title": "HArray",
+    "section": "Examples",
+    "text": "Examples\nrobj = c(1,2,3,4,5,6,7,8,9,10,11,12)\ndtype = HDataType$float32\nHArray$new_from_values(robj, dtype)\nnew_from_values(robj: Array, dtype: HDataType) Creates a new HArray from an R’s arrow Array. The conversion is zero copy."
+  },
+  {
+    "objectID": "docs/harray.html#new_from_valuesrobj-atomicvector-dtype-hdatatype",
+    "href": "docs/harray.html#new_from_valuesrobj-atomicvector-dtype-hdatatype",
+    "title": "HArray",
+    "section": "new_from_values(robj: atomicvector, dtype: HDataType)\n",
+    "text": "new_from_values(robj: atomicvector, dtype: HDataType)\n\nCreates a new HArray from an R atomic vector.\n\nArguments\n\nrobj - A double or complex atomic vector.\ndtype - An HDataType to indicate which type of HArray to be created.\nFor float dtypes, the atomic vector must be a double. For complex dtypes, a complex atomic vector.\n\n\n\nReturns\nAn HArray external pointer\n\n\nExamples\nrobj = c(1,2,3,4,5,6,7,8,9,10,11,12)\ndtype = HDataType$float32\nHArray$new_from_values(robj, dtype)\nnew_from_values(robj: Array, dtype: HDataType) Creates a new HArray from an R’s arrow Array. The conversion is zero copy."
+  },
+  {
+    "objectID": "docs/harray.html#new_from_valuesvalues-atomicvector-dtype-hdatatype",
+    "href": "docs/harray.html#new_from_valuesvalues-atomicvector-dtype-hdatatype",
+    "title": "HArray",
+    "section": "new_from_values(values: atomicvector, dtype: HDataType)\n",
+    "text": "new_from_values(values: atomicvector, dtype: HDataType)\n\nCreates a new HArray from an R atomic vector.\n\nArguments\n\nvalues - A double or complex atomic vector.\ndtype - An HDataType to indicate which type of HArray to be created.\nFor float dtypes, the atomic vector must be a double. For complex dtypes, a complex atomic vector.\n\n\n\nReturns\nAn HArray external pointer\n\n\nExamples\nvalues = c(1,2,3,4,5,6,7,8,9,10,11,12)\ndtype = HDataType$float32\nHArray$new_from_values(values, dtype)"
+  },
+  {
+    "objectID": "docs/harray.html#new_from_arrowvalues-array-dtype-hdatatype",
+    "href": "docs/harray.html#new_from_arrowvalues-array-dtype-hdatatype",
+    "title": "HArray",
+    "section": "new_from_arrow(values: Array, dtype: HDataType)\n",
+    "text": "new_from_arrow(values: Array, dtype: HDataType)\n\nCreates a new HArray from an R’s arrow Array.\nThe conversion is zero copy.\n\nArguments\n\nvalues - A float32 or float64 arrow Array.\ndtype - An HDataType to indicate which type of HArray to be created.\n\n\n\nReturns\nAn HArray external pointer\n\n\nExamples\nvalues = arrow::Array$create(1:10, type = float32())\ndtype = HDataType$complex32\nHArray$new_from_arrow(values, dtype)"
+  },
+  {
+    "objectID": "docs/harray.html#len---integer",
+    "href": "docs/harray.html#len---integer",
+    "title": "HArray",
+    "section": "len() -> integer\n",
+    "text": "len() -&gt; integer\n\nReturns the length of this Harray.\n\nReturns\nAn integer.\n\n\nExamples\nharray$len()\nslice(offset: integer, length: integer) Slice the HArray by an offset and length. This operation is O(1). The function will modify in-place the current HArray. If a clone of the HArray has been previously made, it will clone the inner data and slice it."
+  },
+  {
+    "objectID": "docs/harray.html#methods",
+    "href": "docs/harray.html#methods",
+    "title": "HArray",
+    "section": "Methods",
+    "text": "Methods\n\nnew_from_valuessource\nnew_from_values(values: atomicvector, dtype: HDataType)\n\nCreates a new HArray from an R atomic vector.\n\nArguments\n\nvalues\nA double or complex atomic vector.\ndtype\nAn HDataType to indicate which type of HArray to be created.\nFor float dtypes, the atomic vector must be a double. For complex dtypes, a complex atomic vector.\n\n\n\nReturns\nAn HArray external pointer\n\n\nExamples\nvalues = c(1,2,3,4,5,6,7,8,9,10,11,12)\ndtype = HDataType$float32\nHArray$new_from_values(values, dtype)\n\n\n\n\nnew_from_arrowsource\nnew_from_arrow(values: Array, dtype: HDataType)\n\nCreates a new HArray from an R’s arrow Array.\nThe conversion is zero copy.\n\nArguments\n\nvalues\nA float32 or float64 arrow Array.\ndtype\nAn HDataType to indicate which type of HArray to be created.\n\n\n\nReturns\nAn HArray external pointer\n\n\nExamples\nvalues = arrow::Array$create(1:10, type = float32())\ndtype = HDataType$complex32\nHArray$new_from_arrow(values, dtype)\n\n\n\n\nlensource\nlen() -&gt; integer\n\nReturns the length of this Harray.\n\nReturns\nAn integer.\n\n\nExamples\nharray$len()\n\n\n\n\nslicesource\nslice(offset: integer, length: integer)\n\nSlice the HArray by an offset and length.\nThis operation is O(1).\nThe function will modify in-place the current HArray. If a clone of the HArray has been previously made, it will clone the HArray and slice it.\n\nArguments\n\noffset\nAn integer representing the offset starting from 0.\nlength\nAn integer representing the desired length.\n\n\n\nExamples\nharray = HArray$new_from_values(c(1,2,3,4,5,6,7), HDataType$float32)\nharray$slice(2, 3)\nprint(harray)\n\n# if the HArray object is not being shared, slicing it will modify the HArray in-place.\nharray = HArray$new_from_values(c(1,2,3), HDataType$float64)\nharray$slice(1, 1)\n\n# if the HArray object is being shared, slicing it will create HArray object.\nharray = HArray$new_from_values(c(1,2,3), HDataType$float64)\nharray2 = harray$clone()\nharray$is_shared() # TRUE\nharray$slice(1, 1) # now harray is a different object in comparison with harray2, although\nthey share the same underlying data.\nharray$is_shared() # FALSE\n\n\n\n\nprintsource\nprint()\n\nPrint the HArray.\n\nExamples\nharray$print()\n\n# or similarly:\nprint(harray)\n\n\n\n\neqsource\neq(other: HArray) -&gt; logical\n\nEquality with another HArray.\nThe comparison only checks if the dtype and the values are the same. To compare if the underlying data is the same in memory, check mem_adress.\n\nArguments\n\nother\nAn HArray.\n\n\n\nReturns\nA logical.\n\n\nExamples\nharray1 = HArray$new_from_values(c(1,2,3,4,5,6,7), HDataType$float32)\nharray2 = HArray$new_from_values(c(1,2,3,4,5,6,7), HDataType$float32)\nharray1$eq(harray2) # TRUE\n\n# or similarly:\nharray1 == harray2\n\n\n\n\nnesource\nne(other: HArray) -&gt; logical\n\nDifference with another HArray.\nThe comparison only checks if the dtype and the values are the same. To compare if the underlying data is the same in memory, check mem_adress.\n\nArguments\n\nother\nAn HArray.\n\n\n\nReturns\nA logical.\n\n\nExamples\nharray1 = HArray$new_from_values(c(1,2,3,4,5,6,7), HDataType$float32)\nharray2 = HArray$new_from_values(c(1,2,3,4,5,6,7), HDataType$float32)\nharray1$ne(harray2) # FALSE\n\n# or similarly:\nharray1 != harray2\n\n\n\n\nclonesource\nclone() -&gt; HArray\n\nCreates a new HArray, with the underlying data pointing to the same place in memory.\n\nReturns\nAn HArray.\n\n\nExamples\nharray = HArray$new_from_values(c(1,2,3,4,5,6,7,8), HDataType$float32)\nharray2 = harray$clone()\n\nharray == harray2 # TRUE\nharray$mem_adress() == harray2$mem_adress() # TRUE\n\n\n\n\nas_hmatrixsource\nas_hmatrix(ncols: integer) -&gt; HMatrix\n\nCreates a new HMatrix, with the underlying data pointing to the same place in memory.\n\nArguments\n\nncols\nAn integer representing the number of columns desired.\nWill return an error if ncols is not a divider of the length of the HArray.\n\n\n\nReturns\nAn HMatrix.\n\n\nExamples\nharray = HArray$new_from_values(c(1,2,3,4,5,6,7,8), HDataType$float32)\nhmatrix = harray$as_hmatrix(ncols = 2)\n\nharray$mem_adress() == hmatrix$mem_adress() # TRUE\n\n\n\n\ncollectsource\ncollect() -&gt; atomicvector\n\nCreate an R atomic vector from an HArray. The type of the atomic vector created (double or complex) will depend on the HArray’s dtype.\n\nReturns\nAn atomic vector of type double or complex.\n\n\nExamples\nharray$collect()\n\n\n\n\nmem_adresssource\nmem_adress() -&gt; character\n\nThe memory adress of the first element of the inner data.\nThis is useful to check if different objects share the same underlying data.\nIt’s important that the offset of both objects is at the same element for this comparison.\n\nReturns\nA Character.\n\n\nExamples\nharray = HArray$new_from_values(c(1,2,3,4), HDataType$float64)\nhmatrix = harray$as_hmatrix(ncols = 2)\nharray$mem_adress() == hmatrix$mem_adress() # TRUE\n\nharray$slice(1,1) # changing the offset to 1\nharray$mem_adress() == hmatrix$mem_adress() # FALSE, even though they still share the same underlying data\n\nharray2 = harray\nharray$mem_adress() == harray3$mem_adress() # TRUE, since `=` operator only creates an alias (harray and harray3 are the same external pointer).\n\n\n\n\ndtypesource\ndtype() -&gt; HDataType\n\nGet the HArray’s dtype as an HDataType.\n\nReturns\nAn HDataType.\n\n\nExamples\nharray$dtype()\n\n\n\n\nis_sharedsource\nis_shared() -&gt; logical\n\nChecks if the object is shared.\nSince HArray has a COW (clone-on-write) behaviour, this function is useful to check if a new object will be created or if the change will be done in-place.\n\nReturns\nA logical.\n\n\nExamples\nharray = HArray$new_from_values(c(1,2,3,4), HDataType$float64)\nharray$is_shared() # FALSE.\n\nhmatrix = harray$as_hmatrix(ncols = 2)\nharray$is_shared() # FALSE, since there's only one HArray object.\nharray$mem_adress() == hmatrix$mem_adress() # TRUE, since they share the same underlying data.\n\nharray2 = harray$clone()\nharray$is_shared() # TRUE, HArray object shared with harray2.\nharray2$is_shared() # TRUE.\nharray$mem_adress() == harray2$mem_adress() # TRUE, since they share the same underlying data.\n\nharray = HArray$new_from_values(c(1,2,3,4), HDataType$float64)\nharray2 = harray$clone()\nharray$mem_adress() == harray2$mem_adress() # TRUE.\nharray$is_shared() # TRUE\nharray$slice(0, 1)\nharray$mem_adress() == harray2$mem_adress() # TRUE. harray and harray2 still share the same underlying data.\nharray$is_shared() # FALSE, because a new HArray object was created for harray.\nsource _________ ### fft\nfft() -&gt; HArray\n\nComputes the fast fourier transform of the HArray.\nFFT (Fast Fourier Transform) refers to a way the discrete Fourier Transform (DFT) can be calculated efficiently, by using symmetries in the calculated terms. The symmetry is highest when n is a power of 2, and the transform is therefore most efficient for these sizes.\n\nThe function does not normalize outputs. Callers must manually normalize the results by scaling each element by 1/len().sqrt(). Multiple normalization steps can be merged into one via pairwise multiplication, so when doing a forward FFT followed by an inverse callers can normalize once by scaling each element by 1/len().\n\nElements in the output are ordered by ascending frequency, with the first element corresponding to frequency 0.\n\n\nReturns\nA complex HArray.\n\n\nExamples\nharray$fft()"
+  },
+  {
+    "objectID": "docs/hdatatype.html#methods",
+    "href": "docs/hdatatype.html#methods",
+    "title": "HDataType",
+    "section": "Methods",
+    "text": "Methods\n\nfloat32source\nfloat32 -&gt; HDataType\n\nCreates a Float32 HDataType.\n\nReturns\nAn HDataType.\n\n\nExamples\ndtype = HDataType$float32\n\n\n\n\nfloat64source\nfloat64 -&gt; HDataType\n\nCreates a Float64 HDataType.\n\nReturns\nAn HDataType.\n\n\nExamples\ndtype = HDataType$float64\n\n\n\n\ncomplex32source\ncomplex32 -&gt; HDataType\n\nCreates a Complex32 HDataType.\n\nReturns\nAn HDataType.\n\n\nExamples\ndtype = HDataType$complex32\n\n\n\n\ncomplex64source\ncomplex64 -&gt; HDataType\n\nCreates a Complex64 HDataType.\n\nReturns\nAn HDataType.\n\n\nExamples\ndtype = HDataType$complex64\n\n\n\n\nprintsource\nprint()\n\nPrints the HDataType.\n\nExamples\nhdatatype$print()\n\n# or similarly:\nprint(hdatatype)\n\n\n\n\neqsource\neq(other: HDataType) -&gt; logical\n\nEquality with another HDataType.\n\nArguments\n\nother\nAn HDataType.\n\n\n\nReturns\nA logical.\n\n\nExamples\nhdatatype1 = HDataType$float32\nhdatatype2 = HDataType$float32\nhdatatype1$eq(hdatatype2) # TRUE\n\n# or similarly:\nhdatatype1 == hdatatype2\n\n\n\n\nnesource\nne(other: HDataType) -&gt; logical\n\nDifference with another HDataType.\n\nArguments\n\nother\nAn HDataType.\n\n\n\nReturns\nA logical.\n\n\nExamples\nhdatatype1 = HDataType$float32\nhdatatype2 = HDataType$float64\nhdatatype1$ne(hdatatype2) # TRUE\n\n# or similarly:\nhdatatype1 != hdatatype2"
+  }
+]

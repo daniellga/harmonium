@@ -2,7 +2,6 @@ use crate::{
     harray::{HArray, HArrayR},
     haudio::{HAudio, HAudioR},
     hdatatype::HDataType,
-    partialeq::PartialEqInner,
 };
 use arrow2::{
     array::{FixedSizeListArray, PrimitiveArray},
@@ -24,7 +23,7 @@ pub trait HMatrixR: Send + Sync {
     fn as_haudio(&self, sr: i32) -> Arc<dyn HAudioR>;
     fn collect(&self) -> Robj;
     fn mem_adress(&self) -> String;
-    fn data_type(&self) -> HDataType;
+    fn dtype(&self) -> HDataType;
     fn export_c_arrow(&self) -> (ArrowArray, ArrowSchema);
     fn fft(&self) -> Arc<dyn HMatrixR>;
     fn mean_cols(&mut self);
@@ -181,7 +180,7 @@ impl HMatrix {
         self.0.eq_inner(&*other.0)
     }
 
-    /// Creates a new HArray, with the underlying data pointing to the same place in memory.
+    /// Creates a new HMatrix, with the underlying data pointing to the same place in memory.
     pub fn clone(&self) -> HMatrix {
         std::clone::Clone::clone(self)
     }
@@ -204,8 +203,8 @@ impl HMatrix {
         self.0.mem_adress()
     }
 
-    pub fn data_type(&self) -> HDataType {
-        self.0.data_type()
+    pub fn dtype(&self) -> HDataType {
+        self.0.dtype()
     }
 
     /// Returns true if the inner Arc is shared.
@@ -324,7 +323,7 @@ impl HMatrixR for HFloatMatrix<f32> {
         format!("{:p}", p)
     }
 
-    fn data_type(&self) -> HDataType {
+    fn dtype(&self) -> HDataType {
         HDataType::Float32
     }
 
@@ -411,7 +410,7 @@ impl HMatrixR for HFloatMatrix<f64> {
         format!("{:p}", p)
     }
 
-    fn data_type(&self) -> HDataType {
+    fn dtype(&self) -> HDataType {
         HDataType::Float64
     }
 
@@ -496,7 +495,7 @@ impl HMatrixR for HComplexMatrix<f32> {
         format!("{:p}", p)
     }
 
-    fn data_type(&self) -> HDataType {
+    fn dtype(&self) -> HDataType {
         HDataType::Complex32
     }
 
@@ -581,7 +580,7 @@ impl HMatrixR for HComplexMatrix<f64> {
         format!("{:p}", p)
     }
 
-    fn data_type(&self) -> HDataType {
+    fn dtype(&self) -> HDataType {
         HDataType::Complex64
     }
 

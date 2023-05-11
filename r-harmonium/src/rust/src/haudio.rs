@@ -21,7 +21,7 @@ pub trait HAudioR: Send + Sync {
     fn collect(&self) -> Robj;
     fn sr(&self) -> i32;
     fn mem_adress(&self) -> String;
-    fn data_type(&self) -> HDataType;
+    fn dtype(&self) -> HDataType;
     fn as_mono(&mut self);
     fn clone_inner(&self) -> Arc<dyn HAudioR>;
     //fn resample_fftfixedin(&mut self, sr_out: i32, chunk_size_in: i32, sub_chunks: i32);
@@ -138,8 +138,8 @@ impl HAudio {
         self.0.mem_adress()
     }
 
-    pub fn data_type(&self) -> HDataType {
-        self.0.data_type()
+    pub fn dtype(&self) -> HDataType {
+        self.0.dtype()
     }
 
     /// Convert to 1 channel taking the average across channels. A new inner array is created.
@@ -432,7 +432,7 @@ impl HAudioR for structs::HFloatAudio<f32> {
         format!("{:p}", p)
     }
 
-    fn data_type(&self) -> HDataType {
+    fn dtype(&self) -> HDataType {
         HDataType::Float32
     }
 
@@ -631,7 +631,7 @@ impl HAudioR for structs::HFloatAudio<f64> {
         format!("{:p}", p)
     }
 
-    fn data_type(&self) -> HDataType {
+    fn dtype(&self) -> HDataType {
         HDataType::Float64
     }
 

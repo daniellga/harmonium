@@ -4,7 +4,7 @@ test_that(
     check_hmatrix = function(values, dtype, dtype_result) {
       hmatrix = HMatrix$new_from_values(values, dtype)
 
-      expect_true(hmatrix$data_type() == dtype_result)
+      expect_true(hmatrix$dtype() == dtype_result)
       expect_equal(hmatrix$len(), length(values))
       expect_equal(hmatrix$ncols(), ncol(values))
       expect_equal(hmatrix$nrows(), nrow(values))

@@ -55,7 +55,7 @@ HArray$collect <- function() .Call(wrap__HArray__collect, self)
 
 HArray$mem_adress <- function() .Call(wrap__HArray__mem_adress, self)
 
-HArray$data_type <- function() .Call(wrap__HArray__data_type, self)
+HArray$dtype <- function() .Call(wrap__HArray__dtype, self)
 
 HArray$is_shared <- function() .Call(wrap__HArray__is_shared, self)
 
@@ -115,7 +115,7 @@ HAudio$sr <- function() .Call(wrap__HAudio__sr, self)
 
 HAudio$mem_adress <- function() .Call(wrap__HAudio__mem_adress, self)
 
-HAudio$data_type <- function() .Call(wrap__HAudio__data_type, self)
+HAudio$dtype <- function() .Call(wrap__HAudio__dtype, self)
 
 HAudio$as_mono <- function() invisible(.Call(wrap__HAudio__as_mono, self))
 
@@ -241,7 +241,7 @@ HMatrix$collect <- function() .Call(wrap__HMatrix__collect, self)
 
 HMatrix$mem_adress <- function() .Call(wrap__HMatrix__mem_adress, self)
 
-HMatrix$data_type <- function() .Call(wrap__HMatrix__data_type, self)
+HMatrix$dtype <- function() .Call(wrap__HMatrix__dtype, self)
 
 HMatrix$is_shared <- function() .Call(wrap__HMatrix__is_shared, self)
 
@@ -289,15 +289,15 @@ HMetadataType$ne <- function(other) .Call(wrap__HMetadataType__ne, self, other)
 
 HResampler <- new.env(parent = emptyenv())
 
-HResampler$new_fft <- function(sr_in, sr_out, chunk_size, sub_chunks, nbr_channels, resampler_type, data_type) .Call(wrap__HResampler__new_fft, sr_in, sr_out, chunk_size, sub_chunks, nbr_channels, resampler_type, data_type)
+HResampler$new_fft <- function(sr_in, sr_out, chunk_size, sub_chunks, nbr_channels, resampler_type, dtype) .Call(wrap__HResampler__new_fft, sr_in, sr_out, chunk_size, sub_chunks, nbr_channels, resampler_type, dtype)
 
-HResampler$new_sinc <- function(resample_ratio, max_resample_ratio_relative, parameters, chunk_size, nbr_channels, resampler_type, data_type) .Call(wrap__HResampler__new_sinc, resample_ratio, max_resample_ratio_relative, parameters, chunk_size, nbr_channels, resampler_type, data_type)
+HResampler$new_sinc <- function(resample_ratio, max_resample_ratio_relative, parameters, chunk_size, nbr_channels, resampler_type, dtype) .Call(wrap__HResampler__new_sinc, resample_ratio, max_resample_ratio_relative, parameters, chunk_size, nbr_channels, resampler_type, dtype)
 
 HResampler$process <- function(haudio, sr_out) invisible(.Call(wrap__HResampler__process, self, haudio, sr_out))
 
 HResampler$resampler_type <- function() .Call(wrap__HResampler__resampler_type, self)
 
-HResampler$data_type <- function() .Call(wrap__HResampler__data_type, self)
+HResampler$dtype <- function() .Call(wrap__HResampler__dtype, self)
 
 HResampler$print <- function() invisible(.Call(wrap__HResampler__print, self))
 

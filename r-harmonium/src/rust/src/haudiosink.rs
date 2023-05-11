@@ -19,7 +19,7 @@ impl HAudioSink {
 
     /// Appends a sound to the queue of sounds to play.
     fn append_from_haudio(&self, haudio: &HAudio) {
-        match haudio.0.data_type() {
+        match haudio.0.dtype() {
             HDataType::Float32 => {
                 let haudio = haudio
                     .0

@@ -7,7 +7,7 @@ Harmonium is an audio interface inspired by Python's [librosa](https://github.co
 - Asynchronous and Synchronous resampling
 - Arrow interface with zero copy integration
 
-To learn more, read the [User Guide](https://userguidelink/).
+To learn more, read the [User Guide](https://userguidelink/) or the [website](https://website/).
 
 ## Setup
 

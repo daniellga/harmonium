@@ -3,7 +3,7 @@ test_that(
   {
     check_haudio = function(values, dtype, dtype_result) {
       haudio = HAudio$new_from_values(values, 22000, dtype)
-      expect_true(haudio$data_type() == dtype_result)
+      expect_true(haudio$dtype() == dtype_result)
       expect_equal(haudio$len(), length(values))
       expect_equal(haudio$nchannels(), ncol(values))
       expect_equal(haudio$nframes(), nrow(values))

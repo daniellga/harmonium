@@ -9,11 +9,6 @@ res$resampler_type()
 res$data_type()
 res$process(haudio, sr_out = 22050)
 
-
-
-
-
-
 haudio = HAudio$new_from_values(matrix(0, nrow = 1024, ncol = 2), 44100, dtype = HDataType$float64)
 hparams = HInterpolationParams$new(256, 0.95, 256, "linear", "blackmanharris2")
 res = HResampler$new_sinc(48000 / 44100, 2, hparams, 1024, 2, HResamplerType$sinc_fixed_in, HDataType$float64)
@@ -22,6 +17,16 @@ res$data_type()
 res$process(haudio, sr_out = 48000)
 haudio$len() == 1948
 haudio$sr() == 48000
+
+
+harray = HArray$new_from_values(c(1,2,3,4), HDataType$float64)
+harray2 = harray$clone()
+harray$mem_adress() == harray2$mem_adress() # TRUE
+harray$slice(0, 1)
+harray$mem_adress() == harray2$mem_adress() # FALSE
+
+
+
 
 
 

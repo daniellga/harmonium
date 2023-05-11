@@ -7,7 +7,7 @@
 #'
 print.HArray = function(x) {
   cat(class(x), sep = "\n")
-  x$data_type()$print()
+  x$dtype()$print()
   x$print()
 }
 
@@ -25,7 +25,7 @@ print.HArray = function(x) {
 #'
 print.HMatrix = function(x) {
   cat(class(x), sep = "\n")
-  x$data_type()$print()
+  x$dtype()$print()
   x$print()
 }
 
@@ -43,7 +43,7 @@ print.HMatrix = function(x) {
 #'
 print.HAudio = function(x) {
   cat(class(x), sep = "\n")
-  x$data_type()$print()
+  x$dtype()$print()
   x$print()
 }
 
