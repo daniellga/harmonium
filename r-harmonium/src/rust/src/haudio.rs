@@ -70,8 +70,8 @@ impl HAudio {
         HAudio(inner)
     }
 
-    pub fn new_from_values(robj: Robj, sr: i32, dtype: &HDataType) -> HAudio {
-        let hmatrix = HMatrix::new_from_values(robj, dtype);
+    pub fn new_from_values(values: Robj, sr: i32, dtype: &HDataType) -> HAudio {
+        let hmatrix = HMatrix::new_from_values(values, dtype);
         hmatrix.as_haudio(sr)
     }
 

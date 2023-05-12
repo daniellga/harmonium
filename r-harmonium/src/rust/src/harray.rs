@@ -31,20 +31,21 @@ pub trait HArrayR: Send + Sync {
 /// An array representation. \
 /// Supports Float32, Float64, Complex32 and Complex64 types. \
 ///
-/// ## Methods
+/// # Methods
+///
 #[derive(Clone)]
 pub struct HArray(pub Arc<dyn HArrayR>);
 
 #[extendr]
 impl HArray {
     /// HArray
-    /// ### new_from_values
+    /// ## new_from_values
     ///
-    /// `new_from_values(values: atomicvector, dtype: HDataType)` \
+    /// `new_from_values(values: atomicvector, dtype: HDataType) -> HArray` \
     ///
-    /// Creates a new `HArray` from an R atomic vector.
+    /// Creates a new `HArray` from an R atomic vector. \
     ///
-    /// #### Arguments
+    /// ##### Arguments
     ///
     /// * `values` \
     /// A double or complex atomic vector.
@@ -52,11 +53,11 @@ impl HArray {
     /// An `HDataType` to indicate which type of `HArray` to be created. \
     /// For float dtypes, the atomic vector must be a double. For complex dtypes, a complex atomic vector.
     ///
-    /// #### Returns
+    /// ##### Returns
     ///
-    /// An `HArray` external pointer
+    /// An `HArray`. \
     ///
-    /// #### Examples
+    /// ##### Examples
     ///
     /// ```r
     /// values = c(1,2,3,4,5,6,7,8,9,10,11,12)
@@ -65,6 +66,7 @@ impl HArray {
     /// ```
     ///
     /// _________
+    ///
     pub fn new_from_values(values: Robj, dtype: &HDataType) -> HArray {
         match (values.rtype(), dtype) {
             (Rtype::Doubles, HDataType::Float32) => {
@@ -109,9 +111,9 @@ impl HArray {
     }
 
     /// HArray
-    /// ### new_from_arrow
+    /// ## new_from_arrow
     ///
-    /// `new_from_arrow(values: Array, dtype: HDataType)` \
+    /// `new_from_arrow(values: Array, dtype: HDataType) -> HArray` \
     ///
     /// Creates a new `HArray` from an R's arrow `Array`. \
     /// The conversion is zero copy.
@@ -125,7 +127,7 @@ impl HArray {
     ///
     /// #### Returns
     ///
-    /// An `HArray` external pointer
+    /// An `HArray`.
     ///
     /// #### Examples
     ///
@@ -136,6 +138,7 @@ impl HArray {
     /// ```
     ///
     /// _________
+    ///
     pub fn new_from_arrow(values: Robj, dtype: &HDataType) -> HArray {
         if !values.class().unwrap().any(|x| x == "Array") {
             panic!("wrong type");
@@ -182,15 +185,15 @@ impl HArray {
     }
 
     /// HArray
-    /// ### len
+    /// ## len
     ///
     /// `len() -> integer` \
     ///
-    /// Returns the length of this `Harray`.
+    /// Returns the length of this `Harray`. \
     ///
     /// #### Returns
     ///
-    /// An integer.
+    /// An integer. \
     ///
     /// #### Examples
     ///
@@ -199,26 +202,27 @@ impl HArray {
     /// ```
     ///
     /// _________
+    ///
     pub fn len(&self) -> i32 {
         self.0.len()
     }
 
     /// HArray
-    /// ### slice
+    /// ## slice
     ///
     /// `slice(offset: integer, length: integer)` \
     ///
     /// Slice the `HArray` by an offset and length. \
     /// This operation is O(1). \
     /// The function will modify in-place the current `HArray`. If a clone of the `HArray` has been
-    /// previously made, it will clone the `HArray` and slice it.
+    /// previously made, it will clone the `HArray` and slice it. \
     ///
     /// #### Arguments
     ///
     /// * `offset` \
-    /// An integer representing the offset starting from 0.
+    /// An integer representing the offset starting from 0. \
     /// * `length` \
-    /// An integer representing the desired length.
+    /// An integer representing the desired length. \
     ///
     /// #### Examples
     ///
@@ -242,13 +246,14 @@ impl HArray {
     /// ```
     ///
     /// _________
+    ///
     pub fn slice(&mut self, offset: i32, length: i32) {
         let inner_mut = self.get_inner_mut();
         inner_mut.slice(offset, length);
     }
 
     /// HArray
-    /// ### print
+    /// ## print
     ///
     /// `print()` \
     ///
@@ -264,12 +269,13 @@ impl HArray {
     /// ```
     ///
     /// _________
+    ///
     pub fn print(&self) {
         self.0.print();
     }
 
     /// HArray
-    /// ### eq
+    /// ## eq
     ///
     /// `eq(other: HArray) -> logical` \
     ///
@@ -298,12 +304,13 @@ impl HArray {
     /// ```
     ///
     /// _________
+    ///
     pub fn eq(&self, other: &HArray) -> bool {
         self.0.eq(&other.0)
     }
 
     /// HArray
-    /// ### ne
+    /// ## ne
     ///
     /// `ne(other: HArray) -> logical` \
     ///
@@ -332,12 +339,13 @@ impl HArray {
     /// ```
     ///
     /// _________
+    ///
     pub fn ne(&self, other: &HArray) -> bool {
         self.0.ne(&other.0)
     }
 
     /// HArray
-    /// ### clone
+    /// ## clone
     ///
     /// `clone() -> HArray` \
     ///
@@ -358,12 +366,13 @@ impl HArray {
     /// ```
     ///
     /// _________
+    ///
     pub fn clone(&self) -> HArray {
         std::clone::Clone::clone(self)
     }
 
     /// HArray
-    /// ### as_hmatrix
+    /// ## as_hmatrix
     ///
     /// `as_hmatrix(ncols: integer) -> HMatrix` \
     ///
@@ -389,12 +398,13 @@ impl HArray {
     /// ```
     ///
     /// _________
+    ///
     pub fn as_hmatrix(&self, ncols: i32) -> HMatrix {
         HMatrix(self.0.as_hmatrix(ncols))
     }
 
     /// HArray
-    /// ### collect
+    /// ## collect
     ///
     /// `collect() -> atomicvector` \
     ///
@@ -411,12 +421,13 @@ impl HArray {
     /// ```
     ///
     /// _________
+    ///
     pub fn collect(&self) -> Robj {
         self.0.collect()
     }
 
     /// HArray
-    /// ### mem_adress
+    /// ## mem_adress
     ///
     /// `mem_adress() -> character` \
     ///
@@ -443,12 +454,13 @@ impl HArray {
     /// ```
     ///
     /// _________
+    ///
     pub fn mem_adress(&self) -> String {
         self.0.mem_adress()
     }
 
     /// HArray
-    /// ### dtype
+    /// ## dtype
     ///
     /// `dtype() -> HDataType` \
     ///
@@ -465,12 +477,13 @@ impl HArray {
     /// ```
     ///
     /// _________
+    ///
     pub fn dtype(&self) -> HDataType {
         self.0.dtype()
     }
 
     /// HArray
-    /// ### is_shared
+    /// ## is_shared
     ///
     /// `is_shared() -> logical` \
     ///
@@ -507,6 +520,7 @@ impl HArray {
     /// ```
     ///
     /// _________
+    ///
     pub fn is_shared(&self) -> bool {
         Arc::weak_count(&self.0) + Arc::strong_count(&self.0) != 1
     }
@@ -537,7 +551,7 @@ impl HArray {
     }
 
     /// HArray
-    /// ### fft
+    /// ## fft
     ///
     /// `fft() -> HArray` \
     ///
@@ -563,6 +577,7 @@ impl HArray {
     /// ```
     ///
     /// _________
+    ///
     pub fn fft(&self) -> HArray {
         HArray(self.0.fft())
     }

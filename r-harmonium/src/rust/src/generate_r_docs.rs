@@ -11,6 +11,8 @@ fn generate_r_docs() {
     let files = ["./harray.rs", "./hdatatype.rs"];
     let mut hash: HashMap<String, Vec<String>> = HashMap::new();
     let output_path = PathBuf::from("../../../docs/docswebsite/docs");
+    let github_folder =
+        "https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/";
 
     for file in files {
         let input_file_path = PathBuf::from(file);
@@ -46,12 +48,13 @@ fn generate_r_docs() {
                     hash.get_mut(&key).unwrap().push(filtered_line);
                 }
             } else {
-                // add the source block
+                // add the source text. Code on github must be updated.
                 if last_line_was_comment {
                     if line_trimmed.contains("fn") && line_trimmed.contains('{') {
                         let vec = hash.get_mut(&key).unwrap();
                         let len = vec.len();
-                        let elem = &mut vec[len - counter as usize];
+                        let elem = &mut vec[len - counter as usize + 2];
+                        elem.pop();
                         let path = files
                             .iter()
                             .find(|&&x| x.contains(&key.to_lowercase()))
@@ -59,23 +62,27 @@ fn generate_r_docs() {
                             .strip_prefix("./")
                             .unwrap();
 
-                        let source =
-                        "[source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/"
-                            .to_string()
+                        let source = "<span style=\"float: right;\"> [source](".to_string()
+                            + github_folder
                             + path
                             + "#L"
                             + &(line_counter + 1).to_string()
-                            + ")";
+                            + ") </span> \\";
                         elem.push_str(&source);
                     }
                     counter = -1;
                 }
+
                 skip_comment_chunk = false;
                 last_line_was_comment = false;
             }
         }
     }
 
+    output_file(hash, output_path)
+}
+
+fn output_file(hash: HashMap<String, Vec<String>>, output_path: PathBuf) {
     for (key, value) in hash {
         // header
         let key_lowercase = key.to_lowercase();

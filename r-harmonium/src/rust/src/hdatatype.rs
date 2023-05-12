@@ -5,7 +5,7 @@ use std::fmt;
 /// A type representation. \
 /// Supports Float32, Float64, Complex32 and Complex64 types. \
 ///
-/// ## Methods
+/// # Methods
 ///
 #[derive(PartialEq)]
 pub enum HDataType {
@@ -18,7 +18,7 @@ pub enum HDataType {
 #[extendr(use_try_from = true)]
 impl HDataType {
     /// HDataType
-    /// ### float32
+    /// ## float32
     ///
     /// `float32 -> HDataType` \
     ///
@@ -35,12 +35,13 @@ impl HDataType {
     /// ```
     ///
     /// _________
+    ///
     fn float32() -> Self {
         Self::Float32
     }
 
     /// HDataType
-    /// ### float64
+    /// ## float64
     ///
     /// `float64 -> HDataType` \
     ///
@@ -57,12 +58,13 @@ impl HDataType {
     /// ```
     ///
     /// _________
+    ///
     fn float64() -> Self {
         Self::Float64
     }
 
     /// HDataType
-    /// ### complex32
+    /// ## complex32
     ///
     /// `complex32 -> HDataType` \
     ///
@@ -79,12 +81,13 @@ impl HDataType {
     /// ```
     ///
     /// _________
+    ///
     fn complex32() -> Self {
         Self::Complex32
     }
 
     /// HDataType
-    /// ### complex64
+    /// ## complex64
     ///
     /// `complex64 -> HDataType` \
     ///
@@ -101,12 +104,13 @@ impl HDataType {
     /// ```
     ///
     /// _________
+    ///
     fn complex64() -> Self {
         Self::Complex64
     }
 
     /// HDataType
-    /// ### print
+    /// ## print
     ///
     /// `print()` \
     ///
@@ -122,12 +126,13 @@ impl HDataType {
     /// ```
     ///
     /// _________
+    ///
     fn print(&self) {
         rprintln!("{}", self);
     }
 
     /// HDataType
-    /// ### eq
+    /// ## eq
     ///
     /// `eq(other: HDataType) -> logical` \
     ///
@@ -154,12 +159,13 @@ impl HDataType {
     /// ```
     ///
     /// _________
+    ///
     fn eq(&self, other: &HDataType) -> bool {
         std::cmp::PartialEq::eq(self, other)
     }
 
     /// HDataType
-    /// ### ne
+    /// ## ne
     ///
     /// `ne(other: HDataType) -> logical` \
     ///
@@ -186,6 +192,7 @@ impl HDataType {
     /// ```
     ///
     /// _________
+    ///
     fn ne(&self, other: &HDataType) -> bool {
         std::cmp::PartialEq::ne(self, other)
     }

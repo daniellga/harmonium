@@ -3,21 +3,62 @@ use extendr_api::prelude::*;
 use harmonium_core::structs::HFloatAudio;
 use harmonium_io::{decode::decode_arrow::decode, play};
 
+/// HAudioSink
+/// Handle to an device that outputs sounds.
+///
+/// ## Methods
 pub struct HAudioSink {
     inner: play::HAudioSink,
 }
 
 #[extendr]
 impl HAudioSink {
-    /// Creates a new `HAudioSink` instance.
+    /// HAudioSink
+    /// ### new
+    ///
+    /// `new() -> HAudioSink` \
+    ///
+    /// Creates a new `HAudioSink` instance. \
     /// The sink is set on "play" mode from the start.
+    ///
+    /// #### Returns
+    ///
+    /// An `HAudioSink`.
+    ///
+    /// #### Examples
+    ///
+    /// ```r
+    /// haudiosink = HAudioSink$new()
+    /// ```
+    ///
+    /// _________
     fn new() -> Self {
         Self {
             inner: play::HAudioSink::try_new().unwrap(),
         }
     }
 
+    /// HAudioSink
+    /// ### append_from_haudio
+    ///
+    /// `append_from_haudio(haudio: HAudio)` \
+    ///
     /// Appends a sound to the queue of sounds to play.
+    ///
+    /// #### Arguments
+    ///
+    /// * `haudio` \
+    /// An `HAudio`.
+    ///
+    /// #### Examples
+    ///
+    /// ```r
+    /// haudiosink = HAudioSink$new()
+    /// haudio = HAudio$new_from_file(fpath = "../../../testfiles/gs-16b-2c-44100hz.wav")
+    /// haudiosink$append_from_haudio(haudio)
+    /// ```
+    ///
+    /// _________
     fn append_from_haudio(&self, haudio: &HAudio) {
         match haudio.0.dtype() {
             HDataType::Float32 => {
@@ -40,26 +81,63 @@ impl HAudioSink {
         }
     }
 
+    /// HAudioSink
+    /// ### append_from_file
+    ///
+    /// `append_from_file(fpath: string)` \
+    ///
     /// Appends a sound to the queue of sounds to play.
+    ///
+    /// #### Arguments
+    ///
+    /// * `fpath` \
+    /// The file path as a string.
+    ///
+    /// #### Examples
+    ///
+    /// ```r
+    /// haudiosink = HAudioSink$new()
+    /// haudiosink$append_from_file(fpath = "../../../testfiles/gs-16b-2c-44100hz.wav")
+    /// ```
+    ///
+    /// _________
     pub fn append_from_file(&self, fpath: &str) {
         let haudio = decode::<f32>(fpath, None, None).unwrap();
         self.inner.append_from_haudio(&haudio);
     }
 
-    /// Resumes playback of a paused sink.
+    /// HAudioSink
+    /// ### play
+    ///
+    /// `play()` \
+    ///
+    /// Resumes playback of a paused sink. \
     /// No effect if not paused.
+    ///
+    /// #### Examples
+    ///
+    /// ```r
+    /// haudiosink = HAudioSink$new()
+    /// haudiosink$append_from_file(fpath = "../../../testfiles/gs-16b-2c-44100hz.wav")
+    /// haudiosink$pause()
+    /// haudiosink$is_paused() # TRUE
+    /// haudiosink$play()
+    /// haudiosink$is_paused() # FALSE
+    /// ```
+    ///
+    /// _________
     pub fn play(&self) {
         self.inner.play();
     }
 
-    /// Stops the sink by emptying the queue.
+    /// Stops the sink by emptying the queue. \
     /// The sink will keep its previous state (play or pause).
     pub fn stop(&self) {
         self.inner.stop();
     }
 
-    /// Pauses playback of this sink.
-    /// No effect if already paused.
+    /// Pauses playback of this sink. \
+    /// No effect if already paused. \
     /// A paused sink can be resumed with play().
     pub fn pause(&self) {
         self.inner.pause();
