@@ -3,7 +3,7 @@ use std::fmt;
 
 /// HDataType
 /// A type representation. \
-/// Supports Float32, Float64, Complex32 and Complex64 types. \
+/// Supports `Float32`, `Float64`, `Complex32` and `Complex64` types. \
 ///
 /// # Methods
 ///
@@ -22,7 +22,7 @@ impl HDataType {
     ///
     /// `float32 -> HDataType` \
     ///
-    /// Creates a Float32 `HDataType`.
+    /// Creates a Float32 `HDataType`. \
     ///
     /// #### Returns
     ///
@@ -45,7 +45,7 @@ impl HDataType {
     ///
     /// `float64 -> HDataType` \
     ///
-    /// Creates a Float64 `HDataType`.
+    /// Creates a Float64 `HDataType`. \
     ///
     /// #### Returns
     ///
@@ -68,7 +68,7 @@ impl HDataType {
     ///
     /// `complex32 -> HDataType` \
     ///
-    /// Creates a Complex32 `HDataType`.
+    /// Creates a Complex32 `HDataType`. \
     ///
     /// #### Returns
     ///
@@ -91,7 +91,7 @@ impl HDataType {
     ///
     /// `complex64 -> HDataType` \
     ///
-    /// Creates a Complex64 `HDataType`.
+    /// Creates a Complex64 `HDataType`. \
     ///
     /// #### Returns
     ///
@@ -114,15 +114,17 @@ impl HDataType {
     ///
     /// `print()` \
     ///
-    /// Prints the `HDataType`.
+    /// Prints the `HDataType`. \
+    /// Differently from R's behaviour, `print` doesn't return the value invisibly. \
     ///
     /// #### Examples
     ///
     /// ```r
-    /// hdatatype$print()
+    /// dtype = HDataType$complex64
+    /// dtype$print()
     ///
     /// # or similarly:
-    /// print(hdatatype)
+    /// print(dtype)
     /// ```
     ///
     /// _________
@@ -134,18 +136,18 @@ impl HDataType {
     /// HDataType
     /// ## eq
     ///
-    /// `eq(other: HDataType) -> logical` \
+    /// `eq(other: HDataType) -> bool` \
     ///
     /// Equality with another `HDataType`.
     ///
     /// #### Arguments
     ///
     /// * `other` \
-    /// An `HDataType`.
+    /// An `HDataType`. \
     ///
     /// #### Returns
     ///
-    /// A logical.
+    /// A `bool`.
     ///
     /// #### Examples
     ///
@@ -167,18 +169,18 @@ impl HDataType {
     /// HDataType
     /// ## ne
     ///
-    /// `ne(other: HDataType) -> logical` \
+    /// `ne(other: HDataType) -> bool` \
     ///
     /// Difference with another `HDataType`.
     ///
     /// #### Arguments
     ///
     /// * `other` \
-    /// An `HDataType`.
+    /// An `HDataType`. \
     ///
     /// #### Returns
     ///
-    /// A logical.
+    /// A `bool`.
     ///
     /// #### Examples
     ///

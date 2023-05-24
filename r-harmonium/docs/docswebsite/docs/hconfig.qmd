@@ -1,0 +1,162 @@
+---
+title: HConfig
+---
+
+Manage configuration variables related to harmonium. \
+
+#### Environment Variables
+
+* `H_FMT_MAX_LEN` \
+An `integer`. Default = `10L`. \
+Maximum length to print in an `HArray`. \
+* `H_FMT_MAX_COLS` \
+An `integer`. Default = `10L`. \
+Maximum number of cols to print in an `HMatrix`. \
+* `H_FMT_MAX_ROWS` \
+An `integer`. Default = `10L`. \
+Maximum number of rows to print in an `HMatrix`. \
+
+#### Other Variables
+
+These variables are set directly, not via an environment variable. \
+
+* `H_FMT_FLOAT` \
+A `string`. One of ["full", "mixed"]. Default = `mixed`. \
+Controls how floating point numbers are displayed. \
+
+# Methods
+
+## get
+
+`get() -> list`
+
+Retrieves the current settings. \
+
+#### Returns
+
+A `list`. \
+
+#### Examples
+
+```r
+HConfig$get()
+```
+
+_________
+
+## set_table_max_len
+
+`set_table_max_len(value: integer)`
+
+Sets the `H_FMT_MAX_LEN` environment variable to `value`. \
+Will result in an error if not passing `value`'s requirements. \
+
+#### Arguments
+
+* `value` \
+An `integer`. The new value to be set. \
+
+#### Examples
+
+```r
+HConfig$set_table_max_len(20L)
+
+HConfig$set_table_max_len(20) # Error! Value must be an integer.
+```
+
+_________
+
+## set_table_max_cols
+
+`set_table_max_cols(value: integer)`
+
+Sets the `H_FMT_MAX_COLS` environment variable to `value`. \
+Will result in an error if not passing `value`'s requirements. \
+
+#### Arguments
+
+* `value` \
+An `integer`. The new value to be set. \
+
+#### Examples
+
+```r
+HConfig$set_table_max_cols(20L)
+
+HConfig$set_table_max_cols(20) # Error! Value must be an integer.
+```
+
+_________
+
+## set_table_max_rows
+
+`set_table_max_rows(value: integer)`
+
+Sets the `H_FMT_MAX_ROWS` environment variable to `value`. \
+Will result in an error if not passing `value`'s requirements. \
+
+#### Arguments
+
+* `value` \
+An `integer`. The new value to be set. \
+
+#### Examples
+
+```r
+HConfig$set_table_max_rows(20L)
+
+HConfig$set_table_max_rows(20) # Error! Value must be an integer.
+```
+
+_________
+
+## set_float_fmt
+
+`set_float_fmt(value: string)`
+
+Sets the `H_FMT_FLOAT` variable to `value`. \
+Will result in an error if not passing `value`'s requirements. \
+
+#### Arguments
+
+* `value` \
+A `string`. The new value to be set. \
+Must be one of ["full", "mixed"]. \
+
+#### Examples
+
+```r
+HConfig$set_float_fmt("full")
+
+HConfig$set_float_fmt("whatever") # Error! Value must be one of ["full", "mixed"].
+```
+
+_________
+
+## set_default
+
+`set_default()`
+
+Sets to the default configuration. \
+
+#### Examples
+
+```r
+HConfig$set_default()
+```
+
+_________
+
+## set_initial
+
+`set_initial()`
+
+Sets to the initial settings, from before the package was loaded. \
+
+#### Examples
+
+```r
+HConfig$set_initial()
+```
+
+_________

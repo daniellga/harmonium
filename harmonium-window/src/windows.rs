@@ -37,7 +37,7 @@ pub enum WindowType {
     Periodic,
 }
 
-/// Return a modified Bartlett-Hann window.
+/// Returns a modified Bartlett-Hann window.
 ///
 /// The maximum value is normalized to 1 (though the value 1
 /// does not appear if `npoints` is even and `window_type` is symmetric).
@@ -72,7 +72,7 @@ where
     HFloatArray::new_from_vec(window)
 }
 
-/// Return a Bartlett window.
+/// Returns a Bartlett window.
 ///
 /// The Bartlett window is very similar to a triangular window, except
 /// that the end points are at zero.  It is often used in signal
@@ -80,7 +80,7 @@ where
 /// ripple in the frequency domain.
 ///
 /// The maximum value is normalized to 1 (though the value 1 does not
-/// appear if `npoints` is even and `window_type` is symmetric.
+/// appear if `npoints` is even and `window_type` is symmetric).
 ///
 /// .. math:: w(n) = \frac{2}{npoints-1} \left(
 ///           \frac{npoints-1}{2} - \left|n - \frac{npoints-1}{2}\right|
@@ -124,7 +124,7 @@ where
     HFloatArray::new_from_vec(window)
 }
 
-/// Return a Blackman window.
+/// Returns a Blackman window.
 ///
 /// The Blackman window is a taper formed by using the first three terms of
 /// a summation of cosines. It was designed to have close to the minimal
@@ -132,7 +132,7 @@ where
 /// Kaiser window.
 ///
 /// The maximum value is normalized to 1 (though the value 1 does not
-/// appear if `npoints` is even and `window_type` is symmetric.
+/// appear if `npoints` is even and `window_type` is symmetric).
 ///
 /// .. math::  w(n) = 0.42 - 0.5 \cos(2\pi n/npoints) + 0.08 \cos(4\pi n/npoints)
 ///
@@ -179,10 +179,10 @@ where
     HFloatArray::new_from_vec(window)
 }
 
-/// Return a minimum 4-term Blackman-Harris window.
+/// Returns a minimum 4-term Blackman-Harris window.
 ///
 /// The maximum value is normalized to 1 (though the value 1 does not
-/// appear if `npoints` is even and `window_type` is symmetric.
+/// appear if `npoints` is even and `window_type` is symmetric).
 ///
 /// # Arguments
 /// `npoints` - Number of points in the output window.
@@ -216,10 +216,10 @@ where
     HFloatArray::new_from_vec(window)
 }
 
-/// Return a Bohman window.
+/// Returns a Bohman window.
 ///
 /// The maximum value is normalized to 1 (though the value 1 does not
-/// appear if `npoints` is even and `window_type` is symmetric.
+/// appear if `npoints` is even and `window_type` is symmetric).
 ///
 /// # Arguments
 /// `npoints` - Number of points in the output window.
@@ -256,7 +256,7 @@ where
     HFloatArray::new_from_vec(window)
 }
 
-/// Return a boxcar or rectangular window.
+/// Returns a boxcar or rectangular window.
 ///
 /// Also known as a rectangular window or Dirichlet window, this is equivalent to no window at all.
 ///
@@ -272,10 +272,10 @@ where
     HFloatArray::new_from_vec(window)
 }
 
-/// Return a window with a simple cosine shape.
+/// Returns a window with a simple cosine shape.
 ///
 /// The maximum value is normalized to 1 (though the value 1 does not
-/// appear if `npoints` is even and `window_type` is symmetric.
+/// appear if `npoints` is even and `window_type` is symmetric).
 ///
 /// # Arguments
 /// `npoints` - Number of points in the output window.
@@ -300,7 +300,7 @@ where
     HFloatArray::new_from_vec(window)
 }
 
-/// Return a Dolph-Chebyshev window.
+/// Returns a Dolph-Chebyshev window.
 ///
 /// The maximum value is normalized to 1.
 ///
@@ -416,10 +416,10 @@ where
     HFloatArray::new_from_vec(window)
 }
 
-/// Return an exponential (or Poisson) window.
+/// Returns an exponential (or Poisson) window.
 ///
 /// The maximum value is normalized to 1 (though the value 1 does not
-/// appear if `npoints` is even and `window_type` is symmetric.
+/// appear if `npoints` is even and `window_type` is symmetric).
 ///
 /// .. math::  w(n) = 0.5 - 0.5 \cos\left(\frac{2\pi{n}}{M-1}\right)
 ///            \qquad 0 \leq n \leq M-1
@@ -475,15 +475,16 @@ where
     Ok(HFloatArray::new_from_vec(window))
 }
 
-/// Return a Hann window.
+/// Returns a Hann window.
 ///
 /// The maximum value is normalized to 1 (though the value 1 does not
-/// appear if `npoints` is even and `window_type` is symmetric.
+/// appear if `npoints` is even and `window_type` is symmetric).
 ///
 /// The Hann window is a taper formed by using a raised cosine or sine-squared
 /// with ends that touch zero.
 ///
-/// .. math::  w(n) = e^{-|n-center| / \tau}
+/// .. math::  w(n) = 0.5 - 0.5 \cos\left(\frac{2\pi{n}}{npoints-1}\right)
+///            \qquad 0 \leq n \leq npoints-1
 ///
 /// # Arguments
 /// `npoints` - Number of points in the output window.
@@ -508,10 +509,10 @@ where
     HFloatArray::new_from_vec(window)
 }
 
-/// Return a triangular window.
+/// Returns a triangular window.
 ///
 /// The maximum value is normalized to 1 (though the value 1 does not
-/// appear if `npoints` is even and `window_type` is symmetric.
+/// appear if `npoints` is even and `window_type` is symmetric).
 ///
 /// # Arguments
 /// `npoints` - Number of points in the output window.

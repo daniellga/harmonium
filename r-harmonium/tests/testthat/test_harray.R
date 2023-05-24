@@ -12,12 +12,12 @@ test_that(
       harray_cloned = harray$clone()
       expect_true(harray==harray_cloned)
       expect_false(harray!=harray_cloned)
-      expect_true(harray$eq_inner(harray_cloned))
+      expect_true(harray$mem_adress() == harray_cloned$mem_adress())
       expect_false(identical(harray, harray_cloned))
 
       harray_new = HArray$new_from_values(values, dtype)
       expect_true(harray == harray_new)
-      expect_false(harray$eq_inner(harray_new))
+      expect_false(harray$mem_adress() == harray_new$mem_adress())
     }
 
     values = c(1,2,3,4,5,6,7,8,9,10,11,12)

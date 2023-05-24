@@ -71,7 +71,9 @@ pub mod decode_arrow {
     ///
     /// * `fpath` - The input file.
     /// * `offset` - Start reading the file after offset, in seconds.
-    /// * `duration` - Duration to be loaded, in seconds, counting from the `offset`. Will load the file till the end if `offset + duration >= file length`.
+    /// If `None`, will decode from the beginning of the file.
+    /// * `duration` - Duration to be loaded, in seconds, counting from `offset`. Will load the file till the end if `offset + duration >= file length`.
+    /// If `None`, will decode until the end of the file.
     ///
     /// # Examples
     ///

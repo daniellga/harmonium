@@ -20,3 +20,7 @@
   HResamplerType$sinc_fixed_out = HResamplerType$sinc_fixed_out()
   lockEnvironment(HResamplerType, bindings = TRUE)
 }
+
+.onAttach <- function(libname, pkgname) {
+  packageStartupMessage(paste0("harmonium ",packageVersion("harmonium"),", see harmonium::hdocs() for documentation."))
+}

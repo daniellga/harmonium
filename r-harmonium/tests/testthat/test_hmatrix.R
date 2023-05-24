@@ -14,12 +14,12 @@ test_that(
       hmatrix_cloned = hmatrix$clone()
       expect_true(hmatrix == hmatrix_cloned)
       expect_false(hmatrix != hmatrix_cloned)
-      expect_true(hmatrix$eq_inner(hmatrix_cloned))
+      expect_true(hmatrix$mem_adress() == hmatrix_cloned$mem_adress())
       expect_false(identical(hmatrix, hmatrix_cloned))
 
       hmatrix_new = HMatrix$new_from_values(values, dtype)
       expect_true(hmatrix == hmatrix_new)
-      expect_false(hmatrix$eq_inner(hmatrix_new))
+      expect_false(hmatrix$mem_adress() == hmatrix_new$mem_adress())
     }
 
     values = matrix(c(1,2,3,4,5,6,7,8,9,10,11,12), 3, 4)

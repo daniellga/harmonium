@@ -67,8 +67,7 @@ impl HFile {
     /// @return A list of metadata. An empty list will be returned if there is no metadata in the file.
     /// @examples
     /// fname = "audio_test_files/gs-16b-2c-44100hz.mp3"
-    /// text_metadata_from_file(fname, "all")
-    /// @export
+    /// text_metadata_from_file(fname, HMetadataType$text)
     pub fn metadata_from_file(fpath: &str, metadata_type: &HMetadataType) -> List {
         let metadata_type = match metadata_type {
             HMetadataType::All => decode::HMetadataType::All,
@@ -105,7 +104,6 @@ impl HFile {
     /// @examples
     /// fname = "audio_test_files/gs-16b-2c-44100hz.mp3"
     /// get_params_from_file(fname)
-    /// @export
     pub fn get_params_from_file(fpath: &str) -> Doubles {
         let (sr, nframes, nchannels, duration) =
             decode::decode_arrow::get_params_from_file(fpath).unwrap();
@@ -123,7 +121,6 @@ impl HFile {
     /// @examples
     /// fname = "audio_test_files/gs-16b-2c-44100hz.flac"
     /// verify_file(fname)
-    /// @export
     pub fn verify_file(fpath: &str) -> &str {
         match decode::decode_arrow::verify_file(fpath).unwrap() {
             decode::HVerifyDecode::Passed => "passed",

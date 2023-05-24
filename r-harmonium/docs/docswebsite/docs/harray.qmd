@@ -3,26 +3,26 @@ title: HArray
 ---
 
 An array representation. \
-Supports Float32, Float64, Complex32 and Complex64 types. \
 
-## Methods
-### new_from_values[source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/harray.rs#L68)
+# Methods
 
-`new_from_values(values: atomicvector, dtype: HDataType)` \
+## new_from_values
 
-Creates a new `HArray` from an R atomic vector.
+`new_from_values(values: atomicvector, dtype: HDataType) -> HArray` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./harray.rs#L69) </span> \
+
+Creates a new `HArray` from an R atomic vector. \
 
 #### Arguments
 
 * `values` \
-A double or complex atomic vector.
+A `double` or `complex` atomic vector.
 * `dtype` \
 An `HDataType` to indicate which type of `HArray` to be created. \
-For float dtypes, the atomic vector must be a double. For complex dtypes, a complex atomic vector.
+For float dtypes, the atomic vector must be a `double`. For complex dtypes, a `complex` atomic vector.
 
 #### Returns
 
-An `HArray` external pointer
+An `HArray`. \
 
 #### Examples
 
@@ -33,11 +33,12 @@ HArray$new_from_values(values, dtype)
 ```
 
 _________
-### new_from_arrow[source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/harray.rs#L139)
 
-`new_from_arrow(values: Array, dtype: HDataType)` \
+## new_from_arrow
 
-Creates a new `HArray` from an R's arrow `Array`. \
+`new_from_arrow(values: Array, dtype: HDataType) -> HArray` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./harray.rs#L145) </span> \
+
+Creates a new `HArray` from an R's arrow [`Array`](https://arrow.apache.org/docs/r/reference/array.html). \
 The conversion is zero copy.
 
 #### Arguments
@@ -49,81 +50,89 @@ An `HDataType` to indicate which type of `HArray` to be created.
 
 #### Returns
 
-An `HArray` external pointer
+An `HArray`.
 
 #### Examples
 
 ```r
-values = arrow::Array$create(1:10, type = float32())
+values = arrow::Array$create(1:10, type = arrow::float32())
 dtype = HDataType$complex32
-HArray$new_from_arrow(values, dtype)
+harray = HArray$new_from_arrow(values, dtype)
+
+# to convert back to R's arrow Array.
+values2 = arrow::as_arrow_array(harray)
+all.equal(values, values2) # TRUE
 ```
 
 _________
-### len[source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/harray.rs#L202)
 
-`len() -> integer` \
+## len
 
-Returns the length of this `Harray`.
+`len() -> integer` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./harray.rs#L210) </span> \
+
+Returns the number of elements of this `Harray`. \
 
 #### Returns
 
-An integer.
+An `integer`. \
 
 #### Examples
 
 ```r
+harray = HArray$new_from_values(c(1,2,3), HDataType$float32)
 harray$len()
 ```
 
 _________
-### slice[source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/harray.rs#L245)
 
-`slice(offset: integer, length: integer)` \
+## slice
+
+`slice(offset: integer, length: integer)` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./harray.rs#L252) </span> \
 
 Slice the `HArray` by an offset and length. \
 This operation is O(1). \
 The function will modify in-place the current `HArray`. If a clone of the `HArray` has been
-previously made, it will clone the `HArray` and slice it.
+previously made, it will clone the `HArray` and slice it. \
 
 #### Arguments
 
 * `offset` \
-An integer representing the offset starting from 0.
+An `integer` representing the offset starting from 0. \
 * `length` \
-An integer representing the desired length.
+An `integer` representing the desired length. \
 
 #### Examples
 
 ```r
 harray = HArray$new_from_values(c(1,2,3,4,5,6,7), HDataType$float32)
-harray$slice(2, 3)
+harray$slice(2L, 3L)
 print(harray)
 
 # if the HArray object is not being shared, slicing it will modify the HArray in-place.
-harray = HArray$new_from_values(c(1,2,3), HDataType$float64)
-harray$slice(1, 1)
+harray = HArray$new_from_values(c(1,2,3), HDataType$float32)
+harray$slice(1L, 1L)
 
-# if the HArray object is being shared, slicing it will create HArray object.
-harray = HArray$new_from_values(c(1,2,3), HDataType$float64)
+# if the HArray object is being shared, slicing it will create a new HArray object.
+harray = HArray$new_from_values(c(1,2,3), HDataType$float32)
 harray2 = harray$clone()
 harray$is_shared() # TRUE
-harray$slice(1, 1) # now harray is a different object in comparison with harray2, although
-they share the same underlying data.
+harray$slice(1L, 1L) # now harray is a different object in comparison with harray2, although they share the same underlying data.
 harray$is_shared() # FALSE
-
 ```
 
 _________
-### print[source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/harray.rs#L267)
 
-`print()` \
+## print
 
-Print the `HArray`.
+`print()` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./harray.rs#L277) </span> \
+
+Print the `HArray`. \
+Differently from R's normal behaviour, `print` doesn't return the value invisibly. \
 
 #### Examples
 
 ```r
+harray = HArray$new_from_values(c(1,2,3), HDataType$float32)
 harray$print()
 
 # or similarly:
@@ -131,22 +140,23 @@ print(harray)
 ```
 
 _________
-### eq[source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/harray.rs#L301)
 
-`eq(other: HArray) -> logical` \
+## eq
 
-Equality with another HArray. \
+`eq(other: HArray) -> bool` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./harray.rs#L312) </span> \
+
+Equality with another `HArray`. \
 The comparison only checks if the dtype and the values are the same. To compare if the
-underlying data is the same in memory, check `mem_adress`.
+underlying data is the same in memory, check `mem_adress`. \
 
 #### Arguments
 
 * `other` \
-An `HArray`.
+An `HArray`. \
 
 #### Returns
 
-A logical.
+A `bool`. \
 
 #### Examples
 
@@ -160,9 +170,10 @@ harray1 == harray2
 ```
 
 _________
-### ne[source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/harray.rs#L335)
 
-`ne(other: HArray) -> logical` \
+## ne
+
+`ne(other: HArray) -> bool` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./harray.rs#L347) </span> \
 
 Difference with another `HArray`. \
 The comparison only checks if the dtype and the values are the same. To compare if the
@@ -175,7 +186,7 @@ An `HArray`.
 
 #### Returns
 
-A logical.
+A `bool`.
 
 #### Examples
 
@@ -189,9 +200,10 @@ harray1 != harray2
 ```
 
 _________
-### clone[source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/harray.rs#L361)
 
-`clone() -> HArray` \
+## clone
+
+`clone() -> HArray` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./harray.rs#L373) </span> \
 
 Creates a new `HArray`, with the underlying data pointing to the same place in memory.
 
@@ -202,25 +214,25 @@ An `HArray`.
 #### Examples
 
 ```r
-harray = HArray$new_from_values(c(1,2,3,4,5,6,7,8), HDataType$float32)
-harray2 = harray$clone()
-
-harray == harray2 # TRUE
-harray$mem_adress() == harray2$mem_adress() # TRUE
+harray1 = HArray$new_from_values(c(1,2,3,4,5,6,7,8), HDataType$float32)
+harray2 = harray1$clone()
+harray1 == harray2 # TRUE
+harray1$mem_adress() == harray2$mem_adress() # TRUE
 ```
 
 _________
-### as_hmatrix[source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/harray.rs#L392)
 
-`as_hmatrix(ncols: integer) -> HMatrix` \
+## as_hmatrix
 
-Creates a new `HMatrix`, with the underlying data pointing to the same place in memory.
+`as_hmatrix(ncols: integer) -> HMatrix` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./harray.rs#L405) </span> \
+
+Creates a new `HMatrix`, with the underlying data pointing to the same place in memory. \
 
 #### Arguments
 
 * `ncols` \
-An integer representing the number of columns desired. \
-Will return an error if `ncols` is not a divider of the length of the `HArray`.
+An `integer` representing the number of columns desired. \
+Will return an error if `ncols` is not a divider of the length of the `HArray`. \
 
 #### Returns
 
@@ -230,61 +242,65 @@ An `HMatrix`.
 
 ```r
 harray = HArray$new_from_values(c(1,2,3,4,5,6,7,8), HDataType$float32)
-hmatrix = harray$as_hmatrix(ncols = 2)
+hmatrix = harray$as_hmatrix(ncols = 2L)
 
 harray$mem_adress() == hmatrix$mem_adress() # TRUE
 ```
 
 _________
-### collect[source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/harray.rs#L414)
 
-`collect() -> atomicvector` \
+## collect
 
-Create an R atomic vector from an `HArray`. The type of the atomic vector created (double or complex) will depend on the `HArray`'s dtype.
+`collect() -> atomicvector` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./harray.rs#L429) </span> \
+
+Creates an R atomic vector from an `HArray`. The type of the atomic vector created (`double` or `complex`) will depend on the `HArray`'s dtype.
 
 #### Returns
 
-An atomic vector of type double or complex.
+An atomic vector of type `double` or `complex`.
 
 #### Examples
 
 ```r
+harray = HArray$new_from_values(c(1,2,3,4,5,6,7,8), HDataType$float32)
 harray$collect()
 ```
 
 _________
-### mem_adress[source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/harray.rs#L446)
 
-`mem_adress() -> character` \
+## mem_adress
+
+`mem_adress() -> string` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./harray.rs#L462) </span> \
 
 The memory adress of the first element of the inner data. \
 This is useful to check if different objects share the same underlying data. \
-It's important that the offset of both objects is at the same element for this comparison.
+It's important that the offset of both objects is at the same element for this comparison. \
 
 #### Returns
 
-A Character.
+A `string`. \
 
 #### Examples
 
 ```r
 harray = HArray$new_from_values(c(1,2,3,4), HDataType$float64)
-hmatrix = harray$as_hmatrix(ncols = 2)
+hmatrix = harray$as_hmatrix(ncols = 2L)
 harray$mem_adress() == hmatrix$mem_adress() # TRUE
 
-harray$slice(1,1) # changing the offset to 1
+harray$slice(1L,1L) # changing the offset to 1
 harray$mem_adress() == hmatrix$mem_adress() # FALSE, even though they still share the same underlying data
 
 harray2 = harray
-harray$mem_adress() == harray3$mem_adress() # TRUE, since `=` operator only creates an alias (harray and harray3 are the same external pointer).
+harray$mem_adress() == harray2$mem_adress() # TRUE, since `=` operator only creates an alias (harray and harray3 are the same external pointer).
 ```
 
 _________
-### dtype[source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/harray.rs#L468)
 
-`dtype() -> HDataType` \
+## dtype
 
-Get the `HArray`'s dtype as an `HDataType`.
+`dtype() -> HDataType` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./harray.rs#L486) </span> \
+
+Gets the `HArray`'s dtype as an `HDataType`.
 
 #### Returns
 
@@ -293,21 +309,23 @@ An `HDataType`.
 #### Examples
 
 ```r
+harray = HArray$new_from_values(c(1,2,3,4), HDataType$float64)
 harray$dtype()
 ```
 
 _________
-### is_shared[source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/harray.rs#L510)
 
-`is_shared() -> logical` \
+## is_shared
+
+`is_shared() -> bool` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./harray.rs#L529) </span> \
 
 Checks if the object is shared. \
-Since HArray has a COW ([clone-on-write](https://doc.rust-lang.org/std/borrow/enum.Cow.html)) behaviour, this function is useful to check if a new
-object will be created or if the change will be done in-place.
+Since `HArray` has a COW ([clone-on-write](https://doc.rust-lang.org/std/borrow/enum.Cow.html)) behaviour, this function is useful to check if a new
+object will be created or if the change will be done in-place. \
 
 #### Returns
 
-A logical.
+A `bool`. \
 
 #### Examples
 
@@ -315,7 +333,7 @@ A logical.
 harray = HArray$new_from_values(c(1,2,3,4), HDataType$float64)
 harray$is_shared() # FALSE.
 
-hmatrix = harray$as_hmatrix(ncols = 2)
+hmatrix = harray$as_hmatrix(ncols = 2L)
 harray$is_shared() # FALSE, since there's only one HArray object.
 harray$mem_adress() == hmatrix$mem_adress() # TRUE, since they share the same underlying data.
 
@@ -328,34 +346,36 @@ harray = HArray$new_from_values(c(1,2,3,4), HDataType$float64)
 harray2 = harray$clone()
 harray$mem_adress() == harray2$mem_adress() # TRUE.
 harray$is_shared() # TRUE
-harray$slice(0, 1)
+harray$slice(0L, 1L)
 harray$mem_adress() == harray2$mem_adress() # TRUE. harray and harray2 still share the same underlying data.
 harray$is_shared() # FALSE, because a new HArray object was created for harray.
 ```
-[source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/harray.rs#L566)
+
 _________
-### fft
 
-`fft() -> HArray` \
+## fft
 
-Computes the fast fourier transform of the HArray. \
+`fft() -> HArray` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./harray.rs#L587) </span> \
+
+Computes the fast fourier transform of the `HArray`. \
 FFT (Fast Fourier Transform) refers to a way the discrete Fourier Transform (DFT) can be calculated efficiently,
 by using symmetries in the calculated terms. The symmetry is highest when n is a power of 2, and the transform
 is therefore most efficient for these sizes. \
 
 The function does not normalize outputs. Callers must manually normalize the results by scaling each element by
-1/len().sqrt(). Multiple normalization steps can be merged into one via pairwise multiplication, so when doing
-a forward FFT followed by an inverse callers can normalize once by scaling each element by 1/len(). \
+`1/sqrt(n)`. Multiple normalization steps can be merged into one via pairwise multiplication, so when doing
+a forward FFT followed by an inverse callers can normalize once by scaling each element by `1/n`. \
 
-Elements in the output are ordered by ascending frequency, with the first element corresponding to frequency 0.
+Elements in the output are ordered by ascending frequency, with the first element corresponding to frequency 0. \
 
 #### Returns
 
-A complex HArray.
+An `HArray`. \
 
 #### Examples
 
 ```r
+harray = HArray$new_from_values(c(1,2,3,4), HDataType$float64)
 harray$fft()
 ```
 

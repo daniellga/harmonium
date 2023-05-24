@@ -27,19 +27,7 @@ impl HError {
     }
 }
 
-#[extendr]
-fn inttimes2_or_error(x: Robj) -> Robj {
-    match x.rtype() {
-        Rtype::Integers => {
-            x.as_integers().unwrap().iter_mut().for_each(|z| *z *= 2);
-            ().into()
-        }
-        _ => HError::to_error1().into(),
-    }
-}
-
 extendr_module! {
     mod herror;
     impl HError;
-    fn inttimes2_or_error;
 }

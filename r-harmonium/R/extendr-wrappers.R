@@ -11,7 +11,9 @@
 #' @useDynLib harmonium, .registration = TRUE
 NULL
 
-inttimes2_or_error <- function(x) .Call(wrap__inttimes2_or_error, x)
+set_float_fmt <- function(fmt) invisible(.Call(wrap__set_float_fmt, fmt))
+
+get_float_fmt <- function() .Call(wrap__get_float_fmt)
 
 HError <- new.env(parent = emptyenv())
 
@@ -27,9 +29,9 @@ HError$to_error2 <- function() .Call(wrap__HError__to_error2)
 
 HArray <- new.env(parent = emptyenv())
 
-HArray$new_from_values <- function(robj, dtype) .Call(wrap__HArray__new_from_values, robj, dtype)
+HArray$new_from_values <- function(values, dtype) .Call(wrap__HArray__new_from_values, values, dtype)
 
-HArray$new_from_arrow <- function(robj, dtype) .Call(wrap__HArray__new_from_arrow, robj, dtype)
+HArray$new_from_arrow <- function(values, dtype) .Call(wrap__HArray__new_from_arrow, values, dtype)
 
 HArray$len <- function() .Call(wrap__HArray__len, self)
 
@@ -40,12 +42,6 @@ HArray$print <- function() invisible(.Call(wrap__HArray__print, self))
 HArray$eq <- function(other) .Call(wrap__HArray__eq, self, other)
 
 HArray$ne <- function(other) .Call(wrap__HArray__ne, self, other)
-
-HArray$eq_inner <- function(other) .Call(wrap__HArray__eq_inner, self, other)
-
-HArray$eq_inner_hmatrix <- function(other) .Call(wrap__HArray__eq_inner_hmatrix, self, other)
-
-HArray$eq_inner_haudio <- function(other) .Call(wrap__HArray__eq_inner_haudio, self, other)
 
 HArray$clone <- function() .Call(wrap__HArray__clone, self)
 
@@ -85,7 +81,7 @@ HAudio <- new.env(parent = emptyenv())
 
 HAudio$new_from_file <- function(fpath, offset = NA_real_, duration = NA_real_, dtype) .Call(wrap__HAudio__new_from_file, fpath, offset, duration, dtype)
 
-HAudio$new_from_values <- function(robj, sr, dtype) .Call(wrap__HAudio__new_from_values, robj, sr, dtype)
+HAudio$new_from_values <- function(values, sr, dtype) .Call(wrap__HAudio__new_from_values, values, sr, dtype)
 
 HAudio$len <- function() .Call(wrap__HAudio__len, self)
 
@@ -100,12 +96,6 @@ HAudio$as_hmatrix <- function() .Call(wrap__HAudio__as_hmatrix, self)
 HAudio$eq <- function(other) .Call(wrap__HAudio__eq, self, other)
 
 HAudio$ne <- function(other) .Call(wrap__HAudio__ne, self, other)
-
-HAudio$eq_inner <- function(other) .Call(wrap__HAudio__eq_inner, self, other)
-
-HAudio$eq_inner_harray <- function(other) .Call(wrap__HAudio__eq_inner_harray, self, other)
-
-HAudio$eq_inner_hmatrix <- function(other) .Call(wrap__HAudio__eq_inner_hmatrix, self, other)
 
 HAudio$clone <- function() .Call(wrap__HAudio__clone, self)
 
@@ -207,9 +197,9 @@ HDataType$ne <- function(other) .Call(wrap__HDataType__ne, self, other)
 
 HMatrix <- new.env(parent = emptyenv())
 
-HMatrix$new_from_values <- function(robj, dtype) .Call(wrap__HMatrix__new_from_values, robj, dtype)
+HMatrix$new_from_values <- function(values, dtype) .Call(wrap__HMatrix__new_from_values, values, dtype)
 
-HMatrix$new_from_arrow <- function(robj, dtype) .Call(wrap__HMatrix__new_from_arrow, robj, dtype)
+HMatrix$new_from_arrow <- function(values, dtype) .Call(wrap__HMatrix__new_from_arrow, values, dtype)
 
 HMatrix$len <- function() .Call(wrap__HMatrix__len, self)
 
@@ -224,12 +214,6 @@ HMatrix$print <- function() invisible(.Call(wrap__HMatrix__print, self))
 HMatrix$eq <- function(other) .Call(wrap__HMatrix__eq, self, other)
 
 HMatrix$ne <- function(other) .Call(wrap__HMatrix__ne, self, other)
-
-HMatrix$eq_inner <- function(other) .Call(wrap__HMatrix__eq_inner, self, other)
-
-HMatrix$eq_inner_harray <- function(other) .Call(wrap__HMatrix__eq_inner_harray, self, other)
-
-HMatrix$eq_inner_haudio <- function(other) .Call(wrap__HMatrix__eq_inner_haudio, self, other)
 
 HMatrix$clone <- function() .Call(wrap__HMatrix__clone, self)
 
@@ -259,7 +243,21 @@ HMatrix$mean_cols <- function() invisible(.Call(wrap__HMatrix__mean_cols, self))
 
 HWindow <- new.env(parent = emptyenv())
 
+HWindow$barthann <- function(npoints, sym, dtype) .Call(wrap__HWindow__barthann, npoints, sym, dtype)
+
+HWindow$bartlett <- function(npoints, sym, dtype) .Call(wrap__HWindow__bartlett, npoints, sym, dtype)
+
 HWindow$blackman <- function(npoints, sym, dtype) .Call(wrap__HWindow__blackman, npoints, sym, dtype)
+
+HWindow$blackmanharris <- function(npoints, sym, dtype) .Call(wrap__HWindow__blackmanharris, npoints, sym, dtype)
+
+HWindow$bohman <- function(npoints, sym, dtype) .Call(wrap__HWindow__bohman, npoints, sym, dtype)
+
+HWindow$boxcar <- function(npoints, dtype) .Call(wrap__HWindow__boxcar, npoints, dtype)
+
+HWindow$cosine <- function(npoints, sym, dtype) .Call(wrap__HWindow__cosine, npoints, sym, dtype)
+
+HWindow$hann <- function(npoints, sym, dtype) .Call(wrap__HWindow__hann, npoints, sym, dtype)
 
 #' @export
 `$.HWindow` <- function (self, name) { func <- HWindow[[name]]; environment(func) <- environment(); func }

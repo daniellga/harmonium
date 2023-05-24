@@ -10,7 +10,6 @@ website:
         text: GitHub
   sidebar:
     style: "docked"
-    search: true
     contents:
       - section: "Classes"
         contents: docs/* 
@@ -22,6 +21,8 @@ format:
       light: flatly
     css: styles.css
     toc: true
+    grid:
+      body-width: 1000px
 
 
 

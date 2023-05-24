@@ -1,7 +1,112 @@
 ---
-title: "docswebsite"
+title: "Harmonium"
 ---
 
-This is a Quarto website.
+Harmonium is an audio interface inspired by Python's [librosa](https://github.com/librosa/librosa). \
 
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
+# Basic usage
+
+Load the library
+```r
+library(harmonium)
+```
+
+Create an haudio from an existing matrix
+```r
+values = matrix(c(1,2,3,4,5,6,7,8,9,10,11,12), ncol = 2)
+dtype = HDataType$float64
+haudio = HAudio$new_from_values(values = values, sr = 3L, dtype = dtype)
+print(haudio)
+```
+
+Or create an haudio from an audio file
+```r
+haudio = HAudio$new_from_file(fpath = "file.wav", dtype = dtype)
+print(haudio)
+```
+
+Verify the audio dimensions
+```r
+haudio$len()
+haudio$nchannels()
+haudio$nframes()
+```
+
+Get the sampling rate
+```r
+haudio$sr()
+```
+
+Verify the data type
+```r
+haudio$dtype()
+```
+
+Convert to an R matrix
+```r
+haudio$collect()
+```
+
+Or do a zero-copy conversion to an R's arrow array
+```r
+arrow::as_arrow_array(haudio$as_hmatrix())
+```
+
+Convert to mono
+```r
+haudio$as_mono()
+```
+
+Resample the haudio
+```r
+sr_in = haudio$sr()
+sr_out = 22050L
+nbr_channels = haudio$nchannels()
+dtype = HDataType$float64
+resampler_type = HResamplerType$fft_fixed_in
+resampler = HResampler$new_fft(sr_in = sr_in, sr_out = sr_out, nbr_channels = nbr_channels, resampler_type = resampler_type)
+hresampler$process(haudio, sr_out = sr_out, dtype = dtype)
+```
+
+Play the haudio
+```r
+haudiosink = HAudioSink$new()
+haudiosink$append_from_haudio(haudio)
+```
+
+Or play directly from the file
+```r
+haudiosink$append_from_file("file.wav")
+```
+
+Get the number of audios to be played
+```r
+haudiosink$len()
+```
+
+Double the audio volume and the playback speed
+```r
+haudiosink$set_volume(2)
+haudiosink$set_speed(2)
+```
+
+Pause the playback and confirms it is paused
+```r
+haudiosink$pause()
+haudiosink$is_paused()
+```
+
+It is also possible to get metadata from an audio file
+```r
+metatadatype = HMetadataType$text
+HFile$metadata_from_file("file.wav", metatadatype)
+```
+
+And to get some audio parameters directly from a file
+```r
+params = HFile$get_params_from_file("file.wav")
+sr = params[[1]]
+nframes = params[[2]]
+nchannels = params[[3]]
+duration = params[[4]]
+```

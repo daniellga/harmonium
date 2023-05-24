@@ -29,7 +29,6 @@ pub trait HArrayR: Send + Sync {
 
 /// HArray
 /// An array representation. \
-/// Supports Float32, Float64, Complex32 and Complex64 types. \
 ///
 /// # Methods
 ///
@@ -45,19 +44,19 @@ impl HArray {
     ///
     /// Creates a new `HArray` from an R atomic vector. \
     ///
-    /// ##### Arguments
+    /// #### Arguments
     ///
     /// * `values` \
-    /// A double or complex atomic vector.
+    /// A `double` or `complex` atomic vector.
     /// * `dtype` \
     /// An `HDataType` to indicate which type of `HArray` to be created. \
-    /// For float dtypes, the atomic vector must be a double. For complex dtypes, a complex atomic vector.
+    /// For float dtypes, the atomic vector must be a `double`. For complex dtypes, a `complex` atomic vector.
     ///
-    /// ##### Returns
+    /// #### Returns
     ///
     /// An `HArray`. \
     ///
-    /// ##### Examples
+    /// #### Examples
     ///
     /// ```r
     /// values = c(1,2,3,4,5,6,7,8,9,10,11,12)
@@ -115,7 +114,7 @@ impl HArray {
     ///
     /// `new_from_arrow(values: Array, dtype: HDataType) -> HArray` \
     ///
-    /// Creates a new `HArray` from an R's arrow `Array`. \
+    /// Creates a new `HArray` from an R's arrow [`Array`](https://arrow.apache.org/docs/r/reference/array.html). \
     /// The conversion is zero copy.
     ///
     /// #### Arguments
@@ -132,9 +131,13 @@ impl HArray {
     /// #### Examples
     ///
     /// ```r
-    /// values = arrow::Array$create(1:10, type = float32())
+    /// values = arrow::Array$create(1:10, type = arrow::float32())
     /// dtype = HDataType$complex32
-    /// HArray$new_from_arrow(values, dtype)
+    /// harray = HArray$new_from_arrow(values, dtype)
+    ///
+    /// # to convert back to R's arrow Array.
+    /// values2 = arrow::as_arrow_array(harray)
+    /// all.equal(values, values2) # TRUE
     /// ```
     ///
     /// _________
@@ -189,15 +192,16 @@ impl HArray {
     ///
     /// `len() -> integer` \
     ///
-    /// Returns the length of this `Harray`. \
+    /// Returns the number of elements of this `Harray`. \
     ///
     /// #### Returns
     ///
-    /// An integer. \
+    /// An `integer`. \
     ///
     /// #### Examples
     ///
     /// ```r
+    /// harray = HArray$new_from_values(c(1,2,3), HDataType$float32)
     /// harray$len()
     /// ```
     ///
@@ -220,29 +224,27 @@ impl HArray {
     /// #### Arguments
     ///
     /// * `offset` \
-    /// An integer representing the offset starting from 0. \
+    /// An `integer` representing the offset starting from 0. \
     /// * `length` \
-    /// An integer representing the desired length. \
+    /// An `integer` representing the desired length. \
     ///
     /// #### Examples
     ///
     /// ```r
     /// harray = HArray$new_from_values(c(1,2,3,4,5,6,7), HDataType$float32)
-    /// harray$slice(2, 3)
+    /// harray$slice(2L, 3L)
     /// print(harray)
     ///
     /// # if the HArray object is not being shared, slicing it will modify the HArray in-place.
-    /// harray = HArray$new_from_values(c(1,2,3), HDataType$float64)
-    /// harray$slice(1, 1)
+    /// harray = HArray$new_from_values(c(1,2,3), HDataType$float32)
+    /// harray$slice(1L, 1L)
     ///
-    /// # if the HArray object is being shared, slicing it will create HArray object.
-    /// harray = HArray$new_from_values(c(1,2,3), HDataType$float64)
+    /// # if the HArray object is being shared, slicing it will create a new HArray object.
+    /// harray = HArray$new_from_values(c(1,2,3), HDataType$float32)
     /// harray2 = harray$clone()
     /// harray$is_shared() # TRUE
-    /// harray$slice(1, 1) # now harray is a different object in comparison with harray2, although
-    /// they share the same underlying data.
+    /// harray$slice(1L, 1L) # now harray is a different object in comparison with harray2, although they share the same underlying data.
     /// harray$is_shared() # FALSE
-    ///
     /// ```
     ///
     /// _________
@@ -257,11 +259,13 @@ impl HArray {
     ///
     /// `print()` \
     ///
-    /// Print the `HArray`.
+    /// Print the `HArray`. \
+    /// Differently from R's normal behaviour, `print` doesn't return the value invisibly. \
     ///
     /// #### Examples
     ///
     /// ```r
+    /// harray = HArray$new_from_values(c(1,2,3), HDataType$float32)
     /// harray$print()
     ///
     /// # or similarly:
@@ -277,20 +281,20 @@ impl HArray {
     /// HArray
     /// ## eq
     ///
-    /// `eq(other: HArray) -> logical` \
+    /// `eq(other: HArray) -> bool` \
     ///
-    /// Equality with another HArray. \
+    /// Equality with another `HArray`. \
     /// The comparison only checks if the dtype and the values are the same. To compare if the
-    /// underlying data is the same in memory, check `mem_adress`.
+    /// underlying data is the same in memory, check `mem_adress`. \
     ///
     /// #### Arguments
     ///
     /// * `other` \
-    /// An `HArray`.
+    /// An `HArray`. \
     ///
     /// #### Returns
     ///
-    /// A logical.
+    /// A `bool`. \
     ///
     /// #### Examples
     ///
@@ -312,7 +316,7 @@ impl HArray {
     /// HArray
     /// ## ne
     ///
-    /// `ne(other: HArray) -> logical` \
+    /// `ne(other: HArray) -> bool` \
     ///
     /// Difference with another `HArray`. \
     /// The comparison only checks if the dtype and the values are the same. To compare if the
@@ -325,7 +329,7 @@ impl HArray {
     ///
     /// #### Returns
     ///
-    /// A logical.
+    /// A `bool`.
     ///
     /// #### Examples
     ///
@@ -358,11 +362,10 @@ impl HArray {
     /// #### Examples
     ///
     /// ```r
-    /// harray = HArray$new_from_values(c(1,2,3,4,5,6,7,8), HDataType$float32)
-    /// harray2 = harray$clone()
-    ///
-    /// harray == harray2 # TRUE
-    /// harray$mem_adress() == harray2$mem_adress() # TRUE
+    /// harray1 = HArray$new_from_values(c(1,2,3,4,5,6,7,8), HDataType$float32)
+    /// harray2 = harray1$clone()
+    /// harray1 == harray2 # TRUE
+    /// harray1$mem_adress() == harray2$mem_adress() # TRUE
     /// ```
     ///
     /// _________
@@ -376,13 +379,13 @@ impl HArray {
     ///
     /// `as_hmatrix(ncols: integer) -> HMatrix` \
     ///
-    /// Creates a new `HMatrix`, with the underlying data pointing to the same place in memory.
+    /// Creates a new `HMatrix`, with the underlying data pointing to the same place in memory. \
     ///
     /// #### Arguments
     ///
     /// * `ncols` \
-    /// An integer representing the number of columns desired. \
-    /// Will return an error if `ncols` is not a divider of the length of the `HArray`.
+    /// An `integer` representing the number of columns desired. \
+    /// Will return an error if `ncols` is not a divider of the length of the `HArray`. \
     ///
     /// #### Returns
     ///
@@ -392,7 +395,7 @@ impl HArray {
     ///
     /// ```r
     /// harray = HArray$new_from_values(c(1,2,3,4,5,6,7,8), HDataType$float32)
-    /// hmatrix = harray$as_hmatrix(ncols = 2)
+    /// hmatrix = harray$as_hmatrix(ncols = 2L)
     ///
     /// harray$mem_adress() == hmatrix$mem_adress() # TRUE
     /// ```
@@ -408,15 +411,16 @@ impl HArray {
     ///
     /// `collect() -> atomicvector` \
     ///
-    /// Create an R atomic vector from an `HArray`. The type of the atomic vector created (double or complex) will depend on the `HArray`'s dtype.
+    /// Creates an R atomic vector from an `HArray`. The type of the atomic vector created (`double` or `complex`) will depend on the `HArray`'s dtype.
     ///
     /// #### Returns
     ///
-    /// An atomic vector of type double or complex.
+    /// An atomic vector of type `double` or `complex`.
     ///
     /// #### Examples
     ///
     /// ```r
+    /// harray = HArray$new_from_values(c(1,2,3,4,5,6,7,8), HDataType$float32)
     /// harray$collect()
     /// ```
     ///
@@ -429,28 +433,28 @@ impl HArray {
     /// HArray
     /// ## mem_adress
     ///
-    /// `mem_adress() -> character` \
+    /// `mem_adress() -> string` \
     ///
     /// The memory adress of the first element of the inner data. \
     /// This is useful to check if different objects share the same underlying data. \
-    /// It's important that the offset of both objects is at the same element for this comparison.
+    /// It's important that the offset of both objects is at the same element for this comparison. \
     ///
     /// #### Returns
     ///
-    /// A Character.
+    /// A `string`. \
     ///
     /// #### Examples
     ///
     /// ```r
     /// harray = HArray$new_from_values(c(1,2,3,4), HDataType$float64)
-    /// hmatrix = harray$as_hmatrix(ncols = 2)
+    /// hmatrix = harray$as_hmatrix(ncols = 2L)
     /// harray$mem_adress() == hmatrix$mem_adress() # TRUE
     ///
-    /// harray$slice(1,1) # changing the offset to 1
+    /// harray$slice(1L,1L) # changing the offset to 1
     /// harray$mem_adress() == hmatrix$mem_adress() # FALSE, even though they still share the same underlying data
     ///
     /// harray2 = harray
-    /// harray$mem_adress() == harray3$mem_adress() # TRUE, since `=` operator only creates an alias (harray and harray3 are the same external pointer).
+    /// harray$mem_adress() == harray2$mem_adress() # TRUE, since `=` operator only creates an alias (harray and harray3 are the same external pointer).
     /// ```
     ///
     /// _________
@@ -464,7 +468,7 @@ impl HArray {
     ///
     /// `dtype() -> HDataType` \
     ///
-    /// Get the `HArray`'s dtype as an `HDataType`.
+    /// Gets the `HArray`'s dtype as an `HDataType`.
     ///
     /// #### Returns
     ///
@@ -473,6 +477,7 @@ impl HArray {
     /// #### Examples
     ///
     /// ```r
+    /// harray = HArray$new_from_values(c(1,2,3,4), HDataType$float64)
     /// harray$dtype()
     /// ```
     ///
@@ -485,15 +490,15 @@ impl HArray {
     /// HArray
     /// ## is_shared
     ///
-    /// `is_shared() -> logical` \
+    /// `is_shared() -> bool` \
     ///
     /// Checks if the object is shared. \
-    /// Since HArray has a COW ([clone-on-write](https://doc.rust-lang.org/std/borrow/enum.Cow.html)) behaviour, this function is useful to check if a new
-    /// object will be created or if the change will be done in-place.
+    /// Since `HArray` has a COW ([clone-on-write](https://doc.rust-lang.org/std/borrow/enum.Cow.html)) behaviour, this function is useful to check if a new
+    /// object will be created or if the change will be done in-place. \
     ///
     /// #### Returns
     ///
-    /// A logical.
+    /// A `bool`. \
     ///
     /// #### Examples
     ///
@@ -501,7 +506,7 @@ impl HArray {
     /// harray = HArray$new_from_values(c(1,2,3,4), HDataType$float64)
     /// harray$is_shared() # FALSE.
     ///
-    /// hmatrix = harray$as_hmatrix(ncols = 2)
+    /// hmatrix = harray$as_hmatrix(ncols = 2L)
     /// harray$is_shared() # FALSE, since there's only one HArray object.
     /// harray$mem_adress() == hmatrix$mem_adress() # TRUE, since they share the same underlying data.
     ///
@@ -514,7 +519,7 @@ impl HArray {
     /// harray2 = harray$clone()
     /// harray$mem_adress() == harray2$mem_adress() # TRUE.
     /// harray$is_shared() # TRUE
-    /// harray$slice(0, 1)
+    /// harray$slice(0L, 1L)
     /// harray$mem_adress() == harray2$mem_adress() # TRUE. harray and harray2 still share the same underlying data.
     /// harray$is_shared() # FALSE, because a new HArray object was created for harray.
     /// ```
@@ -555,24 +560,25 @@ impl HArray {
     ///
     /// `fft() -> HArray` \
     ///
-    /// Computes the fast fourier transform of the HArray. \
+    /// Computes the fast fourier transform of the `HArray`. \
     /// FFT (Fast Fourier Transform) refers to a way the discrete Fourier Transform (DFT) can be calculated efficiently,
     /// by using symmetries in the calculated terms. The symmetry is highest when n is a power of 2, and the transform
     /// is therefore most efficient for these sizes. \
     ///
     /// The function does not normalize outputs. Callers must manually normalize the results by scaling each element by
-    /// 1/len().sqrt(). Multiple normalization steps can be merged into one via pairwise multiplication, so when doing
-    /// a forward FFT followed by an inverse callers can normalize once by scaling each element by 1/len(). \
+    /// `1/sqrt(n)`. Multiple normalization steps can be merged into one via pairwise multiplication, so when doing
+    /// a forward FFT followed by an inverse callers can normalize once by scaling each element by `1/n`. \
     ///
-    /// Elements in the output are ordered by ascending frequency, with the first element corresponding to frequency 0.
+    /// Elements in the output are ordered by ascending frequency, with the first element corresponding to frequency 0. \
     ///
     /// #### Returns
     ///
-    /// A complex HArray.
+    /// An `HArray`. \
     ///
     /// #### Examples
     ///
     /// ```r
+    /// harray = HArray$new_from_values(c(1,2,3,4), HDataType$float64)
     /// harray$fft()
     /// ```
     ///
@@ -628,7 +634,7 @@ impl HArrayR for HFloatArray<f32> {
     }
 
     fn mem_adress(&self) -> String {
-        let p = self.inner().values().as_slice();
+        let p = self.as_slice();
         format!("{:p}", p)
     }
 
@@ -682,7 +688,7 @@ impl HArrayR for HFloatArray<f64> {
     }
 
     fn mem_adress(&self) -> String {
-        let p = self.inner().values().as_slice();
+        let p = self.as_slice();
         format!("{:p}", p)
     }
 
@@ -739,7 +745,7 @@ impl HArrayR for HComplexArray<f32> {
     }
 
     fn mem_adress(&self) -> String {
-        let p = self.inner().values().as_slice();
+        let p = self.as_slice();
         format!("{:p}", p)
     }
 
@@ -796,7 +802,7 @@ impl HArrayR for HComplexArray<f64> {
     }
 
     fn mem_adress(&self) -> String {
-        let p = self.inner().values().as_slice();
+        let p = self.as_slice();
         format!("{:p}", p)
     }
 

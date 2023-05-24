@@ -3,15 +3,15 @@ title: HDataType
 ---
 
 A type representation. \
-Supports Float32, Float64, Complex32 and Complex64 types. \
+Supports `Float32`, `Float64`, `Complex32` and `Complex64` types. \
 
-## Methods
+# Methods
 
-### float32[source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/hdatatype.rs#L38)
+## float32
 
-`float32 -> HDataType` \
+`float32 -> HDataType` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hdatatype.rs#L39) </span> \
 
-Creates a Float32 `HDataType`.
+Creates a Float32 `HDataType`. \
 
 #### Returns
 
@@ -24,11 +24,12 @@ dtype = HDataType$float32
 ```
 
 _________
-### float64[source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/hdatatype.rs#L60)
 
-`float64 -> HDataType` \
+## float64
 
-Creates a Float64 `HDataType`.
+`float64 -> HDataType` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hdatatype.rs#L62) </span> \
+
+Creates a Float64 `HDataType`. \
 
 #### Returns
 
@@ -41,11 +42,12 @@ dtype = HDataType$float64
 ```
 
 _________
-### complex32[source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/hdatatype.rs#L82)
 
-`complex32 -> HDataType` \
+## complex32
 
-Creates a Complex32 `HDataType`.
+`complex32 -> HDataType` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hdatatype.rs#L85) </span> \
+
+Creates a Complex32 `HDataType`. \
 
 #### Returns
 
@@ -58,11 +60,12 @@ dtype = HDataType$complex32
 ```
 
 _________
-### complex64[source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/hdatatype.rs#L104)
 
-`complex64 -> HDataType` \
+## complex64
 
-Creates a Complex64 `HDataType`.
+`complex64 -> HDataType` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hdatatype.rs#L108) </span> \
+
+Creates a Complex64 `HDataType`. \
 
 #### Returns
 
@@ -75,36 +78,40 @@ dtype = HDataType$complex64
 ```
 
 _________
-### print[source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/hdatatype.rs#L125)
 
-`print()` \
+## print
 
-Prints the `HDataType`.
+`print()` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hdatatype.rs#L132) </span> \
+
+Prints the `HDataType`. \
+Differently from R's behaviour, `print` doesn't return the value invisibly. \
 
 #### Examples
 
 ```r
-hdatatype$print()
+dtype = HDataType$complex64
+dtype$print()
 
 # or similarly:
-print(hdatatype)
+print(dtype)
 ```
 
 _________
-### eq[source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/hdatatype.rs#L157)
 
-`eq(other: HDataType) -> logical` \
+## eq
+
+`eq(other: HDataType) -> bool` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hdatatype.rs#L165) </span> \
 
 Equality with another `HDataType`.
 
 #### Arguments
 
 * `other` \
-An `HDataType`.
+An `HDataType`. \
 
 #### Returns
 
-A logical.
+A `bool`.
 
 #### Examples
 
@@ -118,20 +125,21 @@ hdatatype1 == hdatatype2
 ```
 
 _________
-### ne[source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/hdatatype.rs#L189)
 
-`ne(other: HDataType) -> logical` \
+## ne
+
+`ne(other: HDataType) -> bool` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hdatatype.rs#L198) </span> \
 
 Difference with another `HDataType`.
 
 #### Arguments
 
 * `other` \
-An `HDataType`.
+An `HDataType`. \
 
 #### Returns
 
-A logical.
+A `bool`.
 
 #### Examples
 

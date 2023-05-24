@@ -4,24 +4,41 @@ use std::io::{BufRead, BufReader, Write};
 use std::path::PathBuf;
 
 fn main() {
-    generate_r_docs();
+    let files = vec![
+        "./harray.rs",
+        "./haudio.rs",
+        "./hmatrix.rs",
+        "./hdatatype.rs",
+        "./haudiosink.rs",
+        "./hresamplertype.rs",
+        "./hwindow.rs",
+        "./hmetadatatype.rs",
+        "../../../R/hconfig.R",
+    ];
+
+    let gh = "https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/";
+
+    let mut hash: HashMap<String, Vec<String>> = HashMap::new();
+
+    generate_r_docs(files, gh, &mut hash);
+
+    let output_path = PathBuf::from("../../../docs/docswebsite/docs");
+
+    output_file(hash, output_path)
 }
 
-fn generate_r_docs() {
-    let files = ["./harray.rs", "./hdatatype.rs"];
-    let mut hash: HashMap<String, Vec<String>> = HashMap::new();
-    let output_path = PathBuf::from("../../../docs/docswebsite/docs");
-    let github_folder =
-        "https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/";
-
-    for file in files {
-        let input_file_path = PathBuf::from(file);
-
+// Currently it may give a bug if 2 methods impl for the same struct are on different files,
+// depending on the order of the files on the list below. Try to reorder the vec in a way that
+// if the code chunk contains "# Methods" it will be swapped to the vec's first position.
+fn generate_r_docs(files: Vec<&str>, github_folder: &str, hash: &mut HashMap<String, Vec<String>>) {
+    for file in &files {
         // Read the input file and filter to keep only lines starting with "///".
-        let input_file = File::open(&input_file_path).unwrap();
+        let input_file = File::open(file).unwrap();
         let mut key = String::new();
         let mut last_line_was_comment = false;
         let mut skip_comment_chunk = false;
+
+        // counter the line in a code chunk
         let mut counter: i32 = -1;
         for (line_counter, line) in BufReader::new(input_file).lines().flatten().enumerate() {
             let line_trimmed = line.trim_start();
@@ -35,9 +52,32 @@ fn generate_r_docs() {
                 // skip first space.
                 let filtered_line = stripped.strip_prefix(' ').unwrap_or(stripped).to_string();
 
-                // associate with key in first line of comment chunk.
+                // associate with key in first line of comment chunk. keys are identifiable by a 1 word line.
                 if !last_line_was_comment {
                     key = filtered_line.clone();
+                    // key should have only one word
+                    if key.contains(' ') {
+                        skip_comment_chunk = true;
+                        continue;
+                    }
+                    hash.entry(key.clone()).or_insert_with(Vec::new);
+                    last_line_was_comment = true;
+                } else {
+                    hash.get_mut(&key).unwrap().push(filtered_line);
+                }
+            } else if let Some(stripped) = line_trimmed.strip_prefix("###") {
+                counter += 1;
+                if skip_comment_chunk {
+                    continue;
+                }
+
+                // skip first space.
+                let filtered_line = stripped.strip_prefix(' ').unwrap_or(stripped).to_string();
+
+                // associate with key in first line of comment chunk. keys are identifiable by a 1 word line.
+                if !last_line_was_comment {
+                    key = filtered_line.clone();
+                    // key should have only one word
                     if key.contains(' ') {
                         skip_comment_chunk = true;
                         continue;
@@ -49,37 +89,35 @@ fn generate_r_docs() {
                 }
             } else {
                 // add the source text. Code on github must be updated.
-                if last_line_was_comment {
-                    if line_trimmed.contains("fn") && line_trimmed.contains('{') {
-                        let vec = hash.get_mut(&key).unwrap();
-                        let len = vec.len();
-                        let elem = &mut vec[len - counter as usize + 2];
-                        elem.pop();
-                        let path = files
-                            .iter()
-                            .find(|&&x| x.contains(&key.to_lowercase()))
-                            .unwrap()
-                            .strip_prefix("./")
-                            .unwrap();
+                if last_line_was_comment
+                    && line_trimmed.contains("fn")
+                    && line_trimmed.contains('{')
+                {
+                    let vec = hash.get_mut(&key).unwrap();
+                    let len = vec.len();
+                    let elem = &mut vec[len - counter as usize + 2];
+                    elem.pop();
 
-                        let source = "<span style=\"float: right;\"> [source](".to_string()
-                            + github_folder
-                            + path
-                            + "#L"
-                            + &(line_counter + 1).to_string()
-                            + ") </span> \\";
-                        elem.push_str(&source);
-                    }
-                    counter = -1;
+                    let filename = files
+                        .iter()
+                        .find(|&&x| x.contains(&key.to_lowercase()))
+                        .unwrap();
+
+                    let source = "<span style=\"float: right;\"> [source](".to_string()
+                        + github_folder
+                        + filename
+                        + "#L"
+                        + &(line_counter + 1).to_string()
+                        + ") </span> \\";
+                    elem.push_str(&source);
                 }
 
+                counter = -1;
                 skip_comment_chunk = false;
                 last_line_was_comment = false;
             }
         }
     }
-
-    output_file(hash, output_path)
 }
 
 fn output_file(hash: HashMap<String, Vec<String>>, output_path: PathBuf) {

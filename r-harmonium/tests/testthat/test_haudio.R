@@ -13,12 +13,12 @@ test_that(
       haudio_cloned = haudio$clone()
       expect_true(haudio==haudio_cloned)
       expect_false(haudio!=haudio_cloned)
-      expect_true(haudio$eq_inner(haudio_cloned))
+      expect_true(haudio$mem_adress() == haudio_cloned$mem_adress())
       expect_false(identical(haudio, haudio_cloned))
 
       haudio_new = HAudio$new_from_values(values, 22000, dtype)
       expect_true(haudio==haudio_new)
-      expect_false(haudio$eq_inner(haudio_new))
+      expect_false(haudio$mem_adress() == haudio_new$mem_adress())
     }
 
     values = matrix(c(1,2,3,4,5,6,7,8,9,10,11,12), 3, 4)

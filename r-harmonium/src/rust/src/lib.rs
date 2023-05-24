@@ -4,6 +4,7 @@ mod generate_r_docs;
 mod harray;
 mod haudio;
 mod haudiosink;
+mod hconfig;
 mod hdatatype;
 mod herror;
 mod hfile;
@@ -20,6 +21,7 @@ mod partialeq;
 // See corresponding C code in `entrypoint.c`.
 extendr_module! {
     mod harmonium;
+    use hconfig;
     use herror;
     use harray;
     use hinterpolationparams;

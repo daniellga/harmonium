@@ -1,13 +1,20 @@
-rextendr::document()
-devtools::load_all(".")
+rextendr::register_extendr()
+devtools::load_all(".", export_all = FALSE)
 devtools::test()
 devtools::check()
 
-haudio = HAudio$new_from_file("../testfiles/gs-16b-1c-44100hz.flac", dtype = HDataType$float32)
-res = HResampler$new_fft(haudio$sr(), 22050, 1000, 2, haudio$nchannels(), HResamplerType$fft_fixed_in, HDataType$float32)
-res$resampler_type()
-res$data_type()
-res$process(haudio, sr_out = 22050)
+
+# another test
+haudio = HAudio$new_from_file("../testfiles/gs-16b-2c-44100hz.flac", dtype = HDataType$float64)
+resampler_type = HResamplerType$fft_fixed_in
+sr_in = haudio$sr()
+sr_out = 22050L
+dtype = HDataType$float64
+resampler = HResampler$new_fft(sr_in = sr_in, sr_out = sr_out, nbr_channels = 2L, chunk_size = 1024L, sub_chunks = 2L , resampler_type = resampler_type, dtype = dtype)
+resampler$process(haudio, sr_out = sr_out)
+
+
+
 
 haudio = HAudio$new_from_values(matrix(0, nrow = 1024, ncol = 2), 44100, dtype = HDataType$float64)
 hparams = HInterpolationParams$new(256, 0.95, 256, "linear", "blackmanharris2")
@@ -19,25 +26,28 @@ haudio$len() == 1948
 haudio$sr() == 48000
 
 
-harray = HArray$new_from_values(c(1,2,3,4), HDataType$float64)
-harray2 = harray$clone()
-harray$mem_adress() == harray2$mem_adress() # TRUE
-harray$slice(0, 1)
-harray$mem_adress() == harray2$mem_adress() # FALSE
 
 
 
 
-
-
-res = HResampler$new_fft(haudio$sr(), 22050, 1000, 2, haudio$nchannels(), HResamplerType$fft_fixed_in, HDataType$float32)
+s = HResampler$new_fft(haudio$sr(), 22050, 1000, 2, haudio$nchannels(), HResamplerType$fft_fixed_in, HDataType$float32)
 
 
 a = HFile$metadata_from_file("../testfiles/gs-16b-1c-44100hz.flac", HMetadataType$text)
 a = HFile$metadata_from_file("../testfiles/gs-16b-1c-44100hz.wav", HMetadataType$text)
 
+haudio = HAudio$new_from_file("../testfiles/gs-16b-1c-44100hz.flac", dtype = HDataType$float64)
+resampler_type = resampler_type = HResamplerType$fft_fixed_in
+sr_in = haudio$sr()
+sr_out = 22050L
+dtype = HDataType$float64
+resampler = HResampler$new_fft(sr_in = sr_in, sr_out = sr_out, nbr_channels = 2L, chunk_size = 1024L, sub_chunks = 2L , resampler_type = resampler_type, dtype = dtype)
+hresampler$process(haudio, sr_out = sr_out)
 
-b = HAudio$new_from_file("../testfiles/gs-16b-1c-44100hz.flac", dtype = HDataType$float64)
+
+
+
+haudio = HAudio$new_from_file("../testfiles/gs-16b-1c-44100hz.flac", dtype = HDataType$float64)
 b = HAudio$new_from_file("../testfiles/gs-16b-1c-44100hz.wav", dtype = HDataType$float64)
 
 values = matrix(as.numeric(c(1:1000000)), ncol = 1000)

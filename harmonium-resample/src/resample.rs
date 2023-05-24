@@ -46,8 +46,8 @@ macro_rules! impl_process_resampler_fixed_in {
 
                         loop {
                             (0..nchannels).for_each(|ch| {
-                                let sli = &values[(ch * nrows + idx)..(ch * nrows + idx + nbr_frames_next)];
-                                input_buffer[ch].extend_from_slice(sli);
+                                let slc = &values[(ch * nrows + idx)..(ch * nrows + idx + nbr_frames_next)];
+                                input_buffer[ch].extend_from_slice(slc);
                             });
                             // the input and output buffers are noninterleaved
                             self.process_into_buffer(&input_buffer, &mut output_buffer, None)?;
@@ -112,8 +112,8 @@ macro_rules! impl_process_resampler_fixed_out {
 
                         loop {
                             (0..nchannels).for_each(|ch| {
-                                let sli = &values[(ch * nrows + idx)..(ch * nrows + idx + nbr_frames_next)];
-                                input_buffer[ch].extend_from_slice(sli);
+                                let slc = &values[(ch * nrows + idx)..(ch * nrows + idx + nbr_frames_next)];
+                                input_buffer[ch].extend_from_slice(slc);
                             });
                             // the input and output buffers are noninterleaved
                             self.process_into_buffer(&input_buffer, &mut output_buffer, None)?;
