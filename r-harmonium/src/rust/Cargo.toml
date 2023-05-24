@@ -10,7 +10,7 @@ name = 'harmonium'
 [profile.release]
 opt-level = 3
 lto = true
-codegen-units=1
+codegen-units = 1
 
 [workspace]
 # prevents package from thinking it's in the workspace
