@@ -9,6 +9,7 @@ export(HWindow)
 export(HMetadataType)
 export(HFile)
 export(HConfig)
+export(hdocs)
 
 S3method("!=",HArray)
 S3method("!=",HAudio)

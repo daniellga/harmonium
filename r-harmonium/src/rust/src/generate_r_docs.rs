@@ -38,7 +38,7 @@ fn generate_r_docs(files: Vec<&str>, github_folder: &str, hash: &mut HashMap<Str
         let mut last_line_was_comment = false;
         let mut skip_comment_chunk = false;
 
-        // counter the line in a code chunk
+        // counts the line in a code chunk
         let mut counter: i32 = -1;
         for (line_counter, line) in BufReader::new(input_file).lines().flatten().enumerate() {
             let line_trimmed = line.trim_start();

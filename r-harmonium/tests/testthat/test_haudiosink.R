@@ -1,10 +1,12 @@
 test_that(
   "haudiosink works.",
   {
+    filepath = file.path("..", "..", "..", "testfiles", "gs-16b-2c-44100hz.wav")
+    
     # haudiosink from haudio.
     haudiosink = HAudioSink$new()
     expect_true(haudiosink$is_empty())
-    haudio = HAudio$new_from_file("../../../testfiles/gs-16b-2c-44100hz.wav", dtype = HDataType$float32)
+    haudio = HAudio$new_from_file(filepath, dtype = HDataType$float32)
     expect_silent(haudiosink$append_from_haudio(haudio))
     expect_false(haudiosink$is_empty())
 
@@ -12,9 +14,9 @@ test_that(
     haudiosink = HAudioSink$new()
     expect_true(haudiosink$is_empty())
     expect_equal(haudiosink$len(), 0)
-    haudiosink$append_from_file("../../../testfiles/gs-16b-2c-44100hz.wav")
+    haudiosink$append_from_file(filepath)
     expect_false(haudiosink$is_empty())
-    haudiosink$append_from_file("../../../testfiles/gs-16b-2c-44100hz.wav")
+    haudiosink$append_from_file(filepath)
     expect_equal(haudiosink$len(), 2)
     #haudiosink$skip_one()
     #haudiosink$len() == 1
@@ -27,14 +29,14 @@ test_that(
     haudiosink$play()
     haudiosink$stop()
     expect_false(haudiosink$is_paused())
-    haudiosink$append_from_file("../../../testfiles/gs-16b-2c-44100hz.wav")
-    haudiosink$append_from_file("../../../testfiles/gs-16b-2c-44100hz.wav")
+    haudiosink$append_from_file(filepath)
+    haudiosink$append_from_file(filepath)
     haudiosink$play()
     expect_equal(haudiosink$len(), 2)
     haudiosink$clear()
     expect_equal(haudiosink$len(), 0)
     expect_true(haudiosink$is_paused())
-    haudiosink$append_from_file("../../../testfiles/gs-16b-2c-44100hz.wav")
+    haudiosink$append_from_file(filepath)
     expect_equal(haudiosink$len(), 1)
 
     # needed so no song is played when test is run.

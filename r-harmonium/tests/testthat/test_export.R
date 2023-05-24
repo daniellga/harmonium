@@ -11,6 +11,8 @@ test_that(
     expect_no_error(harmonium::HWindow)
     expect_no_error(harmonium::HFile)
     expect_no_error(harmonium::HConfig)
+    expect_no_error(harmonium::hdocs)
+    
   }
 
 
