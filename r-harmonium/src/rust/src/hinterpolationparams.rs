@@ -14,7 +14,7 @@ pub struct HInterpolationParams {
 impl HInterpolationParams {
     fn new(
         sinc_len: i32,
-        f_cutoff: f64, // Use RFloat or own result type for conversion
+        f_cutoff: f64,
         oversampling_factor: i32,
         interpolation: String,
         window: String,

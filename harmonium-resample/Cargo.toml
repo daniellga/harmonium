@@ -10,4 +10,3 @@ harmonium-core = { path = "../harmonium-core" }
 rubato = "*"
 arrow2 = "0.17"
 num-traits = "*"
-libsoxr = "*"

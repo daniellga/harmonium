@@ -18,10 +18,97 @@ pub trait HResamplerR: Send {
     fn print(&self);
 }
 
+/// HResampler
+/// A resampler. \
+///
+/// #### Asynchronous Resamplers
+///
+/// The resampling is based on band-limited interpolation using sinc interpolation filters. The sinc interpolation upsamples by an adjustable factor,
+/// and then the new sample points are calculated by interpolating between these points. \
+/// The resampling ratio can be updated at any time. \
+///
+/// * `SincFixedIn` \
+///
+/// * `SincFixedOut` \
+///
+/// #### Synchronous Resamplers
+///
+/// Is implemented via FFT. The data is FFTed, the spectrum modified, and then inverse FFTed to get the resampled data. \
+/// This type of resampler is considerably faster but doesn’t support changing the resampling ratio. \
+///
+/// * `FftFixedIn` \
+///
+/// * `FftFixedInOut` \
+///
+/// * `FftFixedOut` \
+///
+/// # Methods
+///
 pub struct HResampler(pub Box<dyn HResamplerR>);
 
 #[extendr]
 impl HResampler {
+    /// HResampler
+    /// ## new_fft
+    ///
+    /// `new_fft(sr_in: integer, sr_out: integer, chunk_size: integer, sub_chunks: integer, nbr_channels: integer, resampler_type: HResamplerType, dtype: HDataType) -> HArray` \
+    ///
+    /// Creates a new `FFT` type HResampler. \
+    /// Supportes any of  `[fft_fixed_in, fft_fixed_in_out, fft_fixed_out]` `HResamplerType`. \
+    ///
+    /// * `fft_fixed_in` \
+    /// A synchronous resampler that needs a fixed number of audio frames for input and returns a variable number of frames. \
+    /// The resampling is done by FFTing the input data. The spectrum is then extended or truncated as well as multiplied with an antialiasing
+    /// filter before it’s inverse transformed to get the resampled waveforms. \
+    ///
+    /// * `fft_fixed_in_out` \
+    /// A synchronous resampler that accepts a fixed number of audio frames for input and returns a fixed number of frames. \
+    /// The resampling is done by FFTing the input data. The spectrum is then extended or truncated as well as multiplied with an antialiasing filter
+    /// before it’s inverse transformed to get the resampled waveforms. \
+    ///
+    /// * `fft_fixed_out` \
+    /// A synchronous resampler that needs a fixed number of audio frames for input and returns a variable number of frames.
+    ///
+    /// #### Arguments
+    ///
+    /// * `sr_in` \
+    /// The input sampling rate in hz. \
+    /// * `sr_out` \
+    /// The output sampling rate in hz. \
+    /// * `chunk_size` \
+    /// Chunks size of input or output data in frames. \
+    /// It can be used as input or output, depending on `HResamplerType`. \
+    /// * `sub_chunks` \
+    /// Desired number of subchunks for processing, actual number may be different. \
+    /// * `nbr_channels` \
+    /// Number of channels in input and output. \
+    /// Must be the same number of channels as the `HAudio` that will be processed by the `HResampler`. \
+    /// * `resampler_type` \
+    /// An HResamplerType to indicate which type of `HResampler` to be created. \
+    /// * `dtype` \
+    /// A float `HDataType` to indicate the data type the `HResampler` will be working with. \
+    /// Must be the same as the `HAudio`'s dtype that will be processed by the `HResampler`. \
+    ///
+    /// #### Returns
+    ///
+    /// A FFT type `HResampler`. \
+    ///
+    /// #### Examples
+    ///
+    /// ```r
+    /// sr_in = 48000L
+    /// sr_out = 44100L
+    /// chunk_size = 1024L
+    /// sub_chunks = 2L
+    /// nbr_channels = 2L
+    /// resampler_type = HResamplerType$fft_fixed_in
+    /// dtype = HDataType$float32
+    ///
+    /// hresampler = HResampler$new_fft(sr_in, sr_out, chunk_size, sub_chunks, nbr_channels, resampler_type, dtype)
+    /// ```
+    ///
+    /// _________
+    ///
     fn new_fft(
         sr_in: i32,
         sr_out: i32,
@@ -159,8 +246,6 @@ impl HResampler {
     }
 
     fn process(&mut self, haudio: &mut HAudio, sr_out: i32) {
-        assert!(self.dtype() == haudio.dtype());
-
         self.0.process(haudio, sr_out);
     }
 
