@@ -1,10 +1,11 @@
 rextendr::register_extendr()
 devtools::load_all(".", export_all = FALSE)
 devtools::test()
-devtools::check()
+devtools::check(document = FALSE, manual = FALSE, vignettes = FALSE)
 
 
 # another test
+haudiosink = HAudioSink$new()
 haudio = HAudio$new_from_file("../testfiles/gs-16b-2c-44100hz.flac", dtype = HDataType$float64)
 resampler_type = HResamplerType$fft_fixed_in
 sr_in = haudio$sr()

@@ -185,7 +185,6 @@ impl_process_resampler_fixed_out!(FftFixedOut<T>, SincFixedOut<T>);
 //{
 //    /// Resample the audio data from sr_in to sr_out.
 //    /// fftfixedin: A synchronous resampler that needs a fixed number of audio frames for input and returns a variable number of frames. The resampling is done by FFTing the input data. The spectrum is then extended or truncated as well as multiplied with an antialiasing filter before it’s inverse transformed to get the resampled waveforms. \cr
-//    /// Synchronous resampling: is implemented via FFT. The data is FFTed, the spectrum modified, and then inverse FFTed to get the resampled data. This type of resampler is considerably faster but doesn’t support changing the resampling ratio.
 //    /// # Arguments
 //    /// `sr_out` - Target sampling rate.
 //    /// `chunk_size_in` - Size of input data in frames.

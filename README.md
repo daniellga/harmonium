@@ -13,3 +13,10 @@ To learn more, read the [User Guide](https://userguidelink/) or the [website](ht
 
 ### R
 
+#### Windows
+
+`rustup target add x86_64-pc-windows-gnu`
+
+#### Linux
+
+On Linux, the ALSA development files are required. These are provided as part of the libasound2-dev package on Debian and Ubuntu distributions and alsa-lib-devel on Fedora.

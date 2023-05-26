@@ -1,6 +1,9 @@
 test_that(
   "Conversion to arrow works.",
   {
+    skip_if_not_installed("nanoarrow")
+    skip_if_not_installed("arrow")
+    
     check_arrow_array_conversion = function(values, dtype) {
       harray = HArray$new_from_values(values, dtype)
       arrow_array = arrow::as_arrow_array(harray)

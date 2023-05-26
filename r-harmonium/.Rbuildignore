@@ -1,3 +1,7 @@
-^harmonium\.io\.Rproj$
+^r-harmonium\.Rproj$
 ^\.Rproj\.user$
-^src/\.cargo$
+^src/rust/\.cargo$
+^docs$
+^\.github$
+^LICENSE\.md$
+^README\.Rmd$
