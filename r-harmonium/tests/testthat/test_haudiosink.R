@@ -1,7 +1,7 @@
 test_that(
   "haudiosink works.",
   {
-    filepath = file.path("..", "..", "..", "testfiles", "gs-16b-2c-44100hz.wav")
+    filepath = file.path("..", "..", "testfiles", "gs-16b-2c-44100hz.wav")
     
     # haudiosink from haudio.
     haudiosink = HAudioSink$new()

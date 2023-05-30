@@ -1,13 +1,8 @@
 TARGET_DIR = ./rust/target
 LIBDIR = $(TARGET_DIR)/release
 STATLIB = $(LIBDIR)/libharmonium.a
-
-# Set the library flags based on the operating system
-ifeq ($(OSTYPE), linux)
-    PKG_LIBS = -L$(LIBDIR) -lharmonium -lasound
-else
-    PKG_LIBS = -L$(LIBDIR) -lharmonium
-endif
+# Set library flags based on OS
+PKG_LIBS = `os=\`uname -s\`; if [ "$$os" = "Linux" ]; then echo "-L${LIBDIR} -lharmonium -lasound"; else echo ="-L${LIBDIR} -lharmonium"; fi`
 
 all: C_clean
 

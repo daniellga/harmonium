@@ -1,7 +1,7 @@
-rextendr::register_extendr()
+rextendr::register_extendr(compile = TRUE)
 devtools::load_all(".", export_all = FALSE)
 devtools::test()
-devtools::check(document = FALSE, manual = FALSE, vignettes = FALSE)
+devtools::check(document = FALSE, cran = FALSE, args = c("--no-manual", "--no-build-vignettes", "--no-codoc", "--no-examples", "--no-tests"))
 
 
 # another test

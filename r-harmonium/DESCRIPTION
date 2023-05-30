@@ -1,10 +1,10 @@
 Package: harmonium
-Title: Audio analysis and I/O.
+Title: Audio analysis and I/O
 Version: 0.1.0
 Authors@R: 
     person("Daniel", "Gurgel", , "daniellga@gmail.com", role = c("aut", "cre"))
 Description: Audio analysis and I/O, inspired by python's librosa.
-License: MIT
+License: MIT + file LICENSE
 Encoding: UTF-8
 Suggests: 
     arrow (>= 11.0.0.3),

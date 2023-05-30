@@ -1,4 +1,5 @@
 importFrom("utils", "packageVersion")
+importFrom("utils", "browseURL")
 
 export(HArray)
 export(HMatrix)

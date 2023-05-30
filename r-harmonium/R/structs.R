@@ -1,4 +1,4 @@
-print.HArray = function(x) {
+print.HArray = function(x, ...) {
   cat(class(x), sep = "\n")
   x$dtype()$print()
   x$print()
@@ -7,7 +7,7 @@ print.HArray = function(x) {
 "==.HArray" <- function(e1,e2) e1$eq(e2)
 "!=.HArray" <- function(e1,e2) e1$ne(e2)
 
-print.HMatrix = function(x) {
+print.HMatrix = function(x, ...) {
   cat(class(x), sep = "\n")
   x$dtype()$print()
   x$print()
@@ -16,7 +16,7 @@ print.HMatrix = function(x) {
 "==.HMatrix" <- function(e1,e2) e1$eq(e2)
 "!=.HMatrix" <- function(e1,e2) e1$ne(e2)
 
-print.HAudio = function(x) {
+print.HAudio = function(x, ...) {
   cat(class(x), sep = "\n")
   x$dtype()$print()
   x$print()
@@ -25,28 +25,27 @@ print.HAudio = function(x) {
 "==.HAudio" <- function(e1,e2) e1$eq(e2)
 "!=.HAudio" <- function(e1,e2) e1$ne(e2)
 
-print.HDataType = function(x) {
+print.HDataType = function(x, ...) {
   x$print()
 }
 
 "==.HDataType" <- function(e1,e2) e1$eq(e2)
 "!=.HDataType" <- function(e1,e2) e1$ne(e2)
 
-print.HMetadataType = function(x) {
+print.HMetadataType = function(x, ...) {
   x$print()
 }
 
 "==.HMetadataType" <- function(e1,e2) e1$eq(e2)
 "!=.HMetadataType" <- function(e1,e2) e1$ne(e2)
 
-print.HResampler = function(x) {
+print.HResampler = function(x, ...) {
   x$print()
 }
 
-print.HResamplerType = function(x) {
+print.HResamplerType = function(x, ...) {
   x$print()
 }
 
 "==.HResamplerType" <- function(e1,e2) e1$eq(e2)
 "!=.HResamplerType" <- function(e1,e2) e1$ne(e2)
-
