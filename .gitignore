@@ -46,3 +46,8 @@ perf.data.old
 # Rstudio temps.
 .RData
 .Rhistory
+
+# Quarto
+/.quarto/
+/_site/
+/docs
