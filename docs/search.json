@@ -651,6 +651,69 @@
     "text": "ne\nne(other: HMetadataType) -&gt; bool  source \n\nDifference with another HMetadataType.\n\nArguments\n\nother\nAn HMetadataType.\n\n\n\n\nReturns\nA bool.\n\n\nExamples\nmetadatatype1 = HMetadataType$all\nmetadatatype2 = HMetadataType$all\nmetadatatype1$ne(metadatatype2) # FALSE\n\n# or similarly:\nmetadatatype1 != metadatatype2"
   },
   {
+    "objectID": "docs/hpolynomialdegree.html",
+    "href": "docs/hpolynomialdegree.html",
+    "title": "HPolynomialDegree",
+    "section": "",
+    "text": "Degree of the polynomial used for interpolation. A higher degree gives a higher quality result, while taking longer to compute."
+  },
+  {
+    "objectID": "docs/hpolynomialdegree.html#septic",
+    "href": "docs/hpolynomialdegree.html#septic",
+    "title": "HPolynomialDegree",
+    "section": "Septic",
+    "text": "Septic\nseptic -&gt; HPolynomialDegree  source \n\nCreates a Septic HPolynomialDegree.\n\n\nReturns\nAn HPolynomialDegree.\n\n\nExamples\npol_deg = HPolynomialDegree$septic"
+  },
+  {
+    "objectID": "docs/hpolynomialdegree.html#quintic",
+    "href": "docs/hpolynomialdegree.html#quintic",
+    "title": "HPolynomialDegree",
+    "section": "Quintic",
+    "text": "Quintic\nquintic -&gt; HPolynomialDegree  source \n\nCreates a Quintic HPolynomialDegree.\n\n\nReturns\nAn HPolynomialDegree.\n\n\nExamples\npol_deg = HPolynomialDegree$quintic"
+  },
+  {
+    "objectID": "docs/hpolynomialdegree.html#cubic",
+    "href": "docs/hpolynomialdegree.html#cubic",
+    "title": "HPolynomialDegree",
+    "section": "Cubic",
+    "text": "Cubic\ncubic -&gt; HPolynomialDegree  source \n\nCreates a Cubic HPolynomialDegree.\n\n\nReturns\nAn HPolynomialDegree.\n\n\nExamples\npol_deg = HPolynomialDegree$cubic"
+  },
+  {
+    "objectID": "docs/hpolynomialdegree.html#linear",
+    "href": "docs/hpolynomialdegree.html#linear",
+    "title": "HPolynomialDegree",
+    "section": "Linear",
+    "text": "Linear\nlinear -&gt; HPolynomialDegree  source \n\nCreates a Linear HPolynomialDegree.\n\n\nReturns\nAn HPolynomialDegree.\n\n\nExamples\npol_deg = HPolynomialDegree$linear"
+  },
+  {
+    "objectID": "docs/hpolynomialdegree.html#nearest",
+    "href": "docs/hpolynomialdegree.html#nearest",
+    "title": "HPolynomialDegree",
+    "section": "Nearest",
+    "text": "Nearest\nnearest -&gt; HPolynomialDegree  source \n\nCreates a Nearest HPolynomialDegree.\n\n\nReturns\nAn HPolynomialDegree.\n\n\nExamples\npol_deg = HPolynomialDegree$nearest"
+  },
+  {
+    "objectID": "docs/hpolynomialdegree.html#print",
+    "href": "docs/hpolynomialdegree.html#print",
+    "title": "HPolynomialDegree",
+    "section": "print",
+    "text": "print\nprint()  source \n\nPrints the HPolynomialDegree.\nDifferently from R’s behaviour, print doesn’t return the value invisibly.\n\n\nExamples\npol_deg = HPolynomialDegree$complex64\npol_deg$print()\n\n# or similarly:\nprint(pol_deg)"
+  },
+  {
+    "objectID": "docs/hpolynomialdegree.html#eq",
+    "href": "docs/hpolynomialdegree.html#eq",
+    "title": "HPolynomialDegree",
+    "section": "eq",
+    "text": "eq\neq(other: HPolynomialDegree) -&gt; bool  source \n\nEquality with another HPolynomialDegree.\n\nArguments\n\nother\nAn HPolynomialDegree.\n\n\n\n\nReturns\nA bool.\n\n\nExamples\npol_deg1 = HPolynomialDegree$quintic\npol_deg2 = HPolynomialDegree$quintic\npol_deg1$eq(pol_deg2) # TRUE\n\n# or similarly:\npol_deg1 == pol_deg2"
+  },
+  {
+    "objectID": "docs/hpolynomialdegree.html#ne",
+    "href": "docs/hpolynomialdegree.html#ne",
+    "title": "HPolynomialDegree",
+    "section": "ne",
+    "text": "ne\nne(other: HPolynomialDegree) -&gt; bool  source \n\nDifference with another HPolynomialDegree.\n\nArguments\n\nother\nAn HPolynomialDegree.\n\n\n\n\nReturns\nA bool.\n\n\nExamples\npol_deg1 = HPolynomialDegree$quintic\npol_deg2 = HPolynomialDegree$nearest\npol_deg1$ne(pol_deg2) # TRUE\n\n# or similarly:\npol_deg1 != pol_deg2"
+  },
+  {
     "objectID": "docs/hresamplertype.html",
     "href": "docs/hresamplertype.html",
     "title": "HResamplerType",
@@ -691,6 +754,20 @@
     "title": "HResamplerType",
     "section": "sinc_fixed_out",
     "text": "sinc_fixed_out\nsinc_fixed_out -&gt; HResamplerType  source \n\nCreates a SincFixedOut HResamplerType.\n\n\nReturns\nAn HResamplerType.\n\n\n\nExamples\nhresamplertype = HResamplerType$sinc_fixed_out"
+  },
+  {
+    "objectID": "docs/hresamplertype.html#fast_fixed_in",
+    "href": "docs/hresamplertype.html#fast_fixed_in",
+    "title": "HResamplerType",
+    "section": "fast_fixed_in",
+    "text": "fast_fixed_in\nfast_fixed_in -&gt; HResamplerType  source \n\nCreates a FastFixedIn HResamplerType.\n\n\nReturns\nAn HResamplerType.\n\n\n\nExamples\nhresamplertype = HResamplerType$fast_fixed_in"
+  },
+  {
+    "objectID": "docs/hresamplertype.html#fast_fixed_out",
+    "href": "docs/hresamplertype.html#fast_fixed_out",
+    "title": "HResamplerType",
+    "section": "fast_fixed_out",
+    "text": "fast_fixed_out\nfast_fixed_out -&gt; HResamplerType  source \n\nCreates a FastFixedOut HResamplerType.\n\n\nReturns\nAn HResamplerType.\n\n\n\nExamples\nhresamplertype = HResamplerType$fast_fixed_out"
   },
   {
     "objectID": "docs/hresamplertype.html#print",
@@ -782,82 +859,5 @@
     "title": "Harmonium",
     "section": "",
     "text": "Harmonium is an audio interface inspired by Python’s librosa.\n\n\nBasic usage\nLoad the library\nlibrary(harmonium)\nCreate an haudio from an existing matrix\nvalues = matrix(c(1,2,3,4,5,6,7,8,9,10,11,12), ncol = 2)\ndtype = HDataType$float64\nhaudio = HAudio$new_from_values(values = values, sr = 3L, dtype = dtype)\nprint(haudio)\nOr create an haudio from an audio file\nhaudio = HAudio$new_from_file(fpath = \"file.wav\", dtype = dtype)\nprint(haudio)\nVerify the audio dimensions\nhaudio$len()\nhaudio$nchannels()\nhaudio$nframes()\nGet the sampling rate\nhaudio$sr()\nVerify the data type\nhaudio$dtype()\nConvert to an R matrix\nhaudio$collect()\nOr do a zero-copy conversion to an R’s arrow array\narrow::as_arrow_array(haudio$as_hmatrix())\nConvert to mono\nhaudio$as_mono()\nResample the haudio\nsr_in = haudio$sr()\nsr_out = 22050L\nnbr_channels = haudio$nchannels()\ndtype = HDataType$float64\nresampler_type = HResamplerType$fft_fixed_in\nresampler = HResampler$new_fft(sr_in = sr_in, sr_out = sr_out, nbr_channels = nbr_channels, resampler_type = resampler_type)\nhresampler$process(haudio, sr_out = sr_out, dtype = dtype)\nPlay the haudio\nhaudiosink = HAudioSink$new()\nhaudiosink$append_from_haudio(haudio)\nOr play directly from the file\nhaudiosink$append_from_file(\"file.wav\")\nGet the number of audios to be played\nhaudiosink$len()\nDouble the audio volume and the playback speed\nhaudiosink$set_volume(2)\nhaudiosink$set_speed(2)\nPause the playback and confirms it is paused\nhaudiosink$pause()\nhaudiosink$is_paused()\nIt is also possible to get metadata from an audio file\nmetatadatype = HMetadataType$text\nHFile$metadata_from_file(\"file.wav\", metatadatype)\nAnd to get some audio parameters directly from a file\nparams = HFile$get_params_from_file(\"file.wav\")\nsr = params[[1]]\nnframes = params[[2]]\nnchannels = params[[3]]\nduration = params[[4]]"
-  },
-  {
-    "objectID": "docs/hpolynomialdegree.html",
-    "href": "docs/hpolynomialdegree.html",
-    "title": "HPolynomialDegree",
-    "section": "",
-    "text": "Degree of the polynomial used for interpolation. A higher degree gives a higher quality result, while taking longer to compute."
-  },
-  {
-    "objectID": "docs/hpolynomialdegree.html#septic",
-    "href": "docs/hpolynomialdegree.html#septic",
-    "title": "HPolynomialDegree",
-    "section": "Septic",
-    "text": "Septic\nseptic -&gt; HPolynomialDegree  source \n\nCreates a Septic HPolynomialDegree.\n\n\nReturns\nAn HPolynomialDegree.\n\n\nExamples\npol_deg = HPolynomialDegree$septic"
-  },
-  {
-    "objectID": "docs/hpolynomialdegree.html#quintic",
-    "href": "docs/hpolynomialdegree.html#quintic",
-    "title": "HPolynomialDegree",
-    "section": "Quintic",
-    "text": "Quintic\nquintic -&gt; HPolynomialDegree  source \n\nCreates a Quintic HPolynomialDegree.\n\n\nReturns\nAn HPolynomialDegree.\n\n\nExamples\npol_deg = HPolynomialDegree$septic"
-  },
-  {
-    "objectID": "docs/hpolynomialdegree.html#cubic",
-    "href": "docs/hpolynomialdegree.html#cubic",
-    "title": "HPolynomialDegree",
-    "section": "Cubic",
-    "text": "Cubic\ncubic -&gt; HPolynomialDegree  source \n\nCreates a Cubic HPolynomialDegree.\n\n\nReturns\nAn HPolynomialDegree.\n\n\nExamples\npol_deg = HPolynomialDegree$cubic"
-  },
-  {
-    "objectID": "docs/hpolynomialdegree.html#linear",
-    "href": "docs/hpolynomialdegree.html#linear",
-    "title": "HPolynomialDegree",
-    "section": "Linear",
-    "text": "Linear\nlinear -&gt; HPolynomialDegree  source \n\nCreates a Linear HPolynomialDegree.\n\n\nReturns\nAn HPolynomialDegree.\n\n\nExamples\npol_deg = HPolynomialDegree$linear"
-  },
-  {
-    "objectID": "docs/hpolynomialdegree.html#nearest",
-    "href": "docs/hpolynomialdegree.html#nearest",
-    "title": "HPolynomialDegree",
-    "section": "Nearest",
-    "text": "Nearest\nnearest -&gt; HPolynomialDegree  source \n\nCreates a Nearest HPolynomialDegree.\n\n\nReturns\nAn HPolynomialDegree.\n\n\nExamples\npol_deg = HPolynomialDegree$nearest"
-  },
-  {
-    "objectID": "docs/hpolynomialdegree.html#print",
-    "href": "docs/hpolynomialdegree.html#print",
-    "title": "HPolynomialDegree",
-    "section": "print",
-    "text": "print\nprint()  source \n\nPrints the HPolynomialDegree.\nDifferently from R’s behaviour, print doesn’t return the value invisibly.\n\n\nExamples\npol_deg = HPolynomialDegree$complex64\npol_deg$print()\n\n# or similarly:\nprint(pol_deg)"
-  },
-  {
-    "objectID": "docs/hpolynomialdegree.html#eq",
-    "href": "docs/hpolynomialdegree.html#eq",
-    "title": "HPolynomialDegree",
-    "section": "eq",
-    "text": "eq\neq(other: HPolynomialDegree) -&gt; bool  source \n\nEquality with another HPolynomialDegree.\n\nArguments\n\nother\nAn HPolynomialDegree.\n\n\n\n\nReturns\nA bool.\n\n\nExamples\npol_deg1 = HPolynomialDegree$quintic\npol_deg2 = HPolynomialDegree$quintic\npol_deg1$eq(pol_deg2) # TRUE\n\n# or similarly:\npol_deg1 == pol_deg2"
-  },
-  {
-    "objectID": "docs/hpolynomialdegree.html#ne",
-    "href": "docs/hpolynomialdegree.html#ne",
-    "title": "HPolynomialDegree",
-    "section": "ne",
-    "text": "ne\nne(other: HPolynomialDegree) -&gt; bool  source \n\nDifference with another HPolynomialDegree.\n\nArguments\n\nother\nAn HPolynomialDegree.\n\n\n\n\nReturns\nA bool.\n\n\nExamples\npol_deg1 = HPolynomialDegree$quintic\npol_deg2 = HPolynomialDegree$nearest\npol_deg1$ne(pol_deg2) # TRUE\n\n# or similarly:\npol_deg1 != pol_deg2"
-  },
-  {
-    "objectID": "docs/hresamplertype.html#fast_fixed_in",
-    "href": "docs/hresamplertype.html#fast_fixed_in",
-    "title": "HResamplerType",
-    "section": "fast_fixed_in",
-    "text": "fast_fixed_in\nfast_fixed_in -&gt; HResamplerType  source \n\nCreates a FastFixedIn HResamplerType.\n\n\nReturns\nAn HResamplerType.\n\n\n\nExamples\nhresamplertype = HResamplerType$fast_fixed_in"
-  },
-  {
-    "objectID": "docs/hresamplertype.html#fast_fixed_out",
-    "href": "docs/hresamplertype.html#fast_fixed_out",
-    "title": "HResamplerType",
-    "section": "fast_fixed_out",
-    "text": "fast_fixed_out\nfast_fixed_out -&gt; HResamplerType  source \n\nCreates a FastFixedOut HResamplerType.\n\n\nReturns\nAn HResamplerType.\n\n\n\nExamples\nhresamplertype = HResamplerType$fast_fixed_out"
   }
 ]
