@@ -70,7 +70,7 @@ impl HPolynomialDegree {
     /// #### Examples
     ///
     /// ```r
-    /// pol_deg = HPolynomialDegree$septic
+    /// pol_deg = HPolynomialDegree$quintic
     /// ```
     ///
     /// _________
