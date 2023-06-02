@@ -50,4 +50,3 @@ perf.data.old
 # Quarto
 /.quarto/
 /_site/
-/docs
