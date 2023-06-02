@@ -187,6 +187,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../docs/hpolynomialdegree.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">HPolynomialDegree</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../docs/hresamplertype.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">HResamplerType</span></a>
   </div>
@@ -216,6 +222,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#fft_fixed_out" id="toc-fft_fixed_out" class="nav-link" data-scroll-target="#fft_fixed_out">fft_fixed_out</a></li>
   <li><a href="#sinc_fixed_in" id="toc-sinc_fixed_in" class="nav-link" data-scroll-target="#sinc_fixed_in">sinc_fixed_in</a></li>
   <li><a href="#sinc_fixed_out" id="toc-sinc_fixed_out" class="nav-link" data-scroll-target="#sinc_fixed_out">sinc_fixed_out</a></li>
+  <li><a href="#fast_fixed_in" id="toc-fast_fixed_in" class="nav-link" data-scroll-target="#fast_fixed_in">fast_fixed_in</a></li>
+  <li><a href="#fast_fixed_out" id="toc-fast_fixed_out" class="nav-link" data-scroll-target="#fast_fixed_out">fast_fixed_out</a></li>
   <li><a href="#print" id="toc-print" class="nav-link" data-scroll-target="#print">print</a></li>
   <li><a href="#eq" id="toc-eq" class="nav-link" data-scroll-target="#eq">eq</a></li>
   <li><a href="#ne" id="toc-ne" class="nav-link" data-scroll-target="#ne">ne</a></li>
@@ -250,13 +258,14 @@ Supports <code>FftFixedIn</code>, <code>FftFixedInOut</code>, <code>FftFixedOut<
 <h1>Methods</h1>
 <section id="fft_fixed_in" class="level2">
 <h2 class="anchored" data-anchor-id="fft_fixed_in">fft_fixed_in</h2>
-<p><code>fft_fixed_in -&gt; HResamplerType</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hresamplertype.rs#L40">source</a> </span><br>
+<p><code>fft_fixed_in -&gt; HResamplerType</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hresamplertype.rs#L42">source</a> </span><br>
 </p>
 <p>Creates a <code>FftFixedIn</code> <code>HResamplerType</code>.<br>
 </p>
 <section id="returns" class="level4">
 <h4 class="anchored" data-anchor-id="returns">Returns</h4>
-<p>An <code>HResamplerType</code>.</p>
+<p>An <code>HResamplerType</code>.<br>
+</p>
 </section>
 <section id="examples" class="level4">
 <h4 class="anchored" data-anchor-id="examples">Examples</h4>
@@ -266,13 +275,14 @@ Supports <code>FftFixedIn</code>, <code>FftFixedInOut</code>, <code>FftFixedOut<
 </section>
 <section id="fft_fixed_in_out" class="level2">
 <h2 class="anchored" data-anchor-id="fft_fixed_in_out">fft_fixed_in_out</h2>
-<p><code>fft_fixed_in_out -&gt; HResamplerType</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hresamplertype.rs#L63">source</a> </span><br>
+<p><code>fft_fixed_in_out -&gt; HResamplerType</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hresamplertype.rs#L65">source</a> </span><br>
 </p>
 <p>Creates a <code>FftFixedInOut</code> <code>HResamplerType</code>.<br>
 </p>
 <section id="returns-1" class="level4">
 <h4 class="anchored" data-anchor-id="returns-1">Returns</h4>
-<p>An <code>HResamplerType</code>.</p>
+<p>An <code>HResamplerType</code>.<br>
+</p>
 </section>
 <section id="examples-1" class="level4">
 <h4 class="anchored" data-anchor-id="examples-1">Examples</h4>
@@ -282,13 +292,14 @@ Supports <code>FftFixedIn</code>, <code>FftFixedInOut</code>, <code>FftFixedOut<
 </section>
 <section id="fft_fixed_out" class="level2">
 <h2 class="anchored" data-anchor-id="fft_fixed_out">fft_fixed_out</h2>
-<p><code>fft_fixed_out -&gt; HResamplerType</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hresamplertype.rs#L86">source</a> </span><br>
+<p><code>fft_fixed_out -&gt; HResamplerType</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hresamplertype.rs#L88">source</a> </span><br>
 </p>
 <p>Creates a <code>FftFixedOut</code> <code>HResamplerType</code>.<br>
 </p>
 <section id="returns-2" class="level4">
 <h4 class="anchored" data-anchor-id="returns-2">Returns</h4>
-<p>An <code>HResamplerType</code>.</p>
+<p>An <code>HResamplerType</code>.<br>
+</p>
 </section>
 <section id="examples-2" class="level4">
 <h4 class="anchored" data-anchor-id="examples-2">Examples</h4>
@@ -298,13 +309,14 @@ Supports <code>FftFixedIn</code>, <code>FftFixedInOut</code>, <code>FftFixedOut<
 </section>
 <section id="sinc_fixed_in" class="level2">
 <h2 class="anchored" data-anchor-id="sinc_fixed_in">sinc_fixed_in</h2>
-<p><code>sinc_fixed_in -&gt; HResamplerType</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hresamplertype.rs#L109">source</a> </span><br>
+<p><code>sinc_fixed_in -&gt; HResamplerType</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hresamplertype.rs#L111">source</a> </span><br>
 </p>
 <p>Creates a <code>SincFixedIn</code> <code>HResamplerType</code>.<br>
 </p>
 <section id="returns-3" class="level4">
 <h4 class="anchored" data-anchor-id="returns-3">Returns</h4>
-<p>An <code>HResamplerType</code>.</p>
+<p>An <code>HResamplerType</code>.<br>
+</p>
 </section>
 <section id="examples-3" class="level4">
 <h4 class="anchored" data-anchor-id="examples-3">Examples</h4>
@@ -314,13 +326,14 @@ Supports <code>FftFixedIn</code>, <code>FftFixedInOut</code>, <code>FftFixedOut<
 </section>
 <section id="sinc_fixed_out" class="level2">
 <h2 class="anchored" data-anchor-id="sinc_fixed_out">sinc_fixed_out</h2>
-<p><code>sinc_fixed_out -&gt; HResamplerType</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hresamplertype.rs#L132">source</a> </span><br>
+<p><code>sinc_fixed_out -&gt; HResamplerType</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hresamplertype.rs#L134">source</a> </span><br>
 </p>
 <p>Creates a <code>SincFixedOut</code> <code>HResamplerType</code>.<br>
 </p>
 <section id="returns-4" class="level4">
 <h4 class="anchored" data-anchor-id="returns-4">Returns</h4>
-<p>An <code>HResamplerType</code>.</p>
+<p>An <code>HResamplerType</code>.<br>
+</p>
 </section>
 <section id="examples-4" class="level4">
 <h4 class="anchored" data-anchor-id="examples-4">Examples</h4>
@@ -328,26 +341,60 @@ Supports <code>FftFixedIn</code>, <code>FftFixedInOut</code>, <code>FftFixedOut<
 <hr>
 </section>
 </section>
+<section id="fast_fixed_in" class="level2">
+<h2 class="anchored" data-anchor-id="fast_fixed_in">fast_fixed_in</h2>
+<p><code>fast_fixed_in -&gt; HResamplerType</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hresamplertype.rs#L157">source</a> </span><br>
+</p>
+<p>Creates a <code>FastFixedIn</code> <code>HResamplerType</code>.<br>
+</p>
+<section id="returns-5" class="level4">
+<h4 class="anchored" data-anchor-id="returns-5">Returns</h4>
+<p>An <code>HResamplerType</code>.<br>
+</p>
+</section>
+<section id="examples-5" class="level4">
+<h4 class="anchored" data-anchor-id="examples-5">Examples</h4>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>hresamplertype <span class="ot">=</span> HResamplerType<span class="sc">$</span>fast_fixed_in</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+</section>
+</section>
+<section id="fast_fixed_out" class="level2">
+<h2 class="anchored" data-anchor-id="fast_fixed_out">fast_fixed_out</h2>
+<p><code>fast_fixed_out -&gt; HResamplerType</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hresamplertype.rs#L180">source</a> </span><br>
+</p>
+<p>Creates a <code>FastFixedOut</code> <code>HResamplerType</code>.<br>
+</p>
+<section id="returns-6" class="level4">
+<h4 class="anchored" data-anchor-id="returns-6">Returns</h4>
+<p>An <code>HResamplerType</code>.<br>
+</p>
+</section>
+<section id="examples-6" class="level4">
+<h4 class="anchored" data-anchor-id="examples-6">Examples</h4>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>hresamplertype <span class="ot">=</span> HResamplerType<span class="sc">$</span>fast_fixed_out</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+</section>
+</section>
 <section id="print" class="level2">
 <h2 class="anchored" data-anchor-id="print">print</h2>
-<p><code>print()</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hresamplertype.rs#L156">source</a> </span><br>
+<p><code>print()</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hresamplertype.rs#L204">source</a> </span><br>
 </p>
 <p>Prints the <code>HResamplerType</code>.<br>
 Differently from R’s behaviour, <code>print</code> doesn’t return the value invisibly.<br>
 </p>
-<section id="examples-5" class="level4">
-<h4 class="anchored" data-anchor-id="examples-5">Examples</h4>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>hresamplertype <span class="ot">=</span> HResamplerType<span class="sc">$</span>sinc_fixed_in</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>hresamplertype<span class="sc">$</span><span class="fu">print</span>()</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># or similarly:</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(hresamplertype)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="examples-7" class="level4">
+<h4 class="anchored" data-anchor-id="examples-7">Examples</h4>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>hresamplertype <span class="ot">=</span> HResamplerType<span class="sc">$</span>sinc_fixed_in</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>hresamplertype<span class="sc">$</span><span class="fu">print</span>()</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># or similarly:</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(hresamplertype)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 </section>
 </section>
 <section id="eq" class="level2">
 <h2 class="anchored" data-anchor-id="eq">eq</h2>
-<p><code>eq(other: HResamplerType) -&gt; bool</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hresamplertype.rs#L189">source</a> </span><br>
+<p><code>eq(other: HResamplerType) -&gt; bool</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hresamplertype.rs#L237">source</a> </span><br>
 </p>
 <p>Equality with another <code>HResamplerType</code>.</p>
 <section id="arguments" class="level4">
@@ -358,24 +405,24 @@ An <code>HResamplerType</code>.<br>
 </li>
 </ul>
 </section>
-<section id="returns-5" class="level4">
-<h4 class="anchored" data-anchor-id="returns-5">Returns</h4>
+<section id="returns-7" class="level4">
+<h4 class="anchored" data-anchor-id="returns-7">Returns</h4>
 <p>A <code>bool</code>.</p>
 </section>
-<section id="examples-6" class="level4">
-<h4 class="anchored" data-anchor-id="examples-6">Examples</h4>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>hresamplertype1 <span class="ot">=</span> HResamplerType<span class="sc">$</span>sinc_fixed_in</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>hresamplertype2 <span class="ot">=</span> HResamplerType<span class="sc">$</span>sinc_fixed_in</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>hresamplertype1<span class="sc">$</span><span class="fu">eq</span>(hresamplertype2) <span class="co"># TRUE</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co"># or similarly:</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>hresamplertype1 <span class="sc">==</span> hresamplertype2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="examples-8" class="level4">
+<h4 class="anchored" data-anchor-id="examples-8">Examples</h4>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>hresamplertype1 <span class="ot">=</span> HResamplerType<span class="sc">$</span>sinc_fixed_in</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>hresamplertype2 <span class="ot">=</span> HResamplerType<span class="sc">$</span>sinc_fixed_in</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>hresamplertype1<span class="sc">$</span><span class="fu">eq</span>(hresamplertype2) <span class="co"># TRUE</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co"># or similarly:</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>hresamplertype1 <span class="sc">==</span> hresamplertype2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 </section>
 </section>
 <section id="ne" class="level2">
 <h2 class="anchored" data-anchor-id="ne">ne</h2>
-<p><code>ne(other: HResamplerType) -&gt; bool</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hresamplertype.rs#L222">source</a> </span><br>
+<p><code>ne(other: HResamplerType) -&gt; bool</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hresamplertype.rs#L270">source</a> </span><br>
 </p>
 <p>Difference with another <code>HResamplerType</code>.</p>
 <section id="arguments-1" class="level4">
@@ -386,18 +433,18 @@ An <code>HResamplerType</code>.<br>
 </li>
 </ul>
 </section>
-<section id="returns-6" class="level4">
-<h4 class="anchored" data-anchor-id="returns-6">Returns</h4>
+<section id="returns-8" class="level4">
+<h4 class="anchored" data-anchor-id="returns-8">Returns</h4>
 <p>A <code>bool</code>.</p>
 </section>
-<section id="examples-7" class="level4">
-<h4 class="anchored" data-anchor-id="examples-7">Examples</h4>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>hresamplertype1 <span class="ot">=</span> HResamplerType<span class="sc">$</span>sinc_fixed_in</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>hresamplertype2 <span class="ot">=</span> HResamplerType<span class="sc">$</span>sinc_fixed_in</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>hresamplertype1<span class="sc">$</span><span class="fu">ne</span>(hresamplertype2) <span class="co"># FALSE</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co"># or similarly:</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>hresamplertype1 <span class="sc">!=</span> hresamplertype2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="examples-9" class="level4">
+<h4 class="anchored" data-anchor-id="examples-9">Examples</h4>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>hresamplertype1 <span class="ot">=</span> HResamplerType<span class="sc">$</span>sinc_fixed_in</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>hresamplertype2 <span class="ot">=</span> HResamplerType<span class="sc">$</span>sinc_fixed_in</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>hresamplertype1<span class="sc">$</span><span class="fu">ne</span>(hresamplertype2) <span class="co"># FALSE</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co"># or similarly:</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>hresamplertype1 <span class="sc">!=</span> hresamplertype2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 
 

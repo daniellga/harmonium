@@ -7,6 +7,7 @@ A structure to represent audio data. Composed by: \
 * `HMatrix` \
 The decoded audio data as a floating point time series. Each column represents a channel. \
 Must have a float dtype. \
+
 * `integer`. \
 The sampling rate in hz. \
 
@@ -47,7 +48,7 @@ _________
 
 ## new_from_values
 
-`new_from_values(values: matrix, sr: integer, dtype: HDataType) -> HAudio` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./haudio.rs#L121) </span> \
+`new_from_values(values: matrix, sr: integer, dtype: HDataType) -> HAudio` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./haudio.rs#L122) </span> \
 
 Creates a new `HAudio` from a matrix. \
 
@@ -76,7 +77,7 @@ _________
 
 ## len
 
-`len() -> integer` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./haudio.rs#L148) </span> \
+`len() -> integer` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./haudio.rs#L149) </span> \
 
 Returns the number of elements of this `HAudio`. \
 
@@ -97,7 +98,7 @@ _________
 
 ## nchannels
 
-`nchannels() -> integer` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./haudio.rs#L175) </span> \
+`nchannels() -> integer` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./haudio.rs#L176) </span> \
 
 Returns the number of channels of this `HAudio`. \
 This is the same as the number of columns of the inner `HMatrix`. \
@@ -119,7 +120,7 @@ _________
 
 ## nframes
 
-`nframes() -> integer` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./haudio.rs#L202) </span> \
+`nframes() -> integer` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./haudio.rs#L203) </span> \
 
 Returns the number of frames of this `HAudio`. \
 This is the same as the number of rows of the inner `HMatrix`. \
@@ -141,7 +142,7 @@ _________
 
 ## print
 
-`print()` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./haudio.rs#L228) </span> \
+`print()` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./haudio.rs#L229) </span> \
 
 Print the `HAudio`. \
 Differently from R's normal behaviour, `print` doesn't return the value invisibly. \
@@ -162,7 +163,7 @@ _________
 
 ## as_hmatrix
 
-`as_hmatrix() -> HMatrix` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./haudio.rs#L256) </span> \
+`as_hmatrix() -> HMatrix` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./haudio.rs#L257) </span> \
 
 Creates a new `HMatrix`, with the underlying data pointing to the same place in memory. \
 
@@ -185,7 +186,7 @@ _________
 
 ## eq
 
-`eq(other: HAudio) -> bool` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./haudio.rs#L293) </span> \
+`eq(other: HAudio) -> bool` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./haudio.rs#L294) </span> \
 
 Equality with another `HAudio`. \
 The comparison only checks if the dtype, the sampling rate and the values are the same. To compare if the
@@ -217,7 +218,7 @@ _________
 
 ## ne
 
-`ne(other: HAudio) -> bool` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./haudio.rs#L330) </span> \
+`ne(other: HAudio) -> bool` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./haudio.rs#L331) </span> \
 
 Difference with another `HAudio`. \
 The comparison only checks if the dtype, the sampling rate and the values are the same. To compare if the
@@ -249,7 +250,7 @@ _________
 
 ## clone
 
-`clone() -> HAudio` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./haudio.rs#L358) </span> \
+`clone() -> HAudio` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./haudio.rs#L359) </span> \
 
 Creates a new `HAudio`, with the underlying data pointing to the same place in memory.
 
@@ -272,7 +273,7 @@ _________
 
 ## collect
 
-`collect() -> matrix` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./haudio.rs#L384) </span> \
+`collect() -> matrix` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./haudio.rs#L385) </span> \
 
 Creates a `matrix` from an `HAudio`.
 
@@ -293,7 +294,7 @@ _________
 
 ## sr
 
-`sr() -> integer` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./haudio.rs#L410) </span> \
+`sr() -> integer` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./haudio.rs#L411) </span> \
 
 Get the sampling rate.
 
@@ -314,7 +315,7 @@ _________
 
 ## mem_adress
 
-`mem_adress() -> string` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./haudio.rs#L445) </span> \
+`mem_adress() -> string` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./haudio.rs#L446) </span> \
 
 The memory adress of the first element of the inner data. \
 This is useful to check if different objects share the same underlying data. \
@@ -344,7 +345,7 @@ _________
 
 ## dtype
 
-`dtype() -> HDataType` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./haudio.rs#L471) </span> \
+`dtype() -> HDataType` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./haudio.rs#L472) </span> \
 
 Gets the `HAudio`'s dtype as an `HDataType`.
 
@@ -365,7 +366,7 @@ _________
 
 ## mean_cols
 
-`mean_cols()` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./haudio.rs#L496) </span> \
+`mean_cols()` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./haudio.rs#L497) </span> \
 
 Convert to 1 channel by taking the average across channels. A new inner array is created. \
 The operation is done in-place. \

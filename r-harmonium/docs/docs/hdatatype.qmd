@@ -15,7 +15,7 @@ Creates a Float32 `HDataType`. \
 
 #### Returns
 
-An `HDataType`.
+An `HDataType`. \
 
 #### Examples
 
@@ -33,7 +33,7 @@ Creates a Float64 `HDataType`. \
 
 #### Returns
 
-An `HDataType`.
+An `HDataType`. \
 
 #### Examples
 
@@ -51,7 +51,7 @@ Creates a Complex32 `HDataType`. \
 
 #### Returns
 
-An `HDataType`.
+An `HDataType`. \
 
 #### Examples
 
@@ -69,7 +69,7 @@ Creates a Complex64 `HDataType`. \
 
 #### Returns
 
-An `HDataType`.
+An `HDataType`. \
 
 #### Examples
 
@@ -102,7 +102,7 @@ _________
 
 `eq(other: HDataType) -> bool` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hdatatype.rs#L165) </span> \
 
-Equality with another `HDataType`.
+Equality with another `HDataType`. \
 
 #### Arguments
 
@@ -130,7 +130,7 @@ _________
 
 `ne(other: HDataType) -> bool` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hdatatype.rs#L198) </span> \
 
-Difference with another `HDataType`.
+Difference with another `HDataType`. \
 
 #### Arguments
 
@@ -139,7 +139,7 @@ An `HDataType`. \
 
 #### Returns
 
-A `bool`.
+A `bool`. \
 
 #### Examples
 

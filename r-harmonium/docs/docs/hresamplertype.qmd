@@ -9,13 +9,13 @@ Supports `FftFixedIn`, `FftFixedInOut`, `FftFixedOut`, `SincFixedIn` and `SincFi
 
 ## fft_fixed_in
 
-`fft_fixed_in -> HResamplerType` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hresamplertype.rs#L40) </span> \
+`fft_fixed_in -> HResamplerType` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hresamplertype.rs#L42) </span> \
 
 Creates a `FftFixedIn` `HResamplerType`. \
 
 #### Returns
 
-An `HResamplerType`.
+An `HResamplerType`. \
 
 #### Examples
 
@@ -27,13 +27,13 @@ _________
 
 ## fft_fixed_in_out
 
-`fft_fixed_in_out -> HResamplerType` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hresamplertype.rs#L63) </span> \
+`fft_fixed_in_out -> HResamplerType` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hresamplertype.rs#L65) </span> \
 
 Creates a `FftFixedInOut` `HResamplerType`. \
 
 #### Returns
 
-An `HResamplerType`.
+An `HResamplerType`. \
 
 #### Examples
 
@@ -45,13 +45,13 @@ _________
 
 ## fft_fixed_out
 
-`fft_fixed_out -> HResamplerType` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hresamplertype.rs#L86) </span> \
+`fft_fixed_out -> HResamplerType` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hresamplertype.rs#L88) </span> \
 
 Creates a `FftFixedOut` `HResamplerType`. \
 
 #### Returns
 
-An `HResamplerType`.
+An `HResamplerType`. \
 
 #### Examples
 
@@ -63,13 +63,13 @@ _________
 
 ## sinc_fixed_in
 
-`sinc_fixed_in -> HResamplerType` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hresamplertype.rs#L109) </span> \
+`sinc_fixed_in -> HResamplerType` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hresamplertype.rs#L111) </span> \
 
 Creates a `SincFixedIn` `HResamplerType`. \
 
 #### Returns
 
-An `HResamplerType`.
+An `HResamplerType`. \
 
 #### Examples
 
@@ -81,13 +81,13 @@ _________
 
 ## sinc_fixed_out
 
-`sinc_fixed_out -> HResamplerType` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hresamplertype.rs#L132) </span> \
+`sinc_fixed_out -> HResamplerType` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hresamplertype.rs#L134) </span> \
 
 Creates a `SincFixedOut` `HResamplerType`. \
 
 #### Returns
 
-An `HResamplerType`.
+An `HResamplerType`. \
 
 #### Examples
 
@@ -97,9 +97,45 @@ hresamplertype = HResamplerType$sinc_fixed_out
 
 _________
 
+## fast_fixed_in
+
+`fast_fixed_in -> HResamplerType` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hresamplertype.rs#L157) </span> \
+
+Creates a `FastFixedIn` `HResamplerType`. \
+
+#### Returns
+
+An `HResamplerType`. \
+
+#### Examples
+
+```r
+hresamplertype = HResamplerType$fast_fixed_in
+```
+
+_________
+
+## fast_fixed_out
+
+`fast_fixed_out -> HResamplerType` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hresamplertype.rs#L180) </span> \
+
+Creates a `FastFixedOut` `HResamplerType`. \
+
+#### Returns
+
+An `HResamplerType`. \
+
+#### Examples
+
+```r
+hresamplertype = HResamplerType$fast_fixed_out
+```
+
+_________
+
 ## print
 
-`print()` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hresamplertype.rs#L156) </span> \
+`print()` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hresamplertype.rs#L204) </span> \
 
 Prints the `HResamplerType`. \
 Differently from R's behaviour, `print` doesn't return the value invisibly. \
@@ -118,7 +154,7 @@ _________
 
 ## eq
 
-`eq(other: HResamplerType) -> bool` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hresamplertype.rs#L189) </span> \
+`eq(other: HResamplerType) -> bool` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hresamplertype.rs#L237) </span> \
 
 Equality with another `HResamplerType`.
 
@@ -146,7 +182,7 @@ _________
 
 ## ne
 
-`ne(other: HResamplerType) -> bool` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hresamplertype.rs#L222) </span> \
+`ne(other: HResamplerType) -> bool` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hresamplertype.rs#L270) </span> \
 
 Difference with another `HResamplerType`.
 

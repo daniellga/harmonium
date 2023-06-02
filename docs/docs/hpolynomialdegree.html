@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Harmonium - HWindow</title>
+<title>Harmonium - HPolynomialDegree</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -95,8 +95,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <link rel="stylesheet" href="../styles.css">
 </head>
@@ -124,7 +122,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../docs/harray.html">Classes</a></li><li class="breadcrumb-item"><a href="../docs/hwindow.html">HWindow</a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../docs/harray.html">Classes</a></li><li class="breadcrumb-item"><a href="../docs/hpolynomialdegree.html">HPolynomialDegree</a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
     </div>
@@ -189,7 +187,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../docs/hpolynomialdegree.html" class="sidebar-item-text sidebar-link">
+  <a href="../docs/hpolynomialdegree.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">HPolynomialDegree</span></a>
   </div>
 </li>
@@ -201,7 +199,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../docs/hwindow.html" class="sidebar-item-text sidebar-link active">
+  <a href="../docs/hwindow.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">HWindow</span></a>
   </div>
 </li>
@@ -219,14 +217,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
   <li><a href="#methods" id="toc-methods" class="nav-link active" data-scroll-target="#methods">Methods</a>
   <ul class="collapse">
-  <li><a href="#barthann" id="toc-barthann" class="nav-link" data-scroll-target="#barthann">barthann</a></li>
-  <li><a href="#bartlett" id="toc-bartlett" class="nav-link" data-scroll-target="#bartlett">bartlett</a></li>
-  <li><a href="#blackman" id="toc-blackman" class="nav-link" data-scroll-target="#blackman">blackman</a></li>
-  <li><a href="#blackmanharris" id="toc-blackmanharris" class="nav-link" data-scroll-target="#blackmanharris">blackmanharris</a></li>
-  <li><a href="#bohman" id="toc-bohman" class="nav-link" data-scroll-target="#bohman">bohman</a></li>
-  <li><a href="#boxcar" id="toc-boxcar" class="nav-link" data-scroll-target="#boxcar">boxcar</a></li>
-  <li><a href="#cosine" id="toc-cosine" class="nav-link" data-scroll-target="#cosine">cosine</a></li>
-  <li><a href="#hann" id="toc-hann" class="nav-link" data-scroll-target="#hann">hann</a></li>
+  <li><a href="#septic" id="toc-septic" class="nav-link" data-scroll-target="#septic">Septic</a></li>
+  <li><a href="#quintic" id="toc-quintic" class="nav-link" data-scroll-target="#quintic">Quintic</a></li>
+  <li><a href="#cubic" id="toc-cubic" class="nav-link" data-scroll-target="#cubic">Cubic</a></li>
+  <li><a href="#linear" id="toc-linear" class="nav-link" data-scroll-target="#linear">Linear</a></li>
+  <li><a href="#nearest" id="toc-nearest" class="nav-link" data-scroll-target="#nearest">Nearest</a></li>
+  <li><a href="#print" id="toc-print" class="nav-link" data-scroll-target="#print">print</a></li>
+  <li><a href="#eq" id="toc-eq" class="nav-link" data-scroll-target="#eq">eq</a></li>
+  <li><a href="#ne" id="toc-ne" class="nav-link" data-scroll-target="#ne">ne</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -236,7 +234,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">HWindow</h1>
+<h1 class="title">HPolynomialDegree</h1>
 </div>
 
 
@@ -251,294 +249,178 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
-<p>A collection of window functions.<br>
+<p>Degree of the polynomial used for interpolation. A higher degree gives a higher quality result, while taking longer to compute.<br>
 </p>
+<ul>
+<li><p><code>Septic</code><br>
+Septic polynomial, fitted using 8 sample points.<br>
+</p></li>
+<li><p><code>Quintic</code>.<br>
+Quintic polynomial, fitted using 6 sample points.<br>
+</p></li>
+<li><p><code>Cubic</code>.<br>
+Cubic polynomial, fitted using 4 sample points.<br>
+</p></li>
+<li><p><code>Linear</code>.<br>
+Linear polynomial, fitted using 2 sample points.<br>
+</p></li>
+<li><p><code>Nearest</code>.<br>
+Nearest, uses the nearest sample point without any fitting.<br>
+</p></li>
+</ul>
 <section id="methods" class="level1">
 <h1>Methods</h1>
-<section id="barthann" class="level2">
-<h2 class="anchored" data-anchor-id="barthann">barthann</h2>
-<p><code>barthann(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hwindow.rs#L47">source</a> </span><br>
+<section id="septic" class="level2">
+<h2 class="anchored" data-anchor-id="septic">Septic</h2>
+<p><code>septic -&gt; HPolynomialDegree</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hpolynomialdegree.rs#L55">source</a> </span><br>
 </p>
-<p>Returns a modified Bartlett-Hann window.<br>
+<p>Creates a <code>Septic</code> <code>HPolynomialDegree</code>.<br>
 </p>
-<p>The maximum value is normalized to 1 (though the value 1 does not appear if <code>npoints</code> is even and <code>window_type</code> is symmetric).<br>
-</p>
-<section id="arguments" class="level4">
-<h4 class="anchored" data-anchor-id="arguments">Arguments</h4>
-<ul>
-<li><code>npoints</code><br>
-An <code>integer</code>. Number of points in the output window.<br>
-</li>
-<li><code>sym</code><br>
-A <code>bool</code>.<br>
-When <code>TRUE</code>, generates a symmetric window, for use in filter design.<br>
-When <code>FALSE</code>, generates a periodic window, for use in spectral analysis.<br>
-</li>
-<li><code>dtype</code><br>
-An <code>HDataType</code> to indicate which type of <code>HArray</code> to be created.<br>
-Must be a float dtype.<br>
-</li>
-</ul>
-</section>
 <section id="returns" class="level4">
 <h4 class="anchored" data-anchor-id="returns">Returns</h4>
-<p>An <code>HArray</code>.<br>
-</p>
+<p>An <code>HPolynomialDegree</code>.</p>
 </section>
 <section id="examples" class="level4">
 <h4 class="anchored" data-anchor-id="examples">Examples</h4>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>HWindow<span class="sc">$</span><span class="fu">barthann</span>(<span class="at">npoints =</span> 10L, <span class="at">sym =</span> <span class="cn">TRUE</span>, <span class="at">dtype =</span> HDataType<span class="sc">$</span>Float64)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pol_deg <span class="ot">=</span> HPolynomialDegree<span class="sc">$</span>septic</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
 </section>
 </section>
-<section id="bartlett" class="level2">
-<h2 class="anchored" data-anchor-id="bartlett">bartlett</h2>
-<p><code>bartlett(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hwindow.rs#L106">source</a> </span><br>
+<section id="quintic" class="level2">
+<h2 class="anchored" data-anchor-id="quintic">Quintic</h2>
+<p><code>quintic -&gt; HPolynomialDegree</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hpolynomialdegree.rs#L78">source</a> </span><br>
 </p>
-<p><span class="math inline">\(w(n) = \frac{2}{npoints-1} (\frac{npoints-1}{2} - |n - \frac{npoints-1}{2}|)\)</span></p>
-<p>The Bartlett window is very similar to a triangular window, except that the end points are at zero. It is often used in signal processing for tapering a signal, without generating too much ripple in the frequency domain.<br>
+<p>Creates a <code>Quintic</code> <code>HPolynomialDegree</code>.<br>
 </p>
-<p>The maximum value is normalized to 1 (though the value 1 does not appear if <code>npoints</code> is even and <code>window_type</code> is symmetric.<br>
-</p>
-<section id="arguments-1" class="level4">
-<h4 class="anchored" data-anchor-id="arguments-1">Arguments</h4>
-<ul>
-<li><code>npoints</code><br>
-An <code>integer</code>. Number of points in the output window.<br>
-</li>
-<li><code>sym</code><br>
-A <code>bool</code>.<br>
-When <code>TRUE</code>, generates a symmetric window, for use in filter design.<br>
-When <code>FALSE</code>, generates a periodic window, for use in spectral analysis.<br>
-</li>
-<li><code>dtype</code><br>
-An <code>HDataType</code> to indicate which type of <code>HArray</code> to be created.<br>
-Must be a float dtype.<br>
-</li>
-</ul>
-</section>
 <section id="returns-1" class="level4">
 <h4 class="anchored" data-anchor-id="returns-1">Returns</h4>
-<p>An <code>HArray</code>.<br>
-</p>
+<p>An <code>HPolynomialDegree</code>.</p>
 </section>
 <section id="examples-1" class="level4">
 <h4 class="anchored" data-anchor-id="examples-1">Examples</h4>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>HWindow<span class="sc">$</span><span class="fu">bartlett</span>(<span class="at">npoints =</span> 10L, <span class="at">sym =</span> <span class="cn">TRUE</span>, <span class="at">dtype =</span> HDataType<span class="sc">$</span>Float64)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>pol_deg <span class="ot">=</span> HPolynomialDegree<span class="sc">$</span>septic</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
 </section>
 </section>
-<section id="blackman" class="level2">
-<h2 class="anchored" data-anchor-id="blackman">blackman</h2>
-<p><code>blackman(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hwindow.rs#L181">source</a> </span><br>
+<section id="cubic" class="level2">
+<h2 class="anchored" data-anchor-id="cubic">Cubic</h2>
+<p><code>cubic -&gt; HPolynomialDegree</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hpolynomialdegree.rs#L101">source</a> </span><br>
 </p>
-<p>Returns a Blackman window.<br>
+<p>Creates a <code>Cubic</code> <code>HPolynomialDegree</code>.<br>
 </p>
-<p><span class="math inline">\(w(n) = 0.42 - 0.5 \cos(2\pi n/npoints) + 0.08 \cos(4\pi n/npoints)\)</span></p>
-<p>The Blackman window is a taper formed by using the first three terms of a summation of cosines. It was designed to have close to the minimal leakage possible. It is close to optimal, only slightly worse than a Kaiser window.<br>
-</p>
-<p>The maximum value is normalized to 1 (though the value 1 does not appear if <code>npoints</code> is even and <code>sym</code> is <code>TRUE</code>).<br>
-</p>
-<p>The “exact Blackman” window was designed to null out the third and fourth sidelobes, but has discontinuities at the boundaries, resulting in a 6 dB/oct fall-off. This window is an approximation of the “exact” window, which does not null the sidelobes as well, but is smooth at the edges, improving the fall-off rate to 18 dB/oct.<br>
-</p>
-<p>Most references to the Blackman window come from the signal processing literature, where it is used as one of many windowing functions for smoothing values. It is also known as an apodization (which means “removing the foot”, i.e.&nbsp;smoothing discontinuities at the beginning and end of the sampled signal) or tapering function. It is known as a “near optimal” tapering function, almost as good (by some measures) as the Kaiser window.<br>
-</p>
-<section id="arguments-2" class="level4">
-<h4 class="anchored" data-anchor-id="arguments-2">Arguments</h4>
-<ul>
-<li><code>npoints</code><br>
-An <code>integer</code>. Number of points in the output window.<br>
-</li>
-<li><code>sym</code><br>
-A <code>bool</code>.<br>
-When <code>TRUE</code>, generates a symmetric window, for use in filter design.<br>
-When <code>FALSE</code>, generates a periodic window, for use in spectral analysis.<br>
-</li>
-<li><code>dtype</code><br>
-An <code>HDataType</code> to indicate which type of <code>HArray</code> to be created.<br>
-Must be a float dtype.<br>
-</li>
-</ul>
-</section>
 <section id="returns-2" class="level4">
 <h4 class="anchored" data-anchor-id="returns-2">Returns</h4>
-<p>An <code>HArray</code>.<br>
-</p>
+<p>An <code>HPolynomialDegree</code>.</p>
 </section>
 <section id="examples-2" class="level4">
 <h4 class="anchored" data-anchor-id="examples-2">Examples</h4>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>HWindow<span class="sc">$</span><span class="fu">blackman</span>(<span class="at">npoints =</span> 10L, <span class="at">sym =</span> <span class="cn">TRUE</span>, <span class="at">dtype =</span> HDataType<span class="sc">$</span>Float64)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>pol_deg <span class="ot">=</span> HPolynomialDegree<span class="sc">$</span>cubic</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
 </section>
 </section>
-<section id="blackmanharris" class="level2">
-<h2 class="anchored" data-anchor-id="blackmanharris">blackmanharris</h2>
-<p><code>blackmanharris(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hwindow.rs#L235">source</a> </span><br>
+<section id="linear" class="level2">
+<h2 class="anchored" data-anchor-id="linear">Linear</h2>
+<p><code>linear -&gt; HPolynomialDegree</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hpolynomialdegree.rs#L124">source</a> </span><br>
 </p>
-<p>Return a minimum 4-term Blackman-Harris window.<br>
+<p>Creates a <code>Linear</code> <code>HPolynomialDegree</code>.<br>
 </p>
-<p>The maximum value is normalized to 1 (though the value 1 does not appear if <code>npoints</code> is even and <code>window_type</code> is symmetric.<br>
-</p>
-<section id="arguments-3" class="level4">
-<h4 class="anchored" data-anchor-id="arguments-3">Arguments</h4>
-<ul>
-<li><code>npoints</code><br>
-An <code>integer</code>. Number of points in the output window.<br>
-</li>
-<li><code>sym</code><br>
-A <code>bool</code>.<br>
-When <code>TRUE</code>, generates a symmetric window, for use in filter design.<br>
-When <code>FALSE</code>, generates a periodic window, for use in spectral analysis.<br>
-</li>
-<li><code>dtype</code><br>
-An <code>HDataType</code> to indicate which type of <code>HArray</code> to be created.<br>
-Must be a float dtype.<br>
-</li>
-</ul>
-</section>
 <section id="returns-3" class="level4">
 <h4 class="anchored" data-anchor-id="returns-3">Returns</h4>
-<p>An <code>HArray</code>.<br>
-</p>
+<p>An <code>HPolynomialDegree</code>.</p>
 </section>
 <section id="examples-3" class="level4">
 <h4 class="anchored" data-anchor-id="examples-3">Examples</h4>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>HWindow<span class="sc">$</span><span class="fu">blackmanharris</span>(<span class="at">npoints =</span> 10L, <span class="at">sym =</span> <span class="cn">TRUE</span>, <span class="at">dtype =</span> HDataType<span class="sc">$</span>Float64)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>pol_deg <span class="ot">=</span> HPolynomialDegree<span class="sc">$</span>linear</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
 </section>
 </section>
-<section id="bohman" class="level2">
-<h2 class="anchored" data-anchor-id="bohman">bohman</h2>
-<p><code>bohman(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hwindow.rs#L291">source</a> </span><br>
+<section id="nearest" class="level2">
+<h2 class="anchored" data-anchor-id="nearest">Nearest</h2>
+<p><code>nearest -&gt; HPolynomialDegree</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hpolynomialdegree.rs#L147">source</a> </span><br>
 </p>
-<p>Returns a Bohman window.<br>
+<p>Creates a <code>Nearest</code> <code>HPolynomialDegree</code>.<br>
 </p>
-<p>The maximum value is normalized to 1 (though the value 1 does not appear if <code>npoints</code> is even and <code>window_type</code> is symmetric).<br>
-</p>
-<section id="arguments-4" class="level4">
-<h4 class="anchored" data-anchor-id="arguments-4">Arguments</h4>
-<ul>
-<li><code>npoints</code><br>
-An <code>integer</code>. Number of points in the output window.<br>
-</li>
-<li><code>sym</code><br>
-A <code>bool</code>.<br>
-When <code>TRUE</code>, generates a symmetric window, for use in filter design.<br>
-When <code>FALSE</code>, generates a periodic window, for use in spectral analysis.<br>
-</li>
-<li><code>dtype</code><br>
-An <code>HDataType</code> to indicate which type of <code>HArray</code> to be created.<br>
-Must be a float dtype.<br>
-</li>
-</ul>
-</section>
 <section id="returns-4" class="level4">
 <h4 class="anchored" data-anchor-id="returns-4">Returns</h4>
-<p>An <code>HArray</code>.<br>
-</p>
+<p>An <code>HPolynomialDegree</code>.</p>
 </section>
 <section id="examples-4" class="level4">
 <h4 class="anchored" data-anchor-id="examples-4">Examples</h4>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>HWindow<span class="sc">$</span><span class="fu">bohman</span>(<span class="at">npoints =</span> 10L, <span class="at">sym =</span> <span class="cn">TRUE</span>, <span class="at">dtype =</span> HDataType<span class="sc">$</span>Float64)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>pol_deg <span class="ot">=</span> HPolynomialDegree<span class="sc">$</span>nearest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
 </section>
 </section>
-<section id="boxcar" class="level2">
-<h2 class="anchored" data-anchor-id="boxcar">boxcar</h2>
-<p><code>boxcar(npoints: integer, dtype: HDataType) -&gt; HArray</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hwindow.rs#L340">source</a> </span><br>
+<section id="print" class="level2">
+<h2 class="anchored" data-anchor-id="print">print</h2>
+<p><code>print()</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hpolynomialdegree.rs#L171">source</a> </span><br>
 </p>
-<p>Returns a boxcar or rectangular window.<br>
+<p>Prints the <code>HPolynomialDegree</code>.<br>
+Differently from R’s behaviour, <code>print</code> doesn’t return the value invisibly.<br>
 </p>
-<p>Also known as a rectangular window or Dirichlet window, this is equivalent to no window at all.<br>
+<section id="examples-5" class="level4">
+<h4 class="anchored" data-anchor-id="examples-5">Examples</h4>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>pol_deg <span class="ot">=</span> HPolynomialDegree<span class="sc">$</span>complex64</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>pol_deg<span class="sc">$</span><span class="fu">print</span>()</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># or similarly:</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(pol_deg)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+</section>
+</section>
+<section id="eq" class="level2">
+<h2 class="anchored" data-anchor-id="eq">eq</h2>
+<p><code>eq(other: HPolynomialDegree) -&gt; bool</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hpolynomialdegree.rs#L204">source</a> </span><br>
 </p>
-<section id="arguments-5" class="level4">
-<h4 class="anchored" data-anchor-id="arguments-5">Arguments</h4>
+<p>Equality with another <code>HPolynomialDegree</code>.</p>
+<section id="arguments" class="level4">
+<h4 class="anchored" data-anchor-id="arguments">Arguments</h4>
 <ul>
-<li><code>npoints</code><br>
-An <code>integer</code>. Number of points in the output window.<br>
-</li>
-<li><code>dtype</code><br>
-An <code>HDataType</code> to indicate which type of <code>HArray</code> to be created.<br>
-Must be a float dtype.<br>
+<li><code>other</code><br>
+An <code>HPolynomialDegree</code>.<br>
 </li>
 </ul>
 </section>
 <section id="returns-5" class="level4">
 <h4 class="anchored" data-anchor-id="returns-5">Returns</h4>
-<p>An <code>HArray</code>.<br>
-</p>
+<p>A <code>bool</code>.</p>
 </section>
-<section id="examples-5" class="level4">
-<h4 class="anchored" data-anchor-id="examples-5">Examples</h4>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>HWindow<span class="sc">$</span><span class="fu">boxcar</span>(<span class="at">npoints =</span> 10L, <span class="at">dtype =</span> HDataType<span class="sc">$</span>Float64)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="examples-6" class="level4">
+<h4 class="anchored" data-anchor-id="examples-6">Examples</h4>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>pol_deg1 <span class="ot">=</span> HPolynomialDegree<span class="sc">$</span>quintic</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>pol_deg2 <span class="ot">=</span> HPolynomialDegree<span class="sc">$</span>quintic</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>pol_deg1<span class="sc">$</span><span class="fu">eq</span>(pol_deg2) <span class="co"># TRUE</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co"># or similarly:</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>pol_deg1 <span class="sc">==</span> pol_deg2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
 </section>
 </section>
-<section id="cosine" class="level2">
-<h2 class="anchored" data-anchor-id="cosine">cosine</h2>
-<p><code>cosine(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hwindow.rs#L388">source</a> </span><br>
+<section id="ne" class="level2">
+<h2 class="anchored" data-anchor-id="ne">ne</h2>
+<p><code>ne(other: HPolynomialDegree) -&gt; bool</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hpolynomialdegree.rs#L237">source</a> </span><br>
 </p>
-<p>Returns a window with a simple cosine shape.<br>
-</p>
-<p>The maximum value is normalized to 1 (though the value 1 does not appear if <code>npoints</code> is even and <code>window_type</code> is symmetric).<br>
-</p>
-<section id="arguments-6" class="level4">
-<h4 class="anchored" data-anchor-id="arguments-6">Arguments</h4>
+<p>Difference with another <code>HPolynomialDegree</code>.</p>
+<section id="arguments-1" class="level4">
+<h4 class="anchored" data-anchor-id="arguments-1">Arguments</h4>
 <ul>
-<li><code>npoints</code><br>
-An <code>integer</code>. Number of points in the output window.<br>
-</li>
-<li><code>sym</code><br>
-A <code>bool</code>.<br>
-When <code>TRUE</code>, generates a symmetric window, for use in filter design.<br>
-When <code>FALSE</code>, generates a periodic window, for use in spectral analysis.<br>
-</li>
-<li><code>dtype</code><br>
-An <code>HDataType</code> to indicate which type of <code>HArray</code> to be created.<br>
-Must be a float dtype.<br>
+<li><code>other</code><br>
+An <code>HPolynomialDegree</code>.<br>
 </li>
 </ul>
 </section>
 <section id="returns-6" class="level4">
 <h4 class="anchored" data-anchor-id="returns-6">Returns</h4>
-<p>An <code>HArray</code>.<br>
-</p>
-</section>
-<section id="examples-6" class="level4">
-<h4 class="anchored" data-anchor-id="examples-6">Examples</h4>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>HWindow<span class="sc">$</span><span class="fu">cosine</span>(<span class="at">npoints =</span> 10L, <span class="at">sym =</span> <span class="cn">TRUE</span>, <span class="at">dtype =</span> HDataType<span class="sc">$</span>Float64)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-</section>
-<section id="hann" class="level2">
-<h2 class="anchored" data-anchor-id="hann">hann</h2>
-<p><code>hann(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hwindow.rs#L447">source</a> </span><br>
-</p>
-<p>Returns a Hann window.<br>
-</p>
-<p><span class="math inline">\(w(n) = 0.5 - 0.5 \cos\left(\frac{2\pi{n}}{npoints-1}\right) \qquad 0 \leq n \leq npoints-1\)</span></p>
-<p>The maximum value is normalized to 1 (though the value 1 does not appear if <code>npoints</code> is even and <code>window_type</code> is symmetric.<br>
-</p>
-<p>The Hann window is a taper formed by using a raised cosine or sine-squared with ends that touch zero.<br>
-</p>
-<section id="arguments-7" class="level4">
-<h4 class="anchored" data-anchor-id="arguments-7">Arguments</h4>
-<ul>
-<li><code>npoints</code><br>
-An <code>integer</code>. Number of points in the output window.<br>
-</li>
-<li><code>sym</code><br>
-A <code>bool</code>.<br>
-When <code>TRUE</code>, generates a symmetric window, for use in filter design.<br>
-When <code>FALSE</code>, generates a periodic window, for use in spectral analysis.<br>
-</li>
-<li><code>dtype</code><br>
-An <code>HDataType</code> to indicate which type of <code>HArray</code> to be created.<br>
-Must be a float dtype.<br>
-</li>
-</ul>
-</section>
-<section id="returns-7" class="level4">
-<h4 class="anchored" data-anchor-id="returns-7">Returns</h4>
-<p>An <code>HArray</code>.<br>
-</p>
+<p>A <code>bool</code>.</p>
 </section>
 <section id="examples-7" class="level4">
 <h4 class="anchored" data-anchor-id="examples-7">Examples</h4>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>HWindow<span class="sc">$</span><span class="fu">hann</span>(<span class="at">npoints =</span> 10L, <span class="at">sym =</span> <span class="cn">TRUE</span>, <span class="at">dtype =</span> HDataType<span class="sc">$</span>Float64)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>pol_deg1 <span class="ot">=</span> HPolynomialDegree<span class="sc">$</span>quintic</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>pol_deg2 <span class="ot">=</span> HPolynomialDegree<span class="sc">$</span>nearest</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>pol_deg1<span class="sc">$</span><span class="fu">ne</span>(pol_deg2) <span class="co"># TRUE</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co"># or similarly:</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>pol_deg1 <span class="sc">!=</span> pol_deg2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
 
 
 </section>
