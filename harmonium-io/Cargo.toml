@@ -7,10 +7,10 @@ edition = "2021"
 
 [dependencies]
 harmonium-core = { path = "../harmonium-core" }
-num-traits = "*"
+num-traits = "0.2"
 ndarray = "0.15.6"
 arrow2 = "0.17"
-symphonia = { version = "*", default-features = false }
+symphonia = { version = "0.5.3", default-features = false }
 rodio = { git = "https://github.com/RustAudio/rodio.git", rev = "023ee21", default-features = false }
 
 [features]

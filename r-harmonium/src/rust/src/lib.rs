@@ -8,11 +8,12 @@ mod hconfig;
 mod hdatatype;
 mod herror;
 mod hfile;
-mod hinterpolationparams;
 mod hmatrix;
 mod hmetadatatype;
+mod hpolynomialdegree;
 mod hresampler;
 mod hresamplertype;
+mod hsincinterpolationparams;
 mod hwindow;
 mod partialeq;
 
@@ -21,10 +22,11 @@ mod partialeq;
 // See corresponding C code in `entrypoint.c`.
 extendr_module! {
     mod harmonium;
+    use hpolynomialdegree;
     use hconfig;
     use herror;
     use harray;
-    use hinterpolationparams;
+    use hsincinterpolationparams;
     use haudio;
     use haudiosink;
     use hfile;

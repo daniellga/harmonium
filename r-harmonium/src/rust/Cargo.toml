@@ -28,7 +28,7 @@ harmonium-resample = { git = "https://github.com/daniellga/harmonium.git" }
 harmonium-fft = { git = "https://github.com/daniellga/harmonium.git" }
 harmonium-window = { git = "https://github.com/daniellga/harmonium.git" }
 arrow2 = "0.17"
-rubato = "*"
+rubato = "0.13"
 
 [[bin]]
 name = "generate_r_docs"

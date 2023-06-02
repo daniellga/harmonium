@@ -9,8 +9,8 @@ edition = "2021"
 harmonium-core = { path = "../harmonium-core" }
 harmonium-io = { path = "../harmonium-io" }
 arrow2 = "0.17"
-rustfft = "*"
-cached = "*"
+rustfft = "6.1"
+cached = "0.43"
 
 [features]
 default = ["arrow"]

@@ -26,7 +26,7 @@ impl HDataType {
     ///
     /// #### Returns
     ///
-    /// An `HDataType`.
+    /// An `HDataType`. \
     ///
     /// #### Examples
     ///
@@ -49,7 +49,7 @@ impl HDataType {
     ///
     /// #### Returns
     ///
-    /// An `HDataType`.
+    /// An `HDataType`. \
     ///
     /// #### Examples
     ///
@@ -72,7 +72,7 @@ impl HDataType {
     ///
     /// #### Returns
     ///
-    /// An `HDataType`.
+    /// An `HDataType`. \
     ///
     /// #### Examples
     ///
@@ -95,7 +95,7 @@ impl HDataType {
     ///
     /// #### Returns
     ///
-    /// An `HDataType`.
+    /// An `HDataType`. \
     ///
     /// #### Examples
     ///
@@ -138,7 +138,7 @@ impl HDataType {
     ///
     /// `eq(other: HDataType) -> bool` \
     ///
-    /// Equality with another `HDataType`.
+    /// Equality with another `HDataType`. \
     ///
     /// #### Arguments
     ///
@@ -171,7 +171,7 @@ impl HDataType {
     ///
     /// `ne(other: HDataType) -> bool` \
     ///
-    /// Difference with another `HDataType`.
+    /// Difference with another `HDataType`. \
     ///
     /// #### Arguments
     ///
@@ -180,7 +180,7 @@ impl HDataType {
     ///
     /// #### Returns
     ///
-    /// A `bool`.
+    /// A `bool`. \
     ///
     /// #### Examples
     ///

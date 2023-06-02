@@ -7,6 +7,6 @@ edition = "2021"
 
 [dependencies]
 harmonium-core = { path = "../harmonium-core" }
-rubato = "*"
+rubato = "0.13"
 arrow2 = "0.17"
-num-traits = "*"
+num-traits = "0.2"

@@ -5,7 +5,8 @@ use harmonium_core::{
 };
 use num_traits::Float;
 use rubato::{
-    FftFixedIn, FftFixedInOut, FftFixedOut, Resampler, Sample, SincFixedIn, SincFixedOut,
+    FastFixedIn, FftFixedIn, FftFixedInOut, FftFixedOut, Resampler, Sample, SincFixedIn,
+    SincFixedOut,
 };
 
 pub trait ProcessResampler<T>
@@ -49,6 +50,13 @@ macro_rules! impl_process_resampler_fixed_in {
                                 let slc = &values[(ch * nrows + idx)..(ch * nrows + idx + nbr_frames_next)];
                                 input_buffer[ch].extend_from_slice(slc);
                             });
+
+                            println!("input_buffer_len = {:?}", input_buffer.len());
+                            println!("input_buffer_intern_len = {:?}", input_buffer[0].len());
+                            println!("output_buffer_len = {:?}", output_buffer.len());
+                            println!("output_buffer_intern_capacity = {:?}", output_buffer[0].capacity());
+
+
                             // the input and output buffers are noninterleaved
                             self.process_into_buffer(&input_buffer, &mut output_buffer, None)?;
 
@@ -79,7 +87,12 @@ macro_rules! impl_process_resampler_fixed_in {
     };
 }
 
-impl_process_resampler_fixed_in!(FftFixedIn<T>, FftFixedInOut<T>, SincFixedIn<T>);
+impl_process_resampler_fixed_in!(
+    FftFixedIn<T>,
+    FftFixedInOut<T>,
+    SincFixedIn<T>,
+    FastFixedIn<T>
+);
 
 macro_rules! impl_process_resampler_fixed_out {
     ($($t:ty),+) => {
@@ -148,6 +161,49 @@ macro_rules! impl_process_resampler_fixed_out {
 }
 
 impl_process_resampler_fixed_out!(FftFixedOut<T>, SincFixedOut<T>);
+
+#[cfg(test)]
+mod tests {
+    use harmonium_core::structs::HFloatMatrix;
+    use rubato::{
+        Resampler, SincFixedIn, SincInterpolationParameters, SincInterpolationType, WindowFunction,
+    };
+
+    use super::ProcessResampler;
+
+    #[test]
+    fn test_process_resampler() {
+        let params = SincInterpolationParameters {
+            sinc_len: 256,
+            f_cutoff: 0.95,
+            interpolation: SincInterpolationType::Linear,
+            oversampling_factor: 256,
+            window: WindowFunction::BlackmanHarris2,
+        };
+
+        let mut resampler =
+            SincFixedIn::<f64>::new(48000_f64 / 44100_f64, 2.0, params, 1024, 2).unwrap();
+
+        let ob = resampler.output_buffer_allocate();
+        println!("{:?}", ob.capacity());
+        println!("{:?}", ob[0].capacity());
+
+        let hmatrix = HFloatMatrix::new_from_vec(vec![0.0_f64; 2048], 2).unwrap();
+        let mut haudio = hmatrix.into_haudio(44100);
+
+        println!("{}", haudio);
+
+        println!("nframes before: {}", haudio.nframes());
+        println!("nchannels before: {}", haudio.nchannels());
+        println!("len before {}", haudio.len());
+
+        resampler.process_resampler(&mut haudio, 48000).unwrap();
+
+        println!("nframes after: {}", haudio.nframes());
+        println!("nchannels after: {}", haudio.nchannels());
+        println!("len after {}", haudio.len());
+    }
+}
 
 //pub trait Resampler {
 //    fn resample_fftfixedin(

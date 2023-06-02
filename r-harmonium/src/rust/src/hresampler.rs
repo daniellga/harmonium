@@ -1,18 +1,20 @@
 use crate::{
-    haudio::HAudio, hdatatype::HDataType, hinterpolationparams::HInterpolationParams,
-    hresamplertype::HResamplerType,
+    haudio::HAudio, hdatatype::HDataType, hpolynomialdegree::HPolynomialDegree,
+    hresamplertype::HResamplerType, hsincinterpolationparams::HSincInterpolationParams,
 };
 use extendr_api::prelude::*;
 use harmonium_core::structs::HFloatAudio;
 use harmonium_resample::resample::ProcessResampler;
-use rubato::{FftFixedIn, FftFixedInOut, FftFixedOut, SincFixedIn, SincFixedOut};
+use rubato::{
+    FastFixedIn, FastFixedOut, FftFixedIn, FftFixedInOut, FftFixedOut, SincFixedIn, SincFixedOut,
+};
 use std::any::Any;
 
 pub trait HResamplerR: Send {
     fn as_any(&self) -> &dyn Any;
     fn process(&mut self, haudio: &mut HAudio, sr_out: i32);
-    fn set_resample_ratio(&mut self, new_ratio: f64);
-    fn set_resample_ratio_relative(&mut self, rel_ratio: f64);
+    fn set_resample_ratio(&mut self, new_ratio: f64, ramp: bool);
+    fn set_resample_ratio_relative(&mut self, rel_ratio: f64, ramp: bool);
     fn resampler_type(&self) -> HResamplerType;
     fn dtype(&self) -> HDataType;
     fn print(&self);
@@ -30,6 +32,10 @@ pub trait HResamplerR: Send {
 /// * `SincFixedIn` \
 ///
 /// * `SincFixedOut` \
+///
+/// * `FastFixedIn` \
+///
+/// * `FastFixedOut` \
 ///
 /// #### Synchronous Resamplers
 ///
@@ -190,7 +196,7 @@ impl HResampler {
     fn new_sinc(
         resample_ratio: f64,
         max_resample_ratio_relative: f64,
-        parameters: &HInterpolationParams,
+        parameters: &HSincInterpolationParams,
         chunk_size: i32,
         nbr_channels: i32,
         resampler_type: &HResamplerType,
@@ -245,6 +251,64 @@ impl HResampler {
         }
     }
 
+    fn new_fast(
+        resample_ratio: f64,
+        max_resample_ratio_relative: f64,
+        pol_deg: &HPolynomialDegree,
+        chunk_size: i32,
+        nbr_channels: i32,
+        resampler_type: &HResamplerType,
+        dtype: &HDataType,
+    ) -> HResampler {
+        match (resampler_type, dtype) {
+            (HResamplerType::FastFixedIn, HDataType::Float32) => {
+                let resampler = FastFixedIn::<f32>::new(
+                    resample_ratio,
+                    max_resample_ratio_relative,
+                    pol_deg.into(),
+                    chunk_size.try_into().unwrap(),
+                    nbr_channels.try_into().unwrap(),
+                )
+                .unwrap();
+                HResampler(Box::new(resampler))
+            }
+            (HResamplerType::FastFixedIn, HDataType::Float64) => {
+                let resampler = FastFixedIn::<f64>::new(
+                    resample_ratio,
+                    max_resample_ratio_relative,
+                    pol_deg.into(),
+                    chunk_size.try_into().unwrap(),
+                    nbr_channels.try_into().unwrap(),
+                )
+                .unwrap();
+                HResampler(Box::new(resampler))
+            }
+            (HResamplerType::FastFixedOut, HDataType::Float32) => {
+                let resampler = FastFixedOut::<f32>::new(
+                    resample_ratio,
+                    max_resample_ratio_relative,
+                    pol_deg.into(),
+                    chunk_size.try_into().unwrap(),
+                    nbr_channels.try_into().unwrap(),
+                )
+                .unwrap();
+                HResampler(Box::new(resampler))
+            }
+            (HResamplerType::FastFixedOut, HDataType::Float64) => {
+                let resampler = FastFixedOut::<f64>::new(
+                    resample_ratio,
+                    max_resample_ratio_relative,
+                    pol_deg.into(),
+                    chunk_size.try_into().unwrap(),
+                    nbr_channels.try_into().unwrap(),
+                )
+                .unwrap();
+                HResampler(Box::new(resampler))
+            }
+            _ => panic!("Invalid resampler or data type."),
+        }
+    }
+
     fn process(&mut self, haudio: &mut HAudio, sr_out: i32) {
         self.0.process(haudio, sr_out);
     }
@@ -276,11 +340,11 @@ macro_rules! impl_hresamplerfftr {
                     self.process_resampler(haudio, sr_out).unwrap();
                 }
 
-                fn set_resample_ratio(&mut self, _: f64) {
+                fn set_resample_ratio(&mut self, new_ratio: f64, ramp: bool) {
                     panic!("not available for fft resamplers");
                 }
 
-                fn set_resample_ratio_relative(&mut self, _: f64) {
+                fn set_resample_ratio_relative(&mut self, rel_ratio: f64, ramp: bool) {
                     panic!("not available for fft resamplers");
                 }
 
@@ -359,12 +423,12 @@ macro_rules! impl_hresamplersincr {
                     self.process_resampler(haudio, sr_out).unwrap();
                 }
 
-                fn set_resample_ratio(&mut self, new_ratio: f64) {
-                    rubato::Resampler::set_resample_ratio(self, new_ratio).unwrap();
+                fn set_resample_ratio(&mut self, new_ratio: f64, ramp: bool) {
+                    rubato::Resampler::set_resample_ratio(self, new_ratio, ramp).unwrap();
                 }
 
-                fn set_resample_ratio_relative(&mut self, rel_ratio: f64) {
-                    rubato::Resampler::set_resample_ratio_relative(self, rel_ratio).unwrap();
+                fn set_resample_ratio_relative(&mut self, rel_ratio: f64, ramp: bool) {
+                    rubato::Resampler::set_resample_ratio_relative(self, rel_ratio, ramp).unwrap();
                 }
 
                 fn resampler_type(&self) -> HResamplerType {
@@ -411,6 +475,34 @@ impl_hresamplersincr!(
         HResamplerType::SincFixedOut,
         HDataType::Float64,
         "SincFixedOut<f64>"
+    ),
+    (
+        FastFixedIn<f32>,
+        HFloatAudio<f32>,
+        HResamplerType::FastFixedIn,
+        HDataType::Float32,
+        "FastFixedIn<f32>"
+    ),
+    (
+        FastFixedIn<f64>,
+        HFloatAudio<f64>,
+        HResamplerType::FastFixedIn,
+        HDataType::Float64,
+        "FastFixedIn<f64>"
+    ),
+    (
+        FastFixedOut<f32>,
+        HFloatAudio<f32>,
+        HResamplerType::FastFixedOut,
+        HDataType::Float32,
+        "FastFixedOut<f32>"
+    ),
+    (
+        FastFixedOut<f64>,
+        HFloatAudio<f64>,
+        HResamplerType::FastFixedOut,
+        HDataType::Float64,
+        "FastFixedOut<f64>"
     )
 );
 

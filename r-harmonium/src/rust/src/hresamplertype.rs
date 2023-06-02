@@ -14,6 +14,8 @@ pub enum HResamplerType {
     FftFixedOut,
     SincFixedIn,
     SincFixedOut,
+    FastFixedIn,
+    FastFixedOut,
 }
 
 #[extendr(use_try_from = true)]
@@ -27,7 +29,7 @@ impl HResamplerType {
     ///
     /// #### Returns
     ///
-    /// An `HResamplerType`.
+    /// An `HResamplerType`. \
     ///
     /// #### Examples
     ///
@@ -50,7 +52,7 @@ impl HResamplerType {
     ///
     /// #### Returns
     ///
-    /// An `HResamplerType`.
+    /// An `HResamplerType`. \
     ///
     /// #### Examples
     ///
@@ -73,7 +75,7 @@ impl HResamplerType {
     ///
     /// #### Returns
     ///
-    /// An `HResamplerType`.
+    /// An `HResamplerType`. \
     ///
     /// #### Examples
     ///
@@ -96,7 +98,7 @@ impl HResamplerType {
     ///
     /// #### Returns
     ///
-    /// An `HResamplerType`.
+    /// An `HResamplerType`. \
     ///
     /// #### Examples
     ///
@@ -119,7 +121,7 @@ impl HResamplerType {
     ///
     /// #### Returns
     ///
-    /// An `HResamplerType`.
+    /// An `HResamplerType`. \
     ///
     /// #### Examples
     ///
@@ -131,6 +133,52 @@ impl HResamplerType {
     ///
     fn sinc_fixed_out() -> Self {
         Self::SincFixedOut
+    }
+
+    /// HResamplerType
+    /// ## fast_fixed_in
+    ///
+    /// `fast_fixed_in -> HResamplerType` \
+    ///
+    /// Creates a `FastFixedIn` `HResamplerType`. \
+    ///
+    /// #### Returns
+    ///
+    /// An `HResamplerType`. \
+    ///
+    /// #### Examples
+    ///
+    /// ```r
+    /// hresamplertype = HResamplerType$fast_fixed_in
+    /// ```
+    ///
+    /// _________
+    ///
+    fn fast_fixed_in() -> Self {
+        Self::FastFixedIn
+    }
+
+    /// HResamplerType
+    /// ## fast_fixed_out
+    ///
+    /// `fast_fixed_out -> HResamplerType` \
+    ///
+    /// Creates a `FastFixedOut` `HResamplerType`. \
+    ///
+    /// #### Returns
+    ///
+    /// An `HResamplerType`. \
+    ///
+    /// #### Examples
+    ///
+    /// ```r
+    /// hresamplertype = HResamplerType$fast_fixed_out
+    /// ```
+    ///
+    /// _________
+    ///
+    fn fast_fixed_out() -> Self {
+        Self::FastFixedOut
     }
 
     /// HResamplerType
@@ -232,6 +280,8 @@ impl fmt::Display for HResamplerType {
             HResamplerType::FftFixedOut => write!(f, "FftFixedOut")?,
             HResamplerType::SincFixedIn => write!(f, "SincFixedIn")?,
             HResamplerType::SincFixedOut => write!(f, "SincFixedOut")?,
+            HResamplerType::FastFixedIn => write!(f, "FastFixedIn")?,
+            HResamplerType::FastFixedOut => write!(f, "FastFixedOut")?,
         }
         Ok(())
     }

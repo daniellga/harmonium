@@ -11,13 +11,31 @@ To learn more, read the [documentation](https://daniellga.github.io/harmonium/).
 
 ## Setup
 
+
 ### R
 
 #### Windows
 
+Download [Rustup](https://www.rust-lang.org/tools/install).
+
 Windows users have add gnu target:
 `rustup target add x86_64-pc-windows-gnu`
 
+In R, install harmonium:
+`remotes::install_github("daniellga/harmonium/r-harmonium")`
+
 #### Linux
 
+Download [Rustup](https://www.rust-lang.org/tools/install).
+
 On Linux, the ALSA development files are required. These are provided as part of the libasound2-dev package on Debian and Ubuntu distributions and alsa-lib-devel on Fedora.
+
+In R, install harmonium:
+`remotes::install_github("daniellga/harmonium/r-harmonium")`
+
+#### Mac
+
+Download [Rustup](https://www.rust-lang.org/tools/install).
+
+In R, install harmonium:
+`remotes::install_github("daniellga/harmonium/r-harmonium")`

@@ -30,6 +30,7 @@ pub trait HAudioR: Send + Sync {
 /// * `HMatrix` \
 /// The decoded audio data as a floating point time series. Each column represents a channel. \
 /// Must have a float dtype. \
+///
 /// * `integer`. \
 /// The sampling rate in hz. \
 ///

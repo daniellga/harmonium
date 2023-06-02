@@ -20,6 +20,14 @@
   HResamplerType$sinc_fixed_out = HResamplerType$sinc_fixed_out()
   lockEnvironment(HResamplerType, bindings = TRUE)
 
+  # Assure only one instance of HPolynomialDegree's external pointer is created for each enum variant.
+  HPolynomialDegree$septic = HPolynomialDegree$septic()
+  HPolynomialDegree$quintic = HPolynomialDegree$quintic()
+  HPolynomialDegree$cubic = HPolynomialDegree$cubic()
+  HPolynomialDegree$linear = HPolynomialDegree$linear()
+  HPolynomialDegree$nearest = HPolynomialDegree$nearest()
+  lockEnvironment(HPolynomialDegree, bindings = TRUE)
+
   # Lazy load hconfig. This is needed because HConfig uses rust functions, which are loaded after the scripts are run.
   env <- parent.env(environment())
   HConfig = generate_hconfig()

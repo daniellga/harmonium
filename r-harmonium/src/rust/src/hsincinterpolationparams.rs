@@ -1,8 +1,8 @@
 use extendr_api::prelude::*;
-use rubato::{InterpolationParameters, InterpolationType, WindowFunction};
+use rubato::{SincInterpolationParameters, SincInterpolationType, WindowFunction};
 
 #[derive(Debug)]
-pub struct HInterpolationParams {
+pub struct HSincInterpolationParams {
     sinc_len: i32,
     f_cutoff: f64,
     oversampling_factor: i32,
@@ -11,15 +11,15 @@ pub struct HInterpolationParams {
 }
 
 #[extendr]
-impl HInterpolationParams {
+impl HSincInterpolationParams {
     fn new(
         sinc_len: i32,
         f_cutoff: f64,
         oversampling_factor: i32,
         interpolation: String,
         window: String,
-    ) -> HInterpolationParams {
-        HInterpolationParams {
+    ) -> HSincInterpolationParams {
+        HSincInterpolationParams {
             sinc_len,
             f_cutoff,
             oversampling_factor,
@@ -33,15 +33,15 @@ impl HInterpolationParams {
     }
 }
 
-impl From<&HInterpolationParams> for InterpolationParameters {
-    fn from(item: &HInterpolationParams) -> Self {
+impl From<&HSincInterpolationParams> for SincInterpolationParameters {
+    fn from(item: &HSincInterpolationParams) -> Self {
         let sinc_len = item.sinc_len.try_into().unwrap();
         let f_cutoff = item.f_cutoff as f32;
         let oversampling_factor = item.oversampling_factor.try_into().unwrap();
         let interpolation = match item.interpolation.as_str() {
-            "cubic" => InterpolationType::Cubic,
-            "linear" => InterpolationType::Linear,
-            "nearest" => InterpolationType::Nearest,
+            "cubic" => SincInterpolationType::Cubic,
+            "linear" => SincInterpolationType::Linear,
+            "nearest" => SincInterpolationType::Nearest,
             _ => panic!("Not a valid interpolation type."),
         };
         let window = match item.window.as_str() {
@@ -54,7 +54,7 @@ impl From<&HInterpolationParams> for InterpolationParameters {
             _ => panic!("Not a valid window."),
         };
 
-        InterpolationParameters {
+        SincInterpolationParameters {
             sinc_len,
             f_cutoff,
             oversampling_factor,
@@ -65,6 +65,6 @@ impl From<&HInterpolationParams> for InterpolationParameters {
 }
 
 extendr_module! {
-    mod hinterpolationparams;
-    impl HInterpolationParams;
+    mod hsincinterpolationparams;
+    impl HSincInterpolationParams;
 }
