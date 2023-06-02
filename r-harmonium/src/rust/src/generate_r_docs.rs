@@ -23,7 +23,7 @@ fn main() {
 
     generate_r_docs(files, gh, &mut hash);
 
-    let output_path = PathBuf::from("../../../docs/docswebsite/docs");
+    let output_path = PathBuf::from("../../../docs/docs");
 
     output_file(hash, output_path)
 }
