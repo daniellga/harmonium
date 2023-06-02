@@ -13,6 +13,7 @@ fn main() {
         "./hresamplertype.rs",
         "./hwindow.rs",
         "./hmetadatatype.rs",
+        "./hpolynomialdegree.rs",
         "../../../R/hconfig.R",
     ];
 
