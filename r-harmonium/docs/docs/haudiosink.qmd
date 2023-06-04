@@ -313,6 +313,27 @@ haudiosink$is_paused() # TRUE
 
 _________
 
+## skip_one
+
+`skip_one()` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./haudiosink.rs#L442) </span> \
+
+Skips to the next `Source` in the `Sink`. \
+If there are more `Source`s appended to the `Sink` at the time, it will play the next one.
+Otherwise, the `Sink` will finish as if it had finished playing a `Source` all the way through. \
+
+#### Examples
+
+```r
+haudiosink = HAudioSink$new()
+haudiosink$append_from_file(fpath = "../../../testfiles/gs-16b-2c-44100hz.wav")
+haudiosink$append_from_file(fpath = "../../../testfiles/gs-16b-2c-44100hz.wav")
+haudiosink$len() == 2 # TRUE
+haudiosink$skip_one()
+haudiosink$len() == 1 # TRUE
+```
+
+_________
+
 ## audio_output_devices
 
 `audio_output_devices() -> atomicvector` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./haudiosink.rs#L465) </span> \

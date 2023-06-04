@@ -336,6 +336,13 @@
     "text": "clear\nclear()  source \n\nRemoves all currently loaded Sources from the Sink and pauses it.\n\n\nExamples\nhaudiosink = HAudioSink$new()\nhaudiosink$append_from_file(fpath = \"../../../testfiles/gs-16b-2c-44100hz.wav\")\nhaudiosink$clear()\nhaudiosink$is_empty() # TRUE\nhaudiosink$is_paused() # TRUE"
   },
   {
+    "objectID": "docs/haudiosink.html#skip_one",
+    "href": "docs/haudiosink.html#skip_one",
+    "title": "HAudioSink",
+    "section": "skip_one",
+    "text": "skip_one\nskip_one()  source \n\nSkips to the next Source in the Sink.\nIf there are more Sources appended to the Sink at the time, it will play the next one. Otherwise, the Sink will finish as if it had finished playing a Source all the way through.\n\n\nExamples\nhaudiosink = HAudioSink$new()\nhaudiosink$append_from_file(fpath = \"../../../testfiles/gs-16b-2c-44100hz.wav\")\nhaudiosink$append_from_file(fpath = \"../../../testfiles/gs-16b-2c-44100hz.wav\")\nhaudiosink$len() == 2 # TRUE\nhaudiosink$skip_one()\nhaudiosink$len() == 1 # TRUE"
+  },
+  {
     "objectID": "docs/haudiosink.html#audio_output_devices",
     "href": "docs/haudiosink.html#audio_output_devices",
     "title": "HAudioSink",

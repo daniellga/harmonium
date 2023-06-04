@@ -232,6 +232,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#len" id="toc-len" class="nav-link" data-scroll-target="#len">len</a></li>
   <li><a href="#is_empty" id="toc-is_empty" class="nav-link" data-scroll-target="#is_empty">is_empty</a></li>
   <li><a href="#clear" id="toc-clear" class="nav-link" data-scroll-target="#clear">clear</a></li>
+  <li><a href="#skip_one" id="toc-skip_one" class="nav-link" data-scroll-target="#skip_one">skip_one</a></li>
   <li><a href="#audio_output_devices" id="toc-audio_output_devices" class="nav-link" data-scroll-target="#audio_output_devices">audio_output_devices</a></li>
   <li><a href="#audio_default_device" id="toc-audio_default_device" class="nav-link" data-scroll-target="#audio_default_device">audio_default_device</a></li>
   <li><a href="#audio_supported_configs" id="toc-audio_supported_configs" class="nav-link" data-scroll-target="#audio_supported_configs">audio_supported_configs</a></li>
@@ -558,6 +559,24 @@ A <code>double</code>.<br>
 <hr>
 </section>
 </section>
+<section id="skip_one" class="level2">
+<h2 class="anchored" data-anchor-id="skip_one">skip_one</h2>
+<p><code>skip_one()</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./haudiosink.rs#L442">source</a> </span><br>
+</p>
+<p>Skips to the next <code>Source</code> in the <code>Sink</code>.<br>
+If there are more <code>Source</code>s appended to the <code>Sink</code> at the time, it will play the next one. Otherwise, the <code>Sink</code> will finish as if it had finished playing a <code>Source</code> all the way through.<br>
+</p>
+<section id="examples-15" class="level4">
+<h4 class="anchored" data-anchor-id="examples-15">Examples</h4>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>haudiosink <span class="ot">=</span> HAudioSink<span class="sc">$</span><span class="fu">new</span>()</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">append_from_file</span>(<span class="at">fpath =</span> <span class="st">"../../../testfiles/gs-16b-2c-44100hz.wav"</span>)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">append_from_file</span>(<span class="at">fpath =</span> <span class="st">"../../../testfiles/gs-16b-2c-44100hz.wav"</span>)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">len</span>() <span class="sc">==</span> <span class="dv">2</span> <span class="co"># TRUE</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">skip_one</span>()</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">len</span>() <span class="sc">==</span> <span class="dv">1</span> <span class="co"># TRUE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+</section>
+</section>
 <section id="audio_output_devices" class="level2">
 <h2 class="anchored" data-anchor-id="audio_output_devices">audio_output_devices</h2>
 <p><code>audio_output_devices() -&gt; atomicvector</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./haudiosink.rs#L465">source</a> </span><br>
@@ -569,9 +588,9 @@ A <code>double</code>.<br>
 <p>A character atomic vector.<br>
 </p>
 </section>
-<section id="examples-15" class="level4">
-<h4 class="anchored" data-anchor-id="examples-15">Examples</h4>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>HAudioSink<span class="sc">$</span><span class="fu">audio_output_devices</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="examples-16" class="level4">
+<h4 class="anchored" data-anchor-id="examples-16">Examples</h4>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>HAudioSink<span class="sc">$</span><span class="fu">audio_output_devices</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 </section>
 </section>
@@ -586,9 +605,9 @@ A <code>double</code>.<br>
 <p>A <code>string</code>.<br>
 </p>
 </section>
-<section id="examples-16" class="level4">
-<h4 class="anchored" data-anchor-id="examples-16">Examples</h4>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>HAudioSink<span class="sc">$</span><span class="fu">audio_default_device</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="examples-17" class="level4">
+<h4 class="anchored" data-anchor-id="examples-17">Examples</h4>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>HAudioSink<span class="sc">$</span><span class="fu">audio_default_device</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 </section>
 </section>
@@ -614,9 +633,9 @@ The following informations are given:<br>
 <p>A character atomic vector.<br>
 </p>
 </section>
-<section id="examples-17" class="level4">
-<h4 class="anchored" data-anchor-id="examples-17">Examples</h4>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>HAudioSink<span class="sc">$</span><span class="fu">audio_supported_configs</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="examples-18" class="level4">
+<h4 class="anchored" data-anchor-id="examples-18">Examples</h4>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>HAudioSink<span class="sc">$</span><span class="fu">audio_supported_configs</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 
 
