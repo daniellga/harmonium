@@ -17,16 +17,16 @@ codegen-units = 1
 
 [dependencies]
 extendr-api = { git = "https://github.com/extendr/extendr", rev = "fc67738"}
-harmonium-core = { path = "../../../harmonium-core" }
-harmonium-io = { path = "../../../harmonium-io" }
-harmonium-resample = { path = "../../../harmonium-resample" }
-harmonium-fft = { path = "../../../harmonium-fft" }
-harmonium-window = { path = "../../../harmonium-window" }
-#harmonium-core = { git = "https://github.com/daniellga/harmonium.git" }
-#harmonium-io = { git = "https://github.com/daniellga/harmonium.git" }
-#harmonium-resample = { git = "https://github.com/daniellga/harmonium.git" }
-#harmonium-fft = { git = "https://github.com/daniellga/harmonium.git" }
-#harmonium-window = { git = "https://github.com/daniellga/harmonium.git" }
+#harmonium-core = { path = "../../../harmonium-core" }
+#harmonium-io = { path = "../../../harmonium-io" }
+#harmonium-resample = { path = "../../../harmonium-resample" }
+#harmonium-fft = { path = "../../../harmonium-fft" }
+#harmonium-window = { path = "../../../harmonium-window" }
+harmonium-core = { git = "https://github.com/daniellga/harmonium.git" }
+harmonium-io = { git = "https://github.com/daniellga/harmonium.git" }
+harmonium-resample = { git = "https://github.com/daniellga/harmonium.git" }
+harmonium-fft = { git = "https://github.com/daniellga/harmonium.git" }
+harmonium-window = { git = "https://github.com/daniellga/harmonium.git" }
 arrow2 = "0.17"
 rubato = "0.13"
 
