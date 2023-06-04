@@ -137,12 +137,12 @@ impl HAudioSink {
         self.sink.clear()
     }
 
-    ///// Skips to the next `Source` in the `Sink`.
-    ///// If there are more `Source`s appended to the `Sink` at the time, will play the next one. Otherwise, the `Sink` will finish
-    ///// as if it had finished playing a `Source` all the way through.
-    //pub fn skip_one(&self) {
-    //    self.sink.skip_one()
-    //}
+    /// Skips to the next `Source` in the `Sink`.
+    /// If there are more `Source`s appended to the `Sink` at the time, will play the next one. Otherwise, the `Sink` will finish
+    /// as if it had finished playing a `Source` all the way through.
+    pub fn skip_one(&self) {
+        self.sink.skip_one()
+    }
 }
 
 /// Returns a list of available audio output devices.

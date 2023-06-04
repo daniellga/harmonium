@@ -15,6 +15,30 @@ set_float_fmt <- function(fmt) invisible(.Call(wrap__set_float_fmt, fmt))
 
 get_float_fmt <- function() .Call(wrap__get_float_fmt)
 
+HPolynomialDegree <- new.env(parent = emptyenv())
+
+HPolynomialDegree$septic <- function() .Call(wrap__HPolynomialDegree__septic)
+
+HPolynomialDegree$quintic <- function() .Call(wrap__HPolynomialDegree__quintic)
+
+HPolynomialDegree$cubic <- function() .Call(wrap__HPolynomialDegree__cubic)
+
+HPolynomialDegree$linear <- function() .Call(wrap__HPolynomialDegree__linear)
+
+HPolynomialDegree$nearest <- function() .Call(wrap__HPolynomialDegree__nearest)
+
+HPolynomialDegree$print <- function() invisible(.Call(wrap__HPolynomialDegree__print, self))
+
+HPolynomialDegree$eq <- function(other) .Call(wrap__HPolynomialDegree__eq, self, other)
+
+HPolynomialDegree$ne <- function(other) .Call(wrap__HPolynomialDegree__ne, self, other)
+
+#' @export
+`$.HPolynomialDegree` <- function (self, name) { func <- HPolynomialDegree[[name]]; environment(func) <- environment(); func }
+
+#' @export
+`[[.HPolynomialDegree` <- `$.HPolynomialDegree`
+
 HError <- new.env(parent = emptyenv())
 
 HError$to_error1 <- function() .Call(wrap__HError__to_error1)
@@ -65,17 +89,17 @@ HArray$fft <- function() .Call(wrap__HArray__fft, self)
 #' @export
 `[[.HArray` <- `$.HArray`
 
-HInterpolationParams <- new.env(parent = emptyenv())
+HSincInterpolationParams <- new.env(parent = emptyenv())
 
-HInterpolationParams$new <- function(sinc_len, f_cutoff, oversampling_factor, interpolation, window) .Call(wrap__HInterpolationParams__new, sinc_len, f_cutoff, oversampling_factor, interpolation, window)
+HSincInterpolationParams$new <- function(sinc_len, f_cutoff, oversampling_factor, interpolation, window) .Call(wrap__HSincInterpolationParams__new, sinc_len, f_cutoff, oversampling_factor, interpolation, window)
 
-HInterpolationParams$print <- function() invisible(.Call(wrap__HInterpolationParams__print, self))
-
-#' @export
-`$.HInterpolationParams` <- function (self, name) { func <- HInterpolationParams[[name]]; environment(func) <- environment(); func }
+HSincInterpolationParams$print <- function() invisible(.Call(wrap__HSincInterpolationParams__print, self))
 
 #' @export
-`[[.HInterpolationParams` <- `$.HInterpolationParams`
+`$.HSincInterpolationParams` <- function (self, name) { func <- HSincInterpolationParams[[name]]; environment(func) <- environment(); func }
+
+#' @export
+`[[.HSincInterpolationParams` <- `$.HSincInterpolationParams`
 
 HAudio <- new.env(parent = emptyenv())
 
@@ -146,6 +170,8 @@ HAudioSink$len <- function() .Call(wrap__HAudioSink__len, self)
 HAudioSink$is_empty <- function() .Call(wrap__HAudioSink__is_empty, self)
 
 HAudioSink$clear <- function() invisible(.Call(wrap__HAudioSink__clear, self))
+
+HAudioSink$skip_one <- function() invisible(.Call(wrap__HAudioSink__skip_one, self))
 
 HAudioSink$audio_output_devices <- function() .Call(wrap__HAudioSink__audio_output_devices)
 
@@ -285,26 +311,6 @@ HMetadataType$ne <- function(other) .Call(wrap__HMetadataType__ne, self, other)
 #' @export
 `[[.HMetadataType` <- `$.HMetadataType`
 
-HResampler <- new.env(parent = emptyenv())
-
-HResampler$new_fft <- function(sr_in, sr_out, chunk_size, sub_chunks, nbr_channels, resampler_type, dtype) .Call(wrap__HResampler__new_fft, sr_in, sr_out, chunk_size, sub_chunks, nbr_channels, resampler_type, dtype)
-
-HResampler$new_sinc <- function(resample_ratio, max_resample_ratio_relative, parameters, chunk_size, nbr_channels, resampler_type, dtype) .Call(wrap__HResampler__new_sinc, resample_ratio, max_resample_ratio_relative, parameters, chunk_size, nbr_channels, resampler_type, dtype)
-
-HResampler$process <- function(haudio, sr_out) invisible(.Call(wrap__HResampler__process, self, haudio, sr_out))
-
-HResampler$resampler_type <- function() .Call(wrap__HResampler__resampler_type, self)
-
-HResampler$dtype <- function() .Call(wrap__HResampler__dtype, self)
-
-HResampler$print <- function() invisible(.Call(wrap__HResampler__print, self))
-
-#' @export
-`$.HResampler` <- function (self, name) { func <- HResampler[[name]]; environment(func) <- environment(); func }
-
-#' @export
-`[[.HResampler` <- `$.HResampler`
-
 HResamplerType <- new.env(parent = emptyenv())
 
 HResamplerType$fft_fixed_in <- function() .Call(wrap__HResamplerType__fft_fixed_in)
@@ -316,6 +322,10 @@ HResamplerType$fft_fixed_out <- function() .Call(wrap__HResamplerType__fft_fixed
 HResamplerType$sinc_fixed_in <- function() .Call(wrap__HResamplerType__sinc_fixed_in)
 
 HResamplerType$sinc_fixed_out <- function() .Call(wrap__HResamplerType__sinc_fixed_out)
+
+HResamplerType$fast_fixed_in <- function() .Call(wrap__HResamplerType__fast_fixed_in)
+
+HResamplerType$fast_fixed_out <- function() .Call(wrap__HResamplerType__fast_fixed_out)
 
 HResamplerType$print <- function() invisible(.Call(wrap__HResamplerType__print, self))
 

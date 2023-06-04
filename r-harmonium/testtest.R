@@ -3,7 +3,6 @@ devtools::load_all(".", export_all = FALSE)
 devtools::test()
 devtools::check(document = FALSE, cran = FALSE, args = c("--no-manual", "--no-build-vignettes", "--no-codoc", "--no-examples", "--no-tests"))
 
-
 # another test
 haudiosink = HAudioSink$new()
 haudio = HAudio$new_from_file("../testfiles/gs-16b-2c-44100hz.flac", dtype = HDataType$float64)

@@ -255,11 +255,11 @@ impl fmt::Display for HPolynomialDegree {
 impl From<&HPolynomialDegree> for PolynomialDegree {
     fn from(item: &HPolynomialDegree) -> Self {
         match item {
-            Septic => PolynomialDegree::Septic,
-            Quintic => PolynomialDegree::Quintic,
-            Cubic => PolynomialDegree::Cubic,
-            Linear => PolynomialDegree::Linear,
-            Nearest => PolynomialDegree::Nearest,
+            HPolynomialDegree::Septic => PolynomialDegree::Septic,
+            HPolynomialDegree::Quintic => PolynomialDegree::Quintic,
+            HPolynomialDegree::Cubic => PolynomialDegree::Cubic,
+            HPolynomialDegree::Linear => PolynomialDegree::Linear,
+            HPolynomialDegree::Nearest => PolynomialDegree::Nearest,
             _ => unreachable!(),
         }
     }

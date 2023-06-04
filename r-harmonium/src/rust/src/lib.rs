@@ -11,7 +11,7 @@ mod hfile;
 mod hmatrix;
 mod hmetadatatype;
 mod hpolynomialdegree;
-mod hresampler;
+//mod hresampler;
 mod hresamplertype;
 mod hsincinterpolationparams;
 mod hwindow;
@@ -34,6 +34,6 @@ extendr_module! {
     use hmatrix;
     use hwindow;
     use hmetadatatype;
-    use hresampler;
+    //use hresampler;
     use hresamplertype;
 }

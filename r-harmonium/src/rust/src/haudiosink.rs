@@ -417,31 +417,31 @@ impl HAudioSink {
         self.inner.clear()
     }
 
-    ///// HAudioSink
-    ///// ## skip_one
-    /////
-    ///// `skip_one()` \
-    /////
-    ///// Skips to the next `Source` in the `Sink`. \
-    ///// If there are more `Source`s appended to the `Sink` at the time, it will play the next one.
-    ///// Otherwise, the `Sink` will finish as if it had finished playing a `Source` all the way through. \
-    /////
-    ///// #### Examples
-    /////
-    ///// ```r
-    ///// haudiosink = HAudioSink$new()
-    ///// haudiosink$append_from_file(fpath = "../../../testfiles/gs-16b-2c-44100hz.wav")
-    ///// haudiosink$append_from_file(fpath = "../../../testfiles/gs-16b-2c-44100hz.wav")
-    ///// haudiosink$len() == 2 # TRUE
-    ///// haudiosink$skip_one()
-    ///// haudiosink$len() == 1 # TRUE
-    ///// ```
-    /////
-    ///// _________
-    /////
-    //pub fn skip_one(&self) {
-    //    self.inner.skip_one()
-    //}
+    /// HAudioSink
+    /// ## skip_one
+    ///
+    /// `skip_one()` \
+    ///
+    /// Skips to the next `Source` in the `Sink`. \
+    /// If there are more `Source`s appended to the `Sink` at the time, it will play the next one.
+    /// Otherwise, the `Sink` will finish as if it had finished playing a `Source` all the way through. \
+    ///
+    /// #### Examples
+    ///
+    /// ```r
+    /// haudiosink = HAudioSink$new()
+    /// haudiosink$append_from_file(fpath = "../../../testfiles/gs-16b-2c-44100hz.wav")
+    /// haudiosink$append_from_file(fpath = "../../../testfiles/gs-16b-2c-44100hz.wav")
+    /// haudiosink$len() == 2 # TRUE
+    /// haudiosink$skip_one()
+    /// haudiosink$len() == 1 # TRUE
+    /// ```
+    ///
+    /// _________
+    ///
+    pub fn skip_one(&self) {
+        self.inner.skip_one()
+    }
 
     /// HAudioSink
     /// ## audio_output_devices
