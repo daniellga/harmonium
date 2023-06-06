@@ -242,71 +242,18 @@ impl<T: NativeType + Float> HFloatMatrix<T> {
         HFloatAudio::new(self, sr)
     }
 
-    ///// Take the average across columns. A new inner array is created.
-    //pub fn mean_cols(&mut self) -> HResult<()> {
-    //    let ncols = self.inner.len();
-    //    let nrows = self.inner.size();
-    //    let array = self
-    //        .inner
-    //        .values()
-    //        .as_any()
-    //        .downcast_ref::<PrimitiveArray<T>>()
-    //        .unwrap();
-
-    //    let mut v: Vec<T> = Vec::with_capacity(nrows);
-    //    let t_ncols = T::from(ncols).unwrap();
-
-    //    for row in 0..nrows {
-    //        let mut row_sum = T::zero();
-    //        for col in 0..ncols {
-    //            row_sum = row_sum + array.value(row + col * nrows);
-    //        }
-    //        v.push(row_sum / t_ncols);
-    //    }
-
-    //    let new_array = PrimitiveArray::from_vec(v);
-    //    let field = Box::new(Field::new("item", array.data_type().clone(), true));
-    //    let fixed_list = FixedSizeListArray::try_new(
-    //        DataType::FixedSizeList(field, nrows),
-    //        Box::new(new_array),
-    //        None,
-    //    )?;
-    //    self.inner = fixed_list;
-    //    Ok(())
-    //}
-
     /// Take the average across columns. A new inner array is created.
-    pub fn mean_cols(&mut self) -> HResult<()>
+    pub fn mean_cols(&self) -> HResult<HFloatMatrix<T>>
     where
         T: FromPrimitive,
     {
-        let ncols = self.inner.len();
-        let nrows = self.inner.size();
-        let array = self
-            .inner
-            .values()
-            .as_any()
-            .downcast_ref::<PrimitiveArray<T>>()
-            .unwrap();
-        let data_type = array.data_type();
-        let slice = array.values().as_slice();
-        // Ok to unwrap. Not supposed to error.
-        let ndarray = ArrayView2::from_shape((ncols, nrows), slice).unwrap();
+        let arrayview2 = ArrayView2::from(self);
 
-        let v = ndarray
+        let array1 = arrayview2
             .mean_axis(ndarray::Axis(0))
-            .ok_or_else(|| HError::OutOfSpecError("The length of the axis is zero.".into()))?
-            .into_raw_vec();
+            .ok_or_else(|| HError::OutOfSpecError("The length of the axis is zero.".into()))?;
 
-        let new_array = PrimitiveArray::from_vec(v);
-        let field = Box::new(Field::new("item", data_type.clone(), true));
-        let fixed_list = FixedSizeListArray::try_new(
-            DataType::FixedSizeList(field, nrows),
-            Box::new(new_array),
-            None,
-        )?;
-        self.inner = fixed_list;
-        Ok(())
+        Ok(array1.into())
     }
 
     /// Export the underlying array to Arrow C interface.
@@ -395,68 +342,18 @@ impl<T: NativeType + Float> HComplexMatrix<T> {
         HComplexArray::<T>::new(array)
     }
 
-    ///// Take the average across columns. A new inner array is created.
-    //pub fn mean_cols(&mut self) -> HResult<()> {
-    //    let ncols = self.inner.len();
-    //    let nrows = self.inner.size();
-    //    let array = self
-    //        .inner
-    //        .values()
-    //        .as_any()
-    //        .downcast_ref::<PrimitiveArray<T>>()
-    //        .unwrap();
-
-    //    let mut v: Vec<T> = Vec::with_capacity(nrows);
-    //    for row in 0..nrows {
-    //        let mut res = T::zero();
-    //        for col in 0..ncols {
-    //            res = res + array.value(row + col * nrows);
-    //        }
-    //        v.push(res / T::from(ncols).unwrap());
-    //    }
-    //    let new_array = PrimitiveArray::from_vec(v);
-    //    let field = Box::new(Field::new("item", array.data_type().clone(), true));
-    //    let fixed_list = FixedSizeListArray::try_new(
-    //        DataType::FixedSizeList(field, nrows),
-    //        Box::new(new_array),
-    //        None,
-    //    )?;
-    //    self.inner = fixed_list;
-    //    Ok(())
-    //}
-
     /// Take the average across columns. A new inner array is created.
-    pub fn mean_cols(&mut self) -> HResult<()>
+    pub fn mean_cols(&self) -> HResult<HComplexMatrix<T>>
     where
         T: FromPrimitive,
     {
-        let ncols = self.inner.len();
-        let nrows = self.inner.size();
-        let array = self
-            .inner
-            .values()
-            .as_any()
-            .downcast_ref::<PrimitiveArray<T>>()
-            .unwrap();
-        let data_type = array.data_type();
-        let slice = array.values().as_slice();
-        // Ok to unwrap. Not supposed to error.
-        let ndarray = ArrayView2::from_shape((ncols, nrows), slice).unwrap();
+        let arrayview2 = ArrayView2::from(self);
 
-        let v = ndarray
+        let array1 = arrayview2
             .mean_axis(ndarray::Axis(0))
-            .ok_or_else(|| HError::OutOfSpecError("The length of the axis is zero.".into()))?
-            .into_raw_vec();
+            .ok_or_else(|| HError::OutOfSpecError("The length of the axis is zero.".into()))?;
 
-        let new_array = PrimitiveArray::from_vec(v);
-        let field = Box::new(Field::new("item", data_type.clone(), true));
-        let fixed_list = FixedSizeListArray::try_new(
-            DataType::FixedSizeList(field, nrows),
-            Box::new(new_array),
-            None,
-        )?;
-        self.inner = fixed_list;
-        Ok(())
+        Ok(array1.into())
     }
 
     /// Export the underlying array to Arrow C interface.
@@ -523,7 +420,7 @@ impl<T: NativeType + Float> HFloatAudio<T> {
     where
         T: FromPrimitive,
     {
-        self.inner.mean_cols()?;
+        self.inner = self.inner.mean_cols()?;
         Ok(())
     }
 }
@@ -619,8 +516,8 @@ mod tests {
         let harray: HFloatArray<f64> =
             HFloatArray::new_from_vec(vec![1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12.]);
         let ncols = 3_usize;
-        let mut hmatrix = harray.into_hmatrix(ncols).unwrap();
-        hmatrix.mean_cols().unwrap();
+        let hmatrix = harray.into_hmatrix(ncols).unwrap();
+        let hmatrix = hmatrix.mean_cols().unwrap();
 
         let harray_result: HFloatArray<f64> = HFloatArray::new_from_vec(vec![
             (1. + 5. + 9.) / 3.,
@@ -634,8 +531,8 @@ mod tests {
         let harray: HComplexArray<f64> =
             HComplexArray::new_from_vec(vec![1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12.]);
         let ncols = 2_usize;
-        let mut hmatrix = harray.into_hmatrix(ncols).unwrap();
-        hmatrix.mean_cols().unwrap();
+        let hmatrix = harray.into_hmatrix(ncols).unwrap();
+        let hmatrix = hmatrix.mean_cols().unwrap();
 
         let harray_result: HComplexArray<f64> = HComplexArray::new_from_vec(vec![
             (1. + 7.) / 2.,
