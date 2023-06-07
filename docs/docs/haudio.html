@@ -231,7 +231,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#sr" id="toc-sr" class="nav-link" data-scroll-target="#sr">sr</a></li>
   <li><a href="#mem_adress" id="toc-mem_adress" class="nav-link" data-scroll-target="#mem_adress">mem_adress</a></li>
   <li><a href="#dtype" id="toc-dtype" class="nav-link" data-scroll-target="#dtype">dtype</a></li>
-  <li><a href="#mean_cols" id="toc-mean_cols" class="nav-link" data-scroll-target="#mean_cols">mean_cols</a></li>
+  <li><a href="#as_mono" id="toc-as_mono" class="nav-link" data-scroll-target="#as_mono">as_mono</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -611,12 +611,12 @@ It’s important that the offset of both objects is at the same element for this
 <hr>
 </section>
 </section>
-<section id="mean_cols" class="level2">
-<h2 class="anchored" data-anchor-id="mean_cols">mean_cols</h2>
-<p><code>mean_cols()</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./haudio.rs#L497">source</a> </span><br>
+<section id="as_mono" class="level2">
+<h2 class="anchored" data-anchor-id="as_mono">as_mono</h2>
+<p><code>as_mono()</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./haudio.rs#L497">source</a> </span><br>
 </p>
-<p>Convert to 1 channel by taking the average across channels. A new inner array is created.<br>
-The operation is done in-place.<br>
+<p>Convert to 1 channel by taking the average across channels.<br>
+A new inner array is created. The operation is done in-place.<br>
 </p>
 <section id="examples-14" class="level4">
 <h4 class="anchored" data-anchor-id="examples-14">Examples</h4>
@@ -624,7 +624,7 @@ The operation is done in-place.<br>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>dtype <span class="ot">=</span> HDataType<span class="sc">$</span>float32</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>haudio <span class="ot">=</span> HAudio<span class="sc">$</span><span class="fu">new_from_values</span>(<span class="at">values =</span> values, <span class="at">sr =</span> 3L, <span class="at">dtype =</span> dtype)</span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>mem_adress_before <span class="ot">=</span> haudio<span class="sc">$</span><span class="fu">mem_adress</span>()</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>haudio<span class="sc">$</span><span class="fu">mean_cols</span>()</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>haudio<span class="sc">$</span><span class="fu">as_mono</span>()</span>
 <span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>haudio<span class="sc">$</span><span class="fu">mem_adress</span>() <span class="sc">!=</span> mem_adress_before <span class="co"># TRUE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 

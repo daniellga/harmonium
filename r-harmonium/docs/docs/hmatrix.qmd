@@ -444,11 +444,10 @@ _________
 
 ## mean_cols
 
-`mean_cols()` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L704) </span> \
+`mean_cols()` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L703) </span> \
 
 Takes the average across columns. \
-A new inner array is created. \
-The operation is done in-place. \
+A new inner array is created. The operation is done in-place. \
 
 #### Examples
 

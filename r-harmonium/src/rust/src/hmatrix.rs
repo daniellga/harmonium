@@ -687,8 +687,7 @@ impl HMatrix {
     /// `mean_cols()` \
     ///
     /// Takes the average across columns. \
-    /// A new inner array is created. \
-    /// The operation is done in-place. \
+    /// A new inner array is created. The operation is done in-place. \
     ///
     /// #### Examples
     ///

@@ -474,12 +474,12 @@ impl HAudio {
     }
 
     /// HAudio
-    /// ## mean_cols
+    /// ## as_mono
     ///
-    /// `mean_cols()` \
+    /// `as_mono()` \
     ///
-    /// Convert to 1 channel by taking the average across channels. A new inner array is created. \
-    /// The operation is done in-place. \
+    /// Convert to 1 channel by taking the average across channels. \
+    /// A new inner array is created. The operation is done in-place. \
     ///
     /// #### Examples
     ///
@@ -488,7 +488,7 @@ impl HAudio {
     /// dtype = HDataType$float32
     /// haudio = HAudio$new_from_values(values = values, sr = 3L, dtype = dtype)
     /// mem_adress_before = haudio$mem_adress()
-    /// haudio$mean_cols()
+    /// haudio$as_mono()
     /// haudio$mem_adress() != mem_adress_before # TRUE
     /// ```
     ///
