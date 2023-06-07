@@ -27,7 +27,15 @@
   HPolynomialDegree$linear = HPolynomialDegree$linear()
   HPolynomialDegree$nearest = HPolynomialDegree$nearest()
   lockEnvironment(HPolynomialDegree, bindings = TRUE)
-
+  
+  lockEnvironment(HArray, bindings = TRUE)
+  lockEnvironment(HMatrix, bindings = TRUE)
+  lockEnvironment(HAudio, bindings = TRUE)
+  lockEnvironment(HAudioSink, bindings = TRUE)
+  lockEnvironment(HWindow, bindings = TRUE)
+  lockEnvironment(HFile, bindings = TRUE)
+  #lockEnvironment(HResampler, bindings = TRUE)
+  
   # Lazy load hconfig. This is needed because HConfig uses rust functions, which are loaded after the scripts are run.
   env <- parent.env(environment())
   HConfig = generate_hconfig()

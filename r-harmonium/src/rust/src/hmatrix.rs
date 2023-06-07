@@ -686,7 +686,8 @@ impl HMatrix {
     ///
     /// `mean_cols()` \
     ///
-    /// Takes the average across columns. A new inner array is created. \
+    /// Takes the average across columns. \
+    /// A new inner array is created. \
     /// The operation is done in-place. \
     ///
     /// #### Examples
@@ -788,7 +789,7 @@ impl HMatrixR for HFloatMatrix<f32> {
     }
 
     fn mean_cols(&mut self) {
-        HFloatMatrix::<f32>::mean_cols(self).unwrap();
+        *self = HFloatMatrix::<f32>::mean_cols(self).unwrap();
     }
 
     fn clone_inner(&self) -> Arc<dyn HMatrixR> {
@@ -868,7 +869,7 @@ impl HMatrixR for HFloatMatrix<f64> {
     }
 
     fn mean_cols(&mut self) {
-        HFloatMatrix::<f64>::mean_cols(self).unwrap();
+        *self = HFloatMatrix::<f64>::mean_cols(self).unwrap();
     }
 
     fn clone_inner(&self) -> Arc<dyn HMatrixR> {
@@ -946,7 +947,7 @@ impl HMatrixR for HComplexMatrix<f32> {
     }
 
     fn mean_cols(&mut self) {
-        HComplexMatrix::<f32>::mean_cols(self).unwrap();
+        *self = HComplexMatrix::<f32>::mean_cols(self).unwrap();
     }
 
     fn clone_inner(&self) -> Arc<dyn HMatrixR> {
@@ -1024,7 +1025,7 @@ impl HMatrixR for HComplexMatrix<f64> {
     }
 
     fn mean_cols(&mut self) {
-        HComplexMatrix::<f64>::mean_cols(self).unwrap();
+        *self = HComplexMatrix::<f64>::mean_cols(self).unwrap();
     }
 
     fn clone_inner(&self) -> Arc<dyn HMatrixR> {

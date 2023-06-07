@@ -606,7 +606,7 @@
     "href": "docs/hmatrix.html#mean_cols",
     "title": "HMatrix",
     "section": "mean_cols",
-    "text": "mean_cols\nmean_cols()  source \n\nTakes the average across columns. A new inner array is created.\nThe operation is done in-place.\n\n\nExamples\nhmatrix = HMatrix$new_from_values(matrix(c(1,2,3,4), ncol = 2L), HDataType$float32)\nmem_adress_before = hmatrix$mem_adress()\nhmatrix$mean_cols()\nhmatrix$mem_adress() != mem_adress_before # TRUE"
+    "text": "mean_cols\nmean_cols()  source \n\nTakes the average across columns.\nA new inner array is created.\nThe operation is done in-place.\n\n\nExamples\nhmatrix = HMatrix$new_from_values(matrix(c(1,2,3,4), ncol = 2L), HDataType$float32)\nmem_adress_before = hmatrix$mem_adress()\nhmatrix$mean_cols()\nhmatrix$mem_adress() != mem_adress_before # TRUE"
   },
   {
     "objectID": "docs/hmetadatatype.html",
