@@ -1,7 +1,6 @@
 use crate::errors::{HError, HResult};
 use arrow2::{
-    array::{Array, FixedSizeListArray, MutableFixedSizeListArray, PrimitiveArray},
-    buffer::Buffer,
+    array::{Array, FixedSizeListArray, PrimitiveArray},
     datatypes::{DataType, Field},
     ffi,
     types::NativeType,
@@ -22,14 +21,14 @@ pub struct HComplexArray<T: NativeType + Float> {
 
 #[derive(Debug, PartialEq, Clone)]
 pub struct HFloatMatrix<T: NativeType + Float> {
-    pub inner: HFloatArray<T>,
-    pub ncols: usize,
+    pub inner: FixedSizeListArray,
+    phantom: PhantomData<T>,
 }
 
 #[derive(Debug, PartialEq, Clone)]
 pub struct HComplexMatrix<T: NativeType + Float> {
-    pub inner: HComplexArray<T>,
-    pub ncols: usize,
+    pub inner: FixedSizeListArray,
+    phantom: PhantomData<T>,
 }
 
 #[derive(Debug, PartialEq, Clone)]
@@ -55,9 +54,16 @@ where
         &self.inner
     }
 
-    /// Convert to HMatrix.
+    /// Convert to HFloatMatrix.
     pub fn into_hmatrix(self, ncols: usize) -> HResult<HFloatMatrix<T>> {
-        Ok(HFloatMatrix::new(self, ncols)?)
+        let array = self.inner;
+        let field = Box::new(Field::new("item", array.data_type().clone(), true));
+        let fixed_list = FixedSizeListArray::try_new(
+            DataType::FixedSizeList(field, array.len() / ncols),
+            Box::new(array),
+            None,
+        )?;
+        Ok(HFloatMatrix::new(fixed_list))
     }
 
     /// Returns the length of this HArray.
@@ -117,9 +123,16 @@ where
         &self.inner
     }
 
-    /// Convert to HMatrix.
+    /// Convert to HComplexMatrix.
     pub fn into_hmatrix(self, ncols: usize) -> HResult<HComplexMatrix<T>> {
-        Ok(HComplexMatrix::new(self, ncols)?)
+        let array = self.inner;
+        let field = Box::new(Field::new("item", array.data_type().clone(), true));
+        let fixed_list = FixedSizeListArray::try_new(
+            DataType::FixedSizeList(field, array.len() / ncols),
+            Box::new(array),
+            None,
+        )?;
+        Ok(HComplexMatrix::new(fixed_list))
     }
 
     /// Returns the length of this Harray.
@@ -163,38 +176,41 @@ where
 }
 
 impl<T: NativeType + Float> HFloatMatrix<T> {
-    pub fn new(inner: HFloatArray<T>, ncols: usize) -> HResult<HFloatMatrix<T>> {
-        if inner.len() % ncols != 0 {
-            return Err(HError::OutOfSpecError(
-                "The HFloatArray's length must be a multiple of ncols.".into(),
-            ));
+    pub fn new(inner: FixedSizeListArray) -> Self {
+        HFloatMatrix {
+            inner,
+            phantom: PhantomData,
         }
-        Ok(HFloatMatrix { inner, ncols })
     }
 
     pub fn new_from_vec(v: Vec<T>, ncols: usize) -> HResult<HFloatMatrix<T>> {
-        let inner = HFloatArray::new_from_vec(v);
-        Ok(HFloatMatrix::new(inner, ncols)?)
+        let array = PrimitiveArray::from_vec(v);
+        let field = Box::new(Field::new("item", array.data_type().clone(), true));
+        let fixed_list = FixedSizeListArray::try_new(
+            DataType::FixedSizeList(field, array.len() / ncols),
+            Box::new(array),
+            None,
+        )?;
+        Ok(HFloatMatrix::new(fixed_list))
     }
 
-    /// Gets a reference to the inner HArray.
-    pub fn inner(&self) -> &HFloatArray<T> {
+    pub fn inner(&self) -> &FixedSizeListArray {
         &self.inner
     }
 
     /// Number of columns.
     pub fn ncols(&self) -> usize {
-        self.ncols
+        self.inner.len()
     }
 
     /// Number of rows.
     pub fn nrows(&self) -> usize {
-        self.len() / self.ncols
+        self.inner.size()
     }
 
     /// Number of elements.
     pub fn len(&self) -> usize {
-        self.inner.len()
+        self.inner.values().len()
     }
 
     /// Returns true if the HMatrix is empty.
@@ -205,18 +221,30 @@ impl<T: NativeType + Float> HFloatMatrix<T> {
     /// Returns a clone of this HMatrix sliced by an offset and length in the columns dimension.
     /// This operation is O(1).
     pub fn slice(&mut self, offset: usize, length: usize) {
-        let nrows = self.nrows();
-        self.inner.slice(offset * nrows, length * nrows);
+        self.inner.slice(offset, length);
     }
 
     /// Gets the underlying slice.
     pub fn as_slice(&self) -> &[T] {
-        self.inner.inner.values().as_slice()
+        self.inner
+            .values()
+            .as_any()
+            .downcast_ref::<PrimitiveArray<T>>()
+            .unwrap()
+            .values()
+            .as_slice()
     }
 
     /// Convert to HFloatArray.
     pub fn into_harray(self) -> HFloatArray<T> {
-        self.inner
+        let array = self
+            .inner
+            .values()
+            .as_any()
+            .downcast_ref::<PrimitiveArray<T>>()
+            .unwrap()
+            .clone();
+        HFloatArray::<T>::new(array)
     }
 
     /// Convert to HFloatAudio.
@@ -240,7 +268,7 @@ impl<T: NativeType + Float> HFloatMatrix<T> {
 
     /// Export the underlying array to Arrow C interface.
     pub fn export_c_arrow(&self) -> (ffi::ArrowArray, ffi::ArrowSchema) {
-        let array = self.inner.inner.clone().boxed();
+        let array = self.inner.clone().boxed();
 
         // importing an array requires an associated field so that the consumer knows its datatype.
         // Thus, we need to export both
@@ -253,38 +281,41 @@ impl<T: NativeType + Float> HFloatMatrix<T> {
 }
 
 impl<T: NativeType + Float> HComplexMatrix<T> {
-    pub fn new(inner: HComplexArray<T>, ncols: usize) -> HResult<HComplexMatrix<T>> {
-        if inner.len() % ncols != 0 {
-            return Err(HError::OutOfSpecError(
-                "The HComplexArray's length must be a multiple of ncols.".into(),
-            ));
+    pub fn new(inner: FixedSizeListArray) -> Self {
+        HComplexMatrix {
+            inner,
+            phantom: PhantomData,
         }
-        Ok(HComplexMatrix { inner, ncols })
     }
 
     pub fn new_from_vec(v: Vec<T>, ncols: usize) -> HResult<HComplexMatrix<T>> {
-        let inner = HComplexArray::new_from_vec(v);
-        Ok(HComplexMatrix::new(inner, ncols)?)
+        let array = PrimitiveArray::from_vec(v);
+        let field = Box::new(Field::new("item", array.data_type().clone(), true));
+        let fixed_list = FixedSizeListArray::try_new(
+            DataType::FixedSizeList(field, array.len() / ncols),
+            Box::new(array),
+            None,
+        )?;
+        Ok(HComplexMatrix::new(fixed_list))
     }
 
-    /// Gets a reference to the inner HArray.
-    pub fn inner(&self) -> &HComplexArray<T> {
+    pub fn inner(&self) -> &FixedSizeListArray {
         &self.inner
     }
 
     /// Number of columns.
     pub fn ncols(&self) -> usize {
-        self.ncols
+        self.inner.len()
     }
 
     /// Number of rows.
     pub fn nrows(&self) -> usize {
-        self.len() / self.ncols
+        self.inner.size() / 2
     }
 
     /// Number of elements.
     pub fn len(&self) -> usize {
-        self.inner.len()
+        self.inner.values().len() / 2
     }
 
     /// Returns true if the HMatrix is empty.
@@ -292,21 +323,33 @@ impl<T: NativeType + Float> HComplexMatrix<T> {
         self.inner.is_empty()
     }
 
-    /// Returns a clone of this HMatrix sliced by an offset and length in the columns dimension.
+    /// Returns a clone of this HMatrix sliced by an offset and length.
     /// This operation is O(1).
     pub fn slice(&mut self, offset: usize, length: usize) {
-        let twice_nrows = self.nrows() * 2;
-        self.inner.slice(offset * twice_nrows, length * twice_nrows);
+        self.inner.slice(offset, length);
     }
 
     /// Gets the underlying slice.
     pub fn as_slice(&self) -> &[T] {
-        self.inner.inner.values().as_slice()
+        self.inner
+            .values()
+            .as_any()
+            .downcast_ref::<PrimitiveArray<T>>()
+            .unwrap()
+            .values()
+            .as_slice()
     }
 
-    /// Convert to HFloatArray.
+    /// Convert to HComplexArray.
     pub fn into_harray(self) -> HComplexArray<T> {
-        self.inner
+        let array = self
+            .inner
+            .values()
+            .as_any()
+            .downcast_ref::<PrimitiveArray<T>>()
+            .unwrap()
+            .clone();
+        HComplexArray::<T>::new(array)
     }
 
     /// Take the average across columns. A new inner array is created.
@@ -325,7 +368,7 @@ impl<T: NativeType + Float> HComplexMatrix<T> {
 
     /// Export the underlying array to Arrow C interface.
     pub fn export_c_arrow(&self) -> (ffi::ArrowArray, ffi::ArrowSchema) {
-        let array = self.inner.inner.clone().boxed();
+        let array = self.inner.clone().boxed();
 
         // importing an array requires an associated field so that the consumer knows its datatype.
         // Thus, we need to export both
@@ -395,6 +438,7 @@ impl<T: NativeType + Float> HFloatAudio<T> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use arrow2::datatypes::{DataType, Field};
 
     #[test]
     fn new_test() {
@@ -406,7 +450,15 @@ mod tests {
 
         let array =
             PrimitiveArray::from_vec(vec![1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12.]);
-        let rhs = HFloatMatrix::new(harray, channels).unwrap();
+        let field = Box::new(Field::new("item", array.data_type().clone(), true));
+        let rhs = HFloatMatrix::new(
+            FixedSizeListArray::try_new(
+                DataType::FixedSizeList(field, array.len() / channels),
+                Box::new(array),
+                None,
+            )
+            .unwrap(),
+        );
 
         assert_eq!(*haudio.inner(), rhs);
         assert_eq!(haudio.sr(), 44000);
