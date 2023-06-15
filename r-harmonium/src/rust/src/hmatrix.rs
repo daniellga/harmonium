@@ -4,8 +4,8 @@ use crate::{
     hdatatype::HDataType,
 };
 use arrow2::{
-    array::{FixedSizeListArray, PrimitiveArray},
-    ffi::{import_array_from_c, import_field_from_c, ArrowArray, ArrowSchema},
+    array::PrimitiveArray,
+    ffi::{import_array_from_c, import_field_from_c, ArrowArray, ArrowSchema}, datatypes::PhysicalType, types::PrimitiveType,
 };
 use extendr_api::prelude::*;
 use harmonium_core::structs::{HComplexArray, HComplexMatrix, HFloatArray, HFloatMatrix};
@@ -129,15 +129,17 @@ impl HMatrix {
     /// HMatrix
     /// ## new_from_arrow
     ///
-    /// `new_from_arrow(values: FixedSizeListArray, dtype: HDataType) -> HMatrix` \
+    /// `new_from_arrow(values: ArrowArray, ncols: i32, dtype: HDataType) -> HMatrix` \
     ///
-    /// Creates a new `HMatrix` from an R's arrow [`FixedSizeListArray`](https://arrow.apache.org/docs/r/reference/array.html). \
+    /// Creates a new `HArray` from an R's arrow [`Array`](https://arrow.apache.org/docs/r/reference/array.html). \
     /// The conversion is zero copy. \
     ///
     /// #### Arguments
     ///
     /// * `values` \
-    /// A float32 or float64 arrow `FixedSizeListArray`. \
+    /// A float32 or float64 arrow `Array`.
+    /// * `ncols` \
+    /// The number of columns of the HMatrix. \
     /// * `dtype` \
     /// An `HDataType` to indicate which type of `HMatrix` to be created. \
     ///
@@ -148,9 +150,10 @@ impl HMatrix {
     /// #### Examples
     ///
     /// ```r
-    /// values = arrow::Array$create(list(c(1,2,3,4), c(5,6,7,8)), arrow::fixed_size_list_of(arrow::float32(), 4))
+    /// values = arrow::Array$create(1:10, type = arrow::float32())
+    /// ncols = 2
     /// dtype = HDataType$complex32
-    /// hmatrix = HMatrix$new_from_arrow(values, dtype)
+    /// hmatrix = HMatrix$new_from_arrow(values, ncols, dtype)
     ///
     /// # to convert back to R's arrow FixedSizeListArray.
     /// values2 = arrow::as_arrow_array(hmatrix)
@@ -159,10 +162,12 @@ impl HMatrix {
     ///
     /// _________
     ///
-    pub fn new_from_arrow(values: Robj, dtype: &HDataType) -> HMatrix {
+    pub fn new_from_arrow(values: Robj, ncols: i32, dtype: &HDataType) -> HMatrix {
         if !values.class().unwrap().any(|x| x == "Array") {
             panic!("wrong type");
         }
+
+        let ncols: usize = ncols.try_into().unwrap();
 
         let array = ArrowArray::empty();
         let schema = ArrowSchema::empty();
@@ -180,24 +185,28 @@ impl HMatrix {
         let arr = unsafe { import_array_from_c(array, field.data_type).unwrap() };
 
         match (dtype, arr.data_type().to_physical_type()) {
-            (HDataType::Float32, arrow2::datatypes::PhysicalType::FixedSizeList) => {
-                let arr = arr.as_any().downcast_ref::<FixedSizeListArray>().unwrap();
-                let hmatrix = HFloatMatrix::<f32>::new(arr.clone());
+            (HDataType::Float32, PhysicalType::Primitive(PrimitiveType::Float32)) => {
+                let arr = arr.as_any().downcast_ref::<PrimitiveArray<f32>>().unwrap();
+                let harray = HFloatArray::new(arr.clone());
+                let hmatrix = HFloatMatrix::new(harray, ncols).unwrap();
                 HMatrix(Arc::new(hmatrix))
             }
-            (HDataType::Float64, arrow2::datatypes::PhysicalType::FixedSizeList) => {
-                let arr = arr.as_any().downcast_ref::<FixedSizeListArray>().unwrap();
-                let hmatrix = HFloatMatrix::<f64>::new(arr.clone());
+            (HDataType::Float64, PhysicalType::Primitive(PrimitiveType::Float64)) => {
+                let arr = arr.as_any().downcast_ref::<PrimitiveArray<f64>>().unwrap();
+                let harray = HFloatArray::new(arr.clone());
+                let hmatrix = HFloatMatrix::new(harray, ncols).unwrap();
                 HMatrix(Arc::new(hmatrix))
             }
-            (HDataType::Complex32, arrow2::datatypes::PhysicalType::FixedSizeList) => {
-                let arr = arr.as_any().downcast_ref::<FixedSizeListArray>().unwrap();
-                let hmatrix = HComplexMatrix::<f32>::new(arr.clone());
+            (HDataType::Complex32, PhysicalType::Primitive(PrimitiveType::Float32)) => {
+                let arr = arr.as_any().downcast_ref::<PrimitiveArray<f32>>().unwrap();
+                let harray = HComplexArray::new(arr.clone());
+                let hmatrix = HComplexMatrix::new(harray, ncols).unwrap();
                 HMatrix(Arc::new(hmatrix))
             }
-            (HDataType::Complex64, arrow2::datatypes::PhysicalType::FixedSizeList) => {
-                let arr = arr.as_any().downcast_ref::<FixedSizeListArray>().unwrap();
-                let hmatrix = HComplexMatrix::<f64>::new(arr.clone());
+            (HDataType::Complex64, PhysicalType::Primitive(PrimitiveType::Float64)) => {
+                let arr = arr.as_any().downcast_ref::<PrimitiveArray<f64>>().unwrap();
+                let harray = HComplexArray::new(arr.clone());
+                let hmatrix = HComplexMatrix::new(harray, ncols).unwrap();
                 HMatrix(Arc::new(hmatrix))
             }
             _ => panic!("not valid input"),
@@ -752,14 +761,11 @@ impl HMatrixR for HFloatMatrix<f32> {
     }
 
     fn collect(&self) -> Robj {
-        let list_array = self.inner();
-        let ncols = list_array.len();
-        let nrows = list_array.size();
-        list_array
-            .values()
-            .as_any()
-            .downcast_ref::<PrimitiveArray<f32>>()
-            .unwrap()
+        let ncols = self.ncols();
+        let nrows = self.nrows();
+        self
+            .inner
+            .inner
             .values()
             .iter()
             .map(|x| *x as f64)
@@ -832,14 +838,11 @@ impl HMatrixR for HFloatMatrix<f64> {
     }
 
     fn collect(&self) -> Robj {
-        let list_array = self.inner();
-        let ncols = list_array.len();
-        let nrows = list_array.size();
-        list_array
-            .values()
-            .as_any()
-            .downcast_ref::<PrimitiveArray<f64>>()
-            .unwrap()
+        let ncols = self.ncols();
+        let nrows = self.nrows();
+        self
+            .inner
+            .inner
             .values()
             .iter()
             .copied()
@@ -913,11 +916,9 @@ impl HMatrixR for HComplexMatrix<f32> {
     fn collect(&self) -> Robj {
         let ncols = self.ncols();
         let nrows = self.nrows();
-        self.inner()
-            .values()
-            .as_any()
-            .downcast_ref::<PrimitiveArray<f32>>()
-            .unwrap()
+        self
+            .inner
+            .inner
             .values()
             .chunks_exact(2)
             .map(|x| Rcplx::new(x[0] as f64, x[1] as f64))
@@ -991,11 +992,9 @@ impl HMatrixR for HComplexMatrix<f64> {
     fn collect(&self) -> Robj {
         let ncols = self.ncols();
         let nrows = self.nrows();
-        self.inner()
-            .values()
-            .as_any()
-            .downcast_ref::<PrimitiveArray<f64>>()
-            .unwrap()
+        self
+            .inner
+            .inner
             .values()
             .chunks_exact(2)
             .map(|x| Rcplx::new(x[0], x[1]))

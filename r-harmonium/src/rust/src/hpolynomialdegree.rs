@@ -260,7 +260,6 @@ impl From<&HPolynomialDegree> for PolynomialDegree {
             HPolynomialDegree::Cubic => PolynomialDegree::Cubic,
             HPolynomialDegree::Linear => PolynomialDegree::Linear,
             HPolynomialDegree::Nearest => PolynomialDegree::Nearest,
-            _ => unreachable!(),
         }
     }
 }

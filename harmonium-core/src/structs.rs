@@ -1,14 +1,12 @@
 use crate::errors::{HError, HResult};
 use arrow2::{
-    array::{Array, FixedSizeListArray, MutableFixedSizeListArray, PrimitiveArray},
-    buffer::Buffer,
-    datatypes::{DataType, Field},
+    array::{Array, PrimitiveArray},
+    datatypes::Field,
     ffi,
     types::NativeType,
 };
 use ndarray::ArrayView2;
 use num_traits::{Float, FromPrimitive};
-use std::marker::PhantomData;
 
 #[derive(Debug, PartialEq, Clone)]
 pub struct HFloatArray<T: NativeType + Float> {
@@ -70,7 +68,7 @@ where
         self.inner.is_empty()
     }
 
-    /// Returns a clone of this HArray sliced by an offset and length.
+    /// Slices in-place by an offset and a length.
     /// This operation is O(1).
     pub fn slice(&mut self, offset: usize, length: usize) {
         self.inner.slice(offset, length);
@@ -207,11 +205,17 @@ impl<T: NativeType + Float> HFloatMatrix<T> {
     pub fn slice(&mut self, offset: usize, length: usize) {
         let nrows = self.nrows();
         self.inner.slice(offset * nrows, length * nrows);
+        self.ncols = length;
     }
 
     /// Gets the underlying slice.
     pub fn as_slice(&self) -> &[T] {
         self.inner.inner.values().as_slice()
+    }
+
+    /// Returns an option of a mutable reference to the values
+    pub fn get_mut_values(&mut self) -> Option<&mut [T]> {
+        self.inner.get_mut_values()
     }
 
     /// Convert to HFloatArray.
@@ -295,13 +299,19 @@ impl<T: NativeType + Float> HComplexMatrix<T> {
     /// Returns a clone of this HMatrix sliced by an offset and length in the columns dimension.
     /// This operation is O(1).
     pub fn slice(&mut self, offset: usize, length: usize) {
-        let twice_nrows = self.nrows() * 2;
-        self.inner.slice(offset * twice_nrows, length * twice_nrows);
+        let nrows = self.nrows();
+        self.inner.slice(offset * nrows, length * nrows);
+        self.ncols = length;
     }
 
     /// Gets the underlying slice.
     pub fn as_slice(&self) -> &[T] {
         self.inner.inner.values().as_slice()
+    }
+
+    /// Returns an option of a mutable reference to the values
+    pub fn get_mut_values(&mut self) -> Option<&mut [T]> {
+        self.inner.get_mut_values()
     }
 
     /// Convert to HFloatArray.
@@ -404,8 +414,8 @@ mod tests {
         let hmatrix = harray.into_hmatrix(channels).unwrap();
         let haudio = HFloatAudio::new(hmatrix, 44000);
 
-        let array =
-            PrimitiveArray::from_vec(vec![1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12.]);
+        let harray =
+            HFloatArray::new_from_vec(vec![1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12.]);
         let rhs = HFloatMatrix::new(harray, channels).unwrap();
 
         assert_eq!(*haudio.inner(), rhs);
@@ -439,7 +449,6 @@ mod tests {
             HFloatArray::new_from_vec(vec![1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12.]);
         let result = HFloatArray::new_from_vec(vec![4., 5.]);
         harray.slice(3, 2);
-        println!("{}", harray);
         assert_eq!(harray, result);
 
         let mut harray: HComplexArray<f32> =
@@ -452,20 +461,20 @@ mod tests {
             HFloatArray::new_from_vec(vec![1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12.]);
         let ncols = 3_usize;
         let mut hmatrix = harray.into_hmatrix(ncols).unwrap();
-        let harray: HFloatArray<f32> = HFloatArray::new_from_vec(vec![1., 2., 3., 4.]);
+        let harray: HFloatArray<f32> = HFloatArray::new_from_vec(vec![5., 6., 7., 8.]);
         let ncols = 1_usize;
         let result = harray.into_hmatrix(ncols).unwrap();
-        hmatrix.slice(0, 1);
+        hmatrix.slice(1, 1);
         assert_eq!(hmatrix, result);
 
         let harray: HComplexArray<f32> =
             HComplexArray::new_from_vec(vec![1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12.]);
         let ncols = 3_usize;
         let mut hmatrix = harray.into_hmatrix(ncols).unwrap();
-        let harray: HComplexArray<f32> = HComplexArray::new_from_vec(vec![1., 2., 3., 4.]);
+        let harray: HComplexArray<f32> = HComplexArray::new_from_vec(vec![5., 6., 7., 8.]);
         let ncols = 1_usize;
         let result = harray.into_hmatrix(ncols).unwrap();
-        hmatrix.slice(0, 1);
+        hmatrix.slice(1, 1);
         assert_eq!(hmatrix, result);
     }
 
@@ -545,11 +554,13 @@ mod tests {
     fn get_inner_mut_test() {
         let mut harray: HFloatArray<f64> =
             HFloatArray::new_from_vec(vec![1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12.]);
-
         let harray_mut = harray.get_mut_values().unwrap();
-
         harray_mut[0] = 100.;
-
         assert_eq!(harray.as_slice()[0], 100.);
+
+        let mut hmatrix = HFloatMatrix::new_from_vec(vec![1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12.], 3).unwrap();
+        let hmatrix_mut = hmatrix.get_mut_values().unwrap();
+        hmatrix_mut[0] = 100.;
+        assert_eq!(hmatrix.as_slice()[0], 100.);
     }
 }

@@ -943,19 +943,19 @@ pub mod decode_arrow {
                         duration,
                     )
                     .unwrap();
-                    let values = haudio.inner().inner().values();
-                    let mut values = values.clone();
-                    values.slice(0, 5);
+                    let array = haudio.inner().inner().inner();
+                    let mut array = array.clone();
+                    array.slice(0, 5);
 
                     let v: Vec<$t> = (*$results.0)
                     .clone()
                     .into_iter()
                     .map(|x| <$t>::from(x))
                     .collect();
-                    let rhs = PrimitiveArray::from_vec(v).boxed();
+                    let rhs = PrimitiveArray::from_vec(v);
 
                     assert_eq!(
-                        values,
+                        array,
                         rhs
                     );
 
@@ -966,20 +966,20 @@ pub mod decode_arrow {
                         duration,
                     )
                     .unwrap();
-                    let off = haudio.inner().inner().size() - 5;
-                    let values = haudio.inner().inner().values();
-                    let mut values = values.clone();
-                    values.slice(off, 5);
+                    let off = haudio.inner().nrows() - 5;
+                    let array = haudio.inner().inner().inner();
+                    let mut array = array.clone();
+                    array.slice(off, 5);
 
                     let v: Vec<$t> = (*$results.1)
                     .clone()
                     .into_iter()
                     .map(|x| <$t>::from(x))
                     .collect();
-                    let rhs = PrimitiveArray::from_vec(v).boxed();
+                    let rhs = PrimitiveArray::from_vec(v);
 
                     assert_eq!(
-                        values,
+                        array,
                         rhs
                     );
 
@@ -990,21 +990,22 @@ pub mod decode_arrow {
                         duration,
                     )
                     .unwrap();
-                    let off = haudio.inner().inner().size() - 5;
-                    let ch = haudio.inner().inner().len() - 1;
-                    let values = haudio.inner().inner().value(ch);
-                    let mut values = values.clone();
-                    values.slice(off, 5);
+                    let off = haudio.inner().nrows() - 5;
+                    let ch = haudio.inner().ncols() - 1;
+                    let mut hmatrix = haudio.inner().clone();
+                    hmatrix.slice(ch, 1);
+                    let mut array = hmatrix.into_harray().inner;
+                    array.slice(off, 5);
 
                     let v: Vec<$t> = (*$results.2)
                     .clone()
                     .into_iter()
                     .map(|x| <$t>::from(x))
                     .collect();
-                    let rhs = PrimitiveArray::from_vec(v).boxed();
+                    let rhs = PrimitiveArray::from_vec(v);
 
                     assert_eq!(
-                        values,
+                        array,
                         rhs
                     );
 
@@ -1141,31 +1142,47 @@ pub mod decode_arrow {
                     let mut stream_struct = stream::<$t>(fpath, offset, duration, frames).unwrap();
 
                     // test first iteration
-                    let next_stream = stream_struct.next().unwrap().unwrap();
-                    let lhs = (next_stream.inner().len(), next_stream.inner().value($channel).len());
+                    let hmatrix = stream_struct.next().unwrap().unwrap();
+                    let lhs = (hmatrix.ncols(), hmatrix.nrows());
                     let rhs = ($dimensions.0, $dimensions.1);
                     assert_eq!(lhs, rhs);
-                    let lhs = next_stream.inner().value($channel);
-                    let mut rhs = decoded_audio.inner().inner().value($channel);
+
+                    let mut hmatrix = hmatrix.clone();
+                    hmatrix.slice($channel, 1);
+                    let lhs = hmatrix.into_harray();
+                    let mut hmatrix = decoded_audio.clone().inner;
+                    hmatrix.slice($channel, 1);
+                    let mut rhs = hmatrix.into_harray();
                     rhs.slice(0, frames);
                     assert_eq!(lhs, rhs);
 
                     // test second iteration
-                    let next_stream = stream_struct.next().unwrap().unwrap();
-                    let lhs = (next_stream.inner().len(), next_stream.inner().value($channel).len());
+                    let hmatrix = stream_struct.next().unwrap().unwrap();
+                    let lhs = (hmatrix.ncols(), hmatrix.nrows());
                     let rhs = ($dimensions.0, $dimensions.1);
                     assert_eq!(lhs, rhs);
-                    let lhs = next_stream.inner().value($channel);
-                    let mut rhs = decoded_audio.inner().inner().value($channel);
+
+                    let mut hmatrix = hmatrix.clone();
+                    hmatrix.slice($channel, 1);
+                    let lhs = hmatrix.into_harray();
+                    let mut hmatrix = decoded_audio.clone().inner;
+                    hmatrix.slice($channel, 1);
+                    let mut rhs = hmatrix.into_harray();
                     rhs.slice(frames, frames);
                     assert_eq!(lhs, rhs);
 
                     // test last iteration
-                    let last_stream = stream_struct.last().unwrap().unwrap();
-                    let nframes_stream = last_stream.inner().value($channel).len();
-                    let nframes_decoded = decoded_audio.inner().inner().value($channel).len();
-                    let lhs = last_stream.inner().value($channel).slice(nframes_stream - 10, 10);
-                    let rhs = decoded_audio.inner().inner().value($channel).slice(nframes_decoded - 10, 10);
+                    let mut hmatrix = stream_struct.last().unwrap().unwrap();
+                    let nframes_stream = hmatrix.nrows();
+                    let nframes_decoded = decoded_audio.inner().nrows();
+                    hmatrix.slice($channel, 1);
+                    let mut lhs = hmatrix.into_harray();
+                    lhs.slice(nframes_stream - 10, 10);
+
+                    let mut hmatrix = decoded_audio.clone().inner;
+                    hmatrix.slice($channel, 1);                    
+                    let mut rhs = hmatrix.into_harray();
+                    rhs.slice(nframes_decoded - 10, 10);
                     assert_eq!(lhs, rhs);
                     )+
             };

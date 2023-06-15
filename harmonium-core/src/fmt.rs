@@ -2,7 +2,7 @@ use crate::{
     configs::{FMT_MAX_COLS, FMT_MAX_LEN, FMT_MAX_ROWS, FMT_TABLE_FORMATTING},
     structs::{HComplexArray, HComplexMatrix, HFloatArray, HFloatAudio, HFloatMatrix},
 };
-use arrow2::{array::PrimitiveArray, types::NativeType};
+use arrow2::types::NativeType;
 use comfy_table::{
     presets::{
         ASCII_BORDERS_ONLY, ASCII_BORDERS_ONLY_CONDENSED, ASCII_FULL, ASCII_FULL_CONDENSED,
@@ -349,11 +349,8 @@ where
         let reduced_cols = max_cols < ncols;
         let reduced_rows = max_rows < nrows;
         let values: Vec<FloatPrinter<T>> = self
-            .inner()
-            .values()
-            .as_any()
-            .downcast_ref::<PrimitiveArray<T>>()
-            .unwrap()
+            .inner
+            .inner
             .values()
             .iter()
             .map(|z| to_fp(z))
@@ -518,11 +515,8 @@ where
         let reduced_cols = max_cols < ncols;
         let reduced_rows = max_rows < nrows;
         let values: Vec<FloatPrinter<T>> = self
-            .inner()
-            .values()
-            .as_any()
-            .downcast_ref::<PrimitiveArray<T>>()
-            .unwrap()
+            .inner
+            .inner
             .values()
             .iter()
             .map(|z| to_fp(z))

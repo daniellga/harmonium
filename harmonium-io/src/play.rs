@@ -1,4 +1,4 @@
-use arrow2::{array::PrimitiveArray, types::NativeType};
+use arrow2::types::NativeType;
 use harmonium_core::{
     errors::{HError, HResult},
     structs::HFloatAudio,
@@ -39,10 +39,7 @@ impl HAudioSink {
         let values = haudio
             .inner()
             .inner()
-            .values()
-            .as_any()
-            .downcast_ref::<PrimitiveArray<T>>()
-            .unwrap();
+            .inner();
 
         for f in 0..nframes {
             for ch in 0..nchannels {

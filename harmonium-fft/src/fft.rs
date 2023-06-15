@@ -108,21 +108,19 @@ pub mod fft_arrow {
             $(
                 impl FftComplexMatrix<$t> for HComplexMatrix<$t> {
                     fn fft(&self) -> HResult<Self> {
-                        let length = self.inner().values().len();
-                        let child_len = self.inner().size();
+                        let length = self.len();
+                        let nrows = self.nrows();
+                        let child_len = nrows * 2;
                         let (fft, mut new_vec) = $f(length, child_len);
                         let mut vec: Vec<Complex<$t>> = self
-                            .inner()
-                            .values()
-                            .as_any()
-                            .downcast_ref::<PrimitiveArray<$t>>()
-                            .unwrap()
+                            .inner
+                            .inner
                             .values()
                             .chunks_exact(2)
                             .map(|x| Complex::<$t>::new(x[0], x[1]))
                             .collect();
 
-                        for v in vec.chunks_exact_mut(child_len / 2) {
+                        for v in vec.chunks_exact_mut(nrows) {
                             fft.process(v);
                         }
 
@@ -131,10 +129,7 @@ pub mod fft_arrow {
                             new_vec.push(i.im);
                         }
 
-                        let array = PrimitiveArray::<$t>::from_vec(new_vec);
-                        let harray = HComplexArray::<$t>::new(array);
-                        let ncols = self.inner().len();
-                        let hmatrix = harray.into_hmatrix(ncols)?;
+                        let hmatrix = HComplexMatrix::<$t>::new_from_vec(new_vec, self.ncols())?;
                         Ok(hmatrix)
                     }
                 }
@@ -159,15 +154,12 @@ pub mod fft_arrow {
             $(
                 impl FftFloatMatrix<$t> for HFloatMatrix<$t> {
                     fn fft(&self) -> HResult<HComplexMatrix<$t>> {
-                        let length = self.inner().values().len();
-                        let child_len = self.inner().size();
+                        let length = self.len();
+                        let child_len = self.nrows();
                         let (fft, mut new_vec) = $f(length, child_len);
                         let mut vec: Vec<Complex<$t>> = self
-                            .inner()
-                            .values()
-                            .as_any()
-                            .downcast_ref::<PrimitiveArray<$t>>()
-                            .unwrap()
+                            .inner
+                            .inner
                             .values()
                             .iter()
                             .map(|x| Complex::<$t>::new(*x, 0.))
@@ -182,10 +174,7 @@ pub mod fft_arrow {
                             new_vec.push(i.im);
                         }
 
-                        let array = PrimitiveArray::<$t>::from_vec(new_vec);
-                        let harray = HComplexArray::<$t>::new(array);
-                        let ncols = self.inner().len();
-                        let hmatrix = harray.into_hmatrix(ncols)?;
+                        let hmatrix = HComplexMatrix::<$t>::new_from_vec(new_vec, self.ncols())?;
                         Ok(hmatrix)
                     }
                 }
@@ -211,70 +200,70 @@ pub mod fft_arrow {
 
         #[test]
         fn fft_complex_array_test() {
-            let arr = PrimitiveArray::from_slice([
+            let v = vec![
                 1_f32, 2_f32, 3_f32, 4_f32, 5_f32, 6_f32, 7_f32, 8_f32,
-            ]);
-            let lhs = HComplexArray::new(arr).fft();
-            let result_arr = PrimitiveArray::from_slice([
+            ];
+            let lhs = HComplexArray::new_from_vec(v).fft();
+            let v = vec![
                 16_f32, 20_f32, -8_f32, 0_f32, -4_f32, -4_f32, 0_f32, -8.,
-            ]);
-            let rhs = HComplexArray::new(result_arr);
+            ];
+            let rhs = HComplexArray::new_from_vec(v);
             assert_eq!(lhs, rhs);
 
-            let arr = PrimitiveArray::from_slice([1., 2., 3., 4., 5., 6., 7., 8.]);
-            let lhs = HComplexArray::new(arr).fft();
-            let result_arr = PrimitiveArray::from_slice([16., 20., -8., 0., -4., -4., 0., -8.]);
-            let rhs = HComplexArray::new(result_arr);
+            let v = vec![1., 2., 3., 4., 5., 6., 7., 8.];
+            let lhs = HComplexArray::new_from_vec(v).fft();
+            let v = vec![16., 20., -8., 0., -4., -4., 0., -8.];
+            let rhs = HComplexArray::new_from_vec(v);
             assert_eq!(lhs, rhs);
         }
 
         #[test]
         fn fft_float_array_test() {
-            let arr = PrimitiveArray::from_slice([1_f32, 2_f32, 3_f32, 4_f32]);
-            let lhs = HFloatArray::new(arr).fft();
-            let result_arr = PrimitiveArray::from_slice([
+            let v = vec![1_f32, 2_f32, 3_f32, 4_f32];
+            let lhs = HFloatArray::new_from_vec(v).fft();
+            let v = vec![
                 10_f32, 0_f32, -2_f32, 2_f32, -2_f32, 0_f32, -2_f32, -2.,
-            ]);
-            let rhs = HComplexArray::new(result_arr);
+            ];
+            let rhs = HComplexArray::new_from_vec(v);
             assert_eq!(lhs, rhs);
 
-            let arr = PrimitiveArray::from_slice([1., 2., 3., 4.]);
-            let lhs = HFloatArray::new(arr).fft();
-            let result_arr = PrimitiveArray::from_slice([10., 0., -2., 2., -2., 0., -2., -2.]);
-            let rhs = HComplexArray::new(result_arr);
+            let v = vec![1., 2., 3., 4.];
+            let lhs = HFloatArray::new_from_vec(v).fft();
+            let v = vec![10., 0., -2., 2., -2., 0., -2., -2.];
+            let rhs = HComplexArray::new_from_vec(v);
             assert_eq!(lhs, rhs);
         }
 
         #[test]
         fn fft_complex_matrix_test() {
-            let arr = PrimitiveArray::from_slice([
+            let v = vec![
                 1_f32, 2_f32, 3_f32, 4_f32, 5_f32, 6_f32, 7_f32, 8_f32, 9_f32, 10_f32, 11_f32,
                 12_f32,
-            ]);
-            let hmatrix = HComplexArray::new(arr).into_hmatrix(3).unwrap();
+            ];
+            let hmatrix = HComplexMatrix::new_from_vec(v, 3).unwrap();
             let lhs = hmatrix.fft().unwrap();
-            let result = PrimitiveArray::from_slice([
+            let v = vec![
                 4_f32, 6_f32, -2_f32, -2_f32, 12_f32, 14_f32, -2_f32, -2_f32, 20_f32, 22_f32,
                 -2_f32, -2_f32,
-            ]);
-            let rhs = HComplexArray::new(result).into_hmatrix(3).unwrap();
+            ];
+            let rhs = HComplexMatrix::new_from_vec(v, 3).unwrap();
             assert_eq!(lhs, rhs);
         }
 
         #[test]
         fn fft_float_matrix_test() {
-            let arr = PrimitiveArray::from_slice([
+            let v = vec![
                 1_f32, 2_f32, 3_f32, 4_f32, 5_f32, 6_f32, 7_f32, 8_f32, 9_f32, 10_f32, 11_f32,
                 12_f32,
-            ]);
-            let hmatrix = HFloatArray::new(arr).into_hmatrix(3).unwrap();
+            ];
+            let hmatrix = HFloatMatrix::new_from_vec(v, 3).unwrap();
             let lhs = hmatrix.fft().unwrap();
-            let result = PrimitiveArray::from_slice([
+            let v = vec![
                 10_f32, 0_f32, -2_f32, 2_f32, -2_f32, 0_f32, -2_f32, -2_f32, 26_f32, 0_f32, -2_f32,
                 2_f32, -2_f32, 0_f32, -2_f32, -2_f32, 42_f32, 0_f32, -2_f32, 2_f32, -2_f32, 0_f32,
                 -2_f32, -2_f32,
-            ]);
-            let rhs = HComplexArray::new(result).into_hmatrix(3).unwrap();
+            ];
+            let rhs = HComplexMatrix::new_from_vec(v, 3).unwrap();
             assert_eq!(lhs, rhs);
         }
     }

@@ -15,7 +15,7 @@ test_that(
       ncols = ncol(values)
       hmatrix = HMatrix$new_from_values(values, dtype)
       arrow_array = arrow::as_arrow_array(hmatrix)
-      hmatrix2 = HMatrix$new_from_arrow(arrow_array, dtype)
+      hmatrix2 = HMatrix$new_from_arrow(arrow_array, ncols, dtype)
       expect_true(hmatrix == hmatrix2)
     }
 

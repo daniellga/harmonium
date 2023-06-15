@@ -9,7 +9,7 @@ edition = "2021"
 harmonium-core = { path = "../harmonium-core" }
 num-traits = "0.2"
 ndarray = "0.15.6"
-arrow2 = "0.17"
+arrow2 = "0.17.2"
 symphonia = { version = "0.5.3", default-features = false }
 rodio = { git = "https://github.com/RustAudio/rodio.git", rev = "9674ea5", default-features = false }
 

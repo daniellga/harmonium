@@ -15,6 +15,7 @@ pub trait HResamplerR: Send {
     fn process(&mut self, haudio: &mut HAudio, sr_out: i32);
     fn set_resample_ratio(&mut self, new_ratio: f64, ramp: bool);
     fn set_resample_ratio_relative(&mut self, rel_ratio: f64, ramp: bool);
+    fn reset(&mut self);
     fn resampler_type(&self) -> HResamplerType;
     fn dtype(&self) -> HDataType;
     fn print(&self);
@@ -57,23 +58,21 @@ impl HResampler {
     /// HResampler
     /// ## new_fft
     ///
-    /// `new_fft(sr_in: integer, sr_out: integer, chunk_size: integer, sub_chunks: integer, nbr_channels: integer, resampler_type: HResamplerType, dtype: HDataType) -> HArray` \
+    /// `new_fft(sr_in: integer, sr_out: integer, chunk_size: integer, sub_chunks: integer, nbr_channels: integer, resampler_type: HResamplerType, dtype: HDataType) -> HResampler` \
     ///
-    /// Creates a new `FFT` type HResampler. \
-    /// Supportes any of  `[fft_fixed_in, fft_fixed_in_out, fft_fixed_out]` `HResamplerType`. \
-    ///
-    /// * `fft_fixed_in` \
-    /// A synchronous resampler that needs a fixed number of audio frames for input and returns a variable number of frames. \
+    /// Creates a new FFT type HResampler. \
+    /// Supports any of  `[fft_fixed_in, fft_fixed_in_out, fft_fixed_out]` `HResamplerType`. \
     /// The resampling is done by FFTing the input data. The spectrum is then extended or truncated as well as multiplied with an antialiasing
     /// filter before it’s inverse transformed to get the resampled waveforms. \
     ///
+    /// * `fft_fixed_in` \
+    /// A synchronous resampler that needs a fixed number of audio frames for input and returns a variable number of frames. \
+    ///
     /// * `fft_fixed_in_out` \
     /// A synchronous resampler that accepts a fixed number of audio frames for input and returns a fixed number of frames. \
-    /// The resampling is done by FFTing the input data. The spectrum is then extended or truncated as well as multiplied with an antialiasing filter
-    /// before it’s inverse transformed to get the resampled waveforms. \
     ///
     /// * `fft_fixed_out` \
-    /// A synchronous resampler that needs a fixed number of audio frames for input and returns a variable number of frames.
+    /// A synchronous resampler that needs a fixed number of audio frames for input and returns a variable number of frames. \
     ///
     /// #### Arguments
     ///
@@ -92,7 +91,7 @@ impl HResampler {
     /// * `resampler_type` \
     /// An HResamplerType to indicate which type of `HResampler` to be created. \
     /// * `dtype` \
-    /// A float `HDataType` to indicate the data type the `HResampler` will be working with. \
+    /// A float `HDataType` to indicate the dtype that the `HResampler` will be working with. \
     /// Must be the same as the `HAudio`'s dtype that will be processed by the `HResampler`. \
     ///
     /// #### Returns
@@ -189,10 +188,69 @@ impl HResampler {
                 .unwrap();
                 HResampler(Box::new(resampler))
             }
-            _ => panic!("Invalid resampler or data type."),
+            _ => panic!("Invalid HResamplerType or dtype."),
         }
     }
 
+    /// HResampler
+    /// ## new_sinc
+    ///
+    /// `new_sinc(resample_ratio: double, max_resample_ratio_relative: double, parameters: HSincInterpolationParams, chunk_size: integer, nbr_channels: integer, resampler_type: HResamplerType, dtype: HDataType) -> HResampler` \
+    ///
+    /// Creates a new Sinc type HResampler. \
+    /// Supports any of  `[sinc_fixed_in, sinc_fixed_out]` `HResamplerType`. \
+    /// The resampling is done by creating a number of intermediate points (defined by oversampling_factor) by sinc interpolation. \
+    /// The new samples are then calculated by interpolating between these points. \
+    ///
+    /// * `sinc_fixed_in` \
+    /// An asynchronous resampler that accepts a fixed number of audio frames for input and returns a variable number of frames. \
+    /// 
+    /// * `sinc_fixed_out` \
+    /// An asynchronous resampler that accepts a variable number of audio frames for input nad returns a fixed number of frames. \
+    ///
+    /// #### Arguments
+    ///
+    /// * `resample_ratio` \
+    /// The output's sampling rate divided by the input's sampling rate.
+    /// * `max_resample_ratio_relative` \
+    /// Maximum ratio that can be set with `set_resample_ratio` relative to `resample_ratio`, must be >= 1.0. The minimum relative \
+    /// ratio is the reciprocal of the maximum. For example, with `max_resample_ratio_relative` of 10.0, the ratio can be set between \
+    /// `resample_ratio * 10.0` and `resample_ratio / 10.0`.
+    /// * `parameters` \
+    /// An HSincInterpolationParams. \
+    /// * `chunk_size` \
+    /// Chunks size of input or output data in frames. \
+    /// * `nbr_channels` \
+    /// Number of channels in input and output. \
+    /// Must be the same number of channels as the `HAudio` that will be processed by the `HResampler`. \
+    /// * `resampler_type` \
+    /// An HResamplerType to indicate which type of `HResampler` to be created. \
+    /// * `dtype` \
+    /// A float `HDataType` to indicate the dtype that the `HResampler` will be working with. \
+    /// Must be the same as the `HAudio`'s dtype that will be processed by the `HResampler`. \
+    ///
+    /// #### Returns
+    ///
+    /// A Sinc type `HResampler`. \
+    ///
+    /// #### Examples
+    ///
+    /// ```r
+    /// sr_in = 44100L
+    /// sr_out = 48000L
+    /// resample_ratio = sr_out / sr_in
+    /// max_resample_ratio_relative = 2
+    /// hparams = HSincInterpolationParams$new(256, 0.95, 256, "linear", "blackmanharris2")
+    /// chunk_size = 512L
+    /// nbr_channels = 2L
+    /// resampler_type = HResamplerType$sinc_fixed_out
+    /// dtype = HDataType$float32
+    ///
+    /// res = HResampler$new_sinc(resample_ratio, max_resample_ratio_relative, hparams, chunk_size, nbr_channels, resampler_type, dtype)
+    /// ```
+    ///
+    /// _________
+    ///
     fn new_sinc(
         resample_ratio: f64,
         max_resample_ratio_relative: f64,
@@ -247,7 +305,7 @@ impl HResampler {
                 .unwrap();
                 HResampler(Box::new(resampler))
             }
-            _ => panic!("Invalid resampler or data type."),
+            _ => panic!("Invalid HResamplerType or dtype."),
         }
     }
 
@@ -305,7 +363,7 @@ impl HResampler {
                 .unwrap();
                 HResampler(Box::new(resampler))
             }
-            _ => panic!("Invalid resampler or data type."),
+            _ => panic!("Invalid HResamplerType or dtype."),
         }
     }
 
@@ -315,6 +373,10 @@ impl HResampler {
 
     fn resampler_type(&self) -> HResamplerType {
         self.0.resampler_type()
+    }
+
+    fn reset(&mut self) {
+        self.0.reset();
     }
 
     fn dtype(&self) -> HDataType {
@@ -336,6 +398,8 @@ macro_rules! impl_hresamplerfftr {
 
                 fn process(&mut self, haudio: &mut HAudio, sr_out: i32) {
                     let sr_out = sr_out.try_into().unwrap();
+                    // Ok to unwrap.
+                    // downcast_mut already checks if the HAudio and the Resampler have the same HDataType.
                     let haudio = haudio.get_inner_mut().as_any_mut().downcast_mut::<$t2>().unwrap();
                     self.process_resampler(haudio, sr_out).unwrap();
                 }
@@ -350,6 +414,11 @@ macro_rules! impl_hresamplerfftr {
 
                 fn resampler_type(&self) -> HResamplerType {
                     $e1
+                }
+
+                /// Reset the resampler state and clear all internal buffers.
+                fn reset(&mut self) {
+                    rubato::Resampler::reset(self);
                 }
 
                 fn dtype(&self) -> HDataType {
@@ -419,6 +488,8 @@ macro_rules! impl_hresamplersincr {
 
                 fn process(&mut self, haudio: &mut HAudio, sr_out: i32) {
                     let sr_out = sr_out.try_into().unwrap();
+                    // Ok to unwrap.
+                    // downcast_mut already checks if the HAudio and the HResampler have the same HDataType.
                     let haudio = haudio.get_inner_mut().as_any_mut().downcast_mut::<$t2>().unwrap();
                     self.process_resampler(haudio, sr_out).unwrap();
                 }
@@ -429,6 +500,11 @@ macro_rules! impl_hresamplersincr {
 
                 fn set_resample_ratio_relative(&mut self, rel_ratio: f64, ramp: bool) {
                     rubato::Resampler::set_resample_ratio_relative(self, rel_ratio, ramp).unwrap();
+                }
+
+                /// Reset the resampler state and clear all internal buffers.
+                fn reset(&mut self) {
+                    rubato::Resampler::reset(self);
                 }
 
                 fn resampler_type(&self) -> HResamplerType {

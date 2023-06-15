@@ -2,7 +2,6 @@ use crate::{
     hdatatype::HDataType,
     hmatrix::{HMatrix, HMatrixR},
 };
-use arrow2::array::PrimitiveArray;
 use extendr_api::prelude::*;
 use harmonium_core::structs;
 use harmonium_io::decode::decode_arrow::decode;
@@ -748,14 +747,12 @@ impl HAudioR for structs::HFloatAudio<f32> {
     }
 
     fn collect(&self) -> Robj {
-        let list_array = self.inner().inner();
-        let ncols = list_array.len();
-        let nrows = list_array.size();
-        list_array
-            .values()
-            .as_any()
-            .downcast_ref::<PrimitiveArray<f32>>()
-            .unwrap()
+        let hmatrix = self.inner();
+        let ncols = hmatrix.ncols();
+        let nrows = hmatrix.nrows();
+        hmatrix
+            .inner
+            .inner
             .values()
             .iter()
             .map(|x| *x as f64)
@@ -785,127 +782,6 @@ impl HAudioR for structs::HFloatAudio<f32> {
     fn clone_inner(&self) -> Arc<dyn HAudioR> {
         Arc::new(self.clone())
     }
-
-    //fn resample_fftfixedin(&mut self, sr_out: i32, chunk_size_in: i32, sub_chunks: i32) {
-    //    Resampler::resample_fftfixedin(
-    //        self,
-    //        sr_out.try_into().unwrap(),
-    //        chunk_size_in.try_into().unwrap(),
-    //        sub_chunks.try_into().unwrap(),
-    //    )
-    //    .unwrap();
-    //}
-
-    //fn resample_fftfixedinout(&mut self, sr_out: i32, chunk_size_in: i32) {
-    //    Resampler::resample_fftfixedinout(
-    //        self,
-    //        sr_out.try_into().unwrap(),
-    //        chunk_size_in.try_into().unwrap(),
-    //    )
-    //    .unwrap();
-    //}
-
-    //fn resample_fftfixedout(&mut self, sr_out: i32, chunk_size_out: i32, sub_chunks: i32) {
-    //    Resampler::resample_fftfixedout(
-    //        self,
-    //        sr_out.try_into().unwrap(),
-    //        chunk_size_out.try_into().unwrap(),
-    //        sub_chunks.try_into().unwrap(),
-    //    )
-    //    .unwrap();
-    //}
-
-    //fn resample_sincfixedin(
-    //    &mut self,
-    //    sr_out: i32,
-    //    max_resample_ratio_relative: f64,
-    //    sinc_len: i32,
-    //    f_cutoff: f64,
-    //    oversampling_factor: i32,
-    //    interpolation: &str,
-    //    window: &str,
-    //    chunk_size_in: i32,
-    //) {
-    //    let interpolation = match interpolation {
-    //        "cubic" => rubato::InterpolationType::Cubic,
-    //        "linear" => rubato::InterpolationType::Linear,
-    //        "nearest" => rubato::InterpolationType::Nearest,
-    //        _ => panic!("not a valid interpolation type"),
-    //    };
-
-    //    let window = match window {
-    //        "blackman" => rubato::WindowFunction::Blackman,
-    //        "blackman2" => rubato::WindowFunction::Blackman2,
-    //        "blackmanharris" => rubato::WindowFunction::BlackmanHarris,
-    //        "blackmanharris2" => rubato::WindowFunction::BlackmanHarris2,
-    //        "hann" => rubato::WindowFunction::Hann,
-    //        "hann2" => rubato::WindowFunction::Hann2,
-    //        _ => panic!("not a valid window type"),
-    //    };
-
-    //    let interpolation_params = InterpolationParameters {
-    //        sinc_len: sinc_len.try_into().unwrap(),
-    //        f_cutoff: f_cutoff as f32,
-    //        oversampling_factor: oversampling_factor.try_into().unwrap(),
-    //        interpolation,
-    //        window,
-    //    };
-
-    //    Resampler::resample_sincfixedin(
-    //        self,
-    //        sr_out.try_into().unwrap(),
-    //        max_resample_ratio_relative,
-    //        interpolation_params,
-    //        chunk_size_in.try_into().unwrap(),
-    //    )
-    //    .unwrap();
-    //}
-
-    //fn resample_sincfixedout(
-    //    &mut self,
-    //    sr_out: i32,
-    //    max_resample_ratio_relative: f64,
-    //    sinc_len: i32,
-    //    f_cutoff: f64,
-    //    oversampling_factor: i32,
-    //    interpolation: &str,
-    //    window: &str,
-    //    chunk_size_out: i32,
-    //) {
-    //    let interpolation = match interpolation {
-    //        "cubic" => rubato::InterpolationType::Cubic,
-    //        "linear" => rubato::InterpolationType::Linear,
-    //        "nearest" => rubato::InterpolationType::Nearest,
-    //        _ => panic!("not a valid interpolation type"),
-    //    };
-
-    //    let window = match window {
-    //        "blackman" => rubato::WindowFunction::Blackman,
-    //        "blackman2" => rubato::WindowFunction::Blackman2,
-    //        "blackmanharris" => rubato::WindowFunction::BlackmanHarris,
-    //        "blackmanharris2" => rubato::WindowFunction::BlackmanHarris2,
-    //        "hann" => rubato::WindowFunction::Hann,
-    //        "hann2" => rubato::WindowFunction::Hann2,
-    //        _ => panic!("not a valid window type"),
-    //    };
-
-    //    let interpolation_params = InterpolationParameters {
-    //        sinc_len: sinc_len.try_into().unwrap(),
-    //        f_cutoff: f_cutoff as f32,
-    //        oversampling_factor: oversampling_factor.try_into().unwrap(),
-    //        interpolation,
-    //        window,
-    //    };
-
-    //    Resampler::resample_sincfixedout(
-    //        self,
-    //        sr_out.try_into().unwrap(),
-    //        max_resample_ratio_relative,
-    //        interpolation_params,
-    //        chunk_size_out.try_into().unwrap(),
-    //    )
-    //    .unwrap();
-    //}
 }
 
 impl HAudioR for structs::HFloatAudio<f64> {
@@ -939,14 +815,12 @@ impl HAudioR for structs::HFloatAudio<f64> {
     }
 
     fn collect(&self) -> Robj {
-        let list_array = self.inner().inner();
-        let ncols = list_array.len();
-        let nrows = list_array.size();
-        list_array
-            .values()
-            .as_any()
-            .downcast_ref::<PrimitiveArray<f64>>()
-            .unwrap()
+        let hmatrix = self.inner();
+        let ncols = hmatrix.ncols();
+        let nrows = hmatrix.nrows();
+        hmatrix
+            .inner
+            .inner
             .values()
             .iter()
             .copied()
@@ -976,127 +850,6 @@ impl HAudioR for structs::HFloatAudio<f64> {
     fn clone_inner(&self) -> Arc<dyn HAudioR> {
         Arc::new(self.clone())
     }
-
-    //fn resample_fftfixedin(&mut self, sr_out: i32, chunk_size_in: i32, sub_chunks: i32) {
-    //    Resampler::resample_fftfixedin(
-    //        self,
-    //        sr_out.try_into().unwrap(),
-    //        chunk_size_in.try_into().unwrap(),
-    //        sub_chunks.try_into().unwrap(),
-    //    )
-    //    .unwrap();
-    //}
-
-    //fn resample_fftfixedinout(&mut self, sr_out: i32, chunk_size_in: i32) {
-    //    Resampler::resample_fftfixedinout(
-    //        self,
-    //        sr_out.try_into().unwrap(),
-    //        chunk_size_in.try_into().unwrap(),
-    //    )
-    //    .unwrap();
-    //}
-
-    //fn resample_fftfixedout(&mut self, sr_out: i32, chunk_size_out: i32, sub_chunks: i32) {
-    //    Resampler::resample_fftfixedout(
-    //        self,
-    //        sr_out.try_into().unwrap(),
-    //        chunk_size_out.try_into().unwrap(),
-    //        sub_chunks.try_into().unwrap(),
-    //    )
-    //    .unwrap();
-    //}
-
-    //fn resample_sincfixedin(
-    //    &mut self,
-    //    sr_out: i32,
-    //    max_resample_ratio_relative: f64,
-    //    sinc_len: i32,
-    //    f_cutoff: f64,
-    //    oversampling_factor: i32,
-    //    interpolation: &str,
-    //    window: &str,
-    //    chunk_size_in: i32,
-    //) {
-    //    let interpolation = match interpolation {
-    //        "cubic" => rubato::InterpolationType::Cubic,
-    //        "linear" => rubato::InterpolationType::Linear,
-    //        "nearest" => rubato::InterpolationType::Nearest,
-    //        _ => panic!("not a valid interpolation type"),
-    //    };
-
-    //    let window = match window {
-    //        "blackman" => rubato::WindowFunction::Blackman,
-    //        "blackman2" => rubato::WindowFunction::Blackman2,
-    //        "blackmanharris" => rubato::WindowFunction::BlackmanHarris,
-    //        "blackmanharris2" => rubato::WindowFunction::BlackmanHarris2,
-    //        "hann" => rubato::WindowFunction::Hann,
-    //        "hann2" => rubato::WindowFunction::Hann2,
-    //        _ => panic!("not a valid window type"),
-    //    };
-
-    //    let interpolation_params = InterpolationParameters {
-    //        sinc_len: sinc_len.try_into().unwrap(),
-    //        f_cutoff: f_cutoff as f32,
-    //        oversampling_factor: oversampling_factor.try_into().unwrap(),
-    //        interpolation,
-    //        window,
-    //    };
-
-    //    Resampler::resample_sincfixedin(
-    //        self,
-    //        sr_out.try_into().unwrap(),
-    //        max_resample_ratio_relative,
-    //        interpolation_params,
-    //        chunk_size_in.try_into().unwrap(),
-    //    )
-    //    .unwrap();
-    //}
-
-    //fn resample_sincfixedout(
-    //    &mut self,
-    //    sr_out: i32,
-    //    max_resample_ratio_relative: f64,
-    //    sinc_len: i32,
-    //    f_cutoff: f64,
-    //    oversampling_factor: i32,
-    //    interpolation: &str,
-    //    window: &str,
-    //    chunk_size_out: i32,
-    //) {
-    //    let interpolation = match interpolation {
-    //        "cubic" => rubato::InterpolationType::Cubic,
-    //        "linear" => rubato::InterpolationType::Linear,
-    //        "nearest" => rubato::InterpolationType::Nearest,
-    //        _ => panic!("not a valid interpolation type"),
-    //    };
-
-    //    let window = match window {
-    //        "blackman" => rubato::WindowFunction::Blackman,
-    //        "blackman2" => rubato::WindowFunction::Blackman2,
-    //        "blackmanharris" => rubato::WindowFunction::BlackmanHarris,
-    //        "blackmanharris2" => rubato::WindowFunction::BlackmanHarris2,
-    //        "hann" => rubato::WindowFunction::Hann,
-    //        "hann2" => rubato::WindowFunction::Hann2,
-    //        _ => panic!("not a valid window type"),
-    //    };
-
-    //    let interpolation_params = InterpolationParameters {
-    //        sinc_len: sinc_len.try_into().unwrap(),
-    //        f_cutoff: f_cutoff as f32,
-    //        oversampling_factor: oversampling_factor.try_into().unwrap(),
-    //        interpolation,
-    //        window,
-    //    };
-
-    //    Resampler::resample_sincfixedout(
-    //        self,
-    //        sr_out.try_into().unwrap(),
-    //        max_resample_ratio_relative,
-    //        interpolation_params,
-    //        chunk_size_out.try_into().unwrap(),
-    //    )
-    //    .unwrap();
-    //}
 }
 
 extendr_module! {

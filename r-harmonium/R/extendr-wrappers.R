@@ -225,7 +225,7 @@ HMatrix <- new.env(parent = emptyenv())
 
 HMatrix$new_from_values <- function(values, dtype) .Call(wrap__HMatrix__new_from_values, values, dtype)
 
-HMatrix$new_from_arrow <- function(values, dtype) .Call(wrap__HMatrix__new_from_arrow, values, dtype)
+HMatrix$new_from_arrow <- function(values, ncols, dtype) .Call(wrap__HMatrix__new_from_arrow, values, ncols, dtype)
 
 HMatrix$len <- function() .Call(wrap__HMatrix__len, self)
 
@@ -310,6 +310,30 @@ HMetadataType$ne <- function(other) .Call(wrap__HMetadataType__ne, self, other)
 
 #' @export
 `[[.HMetadataType` <- `$.HMetadataType`
+
+HResampler <- new.env(parent = emptyenv())
+
+HResampler$new_fft <- function(sr_in, sr_out, chunk_size, sub_chunks, nbr_channels, resampler_type, dtype) .Call(wrap__HResampler__new_fft, sr_in, sr_out, chunk_size, sub_chunks, nbr_channels, resampler_type, dtype)
+
+HResampler$new_sinc <- function(resample_ratio, max_resample_ratio_relative, parameters, chunk_size, nbr_channels, resampler_type, dtype) .Call(wrap__HResampler__new_sinc, resample_ratio, max_resample_ratio_relative, parameters, chunk_size, nbr_channels, resampler_type, dtype)
+
+HResampler$new_fast <- function(resample_ratio, max_resample_ratio_relative, pol_deg, chunk_size, nbr_channels, resampler_type, dtype) .Call(wrap__HResampler__new_fast, resample_ratio, max_resample_ratio_relative, pol_deg, chunk_size, nbr_channels, resampler_type, dtype)
+
+HResampler$process <- function(haudio, sr_out) invisible(.Call(wrap__HResampler__process, self, haudio, sr_out))
+
+HResampler$resampler_type <- function() .Call(wrap__HResampler__resampler_type, self)
+
+HResampler$reset <- function() invisible(.Call(wrap__HResampler__reset, self))
+
+HResampler$dtype <- function() .Call(wrap__HResampler__dtype, self)
+
+HResampler$print <- function() invisible(.Call(wrap__HResampler__print, self))
+
+#' @export
+`$.HResampler` <- function (self, name) { func <- HResampler[[name]]; environment(func) <- environment(); func }
+
+#' @export
+`[[.HResampler` <- `$.HResampler`
 
 HResamplerType <- new.env(parent = emptyenv())
 

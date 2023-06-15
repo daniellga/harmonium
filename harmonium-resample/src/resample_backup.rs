@@ -24,41 +24,51 @@ macro_rules! impl_process_resampler_fixed_in {
                 T: Float + NativeType + Sample,
                 {
                     fn process_resampler(&mut self, haudio: &mut HFloatAudio<T>, sr_out: usize) -> HResult<()> {
+                        let nsamples = haudio.len();
                         let nrows = haudio.inner.nrows();
-                        let input_frames_next = self.input_frames_next();
+                        let nbr_frames_next = self.input_frames_next();
                         let nchannels = self.nbr_channels();
-                        let max_possible_frames_per_channel =
-                            self.output_frames_max() * (nrows / self.output_frames_max() + 1);
+                        let mut v_out: Vec<Vec<T>> = Vec::with_capacity(nchannels); // TODO: Wait for rubato to allow using a single vec with length ch*max_possible_resamples_per_channel
+                        let max_possible_resamples_per_channel =
+                            self.output_frames_max() * (nsamples / self.output_frames_max() + 1);
 
+                        let mut idx: usize = 0;
                         // The `filled` argument determines if the vectors should be pre-filled with zeros or not.
                         // When false, the vectors are only allocated but returned empty.
                         let mut input_buffer = self.input_buffer_allocate(false);
                         let mut output_buffer = self.output_buffer_allocate(true);
 
-                        let mut v_out: Vec<Vec<T>> = Vec::with_capacity(nchannels);
-
                         for _ in 0..nchannels {
-                            v_out.push(Vec::<T>::with_capacity(max_possible_frames_per_channel));
+                            v_out.push(Vec::<T>::with_capacity(max_possible_resamples_per_channel));
                         }
 
-                        let steps = nrows / input_frames_next;
+                        let values = haudio
+                            .inner
+                            .as_slice();
+                        let mult = (nchannels - 1) * nrows;
 
-                        let haudio_slice = haudio.inner.as_slice();
+                        loop {
+                            (0..nchannels).for_each(|ch| {
+                                let x = ch * nrows;
+                                let slc = &values[(x + idx)..(x + idx + nbr_frames_next)];
+                                input_buffer[ch].extend_from_slice(slc);
+                            });
 
-                        for n in 0..steps {
-                            let col_chunks = haudio_slice.chunks_exact(nrows);
-                            for (ib, cc) in input_buffer.iter_mut().zip(col_chunks) {
-                                ib.extend_from_slice(&cc[input_frames_next*n..input_frames_next*(n+1)]);
+                            // the input and output buffers are noninterleaved
+                            let (_, output_buffer_len_used) = self.process_into_buffer(&input_buffer, &mut output_buffer, None)?;
+
+                            for ch in 0..nchannels {
+                                v_out[ch].extend_from_slice(&output_buffer[ch][0..output_buffer_len_used]);
+                                input_buffer[ch].clear();
                             }
 
-                            let (_, nbr_out) = self.process_into_buffer(&input_buffer, &mut output_buffer, None)?;
+                            idx += nbr_frames_next;
 
-                            for ((vo, ob), ib) in v_out.iter_mut().zip(output_buffer.iter()).zip(input_buffer.iter_mut()) {
-                                vo.extend_from_slice(&ob[0..nbr_out]);
-                                ib.clear();
+                            if mult + idx + nbr_frames_next > nsamples {
+                                break;
                             }
                         }
-                        
+
                         let v = v_out.into_iter().flatten().collect();
                         let hmatrix = HFloatMatrix::<T>::new_from_vec(v, nchannels)?;
 
@@ -89,51 +99,60 @@ macro_rules! impl_process_resampler_fixed_out {
                 T: Float + NativeType + Sample,
                 {
                     fn process_resampler(&mut self, haudio: &mut HFloatAudio<T>, sr_out: usize) -> HResult<()> {
+                        let nsamples = haudio.len();
                         let nrows = haudio.inner.nrows();
-                        let mut idx = 0; 
+                        let mut nbr_frames_next = self.input_frames_next();
                         let nchannels = self.nbr_channels();
-                        let max_possible_frames_per_channel =
-                            self.output_frames_max() * (nrows / self.output_frames_max() + 1);
+                        let mut v_out: Vec<Vec<T>> = Vec::with_capacity(nchannels); // TODO: Wait for rubato to allow using a single vec with length ch*max_possible_resamples_per_channel
 
+                        let max_possible_resamples_per_channel =
+                            self.output_frames_max() * (nsamples / self.output_frames_max() + 1);
+
+                        for _ in 0..nchannels {
+                            v_out.push(Vec::<T>::with_capacity(max_possible_resamples_per_channel));
+                        }
+
+                        let mut idx: usize = 0;
                         // The `filled` argument determines if the vectors should be pre-filled with zeros or not.
                         // When false, the vectors are only allocated but returned empty.
                         let mut input_buffer = self.input_buffer_allocate(false);
                         let mut output_buffer = self.output_buffer_allocate(true);
 
-                        let mut v_out: Vec<Vec<T>> = Vec::with_capacity(nchannels);
+                        let values = haudio
+                            .inner
+                            .as_slice();
+                        let mult = (nchannels - 1) * nrows;
 
-                        for _ in 0..nchannels {
-                            v_out.push(Vec::<T>::with_capacity(max_possible_frames_per_channel));
-                        }
-                        println!("v_outlen {}", v_out[0].len());
-                        println!("v_out_cap {}", v_out[0].capacity());
-                        println!("outputframesmax {}",self.output_frames_max());
-                        println!("outputframesmax {}",max_possible_frames_per_channel);
+                        println!("11111111");
+                        println!("nbr_frames_first: {}", nbr_frames_next);
 
-                        let haudio_slice = haudio.inner.as_slice();
+                        loop {
+                            (0..nchannels).for_each(|ch| {
+                                let slc = &values[(ch * nrows + idx)..(ch * nrows + idx + nbr_frames_next)];
+                                input_buffer[ch].extend_from_slice(slc);
+                            });
+                            // the input and output buffers are noninterleaved
+                            self.process_into_buffer(&input_buffer, &mut output_buffer, None)?;
 
-                        while nrows >= self.input_frames_next() + idx {
-                            let col_chunks = haudio_slice.chunks_exact(nrows);
-                            let idx2 = idx + self.input_frames_next();
-                            for (ib, cc) in input_buffer.iter_mut().zip(col_chunks) {
-                                ib.extend_from_slice(&cc[idx..idx2]);
-                                assert!(ib.len() == self.input_frames_next());
+                            for ch in 0..nchannels {
+                                v_out[ch].extend_from_slice(&mut output_buffer[ch]);
+                                input_buffer[ch].clear();
                             }
 
-                            idx += idx2;
+                            idx += nbr_frames_next;
 
-                            let (_, _) = self.process_into_buffer(&input_buffer, &mut output_buffer, None)?;
+                            nbr_frames_next = self.input_frames_next();
 
-                            for ((vo, ob), ib) in v_out.iter_mut().zip(output_buffer.iter_mut()).zip(input_buffer.iter_mut()) {
-                                vo.extend_from_slice(ob);
-                                ib.clear();
-                                println!("fim do clear");
+                            println!("nbr_frames_next: {}", nbr_frames_next);
+                            println!("mult: {}", mult);
+                            println!("idx: {}", idx);
+                            println!("soma: {}", mult+idx+nbr_frames_next);
+                            println!("nsamples: {}", nsamples);
+                            if mult + idx + nbr_frames_next > nsamples {
+                                break;
                             }
-
-                            println!("nrows {}", nrows);
-                            println!("idx {}", idx);
                         }
-                        
+
                         let v = v_out.into_iter().flatten().collect();
                         let hmatrix = HFloatMatrix::<T>::new_from_vec(v, nchannels)?;
 
@@ -160,13 +179,107 @@ mod tests {
 
 
     #[test]
-    fn test_process_resampler_sinc_fixed_in() {
+    fn test_process_resampler_fixed_out() {
+        // SincFixedOut.
+        let sr_in = 44100;
+        let sr_out = 48000;
+        let mut haudio = HFloatMatrix::new_from_vec(vec![0.0_f64; 2048], 2).unwrap().into_haudio(sr_in);
+        let params = SincInterpolationParameters {
+            sinc_len: 256,
+            f_cutoff: 0.95,
+            interpolation: SincInterpolationType::Linear,
+            oversampling_factor: 256,
+            window: WindowFunction::BlackmanHarris2,
+        };
+        let mut resampler = SincFixedOut::<f64>::new(
+            sr_out as f64 / sr_in as f64,
+            2.0,
+            params,
+            512,
+            2,
+        ).unwrap();
+
+        resampler.process_resampler(&mut haudio, sr_out).unwrap();
+
+        assert_eq!(haudio.len(), 1024);
+        assert_eq!(haudio.sr(), sr_out as u32);
+
+        // FastFixedOut.
+        let sr_in = 44100;
+        let sr_out = 48000;
+        let mut haudio = HFloatMatrix::new_from_vec(vec![0.0_f64; 2048], 2).unwrap().into_haudio(sr_in);
+        let mut resampler = FastFixedOut::<f64>::new(
+            sr_out as f64 / sr_in as f64,
+            2.0,
+            rubato::PolynomialDegree::Linear,
+            512,
+            2,
+        ).unwrap();
+
+        resampler.process_resampler(&mut haudio, sr_out).unwrap();
+
+        assert_eq!(haudio.len(), 2048);
+        assert_eq!(haudio.sr(), sr_out as u32);
+
+        // FftFixedOut.
+        let sr_in = 44100;
+        let sr_out = 48000;
+        let mut haudio = HFloatMatrix::new_from_vec(vec![0.0_f64; 2048], 2).unwrap().into_haudio(sr_in);
+        let mut resampler = FftFixedOut::<f64>::new(
+            sr_in as usize,
+            sr_out as usize,
+            512,
+            2,
+            2,
+        ).unwrap();
+
+        resampler.process_resampler(&mut haudio, sr_out).unwrap();
+
+        assert_eq!(haudio.len(), 1024);
+        assert_eq!(haudio.sr(), sr_out as u32);
+
+
+        use rubato::{Resampler, SincFixedIn, SincInterpolationType, SincInterpolationParameters, WindowFunction};
+        let mut resampler = FastFixedOut::<f64>::new(
+            48000 as f64 / 44100 as f64,
+            2.0,
+            rubato::PolynomialDegree::Linear,
+            512,
+            2,
+        ).unwrap();
+
+        let waves_in = vec![vec![0.0f64; 1024];2];
+        let waves_out = resampler.process(&waves_in, None).unwrap();
+        println!("rubato waves_out_nchannels {}",waves_out.len());
+        println!("rubato waves_out_nrows {}",waves_out[0].len());
+
+        let params = SincInterpolationParameters {
+            sinc_len: 256,
+            f_cutoff: 0.95,
+            interpolation: SincInterpolationType::Linear,
+            oversampling_factor: 256,
+            window: WindowFunction::BlackmanHarris2,
+        };
+        let mut resampler = SincFixedOut::<f64>::new(
+            48000 as f64 / 44100 as f64,
+            2.0,
+            params,
+            512,
+            2,
+        ).unwrap();
+
+        let waves_in = vec![vec![0.0f64; 1024];2];
+        let waves_out = resampler.process(&waves_in, None).unwrap();
+        println!("rubato waves_out_nchannels {}",waves_out.len());
+        println!("rubato waves_out_nrows {}",waves_out[0].len());
+    }
+
+    #[test]
+    fn test_process_resampler_fixed_in() {
         // SincFixedIn.
         let sr_in = 44100;
         let sr_out = 48000;
-        let length = 2048;
-        let chunk_size = 1024;
-        let mut haudio = HFloatMatrix::new_from_vec(vec![0.0_f64; length], 2).unwrap().into_haudio(sr_in);
+        let mut haudio = HFloatMatrix::new_from_vec(vec![0.0_f64; 2048], 2).unwrap().into_haudio(sr_in);
         let params = SincInterpolationParameters {
             sinc_len: 256,
             f_cutoff: 0.95,
@@ -178,207 +291,32 @@ mod tests {
             sr_out as f64 / sr_in as f64,
             2.0,
             params,
-            chunk_size,
+            1024,
             2,
         ).unwrap();
 
         resampler.process_resampler(&mut haudio, sr_out).unwrap();
 
-        let params = SincInterpolationParameters {
-            sinc_len: 256,
-            f_cutoff: 0.95,
-            interpolation: SincInterpolationType::Linear,
-            oversampling_factor: 256,
-            window: WindowFunction::BlackmanHarris2,
-        };
-        let mut resampler = SincFixedIn::<f64>::new(
-            sr_out as f64 / sr_in as f64,
-            2.0,
-            params,
-            chunk_size,
-            2,
-        ).unwrap();
-
-        let waves_in = vec![vec![0.0f64; length/2];2];
-        let waves_out = resampler.process(&waves_in, None).unwrap();
-
-        assert_eq!(haudio.len(), waves_out.len()*waves_out[0].len());
+        assert_eq!(haudio.len(), 1948);
         assert_eq!(haudio.sr(), sr_out as u32);
-    }
 
-    #[test]
-    fn test_process_resampler_fast_fixed_in() {
+        // FftFixedIn.
         let sr_in = 44100;
         let sr_out = 48000;
-        let length = 2048;
-        let chunk_size = 1024;
-        let mut haudio = HFloatMatrix::new_from_vec(vec![0.0_f64; length], 2).unwrap().into_haudio(sr_in);
-        let mut resampler = FastFixedIn::<f64>::new(
-            sr_out as f64 / sr_in as f64,
-            2.0,
-            rubato::PolynomialDegree::Linear,
-            chunk_size,
-            2,
-        ).unwrap();
-
-        resampler.process_resampler(&mut haudio, sr_out).unwrap();
-
-        let mut resampler = FastFixedIn::<f64>::new(
-            sr_out as f64 / sr_in as f64,
-            2.0,
-            rubato::PolynomialDegree::Linear,
-            chunk_size,
-            2,
-        ).unwrap();
-
-        let waves_in = vec![vec![0.0f64; length/2];2];
-        let waves_out = resampler.process(&waves_in, None).unwrap();
-
-        assert_eq!(haudio.len(), waves_out.len()*waves_out[0].len());
-        assert_eq!(haudio.sr(), sr_out as u32);
-    }
-
-    #[test]
-    fn test_process_resampler_fft_fixed_in() {
-        let sr_in = 44100;
-        let sr_out = 48000;
-        let length = 2048;
-        let chunk_size = 1024;
-        let mut haudio = HFloatMatrix::new_from_vec(vec![0.0_f64; length], 2).unwrap().into_haudio(sr_in);
+        let mut haudio = HFloatMatrix::new_from_vec(vec![0.0_f64; 2048], 2).unwrap().into_haudio(sr_in);
         let mut resampler = FftFixedIn::<f64>::new(
             sr_in as usize,
             sr_out as usize,
-            chunk_size,
+            1024,
             2,
             2,
         ).unwrap();
 
         resampler.process_resampler(&mut haudio, sr_out).unwrap();
-        
-        let mut resampler = FftFixedIn::<f64>::new(
-            sr_in as usize,
-            sr_out,
-            chunk_size,
-            2,
-            2,
-        ).unwrap();
 
-        let waves_in = vec![vec![0.0f64; 1024];2];
-        let waves_out = resampler.process(&waves_in, None).unwrap();
-
-        assert_eq!(haudio.len(), waves_out.len()*waves_out[0].len());
+        assert_eq!(haudio.len(), 1280);
         assert_eq!(haudio.sr(), sr_out as u32);
     }
-
-    #[test]
-    fn test_process_resampler_fft_fixed_in_out() {
-        let sr_in = 44100;
-        let sr_out = 48000;
-        let length = 2048;
-        let chunk_size = 512;
-        let mut haudio = HFloatMatrix::new_from_vec(vec![0.0_f64; length], 2).unwrap().into_haudio(sr_in);
-        let mut resampler = FftFixedInOut::<f64>::new(
-          sr_in as usize,
-          sr_out as usize,
-          chunk_size,
-          2,
-        ).unwrap();
-
-        resampler.process_resampler(&mut haudio, sr_out).unwrap();
-        
-        let mut resampler = FftFixedInOut::<f64>::new(
-            sr_in as usize,
-            sr_out,
-            chunk_size,
-            2,
-        ).unwrap();
-
-        let waves_in = vec![vec![0.0f64; 1024];2];
-        let waves_out = resampler.process(&waves_in, None).unwrap();
-
-        assert_eq!(haudio.len(), waves_out.len()*waves_out[0].len());
-        assert_eq!(haudio.sr(), sr_out as u32);
-    }
-
-    #[test]
-    fn test_process_resampler_sinc_fixed_out() {
-        let sr_in = 44100;
-        let sr_out = 48000;
-        let length = 2048;
-        let chunk_size = 512;
-        let mut haudio = HFloatMatrix::new_from_vec(vec![0.0_f64; length], 2).unwrap().into_haudio(sr_in);
-        let params = SincInterpolationParameters {
-            sinc_len: 256,
-            f_cutoff: 0.95,
-            interpolation: SincInterpolationType::Linear,
-            oversampling_factor: 256,
-            window: WindowFunction::BlackmanHarris2,
-        };
-        let mut resampler = SincFixedOut::<f64>::new(
-            sr_out as f64 / sr_in as f64,
-            2.0,
-            params,
-            chunk_size,
-            2,
-        ).unwrap();
-
-        resampler.process_resampler(&mut haudio, sr_out).unwrap();
-        
-        let params = SincInterpolationParameters {
-            sinc_len: 256,
-            f_cutoff: 0.95,
-            interpolation: SincInterpolationType::Linear,
-            oversampling_factor: 256,
-            window: WindowFunction::BlackmanHarris2,
-        };
-        let mut resampler = SincFixedOut::<f64>::new(
-            sr_out as f64 / sr_in as f64,
-            2.0,
-            params,
-            chunk_size,
-            2,
-        ).unwrap();
-
-        let waves_in = vec![vec![0.0f64; length/2];2];
-        let waves_out = resampler.process(&waves_in, None).unwrap();
-
-        assert_eq!(haudio.len(), waves_out.len()*waves_out[0].len());
-        assert_eq!(haudio.sr(), sr_out as u32);
-    }
-
-    #[test]
-    fn test_process_resampler_fast_fixed_out() {
-        let sr_in = 44100;
-        let sr_out = 48000;
-        let length = 2048;
-        let chunk_size = 512;
-        let mut haudio = HFloatMatrix::new_from_vec(vec![0.0_f64; length], 2).unwrap().into_haudio(sr_in);
-        let mut resampler = FastFixedOut::<f64>::new(
-            sr_out as f64 / sr_in as f64,
-            2.0,
-            rubato::PolynomialDegree::Linear,
-            chunk_size,
-            2,
-        ).unwrap();
-
-        resampler.process_resampler(&mut haudio, sr_out).unwrap();
-        
-        let mut resampler = FastFixedOut::<f64>::new(
-            sr_out as f64 / sr_in as f64,
-            2.0,
-            rubato::PolynomialDegree::Linear,
-            chunk_size,
-            2,
-        ).unwrap();
-
-        let waves_in = vec![vec![0.0f64; length/2];2];
-        let waves_out = resampler.process(&waves_in, None).unwrap();
-
-        assert_eq!(haudio.len(), waves_out.len()*waves_out[0].len());
-        assert_eq!(haudio.sr(), sr_out as u32);
-    }
-
-
 }
 
 //pub trait Resampler {

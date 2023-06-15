@@ -8,7 +8,7 @@ edition = "2021"
 [dependencies]
 harmonium-core = { path = "../harmonium-core" }
 harmonium-io = { path = "../harmonium-io" }
-arrow2 = "0.17"
+arrow2 = "0.17.2"
 rustfft = "6.1"
 cached = "0.43"
 
