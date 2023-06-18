@@ -10,6 +10,7 @@ fn main() {
         "./hmatrix.rs",
         "./hdatatype.rs",
         "./haudiosink.rs",
+        "./hresampler.rs",
         "./hresamplertype.rs",
         "./hwindow.rs",
         "./hmetadatatype.rs",

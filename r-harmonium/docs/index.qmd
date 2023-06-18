@@ -63,8 +63,8 @@ sr_in = haudio$sr()
 sr_out = 22050L
 nbr_channels = haudio$nchannels()
 dtype = HDataType$float64
-resampler_type = HResamplerType$fft_fixed_in
-resampler = HResampler$new_fft(sr_in = sr_in, sr_out = sr_out, nbr_channels = nbr_channels, resampler_type = resampler_type)
+res_type = HResamplerType$fft_fixed_in
+resampler = HResampler$new_fft(sr_in = sr_in, sr_out = sr_out, nbr_channels = nbr_channels, res_type = res_type)
 hresampler$process(haudio, sr_out = sr_out, dtype = dtype)
 ```
 

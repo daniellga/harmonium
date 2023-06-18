@@ -1,4 +1,3 @@
-setwd("C:/Users/danyl/harmonium/r-harmonium")
 rextendr::register_extendr()
 devtools::load_all(".", export_all = FALSE)
 devtools::test()

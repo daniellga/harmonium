@@ -193,6 +193,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./docs/hresampler.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">HResampler</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./docs/hresamplertype.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">HResamplerType</span></a>
   </div>
@@ -272,8 +278,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>sr_out <span class="ot">=</span> 22050L</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>nbr_channels <span class="ot">=</span> haudio<span class="sc">$</span><span class="fu">nchannels</span>()</span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>dtype <span class="ot">=</span> HDataType<span class="sc">$</span>float64</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>resampler_type <span class="ot">=</span> HResamplerType<span class="sc">$</span>fft_fixed_in</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>resampler <span class="ot">=</span> HResampler<span class="sc">$</span><span class="fu">new_fft</span>(<span class="at">sr_in =</span> sr_in, <span class="at">sr_out =</span> sr_out, <span class="at">nbr_channels =</span> nbr_channels, <span class="at">resampler_type =</span> resampler_type)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>res_type <span class="ot">=</span> HResamplerType<span class="sc">$</span>fft_fixed_in</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>resampler <span class="ot">=</span> HResampler<span class="sc">$</span><span class="fu">new_fft</span>(<span class="at">sr_in =</span> sr_in, <span class="at">sr_out =</span> sr_out, <span class="at">nbr_channels =</span> nbr_channels, <span class="at">res_type =</span> res_type)</span>
 <span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>hresampler<span class="sc">$</span><span class="fu">process</span>(haudio, <span class="at">sr_out =</span> sr_out, <span class="at">dtype =</span> dtype)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Play the haudio</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>haudiosink <span class="ot">=</span> HAudioSink<span class="sc">$</span><span class="fu">new</span>()</span>

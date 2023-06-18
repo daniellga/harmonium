@@ -36,15 +36,17 @@ _________
 
 ## new_from_arrow
 
-`new_from_arrow(values: FixedSizeListArray, dtype: HDataType) -> HMatrix` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L162) </span> \
+`new_from_arrow(values: ArrowArray, ncols: i32, dtype: HDataType) -> HMatrix` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L165) </span> \
 
-Creates a new `HMatrix` from an R's arrow [`FixedSizeListArray`](https://arrow.apache.org/docs/r/reference/array.html). \
+Creates a new `HArray` from an R's arrow [`Array`](https://arrow.apache.org/docs/r/reference/array.html). \
 The conversion is zero copy. \
 
 #### Arguments
 
 * `values` \
-A float32 or float64 arrow `FixedSizeListArray`. \
+A float32 or float64 arrow `Array`.
+* `ncols` \
+The number of columns of the HMatrix. \
 * `dtype` \
 An `HDataType` to indicate which type of `HMatrix` to be created. \
 
@@ -55,9 +57,10 @@ An `HMatrix`. \
 #### Examples
 
 ```r
-values = arrow::Array$create(list(c(1,2,3,4), c(5,6,7,8)), arrow::fixed_size_list_of(arrow::float32(), 4))
+values = arrow::Array$create(1:10, type = arrow::float32())
+ncols = 2
 dtype = HDataType$complex32
-hmatrix = HMatrix$new_from_arrow(values, dtype)
+hmatrix = HMatrix$new_from_arrow(values, ncols, dtype)
 
 # to convert back to R's arrow FixedSizeListArray.
 values2 = arrow::as_arrow_array(hmatrix)
@@ -68,7 +71,7 @@ _________
 
 ## len
 
-`len() -> integer` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L227) </span> \
+`len() -> integer` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L236) </span> \
 
 Returns the number of elements of this `HMatrix`. \
 
@@ -87,7 +90,7 @@ _________
 
 ## slice
 
-`slice(offset: integer, length: integer)` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L272) </span> \
+`slice(offset: integer, length: integer)` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L281) </span> \
 
 Slice the `HMatrix` by an offset and length. \
 The operation is done on a column level, which means that `offset` always point at the
@@ -127,7 +130,7 @@ _________
 
 ## ncols
 
-`ncols() -> integer` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L297) </span> \
+`ncols() -> integer` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L306) </span> \
 
 Returns the number of columns of this `HMatrix`. \
 
@@ -146,7 +149,7 @@ _________
 
 ## nrows
 
-`nrows() -> integer` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L321) </span> \
+`nrows() -> integer` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L330) </span> \
 
 Returns the number of rows of this `HMatrix`. \
 
@@ -165,7 +168,7 @@ _________
 
 ## print
 
-`print()` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L345) </span> \
+`print()` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L354) </span> \
 
 Print the `HMatrix`. \
 Differently from R's normal behaviour, `print` doesn't return the value invisibly. \
@@ -184,7 +187,7 @@ _________
 
 ## eq
 
-`eq(other: HMatrix) -> bool` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L380) </span> \
+`eq(other: HMatrix) -> bool` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L389) </span> \
 
 Equality with another `HMatrix`. \
 The comparison only checks if the dtype and the values are the same. To compare if the
@@ -214,7 +217,7 @@ _________
 
 ## ne
 
-`ne(other: HMatrix) -> bool` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L415) </span> \
+`ne(other: HMatrix) -> bool` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L424) </span> \
 
 Difference with another `HMatrix`. \
 The comparison only checks if the dtype and the values are the same. To compare if the
@@ -244,7 +247,7 @@ _________
 
 ## clone
 
-`clone() -> HMatrix` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L441) </span> \
+`clone() -> HMatrix` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L450) </span> \
 
 Creates a new `HMatrix`, with the underlying data pointing to the same place in memory.
 
@@ -265,7 +268,7 @@ _________
 
 ## as_harray
 
-`as_harray() -> HArray` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L467) </span> \
+`as_harray() -> HArray` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L476) </span> \
 
 Creates a new `HArray`, with the underlying data pointing to the same place in memory. \
 
@@ -286,7 +289,7 @@ _________
 
 ## as_haudio
 
-`as_haudio(sr: integer) -> HAudio` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L498) </span> \
+`as_haudio(sr: integer) -> HAudio` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L507) </span> \
 
 Creates a new `HAudio`, with the underlying data pointing to the same place in memory. \
 
@@ -312,7 +315,7 @@ _________
 
 ## collect
 
-`collect() -> matrix` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L522) </span> \
+`collect() -> matrix` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L531) </span> \
 
 Creates a `matrix` from an `HMatrix`. The type of the `matrix` created (`double` or `complex`) will depend on the `HMatrix`'s dtype.
 
@@ -331,7 +334,7 @@ _________
 
 ## mem_adress
 
-`mem_adress() -> string` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L555) </span> \
+`mem_adress() -> string` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L564) </span> \
 
 The memory adress of the first element of the inner data. \
 This is useful to check if different objects share the same underlying data. \
@@ -359,7 +362,7 @@ _________
 
 ## dtype
 
-`dtype() -> HDataType` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L579) </span> \
+`dtype() -> HDataType` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L588) </span> \
 
 Gets the `HMatrix`'s dtype as an `HDataType`.
 
@@ -378,7 +381,7 @@ _________
 
 ## is_shared
 
-`is_shared() -> bool` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L622) </span> \
+`is_shared() -> bool` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L631) </span> \
 
 Checks if the object is shared. \
 Since `HMatrix` has a COW ([clone-on-write](https://doc.rust-lang.org/std/borrow/enum.Cow.html)) behaviour, this function is useful to check if a new
@@ -416,7 +419,7 @@ _________
 
 ## fft
 
-`fft() -> HMatrix` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L680) </span> \
+`fft() -> HMatrix` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L689) </span> \
 
 Computes the fast fourier transform of the `HMatrix`. The fft is computed for each column. \
 FFT (Fast Fourier Transform) refers to a way the discrete Fourier Transform (DFT) can be calculated efficiently,
@@ -444,7 +447,7 @@ _________
 
 ## mean_cols
 
-`mean_cols()` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L703) </span> \
+`mean_cols()` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L712) </span> \
 
 Takes the average across columns. \
 A new inner array is created. The operation is done in-place. \
