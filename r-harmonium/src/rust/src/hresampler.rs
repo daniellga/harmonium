@@ -16,7 +16,7 @@ pub trait HResamplerR: Send {
     fn set_resample_ratio(&mut self, new_ratio: f64, ramp: bool);
     fn set_resample_ratio_relative(&mut self, rel_ratio: f64, ramp: bool);
     fn reset(&mut self);
-    fn resampler_type(&self) -> HResamplerType;
+    fn res_type(&self) -> HResamplerType;
     fn dtype(&self) -> HDataType;
     fn print(&self);
 }
@@ -58,7 +58,7 @@ impl HResampler {
     /// HResampler
     /// ## new_fft
     ///
-    /// `new_fft(sr_in: integer, sr_out: integer, chunk_size: integer, sub_chunks: integer, nbr_channels: integer, resampler_type: HResamplerType, dtype: HDataType) -> HResampler` \
+    /// `new_fft(sr_in: integer, sr_out: integer, chunk_size: integer, sub_chunks: integer, nbr_channels: integer, res_type: HResamplerType, dtype: HDataType) -> HResampler` \
     ///
     /// Creates a new FFT type HResampler. \
     /// Supports any of  `[fft_fixed_in, fft_fixed_in_out, fft_fixed_out]` `HResamplerType`. \
@@ -88,8 +88,8 @@ impl HResampler {
     /// * `nbr_channels` \
     /// Number of channels in input and output. \
     /// Must be the same number of channels as the `HAudio` that will be processed by the `HResampler`. \
-    /// * `resampler_type` \
-    /// An HResamplerType to indicate which type of `HResampler` to be created. \
+    /// * `res_type` \
+    /// An `HResamplerType` to indicate which type of `HResampler` to be created. \
     /// * `dtype` \
     /// A float `HDataType` to indicate the dtype that the `HResampler` will be working with. \
     /// Must be the same as the `HAudio`'s dtype that will be processed by the `HResampler`. \
@@ -106,10 +106,10 @@ impl HResampler {
     /// chunk_size = 1024L
     /// sub_chunks = 2L
     /// nbr_channels = 2L
-    /// resampler_type = HResamplerType$fft_fixed_in
+    /// res_type = HResamplerType$fft_fixed_in
     /// dtype = HDataType$float32
     ///
-    /// hresampler = HResampler$new_fft(sr_in, sr_out, chunk_size, sub_chunks, nbr_channels, resampler_type, dtype)
+    /// hresampler = HResampler$new_fft(sr_in, sr_out, chunk_size, sub_chunks, nbr_channels, res_type, dtype)
     /// ```
     ///
     /// _________
@@ -120,10 +120,10 @@ impl HResampler {
         chunk_size: i32,
         sub_chunks: i32,
         nbr_channels: i32,
-        resampler_type: &HResamplerType,
+        res_type: &HResamplerType,
         dtype: &HDataType,
     ) -> HResampler {
-        match (resampler_type, dtype) {
+        match (res_type, dtype) {
             (HResamplerType::FftFixedIn, HDataType::Float32) => {
                 let resampler = FftFixedIn::<f32>::new(
                     sr_in.try_into().unwrap(),
@@ -195,7 +195,7 @@ impl HResampler {
     /// HResampler
     /// ## new_sinc
     ///
-    /// `new_sinc(resample_ratio: double, max_resample_ratio_relative: double, parameters: HSincInterpolationParams, chunk_size: integer, nbr_channels: integer, resampler_type: HResamplerType, dtype: HDataType) -> HResampler` \
+    /// `new_sinc(resample_ratio: double, max_resample_ratio_relative: double, parameters: HSincInterpolationParams, chunk_size: integer, nbr_channels: integer, res_type: HResamplerType, dtype: HDataType) -> HResampler` \
     ///
     /// Creates a new Sinc type HResampler. \
     /// Supports any of  `[sinc_fixed_in, sinc_fixed_out]` `HResamplerType`. \
@@ -217,14 +217,14 @@ impl HResampler {
     /// ratio is the reciprocal of the maximum. For example, with `max_resample_ratio_relative` of 10.0, the ratio can be set between \
     /// `resample_ratio * 10.0` and `resample_ratio / 10.0`.
     /// * `parameters` \
-    /// An HSincInterpolationParams. \
+    /// An `HSincInterpolationParams`. Parameters for interpolation. \
     /// * `chunk_size` \
     /// Chunks size of input or output data in frames. \
     /// * `nbr_channels` \
     /// Number of channels in input and output. \
     /// Must be the same number of channels as the `HAudio` that will be processed by the `HResampler`. \
-    /// * `resampler_type` \
-    /// An HResamplerType to indicate which type of `HResampler` to be created. \
+    /// * `res_type` \
+    /// An `HResamplerType`. Indicates which type of `HResampler` to be created. \
     /// * `dtype` \
     /// A float `HDataType` to indicate the dtype that the `HResampler` will be working with. \
     /// Must be the same as the `HAudio`'s dtype that will be processed by the `HResampler`. \
@@ -243,10 +243,10 @@ impl HResampler {
     /// hparams = HSincInterpolationParams$new(256, 0.95, 256, "linear", "blackmanharris2")
     /// chunk_size = 512L
     /// nbr_channels = 2L
-    /// resampler_type = HResamplerType$sinc_fixed_out
+    /// res_type = HResamplerType$sinc_fixed_out
     /// dtype = HDataType$float32
     ///
-    /// res = HResampler$new_sinc(resample_ratio, max_resample_ratio_relative, hparams, chunk_size, nbr_channels, resampler_type, dtype)
+    /// res = HResampler$new_sinc(resample_ratio, max_resample_ratio_relative, hparams, chunk_size, nbr_channels, res_type, dtype)
     /// ```
     ///
     /// _________
@@ -257,10 +257,10 @@ impl HResampler {
         parameters: &HSincInterpolationParams,
         chunk_size: i32,
         nbr_channels: i32,
-        resampler_type: &HResamplerType,
+        res_type: &HResamplerType,
         dtype: &HDataType,
     ) -> HResampler {
-        match (resampler_type, dtype) {
+        match (res_type, dtype) {
             (HResamplerType::SincFixedIn, HDataType::Float32) => {
                 let resampler = SincFixedIn::<f32>::new(
                     resample_ratio,
@@ -309,16 +309,76 @@ impl HResampler {
         }
     }
 
+    /// HResampler
+    /// ## new_fast
+    ///
+    /// `new_sinc(resample_ratio: double, max_resample_ratio_relative: double, pol_deg: HPolynomialDegree, chunk_size: integer, nbr_channels: integer, res_type: HResamplerType, dtype: HDataType) -> HResampler` \
+    ///
+    /// Creates a new Fast type HResampler. \
+    /// Supports any of  `[fast_fixed_in, fast_fixed_out]` `HResamplerType`. \
+    /// The resampling is done by interpolating between the input samples by fitting polynomials. \
+    /// Note that no anti-aliasing filter is used. This makes it run considerably faster than the corresponding `SincFixedIn`, which performs anti-aliasing filtering. The price is that the resampling creates some artefacts \
+    /// in the output, mainly at higher frequencies. Use `SincFixedIn` if this can not be tolerated. \
+    ///
+    /// * `fast_fixed_in` \
+    /// An asynchronous resampler that accepts a fixed number of audio frames for input and returns a variable number of frames. \
+    /// 
+    /// * `fast_fixed_out` \
+    /// An asynchronous resampler that accepts a variable number of audio frames for input nad returns a fixed number of frames. \
+    ///
+    /// #### Arguments
+    ///
+    /// * `resample_ratio` \
+    /// The output's sampling rate divided by the input's sampling rate.
+    /// * `max_resample_ratio_relative` \
+    /// Maximum ratio that can be set with `set_resample_ratio` relative to `resample_ratio`, must be >= 1.0. The minimum relative \
+    /// ratio is the reciprocal of the maximum. For example, with `max_resample_ratio_relative` of 10.0, the ratio can be set between \
+    /// `resample_ratio * 10.0` and `resample_ratio / 10.0`.
+    /// * `pol_deg` \
+    /// An `HPolynomialDegree`. Used to select the polynomial degree for interpolation. \
+    /// * `chunk_size` \
+    /// Chunks size of input or output data in frames. \
+    /// * `nbr_channels` \
+    /// Number of channels in input and output. \
+    /// Must be the same number of channels as the `HAudio` that will be processed by the `HResampler`. \
+    /// * `res_type` \
+    /// An `HResamplerType`. Indicates which type of `HResampler` to be created. \
+    /// * `dtype` \
+    /// A float `HDataType` to indicate the dtype that the `HResampler` will be working with. \
+    /// Must be the same as the `HAudio`'s dtype that will be processed by the `HResampler`. \
+    ///
+    /// #### Returns
+    ///
+    /// A Fast type `HResampler`. \
+    ///
+    /// #### Examples
+    ///
+    /// ```r
+    /// sr_in = 44100L
+    /// sr_out = 48000L
+    /// resample_ratio = sr_out / sr_in
+    /// max_resample_ratio_relative = 2
+    /// pol_deg = HPolynomialDegree$linear
+    /// chunk_size = 512L
+    /// nbr_channels = 2L
+    /// res_type = HResamplerType$fast_fixed_out
+    /// dtype = HDataType$float32
+    ///
+    /// res = HResampler$new_fast(resample_ratio, max_resample_ratio_relative, pol_deg, chunk_size, nbr_channels, res_type, dtype)
+    /// ```
+    ///
+    /// _________
+    ///
     fn new_fast(
         resample_ratio: f64,
         max_resample_ratio_relative: f64,
         pol_deg: &HPolynomialDegree,
         chunk_size: i32,
         nbr_channels: i32,
-        resampler_type: &HResamplerType,
+        res_type: &HResamplerType,
         dtype: &HDataType,
     ) -> HResampler {
-        match (resampler_type, dtype) {
+        match (res_type, dtype) {
             (HResamplerType::FastFixedIn, HDataType::Float32) => {
                 let resampler = FastFixedIn::<f32>::new(
                     resample_ratio,
@@ -371,18 +431,134 @@ impl HResampler {
         self.0.process(haudio, sr_out);
     }
 
-    fn resampler_type(&self) -> HResamplerType {
-        self.0.resampler_type()
-    }
-
+    /// HResampler
+    /// ## reset
+    ///
+    /// `reset()` \
+    ///
+    /// Reset the resampler state and clear all internal buffers. \
+    ///
+    /// #### Examples
+    ///
+    /// ```r
+    /// sr_in = 44100L
+    /// sr_out = 48000L
+    /// resample_ratio = sr_out / sr_in
+    /// max_resample_ratio_relative = 2
+    /// pol_deg = HPolynomialDegree$linear
+    /// chunk_size = 512L
+    /// nbr_channels = 2L
+    /// res_type = HResamplerType$fast_fixed_out
+    /// dtype = HDataType$float32
+    ///
+    /// res = HResampler$new_fast(resample_ratio, max_resample_ratio_relative, pol_deg, chunk_size, nbr_channels, res_type, dtype)
+    /// res$reset()
+    /// ```
+    ///
+    /// _________
+    ///
     fn reset(&mut self) {
         self.0.reset();
     }
 
+    /// HResampler
+    /// ## res_type
+    ///
+    /// `res_type() -> HResamplerType` \
+    ///
+    /// Gets the `HResampler`'s type as an `HResamplerType`.
+    ///
+    /// #### Returns
+    ///
+    /// An `HResamplerType`.
+    ///
+    /// #### Examples
+    ///
+    /// ```r
+    /// sr_in = 44100L
+    /// sr_out = 48000L
+    /// resample_ratio = sr_out / sr_in
+    /// max_resample_ratio_relative = 2
+    /// pol_deg = HPolynomialDegree$linear
+    /// chunk_size = 512L
+    /// nbr_channels = 2L
+    /// res_type = HResamplerType$fast_fixed_out
+    /// dtype = HDataType$float32
+    ///
+    /// res = HResampler$new_fast(resample_ratio, max_resample_ratio_relative, pol_deg, chunk_size, nbr_channels, res_type, dtype)
+    /// res$res_type()
+    /// ```
+    ///
+    /// _________
+    ///
+    fn res_type(&self) -> HResamplerType {
+        self.0.res_type()
+    }
+
+    /// HResampler
+    /// ## dtype
+    ///
+    /// `dtype() -> HDataType` \
+    ///
+    /// Gets the `HResampler`'s dtype as an `HDataType`.
+    ///
+    /// #### Returns
+    ///
+    /// An `HDataType`.
+    ///
+    /// #### Examples
+    ///
+    /// ```r
+    /// sr_in = 44100L
+    /// sr_out = 48000L
+    /// resample_ratio = sr_out / sr_in
+    /// max_resample_ratio_relative = 2
+    /// pol_deg = HPolynomialDegree$linear
+    /// chunk_size = 512L
+    /// nbr_channels = 2L
+    /// res_type = HResamplerType$fast_fixed_out
+    /// dtype = HDataType$float32
+    ///
+    /// res = HResampler$new_fast(resample_ratio, max_resample_ratio_relative, pol_deg, chunk_size, nbr_channels, res_type, dtype)
+    /// res$dtype()
+    /// ```
+    ///
+    /// _________
+    ///
     fn dtype(&self) -> HDataType {
         self.0.dtype()
     }
 
+    /// HResampler
+    /// ## print
+    ///
+    /// `print()` \
+    ///
+    /// Print the `HResampler`. \
+    /// Differently from R's normal behaviour, `print` doesn't return the value invisibly. \
+    ///
+    /// #### Examples
+    ///
+    /// ```r
+    /// sr_in = 44100L
+    /// sr_out = 48000L
+    /// resample_ratio = sr_out / sr_in
+    /// max_resample_ratio_relative = 2
+    /// pol_deg = HPolynomialDegree$linear
+    /// chunk_size = 512L
+    /// nbr_channels = 2L
+    /// res_type = HResamplerType$fast_fixed_out
+    /// dtype = HDataType$float32
+    ///
+    /// res = HResampler$new_fast(resample_ratio, max_resample_ratio_relative, pol_deg, chunk_size, nbr_channels, res_type, dtype)
+    /// res$print()
+    ///
+    /// # or similarly:
+    /// print(res)
+    /// ```
+    ///
+    /// _________
+    ///
     fn print(&self) {
         self.0.print();
     }
@@ -412,7 +588,7 @@ macro_rules! impl_hresamplerfftr {
                     panic!("not available for fft resamplers");
                 }
 
-                fn resampler_type(&self) -> HResamplerType {
+                fn res_type(&self) -> HResamplerType {
                     $e1
                 }
 
@@ -507,7 +683,7 @@ macro_rules! impl_hresamplersincr {
                     rubato::Resampler::reset(self);
                 }
 
-                fn resampler_type(&self) -> HResamplerType {
+                fn res_type(&self) -> HResamplerType {
                     $e1
                 }
 

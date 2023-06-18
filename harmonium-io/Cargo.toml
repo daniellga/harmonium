@@ -7,11 +7,11 @@ edition = "2021"
 
 [dependencies]
 harmonium-core = { path = "../harmonium-core" }
-num-traits = "0.2"
-ndarray = "0.15.6"
-arrow2 = "0.17.2"
-symphonia = { version = "0.5.3", default-features = false }
-rodio = { git = "https://github.com/RustAudio/rodio.git", rev = "9674ea5", default-features = false }
+num-traits = { workspace = true }
+ndarray = { workspace = true }
+arrow2 = { workspace = true }
+symphonia = { workspace = true }
+rodio = { workspace = true }
 
 [features]
 default = ["arrow", "symphonia-default"]
@@ -32,8 +32,10 @@ ogg = ["symphonia/ogg"]
 pcm = ["symphonia/pcm"]
 vorbis = ["symphonia/vorbis"]
 wav = ["symphonia/wav"]
+
 # MPEG audio codecs
 mpa = ["symphonia/mp1", "symphonia/mp2", "symphonia/mp3"]
+
 # Enable all supported codecs
 all-codecs = [
     "symphonia/aac",
@@ -46,6 +48,7 @@ all-codecs = [
     "symphonia/pcm",
     "symphonia/vorbis",
 ]
+
 # Enable all supported formats
 all-formats = [
     "symphonia/isomp4",
@@ -53,8 +56,10 @@ all-formats = [
     "symphonia/ogg",
     "symphonia/wav"
 ]
+
 # Enable all supported codecs and formats
 all = ["all-codecs", "all-formats"]
+
 # Only royalty-free open standard codecs and formats are enabled by default.
 symphonia-default = ["adpcm", "flac", "mkv", "ogg", "pcm", "vorbis", "wav"]
 

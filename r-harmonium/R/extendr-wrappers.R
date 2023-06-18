@@ -313,17 +313,17 @@ HMetadataType$ne <- function(other) .Call(wrap__HMetadataType__ne, self, other)
 
 HResampler <- new.env(parent = emptyenv())
 
-HResampler$new_fft <- function(sr_in, sr_out, chunk_size, sub_chunks, nbr_channels, resampler_type, dtype) .Call(wrap__HResampler__new_fft, sr_in, sr_out, chunk_size, sub_chunks, nbr_channels, resampler_type, dtype)
+HResampler$new_fft <- function(sr_in, sr_out, chunk_size, sub_chunks, nbr_channels, res_type, dtype) .Call(wrap__HResampler__new_fft, sr_in, sr_out, chunk_size, sub_chunks, nbr_channels, res_type, dtype)
 
-HResampler$new_sinc <- function(resample_ratio, max_resample_ratio_relative, parameters, chunk_size, nbr_channels, resampler_type, dtype) .Call(wrap__HResampler__new_sinc, resample_ratio, max_resample_ratio_relative, parameters, chunk_size, nbr_channels, resampler_type, dtype)
+HResampler$new_sinc <- function(resample_ratio, max_resample_ratio_relative, parameters, chunk_size, nbr_channels, res_type, dtype) .Call(wrap__HResampler__new_sinc, resample_ratio, max_resample_ratio_relative, parameters, chunk_size, nbr_channels, res_type, dtype)
 
-HResampler$new_fast <- function(resample_ratio, max_resample_ratio_relative, pol_deg, chunk_size, nbr_channels, resampler_type, dtype) .Call(wrap__HResampler__new_fast, resample_ratio, max_resample_ratio_relative, pol_deg, chunk_size, nbr_channels, resampler_type, dtype)
+HResampler$new_fast <- function(resample_ratio, max_resample_ratio_relative, pol_deg, chunk_size, nbr_channels, res_type, dtype) .Call(wrap__HResampler__new_fast, resample_ratio, max_resample_ratio_relative, pol_deg, chunk_size, nbr_channels, res_type, dtype)
 
 HResampler$process <- function(haudio, sr_out) invisible(.Call(wrap__HResampler__process, self, haudio, sr_out))
 
-HResampler$resampler_type <- function() .Call(wrap__HResampler__resampler_type, self)
-
 HResampler$reset <- function() invisible(.Call(wrap__HResampler__reset, self))
+
+HResampler$res_type <- function() .Call(wrap__HResampler__res_type, self)
 
 HResampler$dtype <- function() .Call(wrap__HResampler__dtype, self)
 

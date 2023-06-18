@@ -7,3 +7,14 @@ members = [
 	"harmonium-window",
 ]
 
+[workspace.dependencies]
+num-traits = "0.2"
+rustfft = "6.1"
+realfft = "3.3"
+arrow2 = "0.17.2"
+rubato = "0.14"
+comfy-table = "7.0"
+ndarray = "0.15.6"
+symphonia = { version = "0.5.3", default-features = false }
+rodio = { git = "https://github.com/RustAudio/rodio.git", rev = "9674ea5", default-features = false }
+cached = "0.43"

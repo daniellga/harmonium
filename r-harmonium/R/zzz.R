@@ -18,6 +18,8 @@
   HResamplerType$fft_fixed_out = HResamplerType$fft_fixed_out()
   HResamplerType$sinc_fixed_in = HResamplerType$sinc_fixed_in()
   HResamplerType$sinc_fixed_out = HResamplerType$sinc_fixed_out()
+  HResamplerType$fast_fixed_in = HResamplerType$fast_fixed_in()
+  HResamplerType$fast_fixed_out = HResamplerType$fast_fixed_out()
   lockEnvironment(HResamplerType, bindings = TRUE)
 
   # Assure only one instance of HPolynomialDegree's external pointer is created for each enum variant.

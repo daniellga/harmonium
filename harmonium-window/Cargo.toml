@@ -7,7 +7,7 @@ edition = "2021"
 
 [dependencies]
 harmonium-core = {path = "../harmonium-core"}
-num-traits = "0.2"
-rustfft = "6.1"
-realfft = "3.3"
-arrow2 = "0.17.2"
+num-traits = { workspace = true }
+rustfft = { workspace = true }
+realfft = { workspace = true }
+arrow2 = { workspace = true }
