@@ -15,7 +15,7 @@ To learn more, read the [documentation](https://daniellga.github.io/harmonium/).
 
 Download [Rustup](https://www.rust-lang.org/tools/install).
 
-Add both gnu targets below: 
+Add both gnu targets below: \
 `rustup target add x86_64-pc-windows-gnu` \
 `rustup target add i686-pc-windows-gnu`
 
