@@ -321,6 +321,10 @@ HResampler$new_fast <- function(resample_ratio, max_resample_ratio_relative, pol
 
 HResampler$process <- function(haudio, sr_out) invisible(.Call(wrap__HResampler__process, self, haudio, sr_out))
 
+HResampler$set_resample_ratio <- function(new_ratio, ramp) invisible(.Call(wrap__HResampler__set_resample_ratio, self, new_ratio, ramp))
+
+HResampler$set_resample_ratio_relative <- function(rel_ratio, ramp) invisible(.Call(wrap__HResampler__set_resample_ratio_relative, self, rel_ratio, ramp))
+
 HResampler$reset <- function() invisible(.Call(wrap__HResampler__reset, self))
 
 HResampler$res_type <- function() .Call(wrap__HResampler__res_type, self)

@@ -13,6 +13,16 @@ test_that(
     expect_true(res$res_type() == HResamplerType$sinc_fixed_in)
     expect_true(res$dtype() == HDataType$float64)
     expect_no_error(res$process(haudio, sr_out = 48000))
+    
+    expect_no_error(res$set_resample_ratio(1, FALSE))
+    expect_no_error(res$set_resample_ratio(2, FALSE))
+    expect_no_error(res$set_resample_ratio(1, TRUE))
+    expect_no_error(res$set_resample_ratio(2, TRUE))
+    expect_no_error(res$set_resample_ratio_relative(0.5, FALSE))
+    expect_no_error(res$set_resample_ratio_relative(2, FALSE))
+    expect_no_error(res$set_resample_ratio_relative(0.5, TRUE))
+    expect_no_error(res$set_resample_ratio_relative(2, TRUE))
+    
 
     expect_equal(haudio$sr(), 48000)
     
@@ -29,6 +39,15 @@ test_that(
     expect_true(res$dtype() == HDataType$float64)
     expect_no_error(res$process(haudio, sr_out = 48000))
     
+    expect_no_error(res$set_resample_ratio(1, FALSE))
+    expect_no_error(res$set_resample_ratio(2, FALSE))
+    expect_no_error(res$set_resample_ratio(1, TRUE))
+    expect_no_error(res$set_resample_ratio(2, TRUE))
+    expect_no_error(res$set_resample_ratio_relative(0.5, FALSE))
+    expect_no_error(res$set_resample_ratio_relative(2, FALSE))
+    expect_no_error(res$set_resample_ratio_relative(0.5, TRUE))
+    expect_no_error(res$set_resample_ratio_relative(2, TRUE))
+    
     expect_equal(haudio$sr(), 48000)
     
     # FftFixedIn
@@ -41,6 +60,15 @@ test_that(
     expect_true(res$res_type() == HResamplerType$fft_fixed_in)
     expect_true(res$dtype() == HDataType$float64)
     expect_no_error(res$process(haudio, sr_out = 48000))
+    
+    expect_error(res$set_resample_ratio(1, FALSE))
+    expect_error(res$set_resample_ratio(2, FALSE))
+    expect_error(res$set_resample_ratio(1, TRUE))
+    expect_error(res$set_resample_ratio(2, TRUE))
+    expect_error(res$set_resample_ratio_relative(0.5, FALSE))
+    expect_error(res$set_resample_ratio_relative(2, FALSE))
+    expect_error(res$set_resample_ratio_relative(0.5, TRUE))
+    expect_error(res$set_resample_ratio_relative(2, TRUE))
     
     expect_equal(haudio$sr(), 48000)
     
@@ -55,6 +83,15 @@ test_that(
     expect_true(res$dtype() == HDataType$float64)
     expect_no_error(res$process(haudio, sr_out = 48000))
     
+    expect_error(res$set_resample_ratio(1, FALSE))
+    expect_error(res$set_resample_ratio(2, FALSE))
+    expect_error(res$set_resample_ratio(1, TRUE))
+    expect_error(res$set_resample_ratio(2, TRUE))
+    expect_error(res$set_resample_ratio_relative(0.5, FALSE))
+    expect_error(res$set_resample_ratio_relative(2, FALSE))
+    expect_error(res$set_resample_ratio_relative(0.5, TRUE))
+    expect_error(res$set_resample_ratio_relative(2, TRUE))
+    
     expect_equal(haudio$sr(), 48000)
     
     # FftFixedOut
@@ -67,6 +104,15 @@ test_that(
     expect_true(res$res_type() == HResamplerType$fft_fixed_out)
     expect_true(res$dtype() == HDataType$float64)
     expect_no_error(res$process(haudio, sr_out = 48000))
+    
+    expect_error(res$set_resample_ratio(1, FALSE))
+    expect_error(res$set_resample_ratio(2, FALSE))
+    expect_error(res$set_resample_ratio(1, TRUE))
+    expect_error(res$set_resample_ratio(2, TRUE))
+    expect_error(res$set_resample_ratio_relative(0.5, FALSE))
+    expect_error(res$set_resample_ratio_relative(2, FALSE))
+    expect_error(res$set_resample_ratio_relative(0.5, TRUE))
+    expect_error(res$set_resample_ratio_relative(2, TRUE))
     
     expect_equal(haudio$sr(), 48000)
     
@@ -82,6 +128,15 @@ test_that(
     expect_true(res$dtype() == HDataType$float64)
     expect_no_error(res$process(haudio, sr_out = 48000))
     
+    expect_no_error(res$set_resample_ratio(1, FALSE))
+    expect_no_error(res$set_resample_ratio(2, FALSE))
+    expect_no_error(res$set_resample_ratio(1, TRUE))
+    expect_no_error(res$set_resample_ratio(2, TRUE))
+    expect_no_error(res$set_resample_ratio_relative(0.5, FALSE))
+    expect_no_error(res$set_resample_ratio_relative(2, FALSE))
+    expect_no_error(res$set_resample_ratio_relative(0.5, TRUE))
+    expect_no_error(res$set_resample_ratio_relative(2, TRUE))
+    
     # FastFixedOut. Test example from rubato repo.
     data = matrix(0, nrow = 512, ncol = 2)
     haudio = HAudio$new_from_values(data, 44100, dtype = HDataType$float64)
@@ -94,5 +149,13 @@ test_that(
     expect_true(res$dtype() == HDataType$float64)
     expect_no_error(res$process(haudio, sr_out = 48000))
     
+    expect_no_error(res$set_resample_ratio(1, FALSE))
+    expect_no_error(res$set_resample_ratio(2, FALSE))
+    expect_no_error(res$set_resample_ratio(1, TRUE))
+    expect_no_error(res$set_resample_ratio(2, TRUE))
+    expect_no_error(res$set_resample_ratio_relative(0.5, FALSE))
+    expect_no_error(res$set_resample_ratio_relative(2, FALSE))
+    expect_no_error(res$set_resample_ratio_relative(0.5, TRUE))
+    expect_no_error(res$set_resample_ratio_relative(2, TRUE))
   }
 )

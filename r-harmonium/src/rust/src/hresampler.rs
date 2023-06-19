@@ -26,7 +26,7 @@ pub trait HResamplerR: Send {
 ///
 /// #### Asynchronous Resamplers
 ///
-/// The resampling is based on band-limited interpolation using sinc interpolation filters. The sinc interpolation upsamples by an adjustable factor,
+/// The resampling is based on band-limited interpolation using sinc interpolation filters. The sinc interpolation upsamples by an adjustable factor, \
 /// and then the new sample points are calculated by interpolating between these points. \
 /// The resampling ratio can be updated at any time. \
 ///
@@ -62,7 +62,7 @@ impl HResampler {
     ///
     /// Creates a new FFT type HResampler. \
     /// Supports any of  `[fft_fixed_in, fft_fixed_in_out, fft_fixed_out]` `HResamplerType`. \
-    /// The resampling is done by FFTing the input data. The spectrum is then extended or truncated as well as multiplied with an antialiasing
+    /// The resampling is done by FFTing the input data. The spectrum is then extended or truncated as well as multiplied with an antialiasing \
     /// filter before it’s inverse transformed to get the resampled waveforms. \
     ///
     /// * `fft_fixed_in` \
@@ -204,18 +204,18 @@ impl HResampler {
     ///
     /// * `sinc_fixed_in` \
     /// An asynchronous resampler that accepts a fixed number of audio frames for input and returns a variable number of frames. \
-    /// 
+    ///
     /// * `sinc_fixed_out` \
     /// An asynchronous resampler that accepts a variable number of audio frames for input nad returns a fixed number of frames. \
     ///
     /// #### Arguments
     ///
     /// * `resample_ratio` \
-    /// The output's sampling rate divided by the input's sampling rate.
+    /// The output's sampling rate divided by the input's sampling rate. \
     /// * `max_resample_ratio_relative` \
     /// Maximum ratio that can be set with `set_resample_ratio` relative to `resample_ratio`, must be >= 1.0. The minimum relative \
     /// ratio is the reciprocal of the maximum. For example, with `max_resample_ratio_relative` of 10.0, the ratio can be set between \
-    /// `resample_ratio * 10.0` and `resample_ratio / 10.0`.
+    /// `resample_ratio * 10.0` and `resample_ratio / 10.0`. \
     /// * `parameters` \
     /// An `HSincInterpolationParams`. Parameters for interpolation. \
     /// * `chunk_size` \
@@ -322,18 +322,18 @@ impl HResampler {
     ///
     /// * `fast_fixed_in` \
     /// An asynchronous resampler that accepts a fixed number of audio frames for input and returns a variable number of frames. \
-    /// 
+    ///
     /// * `fast_fixed_out` \
     /// An asynchronous resampler that accepts a variable number of audio frames for input nad returns a fixed number of frames. \
     ///
     /// #### Arguments
     ///
     /// * `resample_ratio` \
-    /// The output's sampling rate divided by the input's sampling rate.
+    /// The output's sampling rate divided by the input's sampling rate. \
     /// * `max_resample_ratio_relative` \
     /// Maximum ratio that can be set with `set_resample_ratio` relative to `resample_ratio`, must be >= 1.0. The minimum relative \
     /// ratio is the reciprocal of the maximum. For example, with `max_resample_ratio_relative` of 10.0, the ratio can be set between \
-    /// `resample_ratio * 10.0` and `resample_ratio / 10.0`.
+    /// `resample_ratio * 10.0` and `resample_ratio / 10.0`. \
     /// * `pol_deg` \
     /// An `HPolynomialDegree`. Used to select the polynomial degree for interpolation. \
     /// * `chunk_size` \
@@ -427,8 +427,99 @@ impl HResampler {
         }
     }
 
+    /// HResampler
+    /// ## process
+    ///
+    /// `process(haudio: HAudio, sr_out: integer)` \
+    ///
+    /// Process the resampler, changing the `HAudio`'s sampling rate. \
+    ///
+    /// #### Arguments
+    ///
+    /// * `haudio` \
+    /// The `HAudio` that will have it's sampling rate converted. \
+    /// * `sr_out` \
+    /// The output sampling rate in hz. \
+    ///
+    /// #### Examples
+    ///
+    /// ```r
+    /// data = matrix(0, nrow = 512, ncol = 2)
+    /// haudio = HAudio$new_from_values(data, 44100, dtype = HDataType$float64)
+    /// hparams = HSincInterpolationParams$new(256L, 0.95, 256L, "linear", "blackmanharris2")
+    /// res = HResampler$new_sinc(48000L / 44100L, 2, hparams, 512L, 2L, HResamplerType$sinc_fixed_in, HDataType$float64)
+    /// res$process(haudio, sr_out = 48000)
+    /// ```
+    ///
+    /// _________
+    ///
     fn process(&mut self, haudio: &mut HAudio, sr_out: i32) {
         self.0.process(haudio, sr_out);
+    }
+
+    /// HResampler
+    /// ## set_resample_ratio
+    ///
+    /// `set_resample_ratio(new_ratio: double, ramp: bool)` \
+    ///
+    /// Update the resample ratio. \
+    /// For asynchronous resamplers, the ratio must be within `original / maximum` to `original * maximum`, where `original` and `maximum` are the resampling ratios that were provided to the constructor. Trying to set the ratio outside these bounds will return an error. \
+    /// For synchronous resamplers, this will always return an error. \
+    ///
+    /// #### Arguments
+    ///
+    /// * `new_ratio` \
+    /// The new `resample_ratio` to be set. \
+    /// * `ramp` \
+    /// If `TRUE`, the ratio will be ramped from the old to the new value during processing of the next chunk. This allows smooth transitions from one ratio to another. If ramp is false, the new ratio will be applied from the start of the next chunk. \
+    ///
+    /// #### Examples
+    ///
+    /// ```r
+    /// data = matrix(0, nrow = 512, ncol = 2)
+    /// haudio = HAudio$new_from_values(data, 44100, dtype = HDataType$float64)
+    /// hparams = HSincInterpolationParams$new(256L, 0.95, 256L, "linear", "blackmanharris2")
+    /// res = HResampler$new_sinc(48000L / 44100L, 2, hparams, 512L, 2L, HResamplerType$sinc_fixed_in, HDataType$float64)
+    /// res$set_resample_ratio(1, FALSE)
+    /// ```
+    ///
+    /// _________
+    ///
+    fn set_resample_ratio(&mut self, new_ratio: f64, ramp: bool) {
+        self.0.set_resample_ratio(new_ratio, ramp);
+    }
+
+    /// HResampler
+    /// ## set_resample_ratio_relative
+    ///
+    /// `set_resample_ratio_relative(rel_ratio: double, ramp: bool)` \
+    ///
+    /// Update the resample ratio as a factor relative to the original one. \
+    /// For asynchronous resamplers, the relative ratio must be within `1 / maximum` to `maximum`, where `maximum` is the maximum resampling ratio that was provided to the constructor. Trying to set the ratio outside these bounds will return an error. \
+    /// Higher ratios above `1.0` slow down the output and lower the pitch. Lower ratios below `1.0` speed up the output and raise the pitch. \
+    /// For synchronous resamplers, this will always return an error. \
+    ///
+    /// #### Arguments
+    ///
+    /// * `rel_ratio` \
+    /// A factor to update the resample_ratio relative to the original one. \
+    /// * `ramp` \
+    /// If `TRUE`, the ratio will be ramped from the old to the new value during processing of the next chunk. This allows smooth transitions from one ratio to another. If ramp is false, the new ratio will be applied from the start of the next chunk. \
+    ///
+    /// #### Examples
+    ///
+    /// ```r
+    /// data = matrix(0, nrow = 512, ncol = 2)
+    /// haudio = HAudio$new_from_values(data, 44100, dtype = HDataType$float64)
+    /// hparams = HSincInterpolationParams$new(256L, 0.95, 256L, "linear", "blackmanharris2")
+    /// res = HResampler$new_sinc(48000L / 44100L, 2, hparams, 512L, 2L, HResamplerType$sinc_fixed_in, HDataType$float64)
+    /// res$set_resample_ratio_relative(0.5, FALSE)
+    /// ```
+    ///
+    /// _________
+    ///
+    fn set_resample_ratio_relative(&mut self, rel_ratio: f64, ramp: bool) {
+        self.0.set_resample_ratio_relative(rel_ratio, ramp);
     }
 
     /// HResampler
@@ -466,7 +557,7 @@ impl HResampler {
     ///
     /// `res_type() -> HResamplerType` \
     ///
-    /// Gets the `HResampler`'s type as an `HResamplerType`.
+    /// Gets the `HResampler`'s type. \
     ///
     /// #### Returns
     ///
@@ -500,7 +591,7 @@ impl HResampler {
     ///
     /// `dtype() -> HDataType` \
     ///
-    /// Gets the `HResampler`'s dtype as an `HDataType`.
+    /// Gets the `HResampler`'s dtype.
     ///
     /// #### Returns
     ///
@@ -580,11 +671,11 @@ macro_rules! impl_hresamplerfftr {
                     self.process_resampler(haudio, sr_out).unwrap();
                 }
 
-                fn set_resample_ratio(&mut self, new_ratio: f64, ramp: bool) {
+                fn set_resample_ratio(&mut self, _: f64, _: bool) {
                     panic!("not available for fft resamplers");
                 }
 
-                fn set_resample_ratio_relative(&mut self, rel_ratio: f64, ramp: bool) {
+                fn set_resample_ratio_relative(&mut self, _: f64, _: bool) {
                     panic!("not available for fft resamplers");
                 }
 
