@@ -55,7 +55,7 @@ where
 
     /// Convert to HMatrix.
     pub fn into_hmatrix(self, ncols: usize) -> HResult<HFloatMatrix<T>> {
-        Ok(HFloatMatrix::new(self, ncols)?)
+        HFloatMatrix::new(self, ncols)
     }
 
     /// Returns the length of this HArray.
@@ -79,9 +79,17 @@ where
         self.inner.values().as_slice()
     }
 
-    /// Returns an option of a mutable reference to the values
+    /// Returns an option of a mutable reference to the values.
     pub fn get_mut_values(&mut self) -> Option<&mut [T]> {
         self.inner.get_mut_values()
+    }
+
+    /// Returns true if inner values are being shared.
+    pub fn is_shared(&self) -> bool {
+        let buffer = self.inner.values();
+        println!("{}", buffer.shared_count_strong());
+        println!("{}", buffer.shared_count_weak());
+        buffer.shared_count_strong() + buffer.shared_count_weak() != 1
     }
 
     /// Export the underlying array to Arrow C interface.
@@ -107,6 +115,7 @@ where
     }
 
     pub fn new_from_vec(v: Vec<T>) -> HComplexArray<T> {
+        debug_assert!(v.len() % 2 == 0);
         let inner = PrimitiveArray::from_vec(v);
         HComplexArray { inner }
     }
@@ -117,7 +126,7 @@ where
 
     /// Convert to HMatrix.
     pub fn into_hmatrix(self, ncols: usize) -> HResult<HComplexMatrix<T>> {
-        Ok(HComplexMatrix::new(self, ncols)?)
+        HComplexMatrix::new(self, ncols)
     }
 
     /// Returns the length of this Harray.
@@ -146,6 +155,12 @@ where
         self.inner.get_mut_values()
     }
 
+    /// Returns true if inner values are being shared.
+    pub fn is_shared(&self) -> bool {
+        let buffer = self.inner.values();
+        buffer.shared_count_strong() + buffer.shared_count_weak() != 1
+    }
+
     /// Export the underlying array to Arrow C interface.
     pub fn export_c_arrow(&self) -> (ffi::ArrowArray, ffi::ArrowSchema) {
         let array = self.inner.clone().boxed();
@@ -172,7 +187,7 @@ impl<T: NativeType + Float> HFloatMatrix<T> {
 
     pub fn new_from_vec(v: Vec<T>, ncols: usize) -> HResult<HFloatMatrix<T>> {
         let inner = HFloatArray::new_from_vec(v);
-        Ok(HFloatMatrix::new(inner, ncols)?)
+        HFloatMatrix::new(inner, ncols)
     }
 
     /// Gets a reference to the inner HArray.
@@ -216,6 +231,12 @@ impl<T: NativeType + Float> HFloatMatrix<T> {
     /// Returns an option of a mutable reference to the values
     pub fn get_mut_values(&mut self) -> Option<&mut [T]> {
         self.inner.get_mut_values()
+    }
+
+    /// Returns true if inner values are being shared.
+    pub fn is_shared(&self) -> bool {
+        let buffer = self.inner.inner.values();
+        buffer.shared_count_strong() + buffer.shared_count_weak() != 1
     }
 
     /// Convert to HFloatArray.
@@ -268,7 +289,7 @@ impl<T: NativeType + Float> HComplexMatrix<T> {
 
     pub fn new_from_vec(v: Vec<T>, ncols: usize) -> HResult<HComplexMatrix<T>> {
         let inner = HComplexArray::new_from_vec(v);
-        Ok(HComplexMatrix::new(inner, ncols)?)
+        HComplexMatrix::new(inner, ncols)
     }
 
     /// Gets a reference to the inner HArray.
@@ -314,6 +335,12 @@ impl<T: NativeType + Float> HComplexMatrix<T> {
         self.inner.get_mut_values()
     }
 
+    /// Returns true if inner values are being shared.
+    pub fn is_shared(&self) -> bool {
+        let buffer = self.inner.inner.values();
+        buffer.shared_count_strong() + buffer.shared_count_weak() != 1
+    }
+
     /// Convert to HFloatArray.
     pub fn into_harray(self) -> HComplexArray<T> {
         self.inner
@@ -349,10 +376,6 @@ impl<T: NativeType + Float> HComplexMatrix<T> {
 
 impl<T: NativeType + Float> HFloatAudio<T> {
     /// Create a new instance.
-    /// # Arguments
-    ///
-    /// * `inner` - An HMatrix representing the decoded audio.
-    /// * `sr` - The sampling rate.
     pub fn new(inner: HFloatMatrix<T>, sr: u32) -> HFloatAudio<T> {
         HFloatAudio { inner, sr }
     }
@@ -558,9 +581,29 @@ mod tests {
         harray_mut[0] = 100.;
         assert_eq!(harray.as_slice()[0], 100.);
 
-        let mut hmatrix = HFloatMatrix::new_from_vec(vec![1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12.], 3).unwrap();
+        let mut hmatrix =
+            HFloatMatrix::new_from_vec(vec![1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12.], 3)
+                .unwrap();
         let hmatrix_mut = hmatrix.get_mut_values().unwrap();
         hmatrix_mut[0] = 100.;
         assert_eq!(hmatrix.as_slice()[0], 100.);
+    }
+
+    #[test]
+    #[allow(clippy::redundant_clone)]
+    fn is_shared_test() {
+        let harray: HFloatArray<f64> =
+            HFloatArray::new_from_vec(vec![1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12.]);
+        assert!(!harray.is_shared());
+        let harray2 = harray.clone();
+        assert!(harray2.is_shared());
+
+        let hmatrix: HFloatMatrix<f64> =
+            HFloatArray::new_from_vec(vec![1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12.])
+                .into_hmatrix(3)
+                .unwrap();
+        assert!(!hmatrix.is_shared());
+        let hmatrix2 = hmatrix.clone();
+        assert!(hmatrix2.is_shared());
     }
 }

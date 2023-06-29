@@ -13,6 +13,8 @@ comfy-table = { workspace = true }
 ndarray = { workspace = true }
 symphonia = { workspace = true }
 rodio = { workspace = true }
+bytemuck = { workspace = true }
+num-complex = { workspace = true }
 
 [features]
 default = ["arrow"]

@@ -4,14 +4,6 @@ devtools::test()
 devtools::check(document = FALSE, cran = FALSE, args = c("--no-manual", "--no-build-vignettes", "--no-codoc", "--no-examples", "--no-tests"))
 
 
-data = matrix(0, nrow = 512, ncol = 2)
-haudio = HAudio$new_from_values(data, 44100, dtype = HDataType$float64)
-hparams = HSincInterpolationParams$new(256L, 0.95, 256L, "linear", "blackmanharris2")
-res = HResampler$new_sinc(48000L / 44100L, 2, hparams, 512L, 2L, HResamplerType$sinc_fixed_in, HDataType$float64)
-res$set_resample_ratio(1, FALSE)
-res$set_resample_ratio_relative(0.5, FALSE)
-
-
 # another test
 haudiosink = HAudioSink$new()
 haudio = HAudio$new_from_file("../testfiles/gs-16b-2c-44100hz.flac", dtype = HDataType$float64)

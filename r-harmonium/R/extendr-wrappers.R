@@ -261,6 +261,8 @@ HMatrix$fft <- function() .Call(wrap__HMatrix__fft, self)
 
 HMatrix$mean_cols <- function() invisible(.Call(wrap__HMatrix__mean_cols, self))
 
+HMatrix$db_to_power <- function(reference) invisible(.Call(wrap__HMatrix__db_to_power, self, reference))
+
 #' @export
 `$.HMatrix` <- function (self, name) { func <- HMatrix[[name]]; environment(func) <- environment(); func }
 

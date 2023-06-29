@@ -5,7 +5,9 @@ use crate::{
 };
 use arrow2::{
     array::PrimitiveArray,
-    ffi::{import_array_from_c, import_field_from_c, ArrowArray, ArrowSchema}, datatypes::PhysicalType, types::PrimitiveType,
+    datatypes::PhysicalType,
+    ffi::{import_array_from_c, import_field_from_c, ArrowArray, ArrowSchema},
+    types::PrimitiveType,
 };
 use extendr_api::prelude::*;
 use harmonium_core::structs::{HComplexArray, HComplexMatrix, HFloatArray, HFloatMatrix};
@@ -27,6 +29,7 @@ pub trait HMatrixR: Send + Sync {
     fn export_c_arrow(&self) -> (ArrowArray, ArrowSchema);
     fn fft(&self) -> Arc<dyn HMatrixR>;
     fn mean_cols(&mut self);
+    fn db_to_power(&mut self, reference: f64);
     fn clone_inner(&self) -> Arc<dyn HMatrixR>;
 }
 
@@ -278,7 +281,7 @@ impl HMatrix {
     ///
     /// _________
     ///
-    fn slice(&mut self, offset: i32, length: i32) {
+    pub fn slice(&mut self, offset: i32, length: i32) {
         let inner_mut = self.get_inner_mut();
         inner_mut.slice(offset, length);
     }
@@ -713,6 +716,36 @@ impl HMatrix {
         let inner_mut = self.get_inner_mut();
         inner_mut.mean_cols();
     }
+
+    /// HMatrix
+    /// ## db_to_power
+    ///
+    /// `db_to_power(reference: double)` \
+    ///
+    /// $db\_to\_power(x) = reference \cdot 10^{0.1x}$
+    ///
+    /// Converts from dB to power. \
+    /// Since HMatrix has a COW ([clone-on-write](https://doc.rust-lang.org/std/borrow/enum.Cow.html)) behaviour, it will create a new inner array
+    /// if the inner values are being shared. \
+    ///
+    /// #### Arguments
+    ///
+    /// * `reference` \
+    /// Output value will be multiplied by `reference`. \
+    ///
+    /// #### Examples
+    ///
+    /// ```r
+    /// hmatrix = HMatrix$new_from_values(matrix(c(1,2,3,4), ncol = 2L), HDataType$float32)
+    /// hmatrix$db_to_power(reference = 1)
+    /// ```
+    ///
+    /// _________
+    ///
+    pub fn db_to_power(&mut self, reference: f64) {
+        let inner_mut = self.get_inner_mut();
+        inner_mut.db_to_power(reference);
+    }
 }
 
 impl HMatrix {
@@ -735,7 +768,7 @@ impl HMatrixR for HFloatMatrix<f32> {
     }
 
     fn slice(&mut self, offset: i32, length: i32) {
-        HFloatMatrix::slice(self, offset.try_into().unwrap(), length.try_into().unwrap());
+        HFloatMatrix::<f32>::slice(self, offset.try_into().unwrap(), length.try_into().unwrap());
     }
 
     fn ncols(&self) -> i32 {
@@ -763,8 +796,7 @@ impl HMatrixR for HFloatMatrix<f32> {
     fn collect(&self) -> Robj {
         let ncols = self.ncols();
         let nrows = self.nrows();
-        self
-            .inner
+        self.inner
             .inner
             .values()
             .iter()
@@ -797,6 +829,10 @@ impl HMatrixR for HFloatMatrix<f32> {
         *self = HFloatMatrix::<f32>::mean_cols(self).unwrap();
     }
 
+    fn db_to_power(&mut self, reference: f64) {
+        HFloatMatrix::<f32>::db_to_power(self, reference as f32);
+    }
+
     fn clone_inner(&self) -> Arc<dyn HMatrixR> {
         Arc::new(self.clone())
     }
@@ -812,7 +848,7 @@ impl HMatrixR for HFloatMatrix<f64> {
     }
 
     fn slice(&mut self, offset: i32, length: i32) {
-        HFloatMatrix::slice(self, offset.try_into().unwrap(), length.try_into().unwrap());
+        HFloatMatrix::<f64>::slice(self, offset.try_into().unwrap(), length.try_into().unwrap());
     }
 
     fn ncols(&self) -> i32 {
@@ -840,8 +876,7 @@ impl HMatrixR for HFloatMatrix<f64> {
     fn collect(&self) -> Robj {
         let ncols = self.ncols();
         let nrows = self.nrows();
-        self
-            .inner
+        self.inner
             .inner
             .values()
             .iter()
@@ -874,6 +909,10 @@ impl HMatrixR for HFloatMatrix<f64> {
         *self = HFloatMatrix::<f64>::mean_cols(self).unwrap();
     }
 
+    fn db_to_power(&mut self, reference: f64) {
+        HFloatMatrix::<f64>::db_to_power(self, reference);
+    }
+
     fn clone_inner(&self) -> Arc<dyn HMatrixR> {
         Arc::new(self.clone())
     }
@@ -889,7 +928,7 @@ impl HMatrixR for HComplexMatrix<f32> {
     }
 
     fn slice(&mut self, offset: i32, length: i32) {
-        HComplexMatrix::slice(self, offset.try_into().unwrap(), length.try_into().unwrap());
+        HComplexMatrix::<f32>::slice(self, offset.try_into().unwrap(), length.try_into().unwrap());
     }
 
     fn ncols(&self) -> i32 {
@@ -916,8 +955,7 @@ impl HMatrixR for HComplexMatrix<f32> {
     fn collect(&self) -> Robj {
         let ncols = self.ncols();
         let nrows = self.nrows();
-        self
-            .inner
+        self.inner
             .inner
             .values()
             .chunks_exact(2)
@@ -950,6 +988,10 @@ impl HMatrixR for HComplexMatrix<f32> {
         *self = HComplexMatrix::<f32>::mean_cols(self).unwrap();
     }
 
+    fn db_to_power(&mut self, reference: f64) {
+        HComplexMatrix::<f32>::db_to_power(self, reference as f32);
+    }
+
     fn clone_inner(&self) -> Arc<dyn HMatrixR> {
         Arc::new(self.clone())
     }
@@ -965,7 +1007,7 @@ impl HMatrixR for HComplexMatrix<f64> {
     }
 
     fn slice(&mut self, offset: i32, length: i32) {
-        HComplexMatrix::slice(self, offset.try_into().unwrap(), length.try_into().unwrap());
+        HComplexMatrix::<f64>::slice(self, offset.try_into().unwrap(), length.try_into().unwrap());
     }
 
     fn ncols(&self) -> i32 {
@@ -992,8 +1034,7 @@ impl HMatrixR for HComplexMatrix<f64> {
     fn collect(&self) -> Robj {
         let ncols = self.ncols();
         let nrows = self.nrows();
-        self
-            .inner
+        self.inner
             .inner
             .values()
             .chunks_exact(2)
@@ -1024,6 +1065,10 @@ impl HMatrixR for HComplexMatrix<f64> {
 
     fn mean_cols(&mut self) {
         *self = HComplexMatrix::<f64>::mean_cols(self).unwrap();
+    }
+
+    fn db_to_power(&mut self, reference: f64) {
+        HComplexMatrix::<f64>::db_to_power(self, reference);
     }
 
     fn clone_inner(&self) -> Arc<dyn HMatrixR> {

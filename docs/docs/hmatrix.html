@@ -95,6 +95,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <link rel="stylesheet" href="../styles.css">
 </head>
@@ -241,6 +243,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#is_shared" id="toc-is_shared" class="nav-link" data-scroll-target="#is_shared">is_shared</a></li>
   <li><a href="#fft" id="toc-fft" class="nav-link" data-scroll-target="#fft">fft</a></li>
   <li><a href="#mean_cols" id="toc-mean_cols" class="nav-link" data-scroll-target="#mean_cols">mean_cols</a></li>
+  <li><a href="#db_to_power" id="toc-db_to_power" class="nav-link" data-scroll-target="#db_to_power">db_to_power</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -271,7 +274,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h1>Methods</h1>
 <section id="new_from_values" class="level2">
 <h2 class="anchored" data-anchor-id="new_from_values">new_from_values</h2>
-<p><code>new_from_values(values: matrix, dtype: HDataType) -&gt; HMatrix</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L72">source</a> </span><br>
+<p><code>new_from_values(values: matrix, dtype: HDataType) -&gt; HMatrix</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L75">source</a> </span><br>
 </p>
 <p>Creates a new <code>HMatrix</code> from a <code>matrix</code>.<br>
 </p>
@@ -302,7 +305,7 @@ For float dtypes, the <code>matrix</code> must be a <code>double</code>. For com
 </section>
 <section id="new_from_arrow" class="level2">
 <h2 class="anchored" data-anchor-id="new_from_arrow">new_from_arrow</h2>
-<p><code>new_from_arrow(values: ArrowArray, ncols: i32, dtype: HDataType) -&gt; HMatrix</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L165">source</a> </span><br>
+<p><code>new_from_arrow(values: ArrowArray, ncols: i32, dtype: HDataType) -&gt; HMatrix</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L168">source</a> </span><br>
 </p>
 <p>Creates a new <code>HArray</code> from an R’s arrow <a href="https://arrow.apache.org/docs/r/reference/array.html"><code>Array</code></a>.<br>
 The conversion is zero copy.<br>
@@ -340,7 +343,7 @@ An <code>HDataType</code> to indicate which type of <code>HMatrix</code> to be c
 </section>
 <section id="len" class="level2">
 <h2 class="anchored" data-anchor-id="len">len</h2>
-<p><code>len() -&gt; integer</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L236">source</a> </span><br>
+<p><code>len() -&gt; integer</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L239">source</a> </span><br>
 </p>
 <p>Returns the number of elements of this <code>HMatrix</code>.<br>
 </p>
@@ -358,7 +361,7 @@ An <code>HDataType</code> to indicate which type of <code>HMatrix</code> to be c
 </section>
 <section id="slice" class="level2">
 <h2 class="anchored" data-anchor-id="slice">slice</h2>
-<p><code>slice(offset: integer, length: integer)</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L281">source</a> </span><br>
+<p><code>slice(offset: integer, length: integer)</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L284">source</a> </span><br>
 </p>
 <p>Slice the <code>HMatrix</code> by an offset and length.<br>
 The operation is done on a column level, which means that <code>offset</code> always point at the start of a column. For instance, an <code>offset</code> of 2 and <code>length</code> of 3 will slice the columns 3, 4 and 5.<br>
@@ -397,7 +400,7 @@ An <code>integer</code> representing the desired length.<br>
 </section>
 <section id="ncols" class="level2">
 <h2 class="anchored" data-anchor-id="ncols">ncols</h2>
-<p><code>ncols() -&gt; integer</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L306">source</a> </span><br>
+<p><code>ncols() -&gt; integer</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L309">source</a> </span><br>
 </p>
 <p>Returns the number of columns of this <code>HMatrix</code>.<br>
 </p>
@@ -415,7 +418,7 @@ An <code>integer</code> representing the desired length.<br>
 </section>
 <section id="nrows" class="level2">
 <h2 class="anchored" data-anchor-id="nrows">nrows</h2>
-<p><code>nrows() -&gt; integer</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L330">source</a> </span><br>
+<p><code>nrows() -&gt; integer</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L333">source</a> </span><br>
 </p>
 <p>Returns the number of rows of this <code>HMatrix</code>.<br>
 </p>
@@ -433,7 +436,7 @@ An <code>integer</code> representing the desired length.<br>
 </section>
 <section id="print" class="level2">
 <h2 class="anchored" data-anchor-id="print">print</h2>
-<p><code>print()</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L354">source</a> </span><br>
+<p><code>print()</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L357">source</a> </span><br>
 </p>
 <p>Print the <code>HMatrix</code>.<br>
 Differently from R’s normal behaviour, <code>print</code> doesn’t return the value invisibly.<br>
@@ -450,7 +453,7 @@ Differently from R’s normal behaviour, <code>print</code> doesn’t return the
 </section>
 <section id="eq" class="level2">
 <h2 class="anchored" data-anchor-id="eq">eq</h2>
-<p><code>eq(other: HMatrix) -&gt; bool</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L389">source</a> </span><br>
+<p><code>eq(other: HMatrix) -&gt; bool</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L392">source</a> </span><br>
 </p>
 <p>Equality with another <code>HMatrix</code>.<br>
 The comparison only checks if the dtype and the values are the same. To compare if the underlying data is the same in memory, check <code>mem_adress</code>.<br>
@@ -481,7 +484,7 @@ An <code>HMatrix</code>.<br>
 </section>
 <section id="ne" class="level2">
 <h2 class="anchored" data-anchor-id="ne">ne</h2>
-<p><code>ne(other: HMatrix) -&gt; bool</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L424">source</a> </span><br>
+<p><code>ne(other: HMatrix) -&gt; bool</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L427">source</a> </span><br>
 </p>
 <p>Difference with another <code>HMatrix</code>.<br>
 The comparison only checks if the dtype and the values are the same. To compare if the underlying data is the same in memory, check <code>mem_adress</code>.</p>
@@ -509,7 +512,7 @@ An <code>HMatrix</code>.</li>
 </section>
 <section id="clone" class="level2">
 <h2 class="anchored" data-anchor-id="clone">clone</h2>
-<p><code>clone() -&gt; HMatrix</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L450">source</a> </span><br>
+<p><code>clone() -&gt; HMatrix</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L453">source</a> </span><br>
 </p>
 <p>Creates a new <code>HMatrix</code>, with the underlying data pointing to the same place in memory.</p>
 <section id="returns-7" class="level4">
@@ -527,7 +530,7 @@ An <code>HMatrix</code>.</li>
 </section>
 <section id="as_harray" class="level2">
 <h2 class="anchored" data-anchor-id="as_harray">as_harray</h2>
-<p><code>as_harray() -&gt; HArray</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L476">source</a> </span><br>
+<p><code>as_harray() -&gt; HArray</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L479">source</a> </span><br>
 </p>
 <p>Creates a new <code>HArray</code>, with the underlying data pointing to the same place in memory.<br>
 </p>
@@ -546,7 +549,7 @@ An <code>HMatrix</code>.</li>
 </section>
 <section id="as_haudio" class="level2">
 <h2 class="anchored" data-anchor-id="as_haudio">as_haudio</h2>
-<p><code>as_haudio(sr: integer) -&gt; HAudio</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L507">source</a> </span><br>
+<p><code>as_haudio(sr: integer) -&gt; HAudio</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L510">source</a> </span><br>
 </p>
 <p>Creates a new <code>HAudio</code>, with the underlying data pointing to the same place in memory.<br>
 </p>
@@ -573,7 +576,7 @@ An <code>integer</code>. The sampling rate in hz.<br>
 </section>
 <section id="collect" class="level2">
 <h2 class="anchored" data-anchor-id="collect">collect</h2>
-<p><code>collect() -&gt; matrix</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L531">source</a> </span><br>
+<p><code>collect() -&gt; matrix</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L534">source</a> </span><br>
 </p>
 <p>Creates a <code>matrix</code> from an <code>HMatrix</code>. The type of the <code>matrix</code> created (<code>double</code> or <code>complex</code>) will depend on the <code>HMatrix</code>’s dtype.</p>
 <section id="returns-10" class="level4">
@@ -589,7 +592,7 @@ An <code>integer</code>. The sampling rate in hz.<br>
 </section>
 <section id="mem_adress" class="level2">
 <h2 class="anchored" data-anchor-id="mem_adress">mem_adress</h2>
-<p><code>mem_adress() -&gt; string</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L564">source</a> </span><br>
+<p><code>mem_adress() -&gt; string</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L567">source</a> </span><br>
 </p>
 <p>The memory adress of the first element of the inner data.<br>
 This is useful to check if different objects share the same underlying data.<br>
@@ -616,7 +619,7 @@ It’s important that the offset of both objects is at the same element for this
 </section>
 <section id="dtype" class="level2">
 <h2 class="anchored" data-anchor-id="dtype">dtype</h2>
-<p><code>dtype() -&gt; HDataType</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L588">source</a> </span><br>
+<p><code>dtype() -&gt; HDataType</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L591">source</a> </span><br>
 </p>
 <p>Gets the <code>HMatrix</code>’s dtype as an <code>HDataType</code>.</p>
 <section id="returns-12" class="level4">
@@ -632,7 +635,7 @@ It’s important that the offset of both objects is at the same element for this
 </section>
 <section id="is_shared" class="level2">
 <h2 class="anchored" data-anchor-id="is_shared">is_shared</h2>
-<p><code>is_shared() -&gt; bool</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L631">source</a> </span><br>
+<p><code>is_shared() -&gt; bool</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L634">source</a> </span><br>
 </p>
 <p>Checks if the object is shared.<br>
 Since <code>HMatrix</code> has a COW (<a href="https://doc.rust-lang.org/std/borrow/enum.Cow.html">clone-on-write</a>) behaviour, this function is useful to check if a new object will be created or if the change will be done in-place.<br>
@@ -668,7 +671,7 @@ Since <code>HMatrix</code> has a COW (<a href="https://doc.rust-lang.org/std/bor
 </section>
 <section id="fft" class="level2">
 <h2 class="anchored" data-anchor-id="fft">fft</h2>
-<p><code>fft() -&gt; HMatrix</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L689">source</a> </span><br>
+<p><code>fft() -&gt; HMatrix</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L692">source</a> </span><br>
 </p>
 <p>Computes the fast fourier transform of the <code>HMatrix</code>. The fft is computed for each column.<br>
 FFT (Fast Fourier Transform) refers to a way the discrete Fourier Transform (DFT) can be calculated efficiently, by using symmetries in the calculated terms. The symmetry is highest when n is a power of 2, and the transform is therefore most efficient for these sizes.<br>
@@ -691,7 +694,7 @@ FFT (Fast Fourier Transform) refers to a way the discrete Fourier Transform (DFT
 </section>
 <section id="mean_cols" class="level2">
 <h2 class="anchored" data-anchor-id="mean_cols">mean_cols</h2>
-<p><code>mean_cols()</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L712">source</a> </span><br>
+<p><code>mean_cols()</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L715">source</a> </span><br>
 </p>
 <p>Takes the average across columns.<br>
 A new inner array is created. The operation is done in-place.<br>
@@ -702,6 +705,29 @@ A new inner array is created. The operation is done in-place.<br>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>mem_adress_before <span class="ot">=</span> hmatrix<span class="sc">$</span><span class="fu">mem_adress</span>()</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>hmatrix<span class="sc">$</span><span class="fu">mean_cols</span>()</span>
 <span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>hmatrix<span class="sc">$</span><span class="fu">mem_adress</span>() <span class="sc">!=</span> mem_adress_before <span class="co"># TRUE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+</section>
+</section>
+<section id="db_to_power" class="level2">
+<h2 class="anchored" data-anchor-id="db_to_power">db_to_power</h2>
+<p><code>db_to_power(reference: double)</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmatrix.rs#L745">source</a> </span><br>
+</p>
+<p><span class="math inline">\(db\_to\_power(x) = reference \cdot 10^{0.1x}\)</span></p>
+<p>Converts from dB to power.<br>
+Since HMatrix has a COW (<a href="https://doc.rust-lang.org/std/borrow/enum.Cow.html">clone-on-write</a>) behaviour, it will create a new inner array if the inner values are being shared.<br>
+</p>
+<section id="arguments-6" class="level4">
+<h4 class="anchored" data-anchor-id="arguments-6">Arguments</h4>
+<ul>
+<li><code>reference</code><br>
+Output value will be multiplied by <code>reference</code>.<br>
+</li>
+</ul>
+</section>
+<section id="examples-18" class="level4">
+<h4 class="anchored" data-anchor-id="examples-18">Examples</h4>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>hmatrix <span class="ot">=</span> HMatrix<span class="sc">$</span><span class="fu">new_from_values</span>(<span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>), <span class="at">ncol =</span> 2L), HDataType<span class="sc">$</span>float32)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>hmatrix<span class="sc">$</span><span class="fu">db_to_power</span>(<span class="at">reference =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 
 
