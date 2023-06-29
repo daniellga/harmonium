@@ -200,13 +200,9 @@ pub mod fft_arrow {
 
         #[test]
         fn fft_complex_array_test() {
-            let v = vec![
-                1_f32, 2_f32, 3_f32, 4_f32, 5_f32, 6_f32, 7_f32, 8_f32,
-            ];
+            let v = vec![1_f32, 2_f32, 3_f32, 4_f32, 5_f32, 6_f32, 7_f32, 8_f32];
             let lhs = HComplexArray::new_from_vec(v).fft();
-            let v = vec![
-                16_f32, 20_f32, -8_f32, 0_f32, -4_f32, -4_f32, 0_f32, -8.,
-            ];
+            let v = vec![16_f32, 20_f32, -8_f32, 0_f32, -4_f32, -4_f32, 0_f32, -8.];
             let rhs = HComplexArray::new_from_vec(v);
             assert_eq!(lhs, rhs);
 
@@ -221,9 +217,7 @@ pub mod fft_arrow {
         fn fft_float_array_test() {
             let v = vec![1_f32, 2_f32, 3_f32, 4_f32];
             let lhs = HFloatArray::new_from_vec(v).fft();
-            let v = vec![
-                10_f32, 0_f32, -2_f32, 2_f32, -2_f32, 0_f32, -2_f32, -2.,
-            ];
+            let v = vec![10_f32, 0_f32, -2_f32, 2_f32, -2_f32, 0_f32, -2_f32, -2.];
             let rhs = HComplexArray::new_from_vec(v);
             assert_eq!(lhs, rhs);
 

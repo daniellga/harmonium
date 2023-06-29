@@ -36,10 +36,7 @@ impl HAudioSink {
         let sr = haudio.sr();
 
         let mut data_interleaved: Vec<f32> = Vec::with_capacity(nchannels * nframes);
-        let values = haudio
-            .inner()
-            .inner()
-            .inner();
+        let values = haudio.inner().inner().inner();
 
         for f in 0..nframes {
             for ch in 0..nchannels {

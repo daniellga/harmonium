@@ -348,13 +348,8 @@ where
 
         let reduced_cols = max_cols < ncols;
         let reduced_rows = max_rows < nrows;
-        let values: Vec<FloatPrinter<T>> = self
-            .inner
-            .inner
-            .values()
-            .iter()
-            .map(|z| to_fp(z))
-            .collect();
+        let values: Vec<FloatPrinter<T>> =
+            self.inner.inner.values().iter().map(|z| to_fp(z)).collect();
 
         match (reduced_cols, reduced_rows) {
             (true, true) => {
@@ -514,13 +509,8 @@ where
 
         let reduced_cols = max_cols < ncols;
         let reduced_rows = max_rows < nrows;
-        let values: Vec<FloatPrinter<T>> = self
-            .inner
-            .inner
-            .values()
-            .iter()
-            .map(|z| to_fp(z))
-            .collect();
+        let values: Vec<FloatPrinter<T>> =
+            self.inner.inner.values().iter().map(|z| to_fp(z)).collect();
         let zfp = to_fp(&T::zero());
 
         match (reduced_cols, reduced_rows) {

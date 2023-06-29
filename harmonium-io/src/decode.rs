@@ -1180,7 +1180,7 @@ pub mod decode_arrow {
                     lhs.slice(nframes_stream - 10, 10);
 
                     let mut hmatrix = decoded_audio.clone().inner;
-                    hmatrix.slice($channel, 1);                    
+                    hmatrix.slice($channel, 1);
                     let mut rhs = hmatrix.into_harray();
                     rhs.slice(nframes_decoded - 10, 10);
                     assert_eq!(lhs, rhs);
