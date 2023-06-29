@@ -66,7 +66,7 @@ jobs:
       - name: install linux deps
         run: |
           sudo apt update
-          sudo apt install -y --no-install-recommends libasound2-dev pkg-config
+          sudo apt install -y --no-install-recommends libasound2-dev pkg-config alsa-utils
 
       - name: Install toolchain
         uses: dtolnay/rust-toolchain@stable
