@@ -21,8 +21,6 @@ jobs:
 
       - name: Install toolchain
         uses: dtolnay/rust-toolchain@stable
-        with:
-          components: rustfmt, clippy
 
       - name: Run cargo check
         run: cargo check
@@ -66,7 +64,7 @@ jobs:
       - name: install linux deps
         run: |
           sudo apt update
-          sudo apt install -y --no-install-recommends libasound2-dev pkg-config alsa-utils
+          sudo apt install -y --no-install-recommends libasound2-dev pkg-config libwebkit2gtk
 
       - name: Install toolchain
         uses: dtolnay/rust-toolchain@stable
