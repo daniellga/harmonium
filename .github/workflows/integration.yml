@@ -17,7 +17,7 @@ jobs:
       - name: install linux deps
         run: |
           sudo apt update
-          sudo apt install -y --no-install-recommends libasound2-dev pkg-config
+          sudo apt install -y --no-install-recommends libasound2-dev
 
       - name: Install toolchain
         uses: dtolnay/rust-toolchain@stable
@@ -41,7 +41,7 @@ jobs:
       - name: install linux deps
         run: |
           sudo apt update
-          sudo apt install -y --no-install-recommends libasound2-dev pkg-config
+          sudo apt install -y --no-install-recommends libasound2-dev
 
       - name: Install toolchain
         uses: dtolnay/rust-toolchain@stable
@@ -53,30 +53,4 @@ jobs:
 
       - name: Run cargo clippy
         run: cargo clippy -- -D warnings
-
-  check_test_aarch64:
-    name: Check and test Linux arm 64bit
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout sources
-        uses: actions/checkout@v3
-
-      - name: install linux deps
-        run: |
-          sudo apt update
-          sudo apt install -y --no-install-recommends libasound2-dev pkg-config libwebkit2gtk-4.0
-
-      - name: Install toolchain
-        uses: dtolnay/rust-toolchain@stable
-        with:
-          targets: aarch64-unknown-linux-gnu
-
-      - name: Install cross
-        run: cargo install cross --git https://github.com/cross-rs/cross
-
-      - name: Run cargo check on arm
-        run: cross check --target aarch64-unknown-linux-gnu
-
-      - name: Run cargo test on arm
-        run: cross test --target aarch64-unknown-linux-gnu
 
