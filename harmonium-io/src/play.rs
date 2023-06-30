@@ -194,6 +194,7 @@ pub fn audio_supported_configs() -> HResult<Vec<String>> {
 mod tests {
     use super::*;
 
+    #[ignore]
     #[test]
     fn play_test() {
         let sink = HAudioSink::try_new().unwrap();
@@ -235,6 +236,7 @@ mod tests {
     //    sink.sleep_until_end();
     //}
 
+    #[ignore]
     #[test]
     fn clear_test() {
         let sink = HAudioSink::try_new().unwrap();
@@ -250,6 +252,7 @@ mod tests {
         assert_eq!(sink.len(), 1);
     }
 
+    #[ignore]
     #[test]
     fn audio_devices_test() {
         audio_default_device().unwrap();

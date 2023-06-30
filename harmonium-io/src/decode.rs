@@ -389,6 +389,7 @@ pub mod decode_arrow {
     where
         T: Float + NativeType + ConvertibleSample,
     {
+        #![allow(clippy::too_many_arguments)]
         fn new(
             reader: Box<dyn FormatReader>,
             decoder: Box<dyn Decoder>,
@@ -867,6 +868,8 @@ pub mod decode_arrow {
         // Use the default options when reading and decoding.
         let format_opts: FormatOptions = Default::default();
         let metadata_opts: MetadataOptions = Default::default();
+
+        #[allow(clippy::needless_update)]
         let decoder_opts: DecoderOptions = DecoderOptions {
             verify: true,
             ..Default::default() // in case of future options for DecoderOptions in Symphonia
@@ -1021,10 +1024,10 @@ pub mod decode_arrow {
             let (fpath, offset, duration) = ("../testfiles/gs-16b-2c-44100hz.wav", None, None);
             let result_head = vec![
                 0.0,
-                0.000030517578125,
-                -0.00006103515625,
-                0.00006103515625,
-                -0.00006103515625,
+                0.000_030_517_578,
+                -0.000_061_035_156,
+                0.000_061_035_156,
+                -0.000_061_035_156,
             ];
 
             let result_tail = vec![0.000030517578, 0.0, 0.0, 0.0, 0.0];
@@ -1047,14 +1050,14 @@ pub mod decode_arrow {
             // test with offset
             let offset = Some(1.);
             let result_head = vec![
-                -0.030242919921875,
-                -0.0218505859375,
-                -0.021697998046875,
+                -0.030_242_92,
+                -0.021_850_586,
+                -0.021_697_998,
                 -0.01953125,
-                -0.04119873046875,
+                -0.041_198_73,
             ];
 
-            let result_tail = vec![0.000030517578125, 0.0, 0.0, 0.0, 0.0];
+            let result_tail = vec![0.000_030_517_578, 0.0, 0.0, 0.0, 0.0];
 
             let result_last = vec![
                 0.0,
@@ -1083,11 +1086,11 @@ pub mod decode_arrow {
             ];
 
             let result_tail = vec![
-                0.09576416015625,
-                0.100921630859375,
-                0.10406494140625,
-                0.110748291015625,
-                0.10919189453125,
+                0.095_764_16,
+                0.100_921_63,
+                0.104_064_94,
+                0.110_748_29,
+                0.109_191_895,
             ];
 
             let result_last = vec![
