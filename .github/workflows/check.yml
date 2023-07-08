@@ -2,19 +2,11 @@ on:
   push:
     branches: [ master ]
     paths:
-      - R/**
-      - src/**
-      - tests/**
-      - DESCRIPTION
-      - NAMESPACE
+      - r-harmonium/**
   pull_request:
     branches: [ master ]
     paths:
-      - R/**
-      - src/**
-      - tests/**
-      - DESCRIPTION
-      - NAMESPACE
+      - r-harmonium/**
 
 name: R-CMD-check
 
