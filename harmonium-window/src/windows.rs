@@ -186,8 +186,8 @@ where
     };
 
     let pi2 = T::TAU();
-    let pi4 = T::TAU() + T::TAU(); 
-    let pi6 = pi2 + pi4; 
+    let pi4 = T::TAU() + T::TAU();
+    let pi6 = pi2 + pi4;
     let a = T::from(0.35875).unwrap();
     let b = T::from(0.48829).unwrap();
     let c = T::from(0.14128).unwrap();

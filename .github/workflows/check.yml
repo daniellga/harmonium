@@ -1,6 +1,6 @@
 on:
   push:
-    branches: [master]
+    branches: [ master ]
     paths:
       - R/**
       - src/**
@@ -8,7 +8,7 @@ on:
       - DESCRIPTION
       - NAMESPACE
   pull_request:
-    branches: [master]
+    branches: [ master ]
     paths:
       - R/**
       - src/**
