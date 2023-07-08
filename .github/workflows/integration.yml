@@ -33,7 +33,7 @@ jobs:
         run: cargo check --workspace --all-features
 
       - name: Run cargo test
-        run: cargo test --workspace --all-features --all-targets
+        run: cargo test --workspace --all-features
 
   lints:
     name: Lints

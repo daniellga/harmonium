@@ -3,7 +3,7 @@ use harmonium_core::{
     errors::{HError, HResult},
     structs::HFloatArray,
 };
-use num_traits::Float;
+use num_traits::{Float, FloatConst};
 use realfft::{num_complex::Complex, FftNum, RealFftPlanner};
 use rustfft::FftPlanner;
 
@@ -18,18 +18,6 @@ pub enum Window {
     Chebwin,
     Hann,
     Triangle,
-}
-
-pub trait FloatConst: Float {
-    const PI_FLOAT: Self;
-}
-
-impl FloatConst for f32 {
-    const PI_FLOAT: f32 = std::f32::consts::PI;
-}
-
-impl FloatConst for f64 {
-    const PI_FLOAT: f64 = std::f64::consts::PI;
 }
 
 pub enum WindowType {
@@ -55,7 +43,7 @@ where
         WindowType::Periodic => T::from(npoints).unwrap(),
     };
 
-    let pi2 = T::from(2.0).unwrap() * T::PI_FLOAT;
+    let pi2 = T::TAU();
     let a = T::from(0.62).unwrap();
     let b = T::from(0.48).unwrap();
     let c = T::from(0.38).unwrap();
@@ -163,16 +151,16 @@ where
         WindowType::Periodic => T::from(npoints).unwrap(),
     };
 
-    let pi2 = T::from(2.0).unwrap() * T::PI_FLOAT;
-    let pi4 = T::from(4.0).unwrap() * T::PI_FLOAT;
+    let pi2 = T::TAU();
+    let pi4 = T::TAU() + T::TAU();
     let a = T::from(0.42).unwrap();
-    let b = T::from(0.5).unwrap();
-    let c = T::from(0.08).unwrap();
+    let b = T::from(0.08).unwrap();
+    let half = T::from(0.5).unwrap();
 
     let window: Vec<T> = (0..npoints)
         .map(|x| {
             let x_float = T::from(x).unwrap();
-            a - b * (pi2 * x_float / (np_f)).cos() + c * (pi4 * x_float / (np_f)).cos()
+            a - half * (pi2 * x_float / (np_f)).cos() + b * (pi4 * x_float / (np_f)).cos()
         })
         .collect();
 
@@ -197,9 +185,9 @@ where
         WindowType::Periodic => T::from(npoints).unwrap(),
     };
 
-    let pi2 = T::from(2.0).unwrap() * T::PI_FLOAT;
-    let pi4 = T::from(4.0).unwrap() * T::PI_FLOAT;
-    let pi6 = T::from(6.0).unwrap() * T::PI_FLOAT;
+    let pi2 = T::TAU();
+    let pi4 = T::TAU() + T::TAU(); 
+    let pi6 = pi2 + pi4; 
     let a = T::from(0.35875).unwrap();
     let b = T::from(0.48829).unwrap();
     let c = T::from(0.14128).unwrap();
@@ -234,8 +222,8 @@ where
         WindowType::Periodic => T::from(npoints).unwrap(),
     };
 
-    let pi = T::PI_FLOAT;
-    let zero = T::from(0.0).unwrap();
+    let pi = T::PI();
+    let zero = T::zero();
     let one = T::from(1.0).unwrap();
     let two = T::from(2.0).unwrap();
     let step = two / (np_f);
@@ -290,7 +278,7 @@ where
         WindowType::Periodic => T::from(npoints + 1).unwrap(),
     };
 
-    let pi = T::PI_FLOAT;
+    let pi = T::PI();
     let half = T::from(0.5).unwrap();
 
     let window: Vec<T> = (0..npoints)
@@ -345,12 +333,12 @@ where
     };
     let np = np_f.to_usize().unwrap();
 
-    let pi = T::PI_FLOAT;
-    let zero = T::from(0.0).unwrap();
+    let pi = T::PI();
+    let zero = T::zero();
     let one = T::from(1.0).unwrap();
     let two = T::from(2.0).unwrap();
     let ten = T::from(10.0).unwrap();
-    let twenty = T::from(20.0).unwrap();
+    let twenty = ten + ten;
     let expr = T::from(two * T::from(np % 2).unwrap() - one).unwrap();
 
     let order = np_f - one;
@@ -450,7 +438,7 @@ pub fn exponential<T>(
     window_type: WindowType,
 ) -> HResult<HFloatArray<T>>
 where
-    T: Float + FloatConst + NativeType,
+    T: Float + NativeType,
 {
     let np_f = match window_type {
         WindowType::Symmetric if center.is_none() => T::from(npoints - 1).unwrap(),
@@ -499,7 +487,7 @@ where
         WindowType::Periodic => T::from(npoints).unwrap(),
     };
 
-    let pi2 = T::from(2.0).unwrap() * T::PI_FLOAT;
+    let pi2 = T::TAU();
     let half = T::from(0.5).unwrap();
 
     let window: Vec<T> = (0..npoints)

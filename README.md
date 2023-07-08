@@ -16,9 +16,7 @@ To learn more, read the [documentation](https://daniellga.github.io/harmonium/).
 Install [Rustup](https://www.rust-lang.org/tools/install).
 Install [Rtools](https://cran.r-project.org/bin/windows/Rtools/).
 
-Add the gnu targets below: \
-`rustup target add x86_64-pc-windows-gnu` for 64 bits.\
-`rustup target add i686-pc-windows-gnu` for 32 bits if R < 4.2.
+Add the following gnu target: `rustup target add x86_64-pc-windows-gnu`.
 
 In R, install harmonium:
 `remotes::install_github("daniellga/harmonium/r-harmonium")`
