@@ -1,16 +1,17 @@
-use arrow2::types::NativeType;
 use harmonium_core::{
+    array::HArray,
     errors::{HError, HResult},
-    structs::HFloatAudio,
+    haudioop::HAudioOp,
 };
-use num_traits::{Float, ToPrimitive};
+use ndarray::Array1;
+use num_traits::{Float, FloatConst, FromPrimitive};
 use rodio::{
     buffer::SamplesBuffer,
     cpal::{traits::HostTrait, SupportedBufferSize},
-    DeviceTrait, OutputStream, Sink,
+    DeviceTrait, OutputStream, Sample, Sink,
 };
 
-use crate::decode::decode_arrow::decode;
+use crate::decode::decode;
 
 pub struct HAudioSink {
     sink: Sink,
@@ -27,32 +28,33 @@ impl HAudioSink {
     }
 
     /// Appends a sound to the queue of sounds to play.
-    pub fn append_from_haudio<T>(&self, haudio: &HFloatAudio<T>)
+    pub fn append_from_harray<T>(&self, harray: &HArray<T>, sr: u32)
     where
-        T: NativeType + Float + ToPrimitive,
+        T: Float + FloatConst + FromPrimitive + Sample,
     {
-        let nchannels = haudio.nchannels();
-        let nframes = haudio.nframes();
-        let sr = haudio.sr();
+        let nchannels = harray.nchannels();
+        let nframes = harray.nframes();
 
-        let mut data_interleaved: Vec<f32> = Vec::with_capacity(nchannels * nframes);
-        let values = haudio.inner().inner().inner();
+        let mut ndarray = Array1::zeros(nchannels * nframes);
+        let ndarray_interleaved_t = harray.0.view().reversed_axes();
 
-        for f in 0..nframes {
-            for ch in 0..nchannels {
-                data_interleaved.push(values.value(f + ch * nframes).to_f32().unwrap());
-            }
+        for (a, b) in ndarray.iter_mut().zip(ndarray_interleaved_t.iter()) {
+            *a = b.to_f32().unwrap();
         }
 
-        let source = SamplesBuffer::new(u16::try_from(nchannels).unwrap(), sr, data_interleaved);
+        let source = SamplesBuffer::new(
+            u16::try_from(nchannels).unwrap(),
+            sr,
+            ndarray.as_slice().unwrap(),
+        );
 
         self.sink.append(source);
     }
 
     /// Appends a sound to the queue of sounds to play.
     pub fn append_from_file(&self, fpath: &str) -> HResult<()> {
-        let haudio = decode::<f32>(fpath, None, None)?;
-        self.append_from_haudio(&haudio);
+        let (harray, sr) = decode::<f32>(fpath)?;
+        self.append_from_harray(&harray, sr);
 
         Ok(())
     }
@@ -194,7 +196,6 @@ pub fn audio_supported_configs() -> HResult<Vec<String>> {
 mod tests {
     use super::*;
 
-    #[ignore]
     #[test]
     fn play_test() {
         let sink = HAudioSink::try_new().unwrap();
@@ -236,7 +237,6 @@ mod tests {
     //    sink.sleep_until_end();
     //}
 
-    #[ignore]
     #[test]
     fn clear_test() {
         let sink = HAudioSink::try_new().unwrap();
@@ -252,7 +252,6 @@ mod tests {
         assert_eq!(sink.len(), 1);
     }
 
-    #[ignore]
     #[test]
     fn audio_devices_test() {
         audio_default_device().unwrap();

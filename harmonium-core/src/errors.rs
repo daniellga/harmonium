@@ -75,15 +75,6 @@ impl From<rubato::ResamplerConstructionError> for HError {
     }
 }
 
-impl From<arrow2::error::Error> for HError {
-    fn from(err: arrow2::error::Error) -> Self {
-        match err {
-            arrow2::error::Error::OutOfSpec(_) => HError::OutOfSpecError(err.to_string()),
-            _ => HError::OtherError(err.to_string()),
-        }
-    }
-}
-
 impl From<rodio::StreamError> for HError {
     fn from(err: rodio::StreamError) -> Self {
         HError::PlayError(err.to_string())

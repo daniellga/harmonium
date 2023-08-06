@@ -10,4 +10,4 @@ harmonium-core = {path = "../harmonium-core"}
 num-traits = { workspace = true }
 rustfft = { workspace = true }
 realfft = { workspace = true }
-arrow2 = { workspace = true }
+ndarray = { workspace = true }

@@ -7,16 +7,9 @@ edition = "2021"
 
 [dependencies]
 num-traits = { workspace = true }
-arrow2 = { workspace = true }
+num-complex = { workspace = true }
 rubato = { workspace = true }
-comfy-table = { workspace = true }
 ndarray = { workspace = true }
 symphonia = { workspace = true }
 rodio = { workspace = true }
-bytemuck = { workspace = true }
-num-complex = { workspace = true }
-
-[features]
-default = ["arrow"]
-arrow = []
 

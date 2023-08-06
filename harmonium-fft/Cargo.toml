@@ -8,11 +8,7 @@ edition = "2021"
 [dependencies]
 harmonium-core = { path = "../harmonium-core" }
 harmonium-io = { path = "../harmonium-io" }
-arrow2 = { workspace = true }
 rustfft = { workspace = true }
 cached = { workspace = true }
-
-[features]
-default = ["arrow"]
-arrow = []
+ndarray = { workspace = true }
 

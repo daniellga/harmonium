@@ -9,14 +9,11 @@ edition = "2021"
 harmonium-core = { path = "../harmonium-core" }
 num-traits = { workspace = true }
 ndarray = { workspace = true }
-arrow2 = { workspace = true }
 symphonia = { workspace = true }
 rodio = { workspace = true }
 
 [features]
-default = ["arrow", "symphonia-default"]
-ndarray = []
-arrow = []
+default = ["symphonia-default"]
 
 # Symphonia features
 aac = ["symphonia/aac"]
