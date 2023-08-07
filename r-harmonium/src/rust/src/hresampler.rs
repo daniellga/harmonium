@@ -1,9 +1,8 @@
 use crate::{
-    haudio::HAudio, hdatatype::HDataType, hpolynomialdegree::HPolynomialDegree,
+    harray::HArray, hdatatype::HDataType, hpolynomialdegree::HPolynomialDegree,
     hresamplertype::HResamplerType, hsincinterpolationparams::HSincInterpolationParams,
 };
 use extendr_api::prelude::*;
-use harmonium_core::structs::HFloatAudio;
 use harmonium_resample::resample::ProcessResampler;
 use rubato::{
     FastFixedIn, FastFixedOut, FftFixedIn, FftFixedInOut, FftFixedOut, SincFixedIn, SincFixedOut,
@@ -12,7 +11,7 @@ use std::any::Any;
 
 pub trait HResamplerR: Send {
     fn as_any(&self) -> &dyn Any;
-    fn process(&mut self, haudio: &mut HAudio, sr_out: i32);
+    fn process(&mut self, harray: &mut HArray);
     fn set_resample_ratio(&mut self, new_ratio: f64, ramp: bool);
     fn set_resample_ratio_relative(&mut self, rel_ratio: f64, ramp: bool);
     fn reset(&mut self);
@@ -453,8 +452,8 @@ impl HResampler {
     ///
     /// _________
     ///
-    fn process(&mut self, haudio: &mut HAudio, sr_out: i32) {
-        self.0.process(haudio, sr_out);
+    fn process(&mut self, harray: &mut HArray) {
+        self.0.process(harray);
     }
 
     /// HResampler
@@ -663,12 +662,11 @@ macro_rules! impl_hresamplerfftr {
                     self
                 }
 
-                fn process(&mut self, haudio: &mut HAudio, sr_out: i32) {
-                    let sr_out = sr_out.try_into().unwrap();
+                fn process(&mut self, harray: &mut HArray) {
                     // Ok to unwrap.
                     // downcast_mut already checks if the HAudio and the Resampler have the same HDataType.
-                    let haudio = haudio.get_inner_mut().as_any_mut().downcast_mut::<$t2>().unwrap();
-                    self.process_resampler(haudio, sr_out).unwrap();
+                    let haudio = harray.get_inner_mut().as_any_mut().downcast_mut::<$t2>().unwrap();
+                    self.process_resampler(harray).unwrap();
                 }
 
                 fn set_resample_ratio(&mut self, _: f64, _: bool) {
@@ -703,42 +701,42 @@ macro_rules! impl_hresamplerfftr {
 impl_hresamplerfftr!(
     (
         FftFixedIn<f32>,
-        HFloatAudio<f32>,
+        harmonium_core::array::HArray<f32>,
         HResamplerType::FftFixedIn,
         HDataType::Float32,
         "FftFixedIn<f32>"
     ),
     (
         FftFixedIn<f64>,
-        HFloatAudio<f64>,
+        harmonium_core::array::HArray<f64>,
         HResamplerType::FftFixedIn,
         HDataType::Float64,
         "FftFixedIn<f64>"
     ),
     (
         FftFixedInOut<f32>,
-        HFloatAudio<f32>,
+        harmonium_core::array::HArray<f32>,
         HResamplerType::FftFixedInOut,
         HDataType::Float32,
         "FftFixedInOut<f32>"
     ),
     (
         FftFixedInOut<f64>,
-        HFloatAudio<f64>,
+        harmonium_core::array::HArray<f64>,
         HResamplerType::FftFixedInOut,
         HDataType::Float64,
         "FftFixedInOut<f64>"
     ),
     (
         FftFixedOut<f32>,
-        HFloatAudio<f32>,
+        harmonium_core::array::HArray<f32>,
         HResamplerType::FftFixedOut,
         HDataType::Float32,
         "FftFixedOut<f32>"
     ),
     (
         FftFixedOut<f64>,
-        HFloatAudio<f64>,
+        harmonium_core::array::HArray<f64>,
         HResamplerType::FftFixedOut,
         HDataType::Float64,
         "FftFixedOut<f64>"
@@ -753,12 +751,11 @@ macro_rules! impl_hresamplersincr {
                     self
                 }
 
-                fn process(&mut self, haudio: &mut HAudio, sr_out: i32) {
-                    let sr_out = sr_out.try_into().unwrap();
+                fn process(&mut self, harray: &mut HArray) {
                     // Ok to unwrap.
                     // downcast_mut already checks if the HAudio and the HResampler have the same HDataType.
-                    let haudio = haudio.get_inner_mut().as_any_mut().downcast_mut::<$t2>().unwrap();
-                    self.process_resampler(haudio, sr_out).unwrap();
+                    let haudio = harray.get_inner_mut().as_any_mut().downcast_mut::<$t2>().unwrap();
+                    self.process_resampler(harray).unwrap();
                 }
 
                 fn set_resample_ratio(&mut self, new_ratio: f64, ramp: bool) {
@@ -793,56 +790,56 @@ macro_rules! impl_hresamplersincr {
 impl_hresamplersincr!(
     (
         SincFixedIn<f32>,
-        HFloatAudio<f32>,
+        harmonium_core::array::HArray<f32>,
         HResamplerType::SincFixedIn,
         HDataType::Float32,
         "SincFixedIn<f32>"
     ),
     (
         SincFixedIn<f64>,
-        HFloatAudio<f64>,
+        harmonium_core::array::HArray<f64>,
         HResamplerType::SincFixedIn,
         HDataType::Float64,
         "SincFixedIn<f64>"
     ),
     (
         SincFixedOut<f32>,
-        HFloatAudio<f32>,
+        harmonium_core::array::HArray<f32>,
         HResamplerType::SincFixedOut,
         HDataType::Float32,
         "SincFixedOut<f32>"
     ),
     (
         SincFixedOut<f64>,
-        HFloatAudio<f64>,
+        harmonium_core::array::HArray<f64>,
         HResamplerType::SincFixedOut,
         HDataType::Float64,
         "SincFixedOut<f64>"
     ),
     (
         FastFixedIn<f32>,
-        HFloatAudio<f32>,
+        harmonium_core::array::HArray<f32>,
         HResamplerType::FastFixedIn,
         HDataType::Float32,
         "FastFixedIn<f32>"
     ),
     (
         FastFixedIn<f64>,
-        HFloatAudio<f64>,
+        harmonium_core::array::HArray<f64>,
         HResamplerType::FastFixedIn,
         HDataType::Float64,
         "FastFixedIn<f64>"
     ),
     (
         FastFixedOut<f32>,
-        HFloatAudio<f32>,
+        harmonium_core::array::HArray<f32>,
         HResamplerType::FastFixedOut,
         HDataType::Float32,
         "FastFixedOut<f32>"
     ),
     (
         FastFixedOut<f64>,
-        HFloatAudio<f64>,
+        harmonium_core::array::HArray<f64>,
         HResamplerType::FastFixedOut,
         HDataType::Float64,
         "FastFixedOut<f64>"

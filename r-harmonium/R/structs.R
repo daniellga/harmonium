@@ -6,22 +6,6 @@ print.HArray = function(x, ...) {
 "==.HArray" <- function(e1,e2) e1$eq(e2)
 "!=.HArray" <- function(e1,e2) e1$ne(e2)
 
-print.HMatrix = function(x, ...) {
-  cat(class(x), sep = "\n")
-  x$dtype()$print()
-  x$print()
-}
-"==.HMatrix" <- function(e1,e2) e1$eq(e2)
-"!=.HMatrix" <- function(e1,e2) e1$ne(e2)
-
-print.HAudio = function(x, ...) {
-  cat(class(x), sep = "\n")
-  x$dtype()$print()
-  x$print()
-}
-"==.HAudio" <- function(e1,e2) e1$eq(e2)
-"!=.HAudio" <- function(e1,e2) e1$ne(e2)
-
 print.HDataType = function(x, ...) {
   x$print()
 }

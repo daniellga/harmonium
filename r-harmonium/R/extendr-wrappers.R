@@ -11,10 +11,6 @@
 #' @useDynLib harmonium, .registration = TRUE
 NULL
 
-set_float_fmt <- function(fmt) invisible(.Call(wrap__set_float_fmt, fmt))
-
-get_float_fmt <- function() .Call(wrap__get_float_fmt)
-
 HPolynomialDegree <- new.env(parent = emptyenv())
 
 HPolynomialDegree$septic <- function() .Call(wrap__HPolynomialDegree__septic)
@@ -53,13 +49,9 @@ HError$to_error2 <- function() .Call(wrap__HError__to_error2)
 
 HArray <- new.env(parent = emptyenv())
 
-HArray$new_from_values <- function(values, dtype) .Call(wrap__HArray__new_from_values, values, dtype)
-
-HArray$new_from_arrow <- function(values, dtype) .Call(wrap__HArray__new_from_arrow, values, dtype)
+HArray$new_from_values <- function(robj, dtype) .Call(wrap__HArray__new_from_values, robj, dtype)
 
 HArray$len <- function() .Call(wrap__HArray__len, self)
-
-HArray$slice <- function(offset, length) invisible(.Call(wrap__HArray__slice, self, offset, length))
 
 HArray$print <- function() invisible(.Call(wrap__HArray__print, self))
 
@@ -69,19 +61,11 @@ HArray$ne <- function(other) .Call(wrap__HArray__ne, self, other)
 
 HArray$clone <- function() .Call(wrap__HArray__clone, self)
 
-HArray$as_hmatrix <- function(ncols) .Call(wrap__HArray__as_hmatrix, self, ncols)
-
 HArray$collect <- function() .Call(wrap__HArray__collect, self)
-
-HArray$mem_adress <- function() .Call(wrap__HArray__mem_adress, self)
 
 HArray$dtype <- function() .Call(wrap__HArray__dtype, self)
 
 HArray$is_shared <- function() .Call(wrap__HArray__is_shared, self)
-
-HArray$to_c_arrow <- function(array_ptr, schema_ptr) invisible(.Call(wrap__HArray__to_c_arrow, self, array_ptr, schema_ptr))
-
-HArray$fft <- function() .Call(wrap__HArray__fft, self)
 
 #' @export
 `$.HArray` <- function (self, name) { func <- HArray[[name]]; environment(func) <- environment(); func }
@@ -101,49 +85,11 @@ HSincInterpolationParams$print <- function() invisible(.Call(wrap__HSincInterpol
 #' @export
 `[[.HSincInterpolationParams` <- `$.HSincInterpolationParams`
 
-HAudio <- new.env(parent = emptyenv())
-
-HAudio$new_from_file <- function(fpath, offset = NA_real_, duration = NA_real_, dtype) .Call(wrap__HAudio__new_from_file, fpath, offset, duration, dtype)
-
-HAudio$new_from_values <- function(values, sr, dtype) .Call(wrap__HAudio__new_from_values, values, sr, dtype)
-
-HAudio$len <- function() .Call(wrap__HAudio__len, self)
-
-HAudio$nchannels <- function() .Call(wrap__HAudio__nchannels, self)
-
-HAudio$nframes <- function() .Call(wrap__HAudio__nframes, self)
-
-HAudio$print <- function() invisible(.Call(wrap__HAudio__print, self))
-
-HAudio$as_hmatrix <- function() .Call(wrap__HAudio__as_hmatrix, self)
-
-HAudio$eq <- function(other) .Call(wrap__HAudio__eq, self, other)
-
-HAudio$ne <- function(other) .Call(wrap__HAudio__ne, self, other)
-
-HAudio$clone <- function() .Call(wrap__HAudio__clone, self)
-
-HAudio$collect <- function() .Call(wrap__HAudio__collect, self)
-
-HAudio$sr <- function() .Call(wrap__HAudio__sr, self)
-
-HAudio$mem_adress <- function() .Call(wrap__HAudio__mem_adress, self)
-
-HAudio$dtype <- function() .Call(wrap__HAudio__dtype, self)
-
-HAudio$as_mono <- function() invisible(.Call(wrap__HAudio__as_mono, self))
-
-#' @export
-`$.HAudio` <- function (self, name) { func <- HAudio[[name]]; environment(func) <- environment(); func }
-
-#' @export
-`[[.HAudio` <- `$.HAudio`
-
 HAudioSink <- new.env(parent = emptyenv())
 
 HAudioSink$new <- function() .Call(wrap__HAudioSink__new)
 
-HAudioSink$append_from_haudio <- function(haudio) invisible(.Call(wrap__HAudioSink__append_from_haudio, self, haudio))
+HAudioSink$append_from_harray <- function(harray, sr) invisible(.Call(wrap__HAudioSink__append_from_harray, self, harray, sr))
 
 HAudioSink$append_from_file <- function(fpath) invisible(.Call(wrap__HAudioSink__append_from_file, self, fpath))
 
@@ -185,20 +131,6 @@ HAudioSink$audio_supported_configs <- function() .Call(wrap__HAudioSink__audio_s
 #' @export
 `[[.HAudioSink` <- `$.HAudioSink`
 
-HFile <- new.env(parent = emptyenv())
-
-HFile$metadata_from_file <- function(fpath, metadata_type) .Call(wrap__HFile__metadata_from_file, fpath, metadata_type)
-
-HFile$get_params_from_file <- function(fpath) .Call(wrap__HFile__get_params_from_file, fpath)
-
-HFile$verify_file <- function(fpath) .Call(wrap__HFile__verify_file, fpath)
-
-#' @export
-`$.HFile` <- function (self, name) { func <- HFile[[name]]; environment(func) <- environment(); func }
-
-#' @export
-`[[.HFile` <- `$.HFile`
-
 HDataType <- new.env(parent = emptyenv())
 
 HDataType$float32 <- function() .Call(wrap__HDataType__float32)
@@ -220,54 +152,6 @@ HDataType$ne <- function(other) .Call(wrap__HDataType__ne, self, other)
 
 #' @export
 `[[.HDataType` <- `$.HDataType`
-
-HMatrix <- new.env(parent = emptyenv())
-
-HMatrix$new_from_values <- function(values, dtype) .Call(wrap__HMatrix__new_from_values, values, dtype)
-
-HMatrix$new_from_arrow <- function(values, ncols, dtype) .Call(wrap__HMatrix__new_from_arrow, values, ncols, dtype)
-
-HMatrix$len <- function() .Call(wrap__HMatrix__len, self)
-
-HMatrix$slice <- function(offset, length) invisible(.Call(wrap__HMatrix__slice, self, offset, length))
-
-HMatrix$ncols <- function() .Call(wrap__HMatrix__ncols, self)
-
-HMatrix$nrows <- function() .Call(wrap__HMatrix__nrows, self)
-
-HMatrix$print <- function() invisible(.Call(wrap__HMatrix__print, self))
-
-HMatrix$eq <- function(other) .Call(wrap__HMatrix__eq, self, other)
-
-HMatrix$ne <- function(other) .Call(wrap__HMatrix__ne, self, other)
-
-HMatrix$clone <- function() .Call(wrap__HMatrix__clone, self)
-
-HMatrix$as_harray <- function() .Call(wrap__HMatrix__as_harray, self)
-
-HMatrix$as_haudio <- function(sr) .Call(wrap__HMatrix__as_haudio, self, sr)
-
-HMatrix$collect <- function() .Call(wrap__HMatrix__collect, self)
-
-HMatrix$mem_adress <- function() .Call(wrap__HMatrix__mem_adress, self)
-
-HMatrix$dtype <- function() .Call(wrap__HMatrix__dtype, self)
-
-HMatrix$is_shared <- function() .Call(wrap__HMatrix__is_shared, self)
-
-HMatrix$to_c_arrow <- function(array_ptr, schema_ptr) invisible(.Call(wrap__HMatrix__to_c_arrow, self, array_ptr, schema_ptr))
-
-HMatrix$fft <- function() .Call(wrap__HMatrix__fft, self)
-
-HMatrix$mean_cols <- function() invisible(.Call(wrap__HMatrix__mean_cols, self))
-
-HMatrix$db_to_power <- function(reference) invisible(.Call(wrap__HMatrix__db_to_power, self, reference))
-
-#' @export
-`$.HMatrix` <- function (self, name) { func <- HMatrix[[name]]; environment(func) <- environment(); func }
-
-#' @export
-`[[.HMatrix` <- `$.HMatrix`
 
 HWindow <- new.env(parent = emptyenv())
 
@@ -313,34 +197,6 @@ HMetadataType$ne <- function(other) .Call(wrap__HMetadataType__ne, self, other)
 #' @export
 `[[.HMetadataType` <- `$.HMetadataType`
 
-HResampler <- new.env(parent = emptyenv())
-
-HResampler$new_fft <- function(sr_in, sr_out, chunk_size, sub_chunks, nbr_channels, res_type, dtype) .Call(wrap__HResampler__new_fft, sr_in, sr_out, chunk_size, sub_chunks, nbr_channels, res_type, dtype)
-
-HResampler$new_sinc <- function(resample_ratio, max_resample_ratio_relative, parameters, chunk_size, nbr_channels, res_type, dtype) .Call(wrap__HResampler__new_sinc, resample_ratio, max_resample_ratio_relative, parameters, chunk_size, nbr_channels, res_type, dtype)
-
-HResampler$new_fast <- function(resample_ratio, max_resample_ratio_relative, pol_deg, chunk_size, nbr_channels, res_type, dtype) .Call(wrap__HResampler__new_fast, resample_ratio, max_resample_ratio_relative, pol_deg, chunk_size, nbr_channels, res_type, dtype)
-
-HResampler$process <- function(haudio, sr_out) invisible(.Call(wrap__HResampler__process, self, haudio, sr_out))
-
-HResampler$set_resample_ratio <- function(new_ratio, ramp) invisible(.Call(wrap__HResampler__set_resample_ratio, self, new_ratio, ramp))
-
-HResampler$set_resample_ratio_relative <- function(rel_ratio, ramp) invisible(.Call(wrap__HResampler__set_resample_ratio_relative, self, rel_ratio, ramp))
-
-HResampler$reset <- function() invisible(.Call(wrap__HResampler__reset, self))
-
-HResampler$res_type <- function() .Call(wrap__HResampler__res_type, self)
-
-HResampler$dtype <- function() .Call(wrap__HResampler__dtype, self)
-
-HResampler$print <- function() invisible(.Call(wrap__HResampler__print, self))
-
-#' @export
-`$.HResampler` <- function (self, name) { func <- HResampler[[name]]; environment(func) <- environment(); func }
-
-#' @export
-`[[.HResampler` <- `$.HResampler`
-
 HResamplerType <- new.env(parent = emptyenv())
 
 HResamplerType$fft_fixed_in <- function() .Call(wrap__HResamplerType__fft_fixed_in)
@@ -368,6 +224,18 @@ HResamplerType$ne <- function(other) .Call(wrap__HResamplerType__ne, self, other
 
 #' @export
 `[[.HResamplerType` <- `$.HResamplerType`
+
+HFft <- new.env(parent = emptyenv())
+
+HFft$fft <- function(harray) .Call(wrap__HFft__fft, harray)
+
+HFft$fft_mut <- function(harray) invisible(.Call(wrap__HFft__fft_mut, harray))
+
+#' @export
+`$.HFft` <- function (self, name) { func <- HFft[[name]]; environment(func) <- environment(); func }
+
+#' @export
+`[[.HFft` <- `$.HFft`
 
 
 # nolint end

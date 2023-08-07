@@ -8,7 +8,7 @@ use num_traits::{Float, FloatConst, FromPrimitive};
 use rodio::{
     buffer::SamplesBuffer,
     cpal::{traits::HostTrait, SupportedBufferSize},
-    DeviceTrait, OutputStream, Sample, Sink,
+    DeviceTrait, OutputStream, Sink,
 };
 
 use crate::decode::decode;
@@ -30,7 +30,7 @@ impl HAudioSink {
     /// Appends a sound to the queue of sounds to play.
     pub fn append_from_harray<T>(&self, harray: &HArray<T>, sr: u32)
     where
-        T: Float + FloatConst + FromPrimitive + Sample,
+        T: Float + FloatConst + FromPrimitive,
     {
         let nchannels = harray.nchannels();
         let nframes = harray.nframes();

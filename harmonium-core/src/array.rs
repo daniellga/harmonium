@@ -2,7 +2,7 @@ use crate::errors::{HError, HResult};
 use ndarray::{ArcArray, IxDyn};
 use num_complex::ComplexFloat;
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 pub struct HArray<T: ComplexFloat>(pub ArcArray<T, IxDyn>);
 
 impl<T> HArray<T>

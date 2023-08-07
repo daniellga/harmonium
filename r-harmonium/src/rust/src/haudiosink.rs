@@ -1,16 +1,14 @@
-use crate::{haudio::HAudio, hdatatype::HDataType};
 use extendr_api::prelude::*;
-use harmonium_core::structs::HFloatAudio;
-use harmonium_io::{decode::decode_arrow::decode, play};
+use harmonium_io::{decode::decode, play};
+
+use crate::{harray::HArray, hdatatype::HDataType};
 
 /// HAudioSink
 /// Handle to a device that outputs sounds. \
 ///
 /// # Methods
 ///
-pub struct HAudioSink {
-    inner: play::HAudioSink,
-}
+pub struct HAudioSink(play::HAudioSink);
 
 #[extendr]
 impl HAudioSink {
@@ -35,9 +33,7 @@ impl HAudioSink {
     /// _________
     ///
     fn new() -> Self {
-        Self {
-            inner: play::HAudioSink::try_new().unwrap(),
-        }
+        Self(play::HAudioSink::try_new().unwrap())
     }
 
     /// HAudioSink
@@ -62,25 +58,26 @@ impl HAudioSink {
     ///
     /// _________
     ///
-    fn append_from_haudio(&self, haudio: &HAudio) {
-        match haudio.0.dtype() {
+    fn append_from_harray(&self, harray: &HArray, sr: i32) {
+        let sr = sr.try_into().unwrap();
+        match harray.0.dtype() {
             HDataType::Float32 => {
-                let haudio = haudio
+                let harray = harray
                     .0
                     .as_any()
-                    .downcast_ref::<HFloatAudio<f32>>()
+                    .downcast_ref::<harmonium_core::array::HArray<f32>>()
                     .unwrap();
-                self.inner.append_from_haudio::<f32>(haudio);
+                self.0.append_from_harray::<f32>(harray, sr);
             }
             HDataType::Float64 => {
-                let haudio = haudio
+                let harray = harray
                     .0
                     .as_any()
-                    .downcast_ref::<HFloatAudio<f64>>()
+                    .downcast_ref::<harmonium_core::array::HArray<f64>>()
                     .unwrap();
-                self.inner.append_from_haudio::<f64>(haudio);
+                self.0.append_from_harray::<f64>(harray, sr);
             }
-            _ => unreachable!(),
+            _ => panic!("Not a valid HDataType."),
         }
     }
 
@@ -106,8 +103,8 @@ impl HAudioSink {
     /// _________
     ///
     pub fn append_from_file(&self, fpath: &str) {
-        let haudio = decode::<f32>(fpath, None, None).unwrap();
-        self.inner.append_from_haudio(&haudio);
+        let (harray, sr) = decode::<f32>(fpath).unwrap();
+        self.0.append_from_harray(&harray, sr);
     }
 
     /// HAudioSink
@@ -132,7 +129,7 @@ impl HAudioSink {
     /// _________
     ///
     pub fn play(&self) {
-        self.inner.play();
+        self.0.play();
     }
 
     /// HAudioSink
@@ -158,7 +155,7 @@ impl HAudioSink {
     /// _________
     ///
     pub fn stop(&self) {
-        self.inner.stop();
+        self.0.stop();
     }
 
     /// HAudioSink
@@ -183,7 +180,7 @@ impl HAudioSink {
     /// _________
     ///
     pub fn pause(&self) {
-        self.inner.pause();
+        self.0.pause();
     }
 
     /// HAudioSink
@@ -211,7 +208,7 @@ impl HAudioSink {
     /// _________
     ///
     pub fn is_paused(&self) -> bool {
-        self.inner.is_paused()
+        self.0.is_paused()
     }
 
     /// HAudioSink
@@ -237,7 +234,7 @@ impl HAudioSink {
     /// _________
     ///
     pub fn volume(&self) -> f64 {
-        self.inner.volume() as f64
+        self.0.volume() as f64
     }
 
     /// HAudioSink
@@ -265,7 +262,7 @@ impl HAudioSink {
     /// _________
     ///
     pub fn set_volume(&self, value: f64) {
-        self.inner.set_volume(value as f32);
+        self.0.set_volume(value as f32);
     }
 
     /// HAudioSink
@@ -291,7 +288,7 @@ impl HAudioSink {
     /// _________
     ///
     pub fn speed(&self) -> f64 {
-        self.inner.speed() as f64
+        self.0.speed() as f64
     }
 
     /// HAudioSink
@@ -319,7 +316,7 @@ impl HAudioSink {
     /// _________
     ///
     pub fn set_speed(&self, value: f64) {
-        self.inner.set_speed(value as f32);
+        self.0.set_speed(value as f32);
     }
 
     /// HAudioSink
@@ -340,7 +337,7 @@ impl HAudioSink {
     /// _________
     ///
     pub fn sleep_until_end(&self) {
-        self.inner.sleep_until_end();
+        self.0.sleep_until_end();
     }
 
     /// HAudioSink
@@ -367,7 +364,7 @@ impl HAudioSink {
     /// _________
     ///
     pub fn len(&self) -> i32 {
-        self.inner.len() as i32
+        self.0.len() as i32
     }
 
     /// HAudioSink
@@ -391,7 +388,7 @@ impl HAudioSink {
     /// _________
     ///
     pub fn is_empty(&self) -> bool {
-        self.inner.is_empty()
+        self.0.is_empty()
     }
 
     /// HAudioSink
@@ -414,7 +411,7 @@ impl HAudioSink {
     /// _________
     ///
     pub fn clear(&self) {
-        self.inner.clear()
+        self.0.clear()
     }
 
     /// HAudioSink
@@ -440,7 +437,7 @@ impl HAudioSink {
     /// _________
     ///
     pub fn skip_one(&self) {
-        self.inner.skip_one()
+        self.0.skip_one()
     }
 
     /// HAudioSink
