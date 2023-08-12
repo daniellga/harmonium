@@ -46,20 +46,25 @@ impl HArray {
         assert!(robj.is_array());
 
         // Ok to unwrap since it was checked that robj is an array.
-        let mut dim: Vec<usize> = robj.dim().unwrap().iter().map(|z| z.0 as usize).collect();
+        let mut dim: Vec<usize> = robj
+            .dim()
+            .unwrap()
+            .iter()
+            .map(|z| z.inner() as usize)
+            .collect();
         dim.reverse();
 
         match (robj.rtype(), dtype) {
             (Rtype::Doubles, HDataType::Float32) => {
                 let slice: &[f64] = robj.as_typed_slice().unwrap();
                 let v: Vec<f32> = slice.iter().map(|x| *x as f32).collect();
-                let harray = harmonium_core::array::HArray::new_from_shape_vec(&dim, v).unwrap();
+                let harray = harmonium_core::array::HArray::new_from_shape_vec(dim, v).unwrap();
                 let data = Arc::new(harray);
                 HArray(data)
             }
             (Rtype::Doubles, HDataType::Float64) => {
                 let v: Vec<f64> = robj.as_real_vector().unwrap();
-                let harray = harmonium_core::array::HArray::new_from_shape_vec(&dim, v).unwrap();
+                let harray = harmonium_core::array::HArray::new_from_shape_vec(dim, v).unwrap();
                 let data = Arc::new(harray);
                 HArray(data)
             }
@@ -67,9 +72,9 @@ impl HArray {
                 let slice: &[Rcplx] = robj.as_typed_slice().unwrap();
                 let v: Vec<Complex<f32>> = slice
                     .iter()
-                    .map(|z| Complex::new(z.re().0 as f32, z.im().0 as f32))
+                    .map(|z| Complex::new(z.re().inner() as f32, z.im().inner() as f32))
                     .collect();
-                let harray = harmonium_core::array::HArray::new_from_shape_vec(&dim, v).unwrap();
+                let harray = harmonium_core::array::HArray::new_from_shape_vec(dim, v).unwrap();
                 let data = Arc::new(harray);
                 HArray(data)
             }
@@ -77,9 +82,9 @@ impl HArray {
                 let slice: &[Rcplx] = robj.as_typed_slice().unwrap();
                 let v: Vec<Complex<f64>> = slice
                     .iter()
-                    .map(|z| Complex::new(z.re().0 as f64, z.im().0 as f64))
+                    .map(|z| Complex::new(z.re().inner(), z.im().inner()))
                     .collect();
-                let harray = harmonium_core::array::HArray::new_from_shape_vec(&dim, v).unwrap();
+                let harray = harmonium_core::array::HArray::new_from_shape_vec(dim, v).unwrap();
                 let data = Arc::new(harray);
                 HArray(data)
             }
@@ -107,8 +112,10 @@ impl HArray {
     ///
     /// _________
     ///
-    pub fn len(&self) -> i32 {
-        self.0.len()
+    pub fn len(&self) -> Robj {
+        let len = self.0.len();
+        let rint = Rint::from(len);
+        rint.into()
     }
 
     /// HArray
@@ -166,8 +173,10 @@ impl HArray {
     ///
     /// _________
     ///
-    pub fn eq(&self, other: &HArray) -> bool {
-        self.0.eq(&other.0)
+    pub fn eq(&self, other: &HArray) -> Robj {
+        let eq = self.0.eq(&other.0);
+        let rbool = Rbool::from(eq);
+        rbool.into()
     }
 
     /// HArray
@@ -201,8 +210,10 @@ impl HArray {
     ///
     /// _________
     ///
-    pub fn ne(&self, other: &HArray) -> bool {
-        self.0.ne(&other.0)
+    pub fn ne(&self, other: &HArray) -> Robj {
+        let ne = self.0.ne(&other.0);
+        let rbool = Rbool::from(ne);
+        rbool.into()
     }
 
     /// HArray
@@ -318,8 +329,10 @@ impl HArray {
     ///
     /// _________
     ///
-    pub fn is_shared(&self) -> bool {
-        Arc::weak_count(&self.0) + Arc::strong_count(&self.0) != 1
+    pub fn is_shared(&self) -> Robj {
+        let bool = Arc::weak_count(&self.0) + Arc::strong_count(&self.0) != 1;
+        let rbool = Rbool::from(bool);
+        rbool.into()
     }
 }
 

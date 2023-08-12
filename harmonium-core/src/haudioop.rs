@@ -2,7 +2,7 @@ use crate::{
     array::HArray,
     errors::{HError, HResult},
 };
-use ndarray::Axis;
+use ndarray::{Axis, Ix1, Ix2, IxDyn};
 use num_traits::{Float, FloatConst, FromPrimitive};
 
 pub trait HAudioOp<T>
@@ -12,10 +12,94 @@ where
     fn nchannels(&self) -> usize;
     fn nframes(&self) -> usize;
     fn db_to_power(&mut self, reference: T);
-    fn to_mono(&mut self) -> HResult<()>;
+    fn to_mono(&self) -> HResult<HArray<T, Ix1>>;
 }
 
-impl<T> HAudioOp<T> for HArray<T>
+pub trait HAudioOpDyn<T>
+where
+    T: Float + FloatConst + FromPrimitive,
+{
+    fn nchannels(&self) -> usize;
+    fn nframes(&self) -> usize;
+    fn db_to_power(&mut self, reference: T);
+    fn to_mono(&self) -> HResult<HArray<T, IxDyn>>;
+}
+
+pub enum Audio<'a, T>
+where
+    T: Float + FloatConst,
+{
+    D1(&'a HArray<T, Ix2>),
+    D2(&'a HArray<T, Ix2>),
+    Dyn(&'a HArray<T, IxDyn>),
+}
+
+impl<T> HAudioOp<T> for HArray<T, Ix1>
+where
+    T: Float + FloatConst + FromPrimitive,
+{
+    /// The number of channels.
+    fn nchannels(&self) -> usize {
+        1
+    }
+
+    /// The number of frames.
+    fn nframes(&self) -> usize {
+        self.len()
+    }
+
+    /// Converts from dB to power.
+    /// $db_to_power(x) = reference * 10.0**(x * 0.1)$
+    fn db_to_power(&mut self, reference: T) {
+        let a = T::from(10).unwrap();
+        let b = T::from(0.1).unwrap();
+
+        self.0.mapv_inplace(|x| reference * a.powf(b * x));
+    }
+
+    fn to_mono(&self) -> HResult<HArray<T, Ix1>> {
+        // To return an error is a design choice. This wasn't supposed to error.
+        Err(HError::OutOfSpecError(
+            "The length of the axis is zero.".into(),
+        ))
+    }
+}
+
+impl<T> HAudioOp<T> for HArray<T, Ix2>
+where
+    T: Float + FloatConst + FromPrimitive,
+{
+    /// The number of channels.
+    fn nchannels(&self) -> usize {
+        self.0.nrows()
+    }
+
+    /// The number of frames.
+    fn nframes(&self) -> usize {
+        self.0.ncols()
+    }
+
+    /// Converts from dB to power.
+    /// $db_to_power(x) = reference * 10.0**(x * 0.1)$
+    fn db_to_power(&mut self, reference: T) {
+        let a = T::from(10).unwrap();
+        let b = T::from(0.1).unwrap();
+
+        self.0.mapv_inplace(|x| reference * a.powf(b * x));
+    }
+
+    fn to_mono(&self) -> HResult<HArray<T, Ix1>> {
+        // Ok to unwrap. This is infallible.
+        let harray = self
+            .0
+            .mean_axis(ndarray::Axis(0))
+            .ok_or_else(|| HError::OutOfSpecError("The length of the axis is zero.".into()))
+            .unwrap();
+        Ok(HArray(harray.into()))
+    }
+}
+
+impl<T> HAudioOpDyn<T> for HArray<T, IxDyn>
 where
     T: Float + FloatConst + FromPrimitive,
 {
@@ -24,7 +108,7 @@ where
         self.0.len_of(Axis(0))
     }
 
-    /// The number of channels.
+    /// The number of frames.
     fn nframes(&self) -> usize {
         self.0.len_of(Axis(1))
     }
@@ -38,13 +122,12 @@ where
         self.0.mapv_inplace(|x| reference * a.powf(b * x));
     }
 
-    fn to_mono(&mut self) -> HResult<()> {
+    fn to_mono(&self) -> HResult<HArray<T, IxDyn>> {
         let harray = self
             .0
             .mean_axis(ndarray::Axis(0))
             .ok_or_else(|| HError::OutOfSpecError("The length of the axis is zero.".into()))?;
-        self.0 = harray.into();
-        Ok(())
+        Ok(HArray(harray.into()))
     }
 }
 
@@ -56,11 +139,11 @@ mod tests {
     #[test]
     fn db_to_power_test() {
         let mut lhs =
-            HArray::new_from_shape_vec(&[2, 4], vec![1., 2., 3., 4., 5., 6., 7., 8.]).unwrap();
+            HArray::new_from_shape_vec((2, 4), vec![1., 2., 3., 4., 5., 6., 7., 8.]).unwrap();
         lhs.db_to_power(1.0);
 
         let rhs = HArray::new_from_shape_vec(
-            &[2, 4],
+            (2, 4),
             vec![
                 1.258925, 1.584893, 1.995262, 2.511886, 3.162278, 3.981072, 5.011872, 6.309574,
             ],
@@ -72,15 +155,15 @@ mod tests {
 
     #[test]
     fn to_mono_test() {
-        let mut lhs: HArray<f64> = HArray::new_from_shape_vec(
-            &[3, 4],
+        let lhs: HArray<f64, Ix2> = HArray::new_from_shape_vec(
+            (3, 4),
             vec![1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12.],
         )
         .unwrap();
-        lhs.to_mono().unwrap();
+        let lhs = lhs.to_mono().unwrap();
 
-        let rhs: HArray<f64> = HArray::new_from_shape_vec(
-            &[4],
+        let rhs: HArray<f64, Ix1> = HArray::new_from_shape_vec(
+            4,
             vec![
                 (1. + 5. + 9.) / 3.,
                 (2. + 6. + 10.) / 3.,

@@ -2,7 +2,7 @@ use harmonium_core::{
     array::HArray,
     errors::{HError, HResult},
 };
-use ndarray::ArcArray1;
+use ndarray::{ArcArray1, Ix1};
 use num_traits::{Float, FloatConst};
 use realfft::{num_complex::Complex, FftNum, RealFftPlanner};
 use rustfft::FftPlanner;
@@ -34,7 +34,7 @@ pub enum WindowType {
 /// `npoints` - Number of points in the output window.
 /// `window_type` - When `WindowType::Symmetric`, generates a symmetric window, for use in filter design.
 ///                 When `WindowType::Periodic`, generates a periodic window, for use in spectral analysis.
-pub fn barthann<T>(npoints: usize, window_type: WindowType) -> HArray<T>
+pub fn barthann<T>(npoints: usize, window_type: WindowType) -> HArray<T, Ix1>
 where
     T: Float + FloatConst,
 {
@@ -58,10 +58,10 @@ where
         .collect();
 
     // Ok to unwrap.
-    HArray::new_from_shape_vec(&[npoints], window).unwrap()
+    HArray::new_from_shape_vec(npoints, window).unwrap()
 }
 
-pub fn barthann2<T>(npoints: usize, window_type: WindowType) -> HArray<T>
+pub fn barthann2<T>(npoints: usize, window_type: WindowType) -> HArray<T, Ix1>
 where
     T: Float + FloatConst,
 {
@@ -85,7 +85,7 @@ where
         a - b * fac + c * (pi2 * fac).cos()
     });
 
-    HArray(window.into_dyn())
+    HArray(window)
 }
 
 /// Returns a Bartlett window.
@@ -115,7 +115,7 @@ where
 /// `npoints` - Number of points in the output window.
 /// `window_type` - When `WindowType::Symmetric`, generates a symmetric window, for use in filter design.
 ///                 When `WindowType::Periodic`, generates a periodic window, for use in spectral analysis.
-pub fn bartlett<T>(npoints: usize, window_type: WindowType) -> HArray<T>
+pub fn bartlett<T>(npoints: usize, window_type: WindowType) -> HArray<T, Ix1>
 where
     T: Float + FloatConst,
 {
@@ -137,7 +137,7 @@ where
         })
         .collect();
 
-    HArray::new_from_shape_vec(&[npoints], window).unwrap()
+    HArray::new_from_shape_vec(npoints, window).unwrap()
 }
 
 /// Returns a Blackman window.
@@ -170,7 +170,7 @@ where
 /// `npoints` - Number of points in the output window.
 /// `window_type` - When `WindowType::Symmetric`, generates a symmetric window, for use in filter design.
 ///                 When `WindowType::Periodic`, generates a periodic window, for use in spectral analysis.
-pub fn blackman<T>(npoints: usize, window_type: WindowType) -> HArray<T>
+pub fn blackman<T>(npoints: usize, window_type: WindowType) -> HArray<T, Ix1>
 where
     T: Float + FloatConst,
 {
@@ -192,7 +192,7 @@ where
         })
         .collect();
 
-    HArray::new_from_shape_vec(&[npoints], window).unwrap()
+    HArray::new_from_shape_vec(npoints, window).unwrap()
 }
 
 /// Returns a minimum 4-term Blackman-Harris window.
@@ -204,7 +204,7 @@ where
 /// `npoints` - Number of points in the output window.
 /// `window_type` - When `WindowType::Symmetric`, generates a symmetric window, for use in filter design.
 ///                 When `WindowType::Periodic`, generates a periodic window, for use in spectral analysis.
-pub fn blackmanharris<T>(npoints: usize, window_type: WindowType) -> HArray<T>
+pub fn blackmanharris<T>(npoints: usize, window_type: WindowType) -> HArray<T, Ix1>
 where
     T: Float + FloatConst,
 {
@@ -229,7 +229,7 @@ where
         })
         .collect();
 
-    HArray::new_from_shape_vec(&[npoints], window).unwrap()
+    HArray::new_from_shape_vec(npoints, window).unwrap()
 }
 
 /// Returns a Bohman window.
@@ -241,7 +241,7 @@ where
 /// `npoints` - Number of points in the output window.
 /// `window_type` - When `WindowType::Symmetric`, generates a symmetric window, for use in filter design.
 ///                 When `WindowType::Periodic`, generates a periodic window, for use in spectral analysis.
-pub fn bohman<T>(npoints: usize, window_type: WindowType) -> HArray<T>
+pub fn bohman<T>(npoints: usize, window_type: WindowType) -> HArray<T, Ix1>
 where
     T: Float + FloatConst,
 {
@@ -269,7 +269,7 @@ where
         }
     }
 
-    HArray::new_from_shape_vec(&[npoints], window).unwrap()
+    HArray::new_from_shape_vec(npoints, window).unwrap()
 }
 
 /// Returns a boxcar or rectangular window.
@@ -278,14 +278,14 @@ where
 ///
 /// # Arguments
 /// `npoints` - Number of points in the output window.
-pub fn boxcar<T>(npoints: usize) -> HArray<T>
+pub fn boxcar<T>(npoints: usize) -> HArray<T, Ix1>
 where
     T: Float + FloatConst,
 {
     let one = T::from(1.0).unwrap();
     let window: Vec<T> = (0..npoints).map(|_| one).collect();
 
-    HArray::new_from_shape_vec(&[npoints], window).unwrap()
+    HArray::new_from_shape_vec(npoints, window).unwrap()
 }
 
 /// Returns a window with a simple cosine shape.
@@ -297,7 +297,7 @@ where
 /// `npoints` - Number of points in the output window.
 /// `window_type` - When `WindowType::Symmetric`, generates a symmetric window, for use in filter design.
 ///                 When `WindowType::Periodic`, generates a periodic window, for use in spectral analysis.
-pub fn cosine<T>(npoints: usize, window_type: WindowType) -> HArray<T>
+pub fn cosine<T>(npoints: usize, window_type: WindowType) -> HArray<T, Ix1>
 where
     T: Float + FloatConst,
 {
@@ -313,7 +313,7 @@ where
         .map(|x| (pi / (np_f) * (T::from(x).unwrap() + half)).sin())
         .collect();
 
-    HArray::new_from_shape_vec(&[npoints], window).unwrap()
+    HArray::new_from_shape_vec(npoints, window).unwrap()
 }
 
 /// Returns a Dolph-Chebyshev window.
@@ -351,7 +351,7 @@ where
 /// `at` - Attenuation in dB.
 /// `window_type` - When `WindowType::Symmetric`, generates a symmetric window, for use in filter design.
 ///                 When `WindowType::Periodic`, generates a periodic window, for use in spectral analysis.
-pub fn chebwin<T>(npoints: usize, at: T, window_type: WindowType) -> HArray<T>
+pub fn chebwin<T>(npoints: usize, at: T, window_type: WindowType) -> HArray<T, Ix1>
 where
     T: Float + FloatConst + FftNum,
 {
@@ -429,7 +429,7 @@ where
         *z = *z / max;
     });
 
-    HArray::new_from_shape_vec(&[npoints], window).unwrap()
+    HArray::new_from_shape_vec(npoints, window).unwrap()
 }
 
 /// Returns an exponential (or Poisson) window.
@@ -464,7 +464,7 @@ pub fn exponential<T>(
     center: Option<T>,
     tau: T,
     window_type: WindowType,
-) -> HResult<HArray<T>>
+) -> HResult<HArray<T, Ix1>>
 where
     T: Float + FloatConst,
 {
@@ -488,7 +488,7 @@ where
         })
         .collect();
 
-    Ok(HArray::new_from_shape_vec(&[npoints], window).unwrap())
+    Ok(HArray::new_from_shape_vec(npoints, window).unwrap())
 }
 
 /// Returns a Hann window.
@@ -506,7 +506,7 @@ where
 /// `npoints` - Number of points in the output window.
 /// `window_type` - When `WindowType::Symmetric`, generates a symmetric window, for use in filter design.
 ///                 When `WindowType::Periodic`, generates a periodic window, for use in spectral analysis.
-pub fn hann<T>(npoints: usize, window_type: WindowType) -> HArray<T>
+pub fn hann<T>(npoints: usize, window_type: WindowType) -> HArray<T, Ix1>
 where
     T: Float + FloatConst,
 {
@@ -522,7 +522,7 @@ where
         .map(|x| half - half * (pi2 * T::from(x).unwrap() / (np_f)).cos())
         .collect();
 
-    HArray::new_from_shape_vec(&[npoints], window).unwrap()
+    HArray::new_from_shape_vec(npoints, window).unwrap()
 }
 
 /// Returns a triangular window.
@@ -534,7 +534,7 @@ where
 /// `npoints` - Number of points in the output window.
 /// `window_type` - When `WindowType::Symmetric`, generates a symmetric window, for use in filter design.
 ///                 When `WindowType::Periodic`, generates a periodic window, for use in spectral analysis.
-pub fn triangle<T>(npoints: usize, window_type: WindowType) -> HArray<T>
+pub fn triangle<T>(npoints: usize, window_type: WindowType) -> HArray<T, Ix1>
 where
     T: Float + FloatConst,
 {
@@ -571,7 +571,7 @@ where
         }
     }
 
-    HArray::new_from_shape_vec(&[npoints], window).unwrap()
+    HArray::new_from_shape_vec(npoints, window).unwrap()
 }
 
 //pub fn kaiser<T>(npoints: usize, beta: T, window_type: WindowType) -> Vec<T>
@@ -609,9 +609,9 @@ mod tests {
 
     #[test]
     fn bartlett_test() {
-        let v_symmetric: HArray<f32> = bartlett(8, WindowType::Symmetric);
+        let v_symmetric: HArray<f32, _> = bartlett(8, WindowType::Symmetric);
         let rhs = HArray::new_from_shape_vec(
-            &[8],
+            8,
             vec![
                 0.0, 0.2857143, 0.5714286, 0.85714287, 0.8571428, 0.57142854, 0.28571427, 0.0,
             ],
@@ -619,17 +619,17 @@ mod tests {
         .unwrap();
         assert!(compare_harray(v_symmetric, rhs));
 
-        let v_periodic: HArray<f32> = bartlett(8, WindowType::Periodic);
-        let rhs = HArray::new_from_shape_vec(&[8], vec![0., 0.25, 0.5, 0.75, 1., 0.75, 0.5, 0.25])
-            .unwrap();
+        let v_periodic: HArray<f32, _> = bartlett(8, WindowType::Periodic);
+        let rhs =
+            HArray::new_from_shape_vec(8, vec![0., 0.25, 0.5, 0.75, 1., 0.75, 0.5, 0.25]).unwrap();
         assert!(compare_harray(v_periodic, rhs));
     }
 
     #[test]
     fn barthann_test() {
-        let v_symmetric: HArray<f32> = barthann(8, WindowType::Symmetric);
+        let v_symmetric: HArray<f32, _> = barthann(8, WindowType::Symmetric);
         let rhs = HArray::new_from_shape_vec(
-            &[8],
+            8,
             vec![
                 0.0, 0.21164526, 0.60170084, 0.92808247, 0.9280824, 0.6017007, 0.21164526, 0.0,
             ],
@@ -637,9 +637,9 @@ mod tests {
         .unwrap();
         assert!(compare_harray(v_symmetric, rhs));
 
-        let v_periodic: HArray<f32> = barthann(8, WindowType::Periodic);
+        let v_periodic: HArray<f32, _> = barthann(8, WindowType::Periodic);
         let rhs = HArray::new_from_shape_vec(
-            &[8],
+            8,
             vec![
                 0.0, 0.17129943, 0.49999997, 0.82870054, 1.0, 0.82870054, 0.49999997, 0.17129943,
             ],
@@ -650,9 +650,9 @@ mod tests {
 
     #[test]
     fn blackman_test() {
-        let v_symmetric: HArray<f32> = blackman(8, WindowType::Symmetric);
+        let v_symmetric: HArray<f32, _> = blackman(8, WindowType::Symmetric);
         let rhs = HArray::new_from_shape_vec(
-            &[8],
+            8,
             vec![
                 -1.4901161e-8,
                 0.090453416,
@@ -667,9 +667,9 @@ mod tests {
         .unwrap();
         assert!(compare_harray(v_symmetric, rhs));
 
-        let v_periodic: HArray<f32> = blackman(8, WindowType::Periodic);
+        let v_periodic: HArray<f32, _> = blackman(8, WindowType::Periodic);
         let rhs = HArray::new_from_shape_vec(
-            &[8],
+            8,
             vec![
                 -1.4901161e-8,
                 0.0664466,
@@ -687,9 +687,9 @@ mod tests {
 
     #[test]
     fn blackmanharris_test() {
-        let v_symmetric: HArray<f32> = blackmanharris(8, WindowType::Symmetric);
+        let v_symmetric: HArray<f32, _> = blackmanharris(8, WindowType::Symmetric);
         let rhs = HArray::new_from_shape_vec(
-            &[8],
+            8,
             vec![
                 5.9968792e-5,
                 0.033391707,
@@ -704,9 +704,9 @@ mod tests {
         .unwrap();
         assert!(compare_harray(v_symmetric, rhs));
 
-        let v_periodic: HArray<f32> = blackmanharris(8, WindowType::Periodic);
+        let v_periodic: HArray<f32, _> = blackmanharris(8, WindowType::Periodic);
         let rhs = HArray::new_from_shape_vec(
-            &[8],
+            8,
             vec![
                 5.9968792e-5,
                 0.02173582,
@@ -724,9 +724,9 @@ mod tests {
 
     #[test]
     fn bohman_test() {
-        let v_symmetric: HArray<f32> = bohman(8, WindowType::Symmetric);
+        let v_symmetric: HArray<f32, _> = bohman(8, WindowType::Symmetric);
         let rhs = HArray::new_from_shape_vec(
-            &[8],
+            8,
             vec![
                 0.0,
                 0.070724666,
@@ -741,9 +741,9 @@ mod tests {
         .unwrap();
         assert!(compare_harray(v_symmetric, rhs));
 
-        let v_periodic: HArray<f32> = bohman(8, WindowType::Periodic);
+        let v_periodic: HArray<f32, _> = bohman(8, WindowType::Periodic);
         let rhs = HArray::new_from_shape_vec(
-            &[8],
+            8,
             vec![
                 0.0,
                 0.048302367,
@@ -761,16 +761,16 @@ mod tests {
 
     #[test]
     fn boxcar_test() {
-        let v: HArray<f32> = boxcar(8);
-        let rhs = HArray::new_from_shape_vec(&[8], vec![1., 1., 1., 1., 1., 1., 1., 1.]).unwrap();
+        let v: HArray<f32, _> = boxcar(8);
+        let rhs = HArray::new_from_shape_vec(8, vec![1., 1., 1., 1., 1., 1., 1., 1.]).unwrap();
         assert!(compare_harray(v, rhs));
     }
 
     #[test]
     fn chebwin_test() {
-        let v_symmetric: HArray<f32> = chebwin(8, 70., WindowType::Symmetric);
+        let v_symmetric: HArray<f32, _> = chebwin(8, 70., WindowType::Symmetric);
         let rhs = HArray::new_from_shape_vec(
-            &[8],
+            8,
             vec![
                 0.05397676, 0.27194428, 0.66340005, 1.0, 1.0, 0.66340005, 0.27194428, 0.05397676,
             ],
@@ -778,9 +778,9 @@ mod tests {
         .unwrap();
         assert!(compare_harray(v_symmetric, rhs));
 
-        let v_symmetric: HArray<f32> = chebwin(9, 70., WindowType::Symmetric);
+        let v_symmetric: HArray<f32, _> = chebwin(9, 70., WindowType::Symmetric);
         let rhs = HArray::new_from_shape_vec(
-            &[9],
+            9,
             vec![
                 0.03807165, 0.19412002, 0.5034264, 0.8467195, 1.0, 0.8467195, 0.5034264,
                 0.19412002, 0.03807165,
@@ -789,9 +789,9 @@ mod tests {
         .unwrap();
         assert!(compare_harray(v_symmetric, rhs));
 
-        let v_periodic: HArray<f32> = chebwin(8, 70., WindowType::Periodic);
+        let v_periodic: HArray<f32, _> = chebwin(8, 70., WindowType::Periodic);
         let rhs = HArray::new_from_shape_vec(
-            &[8],
+            8,
             vec![
                 0.03807165, 0.19412002, 0.5034264, 0.8467195, 1.0, 0.8467195, 0.5034264, 0.19412002,
             ],
@@ -799,9 +799,9 @@ mod tests {
         .unwrap();
         assert!(compare_harray(v_periodic, rhs));
 
-        let v_periodic: HArray<f32> = chebwin(9, 70., WindowType::Periodic);
+        let v_periodic: HArray<f32, _> = chebwin(9, 70., WindowType::Periodic);
         let rhs = HArray::new_from_shape_vec(
-            &[9],
+            9,
             vec![
                 0.030656429,
                 0.15511018,
@@ -820,13 +820,13 @@ mod tests {
 
     #[test]
     fn exponential_test() {
-        let v_symmetric: HResult<HArray<f32>> =
+        let v_symmetric: HResult<HArray<f32, _>> =
             exponential(8, Some(1.0), 3.0, WindowType::Symmetric);
         assert!(v_symmetric.is_err());
 
-        let v_symmetric: HArray<f32> = exponential(8, None, 3.0, WindowType::Symmetric).unwrap();
+        let v_symmetric: HArray<f32, _> = exponential(8, None, 3.0, WindowType::Symmetric).unwrap();
         let rhs = HArray::new_from_shape_vec(
-            &[8],
+            8,
             vec![
                 0.31140324, 0.4345982, 0.60653067, 0.84648174, 0.84648174, 0.60653067, 0.4345982,
                 0.31140324,
@@ -835,9 +835,10 @@ mod tests {
         .unwrap();
         assert!(compare_harray(v_symmetric, rhs));
 
-        let v_periodic: HArray<f32> = exponential(8, Some(1.0), 3.0, WindowType::Periodic).unwrap();
+        let v_periodic: HArray<f32, _> =
+            exponential(8, Some(1.0), 3.0, WindowType::Periodic).unwrap();
         let rhs = HArray::new_from_shape_vec(
-            &[8],
+            8,
             vec![
                 0.7165313, 1.0, 0.7165313, 0.5134171, 0.36787945, 0.26359713, 0.18887562,
                 0.13533528,
@@ -846,9 +847,9 @@ mod tests {
         .unwrap();
         assert!(compare_harray(v_periodic, rhs));
 
-        let v_periodic: HArray<f32> = exponential(8, None, 3.0, WindowType::Periodic).unwrap();
+        let v_periodic: HArray<f32, _> = exponential(8, None, 3.0, WindowType::Periodic).unwrap();
         let rhs = HArray::new_from_shape_vec(
-            &[8],
+            8,
             vec![
                 0.26359713, 0.36787945, 0.5134171, 0.7165313, 1.0, 0.7165313, 0.5134171, 0.36787945,
             ],
@@ -857,9 +858,10 @@ mod tests {
         assert!(compare_harray(v_periodic, rhs));
 
         // test with center = 0.
-        let v_periodic: HArray<f32> = exponential(8, Some(0.0), 3.0, WindowType::Periodic).unwrap();
+        let v_periodic: HArray<f32, _> =
+            exponential(8, Some(0.0), 3.0, WindowType::Periodic).unwrap();
         let rhs = HArray::new_from_shape_vec(
-            &[8],
+            8,
             vec![
                 1.0,
                 0.7165313,
@@ -875,9 +877,10 @@ mod tests {
         assert!(compare_harray(v_periodic, rhs));
 
         // test with center = 0.
-        let v_periodic: HArray<f32> = exponential(9, Some(0.0), 3.0, WindowType::Periodic).unwrap();
+        let v_periodic: HArray<f32, _> =
+            exponential(9, Some(0.0), 3.0, WindowType::Periodic).unwrap();
         let rhs = HArray::new_from_shape_vec(
-            &[9],
+            9,
             vec![
                 1.0,
                 0.7165313,
@@ -896,9 +899,9 @@ mod tests {
 
     #[test]
     fn cosine_test() {
-        let v_symmetric: HArray<f32> = cosine(8, WindowType::Symmetric);
+        let v_symmetric: HArray<f32, _> = cosine(8, WindowType::Symmetric);
         let rhs = HArray::new_from_shape_vec(
-            &[8],
+            8,
             vec![
                 0.19509032, 0.55557024, 0.83146966, 0.9807853, 0.98078525, 0.83146954, 0.5555702,
                 0.19509031,
@@ -907,9 +910,9 @@ mod tests {
         .unwrap();
         assert!(compare_harray(v_symmetric, rhs));
 
-        let v_periodic: HArray<f32> = cosine(8, WindowType::Periodic);
+        let v_periodic: HArray<f32, _> = cosine(8, WindowType::Periodic);
         let rhs = HArray::new_from_shape_vec(
-            &[8],
+            8,
             vec![
                 0.1736482, 0.5, 0.7660445, 0.9396927, 1.0, 0.9396926, 0.76604444, 0.49999982,
             ],
@@ -920,9 +923,9 @@ mod tests {
 
     #[test]
     fn hann_test() {
-        let v_symmetric: HArray<f32> = hann(8, WindowType::Symmetric);
+        let v_symmetric: HArray<f32, _> = hann(8, WindowType::Symmetric);
         let rhs = HArray::new_from_shape_vec(
-            &[8],
+            8,
             vec![
                 0., 0.1882551, 0.6112605, 0.9504844, 0.9504844, 0.6112603, 0.18825516, 0.,
             ],
@@ -930,9 +933,9 @@ mod tests {
         .unwrap();
         assert!(compare_harray(v_symmetric, rhs));
 
-        let v_periodic: HArray<f32> = hann(8, WindowType::Periodic);
+        let v_periodic: HArray<f32, _> = hann(8, WindowType::Periodic);
         let rhs = HArray::new_from_shape_vec(
-            &[8],
+            8,
             vec![
                 0., 0.14644662, 0.5, 0.8535534, 1., 0.8535533, 0.5, 0.1464465,
             ],
@@ -943,17 +946,15 @@ mod tests {
 
     #[test]
     fn triangle_test() {
-        let v_symmetric: HArray<f32> = triangle(10, WindowType::Symmetric);
-        let rhs = HArray::new_from_shape_vec(
-            &[10],
-            vec![0.1, 0.3, 0.5, 0.7, 0.9, 0.9, 0.7, 0.5, 0.3, 0.1],
-        )
-        .unwrap();
+        let v_symmetric: HArray<f32, _> = triangle(10, WindowType::Symmetric);
+        let rhs =
+            HArray::new_from_shape_vec(10, vec![0.1, 0.3, 0.5, 0.7, 0.9, 0.9, 0.7, 0.5, 0.3, 0.1])
+                .unwrap();
         assert!(compare_harray(v_symmetric, rhs));
 
-        let v_symmetric: HArray<f32> = triangle(11, WindowType::Symmetric);
+        let v_symmetric: HArray<f32, _> = triangle(11, WindowType::Symmetric);
         let rhs = HArray::new_from_shape_vec(
-            &[11],
+            11,
             vec![
                 0.16666667,
                 0.33333333,
@@ -971,9 +972,9 @@ mod tests {
         .unwrap();
         assert!(compare_harray(v_symmetric, rhs));
 
-        let v_periodic: HArray<f32> = triangle(10, WindowType::Periodic);
+        let v_periodic: HArray<f32, _> = triangle(10, WindowType::Periodic);
         let rhs = HArray::new_from_shape_vec(
-            &[10],
+            10,
             vec![
                 0.16666667,
                 0.33333333,
@@ -990,9 +991,9 @@ mod tests {
         .unwrap();
         assert!(compare_harray(v_periodic, rhs));
 
-        let v_periodic: HArray<f32> = triangle(11, WindowType::Periodic);
+        let v_periodic: HArray<f32, _> = triangle(11, WindowType::Periodic);
         let rhs = HArray::new_from_shape_vec(
-            &[11],
+            11,
             vec![
                 0.083333336,
                 0.25,

@@ -1,25 +1,71 @@
 use harmonium_core::{array::HArray, errors::HResult, haudioop::HAudioOp};
+use ndarray::{Dimension, Ix1, Ix2};
 use num_traits::{Float, FloatConst};
 use rubato::{
     FastFixedIn, FastFixedOut, FftFixedIn, FftFixedInOut, FftFixedOut, Resampler, Sample,
     SincFixedIn, SincFixedOut,
 };
 
-pub trait ProcessResampler<T>
+pub trait ProcessResampler<T, D>
 where
     T: Float + FloatConst + Sample,
+    D: Dimension,
 {
-    fn process_resampler(&mut self, harray: &mut HArray<T>) -> HResult<()>;
+    fn process_resampler(&mut self, harray: &mut HArray<T, D>) -> HResult<()>;
 }
 
 macro_rules! impl_process_resampler_fixed_in {
     ($($t:ty),+) => {
         $(
-            impl<T> ProcessResampler<T> for $t
+            impl<T> ProcessResampler<T, Ix1> for $t
             where
                 T: Float + FloatConst + Sample,
                 {
-                    fn process_resampler(&mut self, harray: &mut HArray<T>) -> HResult<()> {
+                    fn process_resampler(&mut self, harray: &mut HArray<T, Ix1>) -> HResult<()> {
+                        let length = harray.len();
+                        let input_frames_next = self.input_frames_next();
+                        let max_possible_frames_per_channel = self.output_frames_max();
+
+                        // The `filled` argument determines if the vectors should be pre-filled with zeros or not.
+                        // When false, the vectors are only allocated but returned empty.
+                        let mut input_buffer = self.input_buffer_allocate(false);
+                        let mut output_buffer = self.output_buffer_allocate(true);
+
+                        let mut v_out: Vec<Vec<T>> = vec![Vec::<T>::with_capacity(max_possible_frames_per_channel)];
+
+                        let steps = length / input_frames_next;
+
+                        // Ok to unwrap.
+                        let harray_slice = harray.as_slice().unwrap();
+
+                        for n in 0..steps {
+                            let col_chunks = harray_slice.chunks_exact(length);
+                            for (ib, cc) in input_buffer.iter_mut().zip(col_chunks) {
+                                ib.extend_from_slice(&cc[input_frames_next*n..input_frames_next*(n+1)]);
+                            }
+
+                            let (_, nbr_out) = self.process_into_buffer(&input_buffer, &mut output_buffer, None)?;
+
+                            for ((vo, ob), ib) in v_out.iter_mut().zip(output_buffer.iter()).zip(input_buffer.iter_mut()) {
+                                vo.extend_from_slice(&ob[0..nbr_out]);
+                                ib.clear();
+                            }
+                        }
+
+                        let v: Vec<T> = v_out.into_iter().flatten().collect();
+                        let length = v.len();
+
+                        *harray = HArray::new_from_shape_vec(length, v)?;
+
+                        Ok(())
+                    }
+                }
+
+            impl<T> ProcessResampler<T, Ix2> for $t
+            where
+                T: Float + FloatConst + Sample,
+                {
+                    fn process_resampler(&mut self, harray: &mut HArray<T, Ix2>) -> HResult<()> {
                         let nframes = harray.nframes();
                         let nchannels = harray.nchannels();
                         let input_frames_next = self.input_frames_next();
@@ -58,7 +104,7 @@ macro_rules! impl_process_resampler_fixed_in {
                         let v: Vec<T> = v_out.into_iter().flatten().collect();
                         let nframes = v.len() / nchannels;
 
-                        *harray = HArray::new_from_shape_vec(&[nchannels, nframes], v)?;
+                        *harray = HArray::new_from_shape_vec((nchannels, nframes), v)?;
 
                         Ok(())
                     }
@@ -77,11 +123,11 @@ impl_process_resampler_fixed_in!(
 macro_rules! impl_process_resampler_fixed_out {
     ($($t:ty),+) => {
         $(
-            impl<T> ProcessResampler<T> for $t
+            impl<T> ProcessResampler<T, Ix2> for $t
             where
                 T: Float + FloatConst + Sample,
                 {
-                    fn process_resampler(&mut self, harray: &mut HArray<T>) -> HResult<()> {
+                    fn process_resampler(&mut self, harray: &mut HArray<T, Ix2>) -> HResult<()> {
                         let nframes = harray.nframes();
                         let nchannels = harray.nchannels();
                         let mut start_idx = 0;
@@ -125,7 +171,7 @@ macro_rules! impl_process_resampler_fixed_out {
                         let v: Vec<T> = v_out.into_iter().flatten().collect();
                         let nframes = v.len() / nchannels;
 
-                        *harray = HArray::new_from_shape_vec(&[nchannels, nframes], v)?;
+                        *harray = HArray::new_from_shape_vec((nchannels, nframes), v)?;
 
                         Ok(())
                     }
@@ -153,7 +199,7 @@ mod tests {
         let length = 1024;
         let chunk_size = 512;
         let v: Vec<f64> = (0..length).map(|x| x as f64).collect();
-        let mut harray = HArray::new_from_shape_vec(&[2, length / 2], v).unwrap();
+        let mut harray = HArray::new_from_shape_vec((2, length / 2), v).unwrap();
         let params = SincInterpolationParameters {
             sinc_len: 256,
             f_cutoff: 0.95,
@@ -202,7 +248,7 @@ mod tests {
         let length = 2048;
         let chunk_size = 1024;
         let v: Vec<f64> = (0..length).map(|x| x as f64).collect();
-        let mut harray = HArray::new_from_shape_vec(&[2, length / 2], v).unwrap();
+        let mut harray = HArray::new_from_shape_vec((2, length / 2), v).unwrap();
         let mut resampler = FastFixedIn::<f64>::new(
             sr_out as f64 / sr_in as f64,
             2.0,
@@ -247,7 +293,7 @@ mod tests {
         let length = 2048;
         let chunk_size = 1024;
         let v: Vec<f64> = (0..length).map(|x| x as f64).collect();
-        let mut harray = HArray::new_from_shape_vec(&[2, length / 2], v).unwrap();
+        let mut harray = HArray::new_from_shape_vec((2, length / 2), v).unwrap();
         let mut resampler =
             FftFixedIn::<f64>::new(sr_in as usize, sr_out, chunk_size, 2, 2).unwrap();
 
@@ -280,7 +326,7 @@ mod tests {
         let length = 2048;
         let chunk_size = 512;
         let v: Vec<f64> = (0..length).map(|x| x as f64).collect();
-        let mut harray = HArray::new_from_shape_vec(&[2, length / 2], v).unwrap();
+        let mut harray = HArray::new_from_shape_vec((2, length / 2), v).unwrap();
         let mut resampler =
             FftFixedInOut::<f64>::new(sr_in as usize, sr_out, chunk_size, 2).unwrap();
 
@@ -324,7 +370,7 @@ mod tests {
 
         let length = resampler.input_frames_next() * 2;
         let v: Vec<f64> = (0..length).map(|x| x as f64).collect();
-        let mut harray = HArray::new_from_shape_vec(&[2, length / 2], v).unwrap();
+        let mut harray = HArray::new_from_shape_vec((2, length / 2), v).unwrap();
 
         resampler.process_resampler(&mut harray).unwrap();
 
@@ -372,7 +418,7 @@ mod tests {
 
         let length = resampler.input_frames_next() * 2;
         let v: Vec<f64> = (0..length).map(|x| x as f64).collect();
-        let mut harray = HArray::new_from_shape_vec(&[2, length / 2], v).unwrap();
+        let mut harray = HArray::new_from_shape_vec((2, length / 2), v).unwrap();
 
         resampler.process_resampler(&mut harray).unwrap();
 
@@ -411,7 +457,7 @@ mod tests {
 
         let length = resampler.input_frames_next() * 2;
         let v: Vec<f64> = (0..length).map(|x| x as f64).collect();
-        let mut harray = HArray::new_from_shape_vec(&[2, length / 2], v).unwrap();
+        let mut harray = HArray::new_from_shape_vec((2, length / 2), v).unwrap();
 
         resampler.process_resampler(&mut harray).unwrap();
 

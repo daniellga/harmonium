@@ -4,7 +4,7 @@ use harmonium_core::{
     array::HArray,
     errors::{HError, HResult},
 };
-use ndarray::ArcArray2;
+use ndarray::{ArcArray2, Ix2};
 use num_traits::{Float, FloatConst};
 use symphonia::core::{
     audio::SampleBuffer,
@@ -77,7 +77,7 @@ pub enum HMetadataType {
 /// //let test_file = "../testfiles/gs-16b-2c-44100hz.wav";
 /// //load(test_file, Some(1_f64), Some(1_f64))
 /// ```
-pub fn decode<T>(fpath: &str) -> HResult<(HArray<T>, u32)>
+pub fn decode<T>(fpath: &str) -> HResult<(HArray<T, Ix2>, u32)>
 where
     T: Float + FloatConst + ConvertibleSample,
 {
@@ -187,7 +187,7 @@ where
         }
     }
 
-    let harray = HArray(ndarray.into_dyn());
+    let harray = HArray(ndarray);
 
     Ok((harray, sr))
 }
@@ -320,7 +320,7 @@ impl<T> Iterator for StreamStruct<T>
 where
     T: Float + FloatConst + ConvertibleSample,
 {
-    type Item = HResult<HArray<T>>;
+    type Item = HResult<HArray<T, Ix2>>;
 
     fn next(&mut self) -> Option<Self::Item> {
         if self.nframes < self.frames {
@@ -358,7 +358,7 @@ where
                     }
 
                     self.nframes -= self.frames;
-                    let harray = HArray(ndarray.into_dyn());
+                    let harray = HArray(ndarray);
                     return Some(Ok(harray));
                 }
             };
@@ -427,7 +427,7 @@ where
                             }
 
                             self.nframes -= self.frames;
-                            let harray = HArray(ndarray.into_dyn());
+                            let harray = HArray(ndarray);
                             return Some(Ok(harray));
                         }
                     }

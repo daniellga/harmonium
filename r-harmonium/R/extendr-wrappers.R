@@ -237,5 +237,21 @@ HFft$fft_mut <- function(harray) invisible(.Call(wrap__HFft__fft_mut, harray))
 #' @export
 `[[.HFft` <- `$.HFft`
 
+HAudioOp <- new.env(parent = emptyenv())
+
+HAudioOp$nchannels <- function(harray) .Call(wrap__HAudioOp__nchannels, harray)
+
+HAudioOp$nframes <- function(harray) .Call(wrap__HAudioOp__nframes, harray)
+
+HAudioOp$db_to_power <- function(harray, reference) invisible(.Call(wrap__HAudioOp__db_to_power, harray, reference))
+
+HAudioOp$to_mono <- function(harray) invisible(.Call(wrap__HAudioOp__to_mono, harray))
+
+#' @export
+`$.HAudioOp` <- function (self, name) { func <- HAudioOp[[name]]; environment(func) <- environment(); func }
+
+#' @export
+`[[.HAudioOp` <- `$.HAudioOp`
+
 
 # nolint end

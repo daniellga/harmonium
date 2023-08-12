@@ -3,6 +3,7 @@ use extendr_api::prelude::*;
 mod generate_r_docs;
 mod harray;
 mod harrayr;
+mod haudioop;
 mod haudiosink;
 mod hdatatype;
 mod herror;
@@ -29,4 +30,5 @@ extendr_module! {
     use hmetadatatype;
     use hresamplertype;
     use hfft;
+    use haudioop;
 }

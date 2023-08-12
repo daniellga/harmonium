@@ -1,11 +1,13 @@
 use crate::array::HArray;
+use ndarray::Dimension;
 use num_traits::{Float, FloatConst};
 
-pub fn compare_harray<T>(lhs: HArray<T>, rhs: HArray<T>) -> bool
+pub fn compare_harray<T, D>(lhs: HArray<T, D>, rhs: HArray<T, D>) -> bool
 where
     T: Float + FloatConst,
+    D: Dimension,
 {
-    if lhs.shape() != rhs.shape() {
+    if lhs.0.raw_dim() != rhs.0.raw_dim() {
         return false;
     }
     let mut result = true;

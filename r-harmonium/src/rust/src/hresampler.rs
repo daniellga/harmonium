@@ -10,7 +10,6 @@ use rubato::{
 use std::any::Any;
 
 pub trait HResamplerR: Send {
-    fn as_any(&self) -> &dyn Any;
     fn process(&mut self, harray: &mut HArray);
     fn set_resample_ratio(&mut self, new_ratio: f64, ramp: bool);
     fn set_resample_ratio_relative(&mut self, rel_ratio: f64, ramp: bool);
@@ -658,10 +657,6 @@ macro_rules! impl_hresamplerfftr {
     ($(($t1:ty, $t2:ty, $e1:expr, $e2: expr, $e3:expr)),+) => {
         $(
             impl HResamplerR for $t1 {
-                fn as_any(&self) -> &dyn Any {
-                    self
-                }
-
                 fn process(&mut self, harray: &mut HArray) {
                     // Ok to unwrap.
                     // downcast_mut already checks if the HAudio and the Resampler have the same HDataType.
@@ -747,10 +742,6 @@ macro_rules! impl_hresamplersincr {
     ($(($t1:ty, $t2:ty, $e1:expr, $e2:expr, $e3: expr)),+) => {
         $(
             impl HResamplerR for $t1 {
-                fn as_any(&self) -> &dyn Any {
-                    self
-                }
-
                 fn process(&mut self, harray: &mut HArray) {
                     // Ok to unwrap.
                     // downcast_mut already checks if the HAudio and the HResampler have the same HDataType.

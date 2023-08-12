@@ -1,7 +1,6 @@
 use harmonium_core::{
-    array::HArray,
     errors::{HError, HResult},
-    haudioop::HAudioOp,
+    haudioop::{Audio, HAudioOp, HAudioOpDyn},
 };
 use ndarray::Array1;
 use num_traits::{Float, FloatConst, FromPrimitive};
@@ -28,33 +27,80 @@ impl HAudioSink {
     }
 
     /// Appends a sound to the queue of sounds to play.
-    pub fn append_from_harray<T>(&self, harray: &HArray<T>, sr: u32)
+    pub fn append_from_harray<T>(&self, audio: &Audio<T>, sr: u32)
     where
         T: Float + FloatConst + FromPrimitive,
     {
-        let nchannels = harray.nchannels();
-        let nframes = harray.nframes();
+        match audio {
+            Audio::D1(harray) => {
+                let nchannels = harray.nchannels();
+                let nframes = harray.nframes();
 
-        let mut ndarray = Array1::zeros(nchannels * nframes);
-        let ndarray_interleaved_t = harray.0.view().reversed_axes();
+                let mut ndarray = Array1::zeros(nchannels * nframes);
 
-        for (a, b) in ndarray.iter_mut().zip(ndarray_interleaved_t.iter()) {
-            *a = b.to_f32().unwrap();
+                let ndarray_interleaved_t = harray.0.view().reversed_axes();
+
+                for (a, b) in ndarray.iter_mut().zip(ndarray_interleaved_t.iter()) {
+                    *a = b.to_f32().unwrap();
+                }
+
+                let source = SamplesBuffer::new(
+                    u16::try_from(nchannels).unwrap(),
+                    sr,
+                    ndarray.as_slice().unwrap(),
+                );
+
+                self.sink.append(source);
+            }
+            Audio::D2(harray) => {
+                let nchannels = harray.nchannels();
+                let nframes = harray.nframes();
+
+                let mut ndarray = Array1::zeros(nchannels * nframes);
+
+                let ndarray_interleaved_t = harray.0.view().reversed_axes();
+
+                for (a, b) in ndarray.iter_mut().zip(ndarray_interleaved_t.iter()) {
+                    *a = b.to_f32().unwrap();
+                }
+
+                let source = SamplesBuffer::new(
+                    u16::try_from(nchannels).unwrap(),
+                    sr,
+                    ndarray.as_slice().unwrap(),
+                );
+
+                self.sink.append(source);
+            }
+            Audio::Dyn(harray) => {
+                assert!(harray.ndim() == 2);
+                let nchannels = harray.nchannels();
+                let nframes = harray.nframes();
+
+                let mut ndarray = Array1::zeros(nchannels * nframes);
+
+                let ndarray_interleaved_t = harray.0.view().reversed_axes();
+
+                for (a, b) in ndarray.iter_mut().zip(ndarray_interleaved_t.iter()) {
+                    *a = b.to_f32().unwrap();
+                }
+
+                let source = SamplesBuffer::new(
+                    u16::try_from(nchannels).unwrap(),
+                    sr,
+                    ndarray.as_slice().unwrap(),
+                );
+
+                self.sink.append(source);
+            }
         }
-
-        let source = SamplesBuffer::new(
-            u16::try_from(nchannels).unwrap(),
-            sr,
-            ndarray.as_slice().unwrap(),
-        );
-
-        self.sink.append(source);
     }
 
     /// Appends a sound to the queue of sounds to play.
     pub fn append_from_file(&self, fpath: &str) -> HResult<()> {
         let (harray, sr) = decode::<f32>(fpath)?;
-        self.append_from_harray(&harray, sr);
+        let audio = Audio::D2(&harray);
+        self.append_from_harray(&audio, sr);
 
         Ok(())
     }

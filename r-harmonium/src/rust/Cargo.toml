@@ -16,7 +16,7 @@ codegen-units = 1
 # prevents package from thinking it's in the workspace
 
 [dependencies]
-extendr-api = { git = "https://github.com/extendr/extendr", rev = "983fd58"}
+extendr-api = { git = "https://github.com/extendr/extendr", rev = "a1f6bc0"}
 harmonium-core = { path = "../../../harmonium-core" }
 harmonium-io = { path = "../../../harmonium-io" }
 harmonium-resample = { path = "../../../harmonium-resample" }
@@ -29,6 +29,8 @@ harmonium-window = { path = "../../../harmonium-window" }
 #harmonium-window = { git = "https://github.com/daniellga/harmonium.git" }
 rubato = "0.14.1"
 num-complex = { version = "0.4", features = ["bytemuck"] }
+ndarray = "0.15.6"
+num-traits = "*"
 
 [[bin]]
 name = "generate_r_docs"

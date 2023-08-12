@@ -1,5 +1,7 @@
 use extendr_api::prelude::*;
+use harmonium_core::haudioop::Audio;
 use harmonium_io::{decode::decode, play};
+use ndarray::IxDyn;
 
 use crate::{harray::HArray, hdatatype::HDataType};
 
@@ -65,17 +67,19 @@ impl HAudioSink {
                 let harray = harray
                     .0
                     .as_any()
-                    .downcast_ref::<harmonium_core::array::HArray<f32>>()
+                    .downcast_ref::<harmonium_core::array::HArray<f32, IxDyn>>()
                     .unwrap();
-                self.0.append_from_harray::<f32>(harray, sr);
+                let audio = Audio::Dyn(harray);
+                self.0.append_from_harray::<f32>(&audio, sr);
             }
             HDataType::Float64 => {
                 let harray = harray
                     .0
                     .as_any()
-                    .downcast_ref::<harmonium_core::array::HArray<f64>>()
+                    .downcast_ref::<harmonium_core::array::HArray<f64, IxDyn>>()
                     .unwrap();
-                self.0.append_from_harray::<f64>(harray, sr);
+                let audio = Audio::Dyn(harray);
+                self.0.append_from_harray::<f64>(&audio, sr);
             }
             _ => panic!("Not a valid HDataType."),
         }
@@ -104,7 +108,8 @@ impl HAudioSink {
     ///
     pub fn append_from_file(&self, fpath: &str) {
         let (harray, sr) = decode::<f32>(fpath).unwrap();
-        self.0.append_from_harray(&harray, sr);
+        let audio = Audio::D2(&harray);
+        self.0.append_from_harray(&audio, sr);
     }
 
     /// HAudioSink

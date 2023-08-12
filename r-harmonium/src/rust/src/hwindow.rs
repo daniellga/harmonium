@@ -1,5 +1,6 @@
 use crate::{harray::HArray, hdatatype::HDataType};
 use extendr_api::prelude::*;
+use harmonium_core::conversions::IntoDynamic;
 use harmonium_window::windows::*;
 use std::sync::Arc;
 
@@ -55,12 +56,14 @@ impl HWindow {
 
         match dtype {
             HDataType::Float32 => {
-                let hfloatarray = harmonium_window::windows::barthann::<f32>(npoints, window_type);
-                HArray(Arc::new(hfloatarray))
+                let harray = harmonium_window::windows::barthann::<f32>(npoints, window_type);
+                let harray = harray.into_dynamic();
+                HArray(Arc::new(harray))
             }
             HDataType::Float64 => {
-                let hfloatarray = harmonium_window::windows::barthann::<f64>(npoints, window_type);
-                HArray(Arc::new(hfloatarray))
+                let harray = harmonium_window::windows::barthann::<f64>(npoints, window_type);
+                let harray = harray.into_dynamic();
+                HArray(Arc::new(harray))
             }
             _ => panic!("not a valid dtype"),
         }
@@ -114,12 +117,14 @@ impl HWindow {
 
         match dtype {
             HDataType::Float32 => {
-                let hfloatarray = harmonium_window::windows::bartlett::<f32>(npoints, window_type);
-                HArray(Arc::new(hfloatarray))
+                let harray = harmonium_window::windows::bartlett::<f32>(npoints, window_type);
+                let harray = harray.into_dynamic();
+                HArray(Arc::new(harray))
             }
             HDataType::Float64 => {
-                let hfloatarray = harmonium_window::windows::bartlett::<f64>(npoints, window_type);
-                HArray(Arc::new(hfloatarray))
+                let harray = harmonium_window::windows::bartlett::<f64>(npoints, window_type);
+                let harray = harray.into_dynamic();
+                HArray(Arc::new(harray))
             }
             _ => panic!("not a valid dtype"),
         }
@@ -189,12 +194,14 @@ impl HWindow {
 
         match dtype {
             HDataType::Float32 => {
-                let hfloatarray = harmonium_window::windows::blackman::<f32>(npoints, window_type);
-                HArray(Arc::new(hfloatarray))
+                let harray = harmonium_window::windows::blackman::<f32>(npoints, window_type);
+                let harray = harray.into_dynamic();
+                HArray(Arc::new(harray))
             }
             HDataType::Float64 => {
-                let hfloatarray = harmonium_window::windows::blackman::<f64>(npoints, window_type);
-                HArray(Arc::new(hfloatarray))
+                let harray = harmonium_window::windows::blackman::<f64>(npoints, window_type);
+                let harray = harray.into_dynamic();
+                HArray(Arc::new(harray))
             }
             _ => panic!("not a valid dtype"),
         }
@@ -243,14 +250,14 @@ impl HWindow {
 
         match dtype {
             HDataType::Float32 => {
-                let hfloatarray =
-                    harmonium_window::windows::blackmanharris::<f32>(npoints, window_type);
-                HArray(Arc::new(hfloatarray))
+                let harray = harmonium_window::windows::blackmanharris::<f32>(npoints, window_type);
+                let harray = harray.into_dynamic();
+                HArray(Arc::new(harray))
             }
             HDataType::Float64 => {
-                let hfloatarray =
-                    harmonium_window::windows::blackmanharris::<f64>(npoints, window_type);
-                HArray(Arc::new(hfloatarray))
+                let harray = harmonium_window::windows::blackmanharris::<f64>(npoints, window_type);
+                let harray = harray.into_dynamic();
+                HArray(Arc::new(harray))
             }
             _ => panic!("not a valid dtype"),
         }
@@ -299,12 +306,14 @@ impl HWindow {
 
         match dtype {
             HDataType::Float32 => {
-                let hfloatarray = harmonium_window::windows::bohman::<f32>(npoints, window_type);
-                HArray(Arc::new(hfloatarray))
+                let harray = harmonium_window::windows::bohman::<f32>(npoints, window_type);
+                let harray = harray.into_dynamic();
+                HArray(Arc::new(harray))
             }
             HDataType::Float64 => {
-                let hfloatarray = harmonium_window::windows::bohman::<f64>(npoints, window_type);
-                HArray(Arc::new(hfloatarray))
+                let harray = harmonium_window::windows::bohman::<f64>(npoints, window_type);
+                let harray = harray.into_dynamic();
+                HArray(Arc::new(harray))
             }
             _ => panic!("not a valid dtype"),
         }
@@ -342,12 +351,14 @@ impl HWindow {
 
         match dtype {
             HDataType::Float32 => {
-                let hfloatarray = harmonium_window::windows::boxcar::<f32>(npoints);
-                HArray(Arc::new(hfloatarray))
+                let harray = harmonium_window::windows::boxcar::<f32>(npoints);
+                let harray = harray.into_dynamic();
+                HArray(Arc::new(harray))
             }
             HDataType::Float64 => {
-                let hfloatarray = harmonium_window::windows::boxcar::<f64>(npoints);
-                HArray(Arc::new(hfloatarray))
+                let harray = harmonium_window::windows::boxcar::<f64>(npoints);
+                let harray = harray.into_dynamic();
+                HArray(Arc::new(harray))
             }
             _ => panic!("not a valid dtype"),
         }
@@ -396,12 +407,14 @@ impl HWindow {
 
         match dtype {
             HDataType::Float32 => {
-                let hfloatarray = harmonium_window::windows::cosine::<f32>(npoints, window_type);
-                HArray(Arc::new(hfloatarray))
+                let harray = harmonium_window::windows::cosine::<f32>(npoints, window_type);
+                let harray = harray.into_dynamic();
+                HArray(Arc::new(harray))
             }
             HDataType::Float64 => {
-                let hfloatarray = harmonium_window::windows::cosine::<f64>(npoints, window_type);
-                HArray(Arc::new(hfloatarray))
+                let harray = harmonium_window::windows::cosine::<f64>(npoints, window_type);
+                let harray = harray.into_dynamic();
+                HArray(Arc::new(harray))
             }
             _ => panic!("not a valid dtype"),
         }
@@ -455,12 +468,14 @@ impl HWindow {
 
         match dtype {
             HDataType::Float32 => {
-                let hfloatarray = harmonium_window::windows::hann::<f32>(npoints, window_type);
-                HArray(Arc::new(hfloatarray))
+                let harray = harmonium_window::windows::hann::<f32>(npoints, window_type);
+                let harray = harray.into_dynamic();
+                HArray(Arc::new(harray))
             }
             HDataType::Float64 => {
-                let hfloatarray = harmonium_window::windows::hann::<f64>(npoints, window_type);
-                HArray(Arc::new(hfloatarray))
+                let harray = harmonium_window::windows::hann::<f64>(npoints, window_type);
+                let harray = harray.into_dynamic();
+                HArray(Arc::new(harray))
             }
             _ => panic!("not a valid dtype"),
         }

@@ -1,17 +1,21 @@
 use crate::errors::{HError, HResult};
-use ndarray::{ArcArray, IxDyn};
+use ndarray::{ArcArray, Dimension, StrideShape};
 use num_complex::ComplexFloat;
 
 #[derive(Debug, PartialEq, Clone)]
-pub struct HArray<T: ComplexFloat>(pub ArcArray<T, IxDyn>);
+pub struct HArray<T: ComplexFloat, D: Dimension>(pub ArcArray<T, D>);
 
-impl<T> HArray<T>
+impl<T, D> HArray<T, D>
 where
     T: ComplexFloat,
+    D: Dimension,
 {
-    pub fn new_from_shape_vec(sh: &[usize], v: Vec<T>) -> HResult<HArray<T>> {
+    pub fn new_from_shape_vec<Sh>(shape: Sh, v: Vec<T>) -> HResult<HArray<T, D>>
+    where
+        Sh: Into<StrideShape<D>>,
+    {
         let ndarray =
-            ArcArray::from_shape_vec(IxDyn(sh), v).map_err(|_| HError::OutOfSpecError("shape does not correspond to the number of elements in v or if the shape/strides would result in overflowing isize".to_string()))?;
+            ArcArray::from_shape_vec(shape, v).map_err(|_| HError::OutOfSpecError("shape does not correspond to the number of elements in v or if the shape/strides would result in overflowing isize".to_string()))?;
         Ok(HArray(ndarray))
     }
 
@@ -48,9 +52,8 @@ where
 
 #[cfg(test)]
 mod tests {
-    use num_complex::Complex;
-
     use super::*;
+    use num_complex::Complex;
 
     #[test]
     fn new_from_shape_vec_test() {
@@ -58,14 +61,14 @@ mod tests {
         let ncols = 4_usize;
 
         let harray = HArray::new_from_shape_vec(
-            &[nrows, ncols],
+            (nrows, ncols),
             vec![1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12.],
         );
 
         let nrows = 2_usize;
         let ncols = 4_usize;
         let harray2 = HArray::new_from_shape_vec(
-            &[nrows, ncols],
+            (nrows, ncols),
             vec![
                 Complex::new(1., 2.),
                 Complex::new(3., 4.),
@@ -88,7 +91,7 @@ mod tests {
         let ncols = 4_usize;
 
         let mut harray = HArray::new_from_shape_vec(
-            &[nrows, ncols],
+            (nrows, ncols),
             vec![1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12.],
         )
         .unwrap();
