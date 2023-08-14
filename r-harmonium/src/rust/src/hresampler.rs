@@ -1,13 +1,14 @@
 use crate::{
-    harray::HArray, hdatatype::HDataType, hpolynomialdegree::HPolynomialDegree,
-    hresamplertype::HResamplerType, hsincinterpolationparams::HSincInterpolationParams,
+    conversions::RobjConversions, harray::HArray, hdatatype::HDataType,
+    hpolynomialdegree::HPolynomialDegree, hresamplertype::HResamplerType,
+    hsincinterpolationparams::HSincInterpolationParams,
 };
 use extendr_api::prelude::*;
 use harmonium_resample::resample::ProcessResampler;
+use ndarray::IxDyn;
 use rubato::{
     FastFixedIn, FastFixedOut, FftFixedIn, FftFixedInOut, FftFixedOut, SincFixedIn, SincFixedOut,
 };
-use std::any::Any;
 
 pub trait HResamplerR: Send {
     fn process(&mut self, harray: &mut HArray);
@@ -113,14 +114,20 @@ impl HResampler {
     /// _________
     ///
     fn new_fft(
-        sr_in: i32,
-        sr_out: i32,
-        chunk_size: i32,
-        sub_chunks: i32,
-        nbr_channels: i32,
+        sr_in: Robj,
+        sr_out: Robj,
+        chunk_size: Robj,
+        sub_chunks: Robj,
+        nchannels: Robj,
         res_type: &HResamplerType,
         dtype: &HDataType,
     ) -> HResampler {
+        let sr_in: i32 = sr_in.robj_to_scalar();
+        let sr_out: i32 = sr_out.robj_to_scalar();
+        let chunk_size: i32 = chunk_size.robj_to_scalar();
+        let sub_chunks: i32 = sub_chunks.robj_to_scalar();
+        let nchannels: i32 = nchannels.robj_to_scalar();
+
         match (res_type, dtype) {
             (HResamplerType::FftFixedIn, HDataType::Float32) => {
                 let resampler = FftFixedIn::<f32>::new(
@@ -128,7 +135,7 @@ impl HResampler {
                     sr_out.try_into().unwrap(),
                     chunk_size.try_into().unwrap(),
                     sub_chunks.try_into().unwrap(),
-                    nbr_channels.try_into().unwrap(),
+                    nchannels.try_into().unwrap(),
                 )
                 .unwrap();
                 HResampler(Box::new(resampler))
@@ -139,7 +146,7 @@ impl HResampler {
                     sr_out.try_into().unwrap(),
                     chunk_size.try_into().unwrap(),
                     sub_chunks.try_into().unwrap(),
-                    nbr_channels.try_into().unwrap(),
+                    nchannels.try_into().unwrap(),
                 )
                 .unwrap();
                 HResampler(Box::new(resampler))
@@ -149,7 +156,7 @@ impl HResampler {
                     sr_in.try_into().unwrap(),
                     sr_out.try_into().unwrap(),
                     chunk_size.try_into().unwrap(),
-                    nbr_channels.try_into().unwrap(),
+                    nchannels.try_into().unwrap(),
                 )
                 .unwrap();
                 HResampler(Box::new(resampler))
@@ -159,7 +166,7 @@ impl HResampler {
                     sr_in.try_into().unwrap(),
                     sr_out.try_into().unwrap(),
                     chunk_size.try_into().unwrap(),
-                    nbr_channels.try_into().unwrap(),
+                    nchannels.try_into().unwrap(),
                 )
                 .unwrap();
                 HResampler(Box::new(resampler))
@@ -170,7 +177,7 @@ impl HResampler {
                     sr_out.try_into().unwrap(),
                     chunk_size.try_into().unwrap(),
                     sub_chunks.try_into().unwrap(),
-                    nbr_channels.try_into().unwrap(),
+                    nchannels.try_into().unwrap(),
                 )
                 .unwrap();
                 HResampler(Box::new(resampler))
@@ -181,7 +188,7 @@ impl HResampler {
                     sr_out.try_into().unwrap(),
                     chunk_size.try_into().unwrap(),
                     sub_chunks.try_into().unwrap(),
-                    nbr_channels.try_into().unwrap(),
+                    nchannels.try_into().unwrap(),
                 )
                 .unwrap();
                 HResampler(Box::new(resampler))
@@ -193,7 +200,7 @@ impl HResampler {
     /// HResampler
     /// ## new_sinc
     ///
-    /// `new_sinc(resample_ratio: double, max_resample_ratio_relative: double, parameters: HSincInterpolationParams, chunk_size: integer, nbr_channels: integer, res_type: HResamplerType, dtype: HDataType) -> HResampler` \
+    /// `new_sinc(resample_ratio: double, max_resample_ratio_relative: double, parameters: HSincInterpolationParams, chunk_size: integer, nchannels: integer, res_type: HResamplerType, dtype: HDataType) -> HResampler` \
     ///
     /// Creates a new Sinc type HResampler. \
     /// Supports any of  `[sinc_fixed_in, sinc_fixed_out]` `HResamplerType`. \
@@ -218,7 +225,7 @@ impl HResampler {
     /// An `HSincInterpolationParams`. Parameters for interpolation. \
     /// * `chunk_size` \
     /// Chunks size of input or output data in frames. \
-    /// * `nbr_channels` \
+    /// * `nchannels` \
     /// Number of channels in input and output. \
     /// Must be the same number of channels as the `HAudio` that will be processed by the `HResampler`. \
     /// * `res_type` \
@@ -240,24 +247,29 @@ impl HResampler {
     /// max_resample_ratio_relative = 2
     /// hparams = HSincInterpolationParams$new(256, 0.95, 256, "linear", "blackmanharris2")
     /// chunk_size = 512L
-    /// nbr_channels = 2L
+    /// nchannels = 2L
     /// res_type = HResamplerType$sinc_fixed_out
     /// dtype = HDataType$float32
     ///
-    /// res = HResampler$new_sinc(resample_ratio, max_resample_ratio_relative, hparams, chunk_size, nbr_channels, res_type, dtype)
+    /// res = HResampler$new_sinc(resample_ratio, max_resample_ratio_relative, hparams, chunk_size, nchannels, res_type, dtype)
     /// ```
     ///
     /// _________
     ///
     fn new_sinc(
-        resample_ratio: f64,
-        max_resample_ratio_relative: f64,
+        resample_ratio: Robj,
+        max_resample_ratio_relative: Robj,
         parameters: &HSincInterpolationParams,
-        chunk_size: i32,
-        nbr_channels: i32,
+        chunk_size: Robj,
+        nchannels: Robj,
         res_type: &HResamplerType,
         dtype: &HDataType,
     ) -> HResampler {
+        let resample_ratio: f64 = resample_ratio.robj_to_scalar();
+        let max_resample_ratio_relative: f64 = max_resample_ratio_relative.robj_to_scalar();
+        let chunk_size: i32 = chunk_size.robj_to_scalar();
+        let nchannels: i32 = nchannels.robj_to_scalar();
+
         match (res_type, dtype) {
             (HResamplerType::SincFixedIn, HDataType::Float32) => {
                 let resampler = SincFixedIn::<f32>::new(
@@ -265,7 +277,7 @@ impl HResampler {
                     max_resample_ratio_relative,
                     parameters.into(),
                     chunk_size.try_into().unwrap(),
-                    nbr_channels.try_into().unwrap(),
+                    nchannels.try_into().unwrap(),
                 )
                 .unwrap();
                 HResampler(Box::new(resampler))
@@ -276,7 +288,7 @@ impl HResampler {
                     max_resample_ratio_relative,
                     parameters.into(),
                     chunk_size.try_into().unwrap(),
-                    nbr_channels.try_into().unwrap(),
+                    nchannels.try_into().unwrap(),
                 )
                 .unwrap();
                 HResampler(Box::new(resampler))
@@ -287,7 +299,7 @@ impl HResampler {
                     max_resample_ratio_relative,
                     parameters.into(),
                     chunk_size.try_into().unwrap(),
-                    nbr_channels.try_into().unwrap(),
+                    nchannels.try_into().unwrap(),
                 )
                 .unwrap();
                 HResampler(Box::new(resampler))
@@ -298,7 +310,7 @@ impl HResampler {
                     max_resample_ratio_relative,
                     parameters.into(),
                     chunk_size.try_into().unwrap(),
-                    nbr_channels.try_into().unwrap(),
+                    nchannels.try_into().unwrap(),
                 )
                 .unwrap();
                 HResampler(Box::new(resampler))
@@ -310,7 +322,7 @@ impl HResampler {
     /// HResampler
     /// ## new_fast
     ///
-    /// `new_sinc(resample_ratio: double, max_resample_ratio_relative: double, pol_deg: HPolynomialDegree, chunk_size: integer, nbr_channels: integer, res_type: HResamplerType, dtype: HDataType) -> HResampler` \
+    /// `new_sinc(resample_ratio: double, max_resample_ratio_relative: double, pol_deg: HPolynomialDegree, chunk_size: integer, nchannels: integer, res_type: HResamplerType, dtype: HDataType) -> HResampler` \
     ///
     /// Creates a new Fast type HResampler. \
     /// Supports any of  `[fast_fixed_in, fast_fixed_out]` `HResamplerType`. \
@@ -336,7 +348,7 @@ impl HResampler {
     /// An `HPolynomialDegree`. Used to select the polynomial degree for interpolation. \
     /// * `chunk_size` \
     /// Chunks size of input or output data in frames. \
-    /// * `nbr_channels` \
+    /// * `nchannels` \
     /// Number of channels in input and output. \
     /// Must be the same number of channels as the `HAudio` that will be processed by the `HResampler`. \
     /// * `res_type` \
@@ -358,24 +370,29 @@ impl HResampler {
     /// max_resample_ratio_relative = 2
     /// pol_deg = HPolynomialDegree$linear
     /// chunk_size = 512L
-    /// nbr_channels = 2L
+    /// nchannels = 2L
     /// res_type = HResamplerType$fast_fixed_out
     /// dtype = HDataType$float32
     ///
-    /// res = HResampler$new_fast(resample_ratio, max_resample_ratio_relative, pol_deg, chunk_size, nbr_channels, res_type, dtype)
+    /// res = HResampler$new_fast(resample_ratio, max_resample_ratio_relative, pol_deg, chunk_size, nchannels, res_type, dtype)
     /// ```
     ///
     /// _________
     ///
     fn new_fast(
-        resample_ratio: f64,
-        max_resample_ratio_relative: f64,
+        resample_ratio: Robj,
+        max_resample_ratio_relative: Robj,
         pol_deg: &HPolynomialDegree,
-        chunk_size: i32,
-        nbr_channels: i32,
+        chunk_size: Robj,
+        nchannels: Robj,
         res_type: &HResamplerType,
         dtype: &HDataType,
     ) -> HResampler {
+        let resample_ratio: f64 = resample_ratio.robj_to_scalar();
+        let max_resample_ratio_relative: f64 = max_resample_ratio_relative.robj_to_scalar();
+        let chunk_size: i32 = chunk_size.robj_to_scalar();
+        let nchannels: i32 = nchannels.robj_to_scalar();
+
         match (res_type, dtype) {
             (HResamplerType::FastFixedIn, HDataType::Float32) => {
                 let resampler = FastFixedIn::<f32>::new(
@@ -383,7 +400,7 @@ impl HResampler {
                     max_resample_ratio_relative,
                     pol_deg.into(),
                     chunk_size.try_into().unwrap(),
-                    nbr_channels.try_into().unwrap(),
+                    nchannels.try_into().unwrap(),
                 )
                 .unwrap();
                 HResampler(Box::new(resampler))
@@ -394,7 +411,7 @@ impl HResampler {
                     max_resample_ratio_relative,
                     pol_deg.into(),
                     chunk_size.try_into().unwrap(),
-                    nbr_channels.try_into().unwrap(),
+                    nchannels.try_into().unwrap(),
                 )
                 .unwrap();
                 HResampler(Box::new(resampler))
@@ -405,7 +422,7 @@ impl HResampler {
                     max_resample_ratio_relative,
                     pol_deg.into(),
                     chunk_size.try_into().unwrap(),
-                    nbr_channels.try_into().unwrap(),
+                    nchannels.try_into().unwrap(),
                 )
                 .unwrap();
                 HResampler(Box::new(resampler))
@@ -416,7 +433,7 @@ impl HResampler {
                     max_resample_ratio_relative,
                     pol_deg.into(),
                     chunk_size.try_into().unwrap(),
-                    nbr_channels.try_into().unwrap(),
+                    nchannels.try_into().unwrap(),
                 )
                 .unwrap();
                 HResampler(Box::new(resampler))
@@ -483,7 +500,10 @@ impl HResampler {
     ///
     /// _________
     ///
-    fn set_resample_ratio(&mut self, new_ratio: f64, ramp: bool) {
+    fn set_resample_ratio(&mut self, new_ratio: Robj, ramp: Robj) {
+        let new_ratio: f64 = new_ratio.robj_to_scalar();
+        let ramp: Rbool = ramp.robj_to_scalar();
+        let ramp = ramp.to_bool();
         self.0.set_resample_ratio(new_ratio, ramp);
     }
 
@@ -516,7 +536,10 @@ impl HResampler {
     ///
     /// _________
     ///
-    fn set_resample_ratio_relative(&mut self, rel_ratio: f64, ramp: bool) {
+    fn set_resample_ratio_relative(&mut self, rel_ratio: Robj, ramp: Robj) {
+        let rel_ratio: f64 = rel_ratio.robj_to_scalar();
+        let ramp: Rbool = ramp.robj_to_scalar();
+        let ramp = ramp.to_bool();
         self.0.set_resample_ratio_relative(rel_ratio, ramp);
     }
 
@@ -536,11 +559,11 @@ impl HResampler {
     /// max_resample_ratio_relative = 2
     /// pol_deg = HPolynomialDegree$linear
     /// chunk_size = 512L
-    /// nbr_channels = 2L
+    /// nchannels = 2L
     /// res_type = HResamplerType$fast_fixed_out
     /// dtype = HDataType$float32
     ///
-    /// res = HResampler$new_fast(resample_ratio, max_resample_ratio_relative, pol_deg, chunk_size, nbr_channels, res_type, dtype)
+    /// res = HResampler$new_fast(resample_ratio, max_resample_ratio_relative, pol_deg, chunk_size, nchannels, res_type, dtype)
     /// res$reset()
     /// ```
     ///
@@ -570,11 +593,11 @@ impl HResampler {
     /// max_resample_ratio_relative = 2
     /// pol_deg = HPolynomialDegree$linear
     /// chunk_size = 512L
-    /// nbr_channels = 2L
+    /// nchannels = 2L
     /// res_type = HResamplerType$fast_fixed_out
     /// dtype = HDataType$float32
     ///
-    /// res = HResampler$new_fast(resample_ratio, max_resample_ratio_relative, pol_deg, chunk_size, nbr_channels, res_type, dtype)
+    /// res = HResampler$new_fast(resample_ratio, max_resample_ratio_relative, pol_deg, chunk_size, nchannels, res_type, dtype)
     /// res$res_type()
     /// ```
     ///
@@ -604,11 +627,11 @@ impl HResampler {
     /// max_resample_ratio_relative = 2
     /// pol_deg = HPolynomialDegree$linear
     /// chunk_size = 512L
-    /// nbr_channels = 2L
+    /// nchannels = 2L
     /// res_type = HResamplerType$fast_fixed_out
     /// dtype = HDataType$float32
     ///
-    /// res = HResampler$new_fast(resample_ratio, max_resample_ratio_relative, pol_deg, chunk_size, nbr_channels, res_type, dtype)
+    /// res = HResampler$new_fast(resample_ratio, max_resample_ratio_relative, pol_deg, chunk_size, nchannels, res_type, dtype)
     /// res$dtype()
     /// ```
     ///
@@ -635,11 +658,11 @@ impl HResampler {
     /// max_resample_ratio_relative = 2
     /// pol_deg = HPolynomialDegree$linear
     /// chunk_size = 512L
-    /// nbr_channels = 2L
+    /// nchannels = 2L
     /// res_type = HResamplerType$fast_fixed_out
     /// dtype = HDataType$float32
     ///
-    /// res = HResampler$new_fast(resample_ratio, max_resample_ratio_relative, pol_deg, chunk_size, nbr_channels, res_type, dtype)
+    /// res = HResampler$new_fast(resample_ratio, max_resample_ratio_relative, pol_deg, chunk_size, nchannels, res_type, dtype)
     /// res$print()
     ///
     /// # or similarly:
@@ -660,7 +683,7 @@ macro_rules! impl_hresamplerfftr {
                 fn process(&mut self, harray: &mut HArray) {
                     // Ok to unwrap.
                     // downcast_mut already checks if the HAudio and the Resampler have the same HDataType.
-                    let haudio = harray.get_inner_mut().as_any_mut().downcast_mut::<$t2>().unwrap();
+                    let harray = harray.get_inner_mut().as_any_mut().downcast_mut::<$t2>().unwrap();
                     self.process_resampler(harray).unwrap();
                 }
 
@@ -696,42 +719,42 @@ macro_rules! impl_hresamplerfftr {
 impl_hresamplerfftr!(
     (
         FftFixedIn<f32>,
-        harmonium_core::array::HArray<f32>,
+        harmonium_core::array::HArray<f32, IxDyn>,
         HResamplerType::FftFixedIn,
         HDataType::Float32,
         "FftFixedIn<f32>"
     ),
     (
         FftFixedIn<f64>,
-        harmonium_core::array::HArray<f64>,
+        harmonium_core::array::HArray<f64, IxDyn>,
         HResamplerType::FftFixedIn,
         HDataType::Float64,
         "FftFixedIn<f64>"
     ),
     (
         FftFixedInOut<f32>,
-        harmonium_core::array::HArray<f32>,
+        harmonium_core::array::HArray<f32, IxDyn>,
         HResamplerType::FftFixedInOut,
         HDataType::Float32,
         "FftFixedInOut<f32>"
     ),
     (
         FftFixedInOut<f64>,
-        harmonium_core::array::HArray<f64>,
+        harmonium_core::array::HArray<f64, IxDyn>,
         HResamplerType::FftFixedInOut,
         HDataType::Float64,
         "FftFixedInOut<f64>"
     ),
     (
         FftFixedOut<f32>,
-        harmonium_core::array::HArray<f32>,
+        harmonium_core::array::HArray<f32, IxDyn>,
         HResamplerType::FftFixedOut,
         HDataType::Float32,
         "FftFixedOut<f32>"
     ),
     (
         FftFixedOut<f64>,
-        harmonium_core::array::HArray<f64>,
+        harmonium_core::array::HArray<f64, IxDyn>,
         HResamplerType::FftFixedOut,
         HDataType::Float64,
         "FftFixedOut<f64>"
@@ -745,7 +768,7 @@ macro_rules! impl_hresamplersincr {
                 fn process(&mut self, harray: &mut HArray) {
                     // Ok to unwrap.
                     // downcast_mut already checks if the HAudio and the HResampler have the same HDataType.
-                    let haudio = harray.get_inner_mut().as_any_mut().downcast_mut::<$t2>().unwrap();
+                    let harray = harray.get_inner_mut().as_any_mut().downcast_mut::<$t2>().unwrap();
                     self.process_resampler(harray).unwrap();
                 }
 
@@ -781,56 +804,56 @@ macro_rules! impl_hresamplersincr {
 impl_hresamplersincr!(
     (
         SincFixedIn<f32>,
-        harmonium_core::array::HArray<f32>,
+        harmonium_core::array::HArray<f32, IxDyn>,
         HResamplerType::SincFixedIn,
         HDataType::Float32,
         "SincFixedIn<f32>"
     ),
     (
         SincFixedIn<f64>,
-        harmonium_core::array::HArray<f64>,
+        harmonium_core::array::HArray<f64, IxDyn>,
         HResamplerType::SincFixedIn,
         HDataType::Float64,
         "SincFixedIn<f64>"
     ),
     (
         SincFixedOut<f32>,
-        harmonium_core::array::HArray<f32>,
+        harmonium_core::array::HArray<f32, IxDyn>,
         HResamplerType::SincFixedOut,
         HDataType::Float32,
         "SincFixedOut<f32>"
     ),
     (
         SincFixedOut<f64>,
-        harmonium_core::array::HArray<f64>,
+        harmonium_core::array::HArray<f64, IxDyn>,
         HResamplerType::SincFixedOut,
         HDataType::Float64,
         "SincFixedOut<f64>"
     ),
     (
         FastFixedIn<f32>,
-        harmonium_core::array::HArray<f32>,
+        harmonium_core::array::HArray<f32, IxDyn>,
         HResamplerType::FastFixedIn,
         HDataType::Float32,
         "FastFixedIn<f32>"
     ),
     (
         FastFixedIn<f64>,
-        harmonium_core::array::HArray<f64>,
+        harmonium_core::array::HArray<f64, IxDyn>,
         HResamplerType::FastFixedIn,
         HDataType::Float64,
         "FastFixedIn<f64>"
     ),
     (
         FastFixedOut<f32>,
-        harmonium_core::array::HArray<f32>,
+        harmonium_core::array::HArray<f32, IxDyn>,
         HResamplerType::FastFixedOut,
         HDataType::Float32,
         "FastFixedOut<f32>"
     ),
     (
         FastFixedOut<f64>,
-        harmonium_core::array::HArray<f64>,
+        harmonium_core::array::HArray<f64, IxDyn>,
         HResamplerType::FastFixedOut,
         HDataType::Float64,
         "FastFixedOut<f64>"

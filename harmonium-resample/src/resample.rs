@@ -1,5 +1,9 @@
-use harmonium_core::{array::HArray, errors::HResult, haudioop::HAudioOp};
-use ndarray::{Dimension, Ix1, Ix2};
+use harmonium_core::{
+    array::HArray,
+    errors::HResult,
+    haudioop::{HAudioOp, HAudioOpDyn},
+};
+use ndarray::{Dimension, Ix1, Ix2, IxDyn};
 use num_traits::{Float, FloatConst};
 use rubato::{
     FastFixedIn, FastFixedOut, FftFixedIn, FftFixedInOut, FftFixedOut, Resampler, Sample,
@@ -109,6 +113,55 @@ macro_rules! impl_process_resampler_fixed_in {
                         Ok(())
                     }
                 }
+
+            impl<T> ProcessResampler<T, IxDyn> for $t
+            where
+                T: Float + FloatConst + Sample,
+                {
+                    fn process_resampler(&mut self, harray: &mut HArray<T, IxDyn>) -> HResult<()> {
+                        let nframes = harray.nframes();
+                        let nchannels = harray.nchannels();
+                        let input_frames_next = self.input_frames_next();
+                        let max_possible_frames_per_channel = self.output_frames_max();
+
+                        // The `filled` argument determines if the vectors should be pre-filled with zeros or not.
+                        // When false, the vectors are only allocated but returned empty.
+                        let mut input_buffer = self.input_buffer_allocate(false);
+                        let mut output_buffer = self.output_buffer_allocate(true);
+
+                        let mut v_out: Vec<Vec<T>> = Vec::with_capacity(nchannels);
+
+                        for _ in 0..nchannels {
+                            v_out.push(Vec::<T>::with_capacity(max_possible_frames_per_channel));
+                        }
+
+                        let steps = nframes / input_frames_next;
+
+                        // Ok to unwrap.
+                        let harray_slice = harray.as_slice().unwrap();
+
+                        for n in 0..steps {
+                            let col_chunks = harray_slice.chunks_exact(nframes);
+                            for (ib, cc) in input_buffer.iter_mut().zip(col_chunks) {
+                                ib.extend_from_slice(&cc[input_frames_next*n..input_frames_next*(n+1)]);
+                            }
+
+                            let (_, nbr_out) = self.process_into_buffer(&input_buffer, &mut output_buffer, None)?;
+
+                            for ((vo, ob), ib) in v_out.iter_mut().zip(output_buffer.iter()).zip(input_buffer.iter_mut()) {
+                                vo.extend_from_slice(&ob[0..nbr_out]);
+                                ib.clear();
+                            }
+                        }
+
+                        let v: Vec<T> = v_out.into_iter().flatten().collect();
+                        let nframes = v.len() / nchannels;
+
+                        *harray = HArray::new_from_shape_vec(IxDyn(&[nchannels, nframes]), v)?;
+
+                        Ok(())
+                    }
+                }
         )+
     };
 }
@@ -123,6 +176,55 @@ impl_process_resampler_fixed_in!(
 macro_rules! impl_process_resampler_fixed_out {
     ($($t:ty),+) => {
         $(
+            impl<T> ProcessResampler<T, Ix1> for $t
+            where
+                T: Float + FloatConst + Sample,
+                {
+                    fn process_resampler(&mut self, harray: &mut HArray<T, Ix1>) -> HResult<()> {
+                        let length = harray.len();
+                        let mut start_idx = 0;
+                        let max_possible_frames_per_channel = self.output_frames_max();
+
+                        // The `filled` argument determines if the vectors should be pre-filled with zeros or not.
+                        // When false, the vectors are only allocated but returned empty.
+                        let mut input_buffer = self.input_buffer_allocate(false);
+                        let mut output_buffer = self.output_buffer_allocate(true);
+
+                        let mut v_out: Vec<Vec<T>> = vec![Vec::<T>::with_capacity(max_possible_frames_per_channel)];
+
+                        // Ok to unwrap.
+                        let harray_slice = harray.as_slice().unwrap();
+
+                        let mut input_frames_next = self.input_frames_next();
+
+                        while length >= input_frames_next + start_idx {
+                            let col_chunks = harray_slice.chunks_exact(length);
+                            let end_idx = start_idx + input_frames_next;
+                            for (ib, cc) in input_buffer.iter_mut().zip(col_chunks) {
+                                ib.extend_from_slice(&cc[start_idx..end_idx]);
+                            }
+
+                            start_idx += end_idx;
+
+                            let (_, _) = self.process_into_buffer(&input_buffer, &mut output_buffer, None)?;
+
+                            input_frames_next = self.input_frames_next();
+
+                            for ((vo, ob), ib) in v_out.iter_mut().zip(output_buffer.iter()).zip(input_buffer.iter_mut()) {
+                                vo.extend_from_slice(ob);
+                                ib.clear();
+                            }
+                        }
+
+                        let v: Vec<T> = v_out.into_iter().flatten().collect();
+                        let length = v.len();
+
+                        *harray = HArray::new_from_shape_vec(length, v)?;
+
+                        Ok(())
+                    }
+                }
+
             impl<T> ProcessResampler<T, Ix2> for $t
             where
                 T: Float + FloatConst + Sample,
@@ -172,6 +274,60 @@ macro_rules! impl_process_resampler_fixed_out {
                         let nframes = v.len() / nchannels;
 
                         *harray = HArray::new_from_shape_vec((nchannels, nframes), v)?;
+
+                        Ok(())
+                    }
+                }
+
+            impl<T> ProcessResampler<T, IxDyn> for $t
+            where
+                T: Float + FloatConst + Sample,
+                {
+                    fn process_resampler(&mut self, harray: &mut HArray<T, IxDyn>) -> HResult<()> {
+                        let nframes = harray.nframes();
+                        let nchannels = harray.nchannels();
+                        let mut start_idx = 0;
+                        let max_possible_frames_per_channel = self.output_frames_max();
+
+                        // The `filled` argument determines if the vectors should be pre-filled with zeros or not.
+                        // When false, the vectors are only allocated but returned empty.
+                        let mut input_buffer = self.input_buffer_allocate(false);
+                        let mut output_buffer = self.output_buffer_allocate(true);
+
+                        let mut v_out: Vec<Vec<T>> = Vec::with_capacity(nchannels);
+
+                        for _ in 0..nchannels {
+                            v_out.push(Vec::<T>::with_capacity(max_possible_frames_per_channel));
+                        }
+
+                        // Ok to unwrap.
+                        let harray_slice = harray.as_slice().unwrap();
+
+                        let mut input_frames_next = self.input_frames_next();
+
+                        while nframes >= input_frames_next + start_idx {
+                            let col_chunks = harray_slice.chunks_exact(nframes);
+                            let end_idx = start_idx + input_frames_next;
+                            for (ib, cc) in input_buffer.iter_mut().zip(col_chunks) {
+                                ib.extend_from_slice(&cc[start_idx..end_idx]);
+                            }
+
+                            start_idx += end_idx;
+
+                            let (_, _) = self.process_into_buffer(&input_buffer, &mut output_buffer, None)?;
+
+                            input_frames_next = self.input_frames_next();
+
+                            for ((vo, ob), ib) in v_out.iter_mut().zip(output_buffer.iter()).zip(input_buffer.iter_mut()) {
+                                vo.extend_from_slice(ob);
+                                ib.clear();
+                            }
+                        }
+
+                        let v: Vec<T> = v_out.into_iter().flatten().collect();
+                        let nframes = v.len() / nchannels;
+
+                        *harray = HArray::new_from_shape_vec(IxDyn(&[nchannels, nframes]), v)?;
 
                         Ok(())
                     }

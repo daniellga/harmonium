@@ -1,35 +1,38 @@
 use crate::harray::HArray;
-use extendr_api::{prelude::*, AsTypedSlice};
+use extendr_api::prelude::*;
 
+/// HAudioOp
+///
+/// _________
+///
+/// HAudioOp
+/// A collection of methods that can be applied to float 1D or 2D HArray which represents audio data. \
+///
+/// # Methods
+///
 pub struct HAudioOp;
 
 #[extendr]
 impl HAudioOp {
-    /// HArray
-    /// ## fft
+    /// HAudioOp
+    /// ## nchannels
     ///
-    /// `fft() -> HArray` \
+    /// `nchannels() -> integer` \
     ///
-    /// Computes the fast fourier transform of the `HArray`. \
-    /// FFT (Fast Fourier Transform) refers to a way the discrete Fourier Transform (DFT) can be calculated efficiently,
-    /// by using symmetries in the calculated terms. The symmetry is highest when n is a power of 2, and the transform
-    /// is therefore most efficient for these sizes. \
-    ///
-    /// The function does not normalize outputs. Callers must manually normalize the results by scaling each element by
-    /// `1/sqrt(n)`. Multiple normalization steps can be merged into one via pairwise multiplication, so when doing
-    /// a forward FFT followed by an inverse callers can normalize once by scaling each element by `1/n`. \
-    ///
-    /// Elements in the output are ordered by ascending frequency, with the first element corresponding to frequency 0. \
+    /// Returns the number of channels. \
+    /// This is the same as the number of rows of a 1D or 2D HArray. \
     ///
     /// #### Returns
     ///
-    /// An `HArray`. \
+    /// An `integer`. \
     ///
     /// #### Examples
     ///
     /// ```r
-    /// harray = HArray$new_from_values(c(1,2,3,4), HDataType$float64)
-    /// harray$fft()
+    /// arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
+    /// dtype = HDataType$float32
+    /// harray = HArray$new_from_values(arr, dtype)
+    /// harray$nchannels()
     /// ```
     ///
     /// _________
@@ -40,17 +43,92 @@ impl HAudioOp {
         rint.into()
     }
 
+    /// HAudioOp
+    /// ## nframes
+    ///
+    /// `nframes() -> integer` \
+    ///
+    /// Returns the number of frames. \
+    /// This is the same as the number of cols of a 1D or 2D HArray. \
+    /// The number of frames is equivalent to the number of samples divided by the number of channels. \
+    ///
+    /// #### Returns
+    ///
+    /// An `integer`. \
+    ///
+    /// #### Examples
+    ///
+    /// ```r
+    /// arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
+    /// dtype = HDataType$float32
+    /// harray = HArray$new_from_values(arr, dtype)
+    /// harray$nframes()
+    /// ```
+    ///
+    /// _________
+    ///
     fn nframes(harray: &HArray) -> Robj {
         let nframes = harray.0.nframes();
         let rint = Rint::from(i32::try_from(nframes).unwrap());
         rint.into()
     }
 
+    /// HAudioOp
+    /// ## db_to_power
+    ///
+    /// `db_to_power(harray: HArray, reference: double)` \
+    ///
+    /// Converts from dB to power. \
+    /// $db_to_power(x) = reference * 10.0**(x * 0.1)$ \
+    /// The operation is done in-place. \
+    ///
+    /// #### Arguments
+    ///
+    /// * `harray` \
+    /// A 1D or 2D float `HArray`.
+    /// * `reference` \
+    /// A double that scales the output. \
+    ///
+    /// #### Examples
+    ///
+    /// ```r
+    /// arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
+    /// dtype = HDataType$float32
+    /// harray = HArray$new_from_values(arr, dtype)
+    /// HAudioOp$db_to_power(harray, 2)
+    /// ```
+    ///
+    /// _________
+    ///
     fn db_to_power(harray: &mut HArray, reference: Robj) {
         let inner_mut = harray.get_inner_mut();
         inner_mut.db_to_power(reference);
     }
 
+    /// HAudioOp
+    /// ## to_mono
+    ///
+    /// `to_mono(harray: HArray)` \
+    ///
+    /// Convert to 1 channel by taking the average across channels. \
+    /// The operation is done in-place. A new inner array is created. \
+    ///
+    /// #### Arguments
+    ///
+    /// * `harray` \
+    /// A 2D float `HArray`.
+    ///
+    /// #### Examples
+    ///
+    /// ```r
+    /// arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
+    /// dtype = HDataType$float32
+    /// harray = HArray$new_from_values(arr, dtype)
+    /// HAudioOp$to_mono(harray)
+    /// ```
+    ///
+    /// _________
+    ///
     fn to_mono(harray: &mut HArray) {
         let inner_mut = harray.get_inner_mut();
         inner_mut.to_mono();

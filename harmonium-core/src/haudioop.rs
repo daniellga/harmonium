@@ -122,6 +122,8 @@ where
         self.0.mapv_inplace(|x| reference * a.powf(b * x));
     }
 
+    /// Convert to 1 channel by taking the average across channels.
+    /// A new inner array is created.
     fn to_mono(&self) -> HResult<HArray<T, IxDyn>> {
         let harray = self
             .0

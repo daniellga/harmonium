@@ -1,5 +1,6 @@
 use ndarray::IxDyn;
 use num_complex::Complex;
+use std::sync::Arc;
 
 use crate::{harrayr::HArrayR, hdatatype::HDataType};
 
@@ -62,7 +63,7 @@ impl PartialEq for dyn HArrayR + '_ {
     }
 }
 
-impl PartialEq<dyn HArrayR> for std::sync::Arc<dyn HArrayR + '_> {
+impl PartialEq<dyn HArrayR> for Arc<dyn HArrayR + '_> {
     fn eq(&self, other: &dyn HArrayR) -> bool {
         equal_harray(&**self, other)
     }

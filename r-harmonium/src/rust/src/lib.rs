@@ -1,15 +1,17 @@
 use extendr_api::prelude::*;
 
+mod conversions;
 mod generate_r_docs;
 mod harray;
 mod harrayr;
 mod haudioop;
 mod haudiosink;
 mod hdatatype;
-mod herror;
 mod hfft;
+mod hfile;
 mod hmetadatatype;
 mod hpolynomialdegree;
+mod hresampler;
 mod hresamplertype;
 mod hsincinterpolationparams;
 mod hwindow;
@@ -21,14 +23,15 @@ mod partialeq;
 extendr_module! {
     mod harmonium;
     use hpolynomialdegree;
-    use herror;
     use harray;
     use hsincinterpolationparams;
     use haudiosink;
     use hdatatype;
     use hwindow;
     use hmetadatatype;
+    use hresampler;
     use hresamplertype;
     use hfft;
     use haudioop;
+    use hfile;
 }

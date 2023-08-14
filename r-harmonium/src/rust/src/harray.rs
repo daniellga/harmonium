@@ -1,5 +1,5 @@
-use crate::{harrayr::HArrayR, hdatatype::HDataType};
-use extendr_api::{prelude::*, AsTypedSlice};
+use crate::{conversions::RobjConversions, harrayr::HArrayR, hdatatype::HDataType};
+use extendr_api::prelude::*;
 use num_complex::Complex;
 use std::sync::Arc;
 
@@ -16,13 +16,13 @@ impl HArray {
     /// HArray
     /// ## new_from_values
     ///
-    /// `new_from_array(robj: array, dtype: HDataType) -> HArray` \
+    /// `new_from_array(arr: array, dtype: HDataType) -> HArray` \
     ///
     /// Creates a new `HArray` from an R array. \
     ///
     /// #### Arguments
     ///
-    /// * `robj` \
+    /// * `arr` \
     /// A `double` or `complex` array.
     /// * `dtype` \
     /// An `HDataType` to indicate which type of `HArray` to be created. \
@@ -35,18 +35,18 @@ impl HArray {
     /// #### Examples
     ///
     /// ```r
-    /// values = c(1,2,3,4,5,6,7,8,9,10,11,12)
+    /// arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
     /// dtype = HDataType$float32
-    /// HArray$new_from_values(values, dtype)
+    /// HArray$new_from_values(arr, dtype)
     /// ```
     ///
     /// _________
     ///
-    pub fn new_from_values(robj: Robj, dtype: &HDataType) -> HArray {
-        assert!(robj.is_array());
+    fn new_from_values(arr: Robj, dtype: &HDataType) -> HArray {
+        assert!(arr.is_array());
 
         // Ok to unwrap since it was checked that robj is an array.
-        let mut dim: Vec<usize> = robj
+        let mut dim: Vec<usize> = arr
             .dim()
             .unwrap()
             .iter()
@@ -54,22 +54,22 @@ impl HArray {
             .collect();
         dim.reverse();
 
-        match (robj.rtype(), dtype) {
+        match (arr.rtype(), dtype) {
             (Rtype::Doubles, HDataType::Float32) => {
-                let slice: &[f64] = robj.as_typed_slice().unwrap();
+                let slice: &[f64] = arr.robj_to_slice();
                 let v: Vec<f32> = slice.iter().map(|x| *x as f32).collect();
                 let harray = harmonium_core::array::HArray::new_from_shape_vec(dim, v).unwrap();
                 let data = Arc::new(harray);
                 HArray(data)
             }
             (Rtype::Doubles, HDataType::Float64) => {
-                let v: Vec<f64> = robj.as_real_vector().unwrap();
+                let v: Vec<f64> = arr.robj_to_slice().to_vec();
                 let harray = harmonium_core::array::HArray::new_from_shape_vec(dim, v).unwrap();
                 let data = Arc::new(harray);
                 HArray(data)
             }
             (Rtype::Complexes, HDataType::Complex32) => {
-                let slice: &[Rcplx] = robj.as_typed_slice().unwrap();
+                let slice: &[Rcplx] = arr.robj_to_slice();
                 let v: Vec<Complex<f32>> = slice
                     .iter()
                     .map(|z| Complex::new(z.re().inner() as f32, z.im().inner() as f32))
@@ -79,7 +79,7 @@ impl HArray {
                 HArray(data)
             }
             (Rtype::Complexes, HDataType::Complex64) => {
-                let slice: &[Rcplx] = robj.as_typed_slice().unwrap();
+                let slice: &[Rcplx] = arr.robj_to_slice();
                 let v: Vec<Complex<f64>> = slice
                     .iter()
                     .map(|z| Complex::new(z.re().inner(), z.im().inner()))
@@ -106,15 +106,73 @@ impl HArray {
     /// #### Examples
     ///
     /// ```r
-    /// harray = HArray$new_from_values(c(1,2,3), HDataType$float32)
+    /// arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
+    /// dtype = HDataType$float32
+    /// harray = HArray$new_from_values(arr, dtype)
     /// harray$len()
     /// ```
     ///
     /// _________
     ///
-    pub fn len(&self) -> Robj {
-        let len = self.0.len();
+    fn len(&self) -> Robj {
+        let len: i32 = self.0.len().try_into().unwrap();
         let rint = Rint::from(len);
+        rint.into()
+    }
+
+    /// HArray
+    /// ## shape
+    ///
+    /// `shape() -> integers` \
+    ///
+    /// Returns the shape of this `HArray`. \
+    ///
+    /// #### Returns
+    ///
+    /// A vector of integers. \
+    ///
+    /// #### Examples
+    ///
+    /// ```r
+    /// arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
+    /// dtype = HDataType$float32
+    /// harray = HArray$new_from_values(arr, dtype)
+    /// harray$shape()
+    /// ```
+    ///
+    /// _________
+    ///
+    fn shape(&self) -> Robj {
+        let shape = self.0.shape();
+        let integers: Integers = shape.iter().map(|z| Rint::from(*z as i32)).collect();
+        integers.into()
+    }
+
+    /// HArray
+    /// ## ndim
+    ///
+    /// `ndim() -> integer` \
+    ///
+    /// Returns the number of dimensions of this `HArray`. \
+    ///
+    /// #### Returns
+    ///
+    /// An integer. \
+    ///
+    /// #### Examples
+    ///
+    /// ```r
+    /// arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
+    /// dtype = HDataType$float32
+    /// harray = HArray$new_from_values(arr, dtype)
+    /// harray$ndim()
+    /// ```
+    ///
+    /// _________
+    ///
+    fn ndim(&self) -> Robj {
+        let ndim = self.0.ndim() as i32;
+        let rint = Rint::from(ndim);
         rint.into()
     }
 
@@ -123,13 +181,15 @@ impl HArray {
     ///
     /// `print()` \
     ///
-    /// Print the `HArray`. \
+    /// Prints the `HArray`. \
     /// Differently from R's normal behaviour, `print` doesn't return the value invisibly. \
     ///
     /// #### Examples
     ///
     /// ```r
-    /// harray = HArray$new_from_values(c(1,2,3), HDataType$float32)
+    /// arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
+    /// dtype = HDataType$float32
+    /// harray = HArray$new_from_values(arr, dtype)
     /// harray$print()
     ///
     /// # or similarly:
@@ -138,7 +198,7 @@ impl HArray {
     ///
     /// _________
     ///
-    pub fn print(&self) {
+    fn print(&self) {
         self.0.print();
     }
 
@@ -163,8 +223,14 @@ impl HArray {
     /// #### Examples
     ///
     /// ```r
-    /// harray1 = HArray$new_from_values(c(1,2,3,4,5,6,7), HDataType$float32)
-    /// harray2 = HArray$new_from_values(c(1,2,3,4,5,6,7), HDataType$float32)
+    /// arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
+    /// dtype = HDataType$float32
+    /// harray1 = HArray$new_from_values(arr, dtype)
+    ///
+    /// arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
+    /// dtype = HDataType$float32
+    /// harray2 = HArray$new_from_values(arr, dtype)
+    ///
     /// harray1$eq(harray2) # TRUE
     ///
     /// # or similarly:
@@ -173,7 +239,7 @@ impl HArray {
     ///
     /// _________
     ///
-    pub fn eq(&self, other: &HArray) -> Robj {
+    fn eq(&self, other: &HArray) -> Robj {
         let eq = self.0.eq(&other.0);
         let rbool = Rbool::from(eq);
         rbool.into()
@@ -200,8 +266,14 @@ impl HArray {
     /// #### Examples
     ///
     /// ```r
-    /// harray1 = HArray$new_from_values(c(1,2,3,4,5,6,7), HDataType$float32)
-    /// harray2 = HArray$new_from_values(c(1,2,3,4,5,6,7), HDataType$float32)
+    /// arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
+    /// dtype = HDataType$float32
+    /// harray1 = HArray$new_from_values(arr, dtype)
+    ///
+    /// arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
+    /// dtype = HDataType$float32
+    /// harray2 = HArray$new_from_values(arr, dtype)
+    ///
     /// harray1$ne(harray2) # FALSE
     ///
     /// # or similarly:
@@ -210,7 +282,7 @@ impl HArray {
     ///
     /// _________
     ///
-    pub fn ne(&self, other: &HArray) -> Robj {
+    fn ne(&self, other: &HArray) -> Robj {
         let ne = self.0.ne(&other.0);
         let rbool = Rbool::from(ne);
         rbool.into()
@@ -230,39 +302,42 @@ impl HArray {
     /// #### Examples
     ///
     /// ```r
-    /// harray1 = HArray$new_from_values(c(1,2,3,4,5,6,7,8), HDataType$float32)
+    /// arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
+    /// dtype = HDataType$float32
+    /// harray1 = HArray$new_from_values(arr, dtype)
     /// harray2 = harray1$clone()
     /// harray1 == harray2 # TRUE
-    /// harray1$mem_adress() == harray2$mem_adress() # TRUE
     /// ```
     ///
     /// _________
     ///
-    pub fn clone(&self) -> HArray {
+    fn clone(&self) -> HArray {
         std::clone::Clone::clone(self)
     }
 
     /// HArray
     /// ## collect
     ///
-    /// `collect() -> atomicvector` \
+    /// `collect() -> array` \
     ///
-    /// Creates an R atomic vector from an `HArray`. The type of the atomic vector created (`double` or `complex`) will depend on the `HArray`'s dtype.
+    /// Creates an R array from an `HArray`. The type of the array created (`double` or `complex`) will depend on the `HArray`'s dtype.
     ///
     /// #### Returns
     ///
-    /// An atomic vector of type `double` or `complex`.
+    /// An array of type `double` or `complex`.
     ///
     /// #### Examples
     ///
     /// ```r
-    /// harray = HArray$new_from_values(c(1,2,3,4,5,6,7,8), HDataType$float32)
+    /// arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
+    /// dtype = HDataType$float32
+    /// harray = HArray$new_from_values(arr, dtype)
     /// harray$collect()
     /// ```
     ///
     /// _________
     ///
-    pub fn collect(&self) -> Robj {
+    fn collect(&self) -> Robj {
         self.0.collect()
     }
 
@@ -280,13 +355,15 @@ impl HArray {
     /// #### Examples
     ///
     /// ```r
-    /// harray = HArray$new_from_values(c(1,2,3,4), HDataType$float64)
+    /// arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
+    /// dtype = HDataType$float32
+    /// harray = HArray$new_from_values(arr, dtype)
     /// harray$dtype()
     /// ```
     ///
     /// _________
     ///
-    pub fn dtype(&self) -> HDataType {
+    fn dtype(&self) -> HDataType {
         self.0.dtype()
     }
 
@@ -306,30 +383,18 @@ impl HArray {
     /// #### Examples
     ///
     /// ```r
-    /// harray = HArray$new_from_values(c(1,2,3,4), HDataType$float64)
-    /// harray$is_shared() # FALSE.
+    /// arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
+    /// dtype = HDataType$float32
+    /// harray1 = HArray$new_from_values(arr, dtype)
+    /// harray1$is_shared() # FALSE.
     ///
-    /// hmatrix = harray$as_hmatrix(ncols = 2L)
-    /// harray$is_shared() # FALSE, since there's only one HArray object.
-    /// harray$mem_adress() == hmatrix$mem_adress() # TRUE, since they share the same underlying data.
-    ///
-    /// harray2 = harray$clone()
+    /// harray2 = harray1$clone()
     /// harray$is_shared() # TRUE, HArray object shared with harray2.
-    /// harray2$is_shared() # TRUE.
-    /// harray$mem_adress() == harray2$mem_adress() # TRUE, since they share the same underlying data.
-    ///
-    /// harray = HArray$new_from_values(c(1,2,3,4), HDataType$float64)
-    /// harray2 = harray$clone()
-    /// harray$mem_adress() == harray2$mem_adress() # TRUE.
-    /// harray$is_shared() # TRUE
-    /// harray$slice(0L, 1L)
-    /// harray$mem_adress() == harray2$mem_adress() # TRUE. harray and harray2 still share the same underlying data.
-    /// harray$is_shared() # FALSE, because a new HArray object was created for harray.
     /// ```
     ///
     /// _________
     ///
-    pub fn is_shared(&self) -> Robj {
+    fn is_shared(&self) -> Robj {
         let bool = Arc::weak_count(&self.0) + Arc::strong_count(&self.0) != 1;
         let rbool = Rbool::from(bool);
         rbool.into()

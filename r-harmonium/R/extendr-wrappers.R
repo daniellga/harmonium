@@ -53,6 +53,10 @@ HArray$new_from_values <- function(robj, dtype) .Call(wrap__HArray__new_from_val
 
 HArray$len <- function() .Call(wrap__HArray__len, self)
 
+HArray$shape <- function() .Call(wrap__HArray__shape, self)
+
+HArray$ndim <- function() .Call(wrap__HArray__ndim, self)
+
 HArray$print <- function() invisible(.Call(wrap__HArray__print, self))
 
 HArray$eq <- function(other) .Call(wrap__HArray__eq, self, other)
@@ -197,6 +201,34 @@ HMetadataType$ne <- function(other) .Call(wrap__HMetadataType__ne, self, other)
 #' @export
 `[[.HMetadataType` <- `$.HMetadataType`
 
+HResampler <- new.env(parent = emptyenv())
+
+HResampler$new_fft <- function(sr_in, sr_out, chunk_size, sub_chunks, nchannels, res_type, dtype) .Call(wrap__HResampler__new_fft, sr_in, sr_out, chunk_size, sub_chunks, nchannels, res_type, dtype)
+
+HResampler$new_sinc <- function(resample_ratio, max_resample_ratio_relative, parameters, chunk_size, nchannels, res_type, dtype) .Call(wrap__HResampler__new_sinc, resample_ratio, max_resample_ratio_relative, parameters, chunk_size, nchannels, res_type, dtype)
+
+HResampler$new_fast <- function(resample_ratio, max_resample_ratio_relative, pol_deg, chunk_size, nchannels, res_type, dtype) .Call(wrap__HResampler__new_fast, resample_ratio, max_resample_ratio_relative, pol_deg, chunk_size, nchannels, res_type, dtype)
+
+HResampler$process <- function(harray) invisible(.Call(wrap__HResampler__process, self, harray))
+
+HResampler$set_resample_ratio <- function(new_ratio, ramp) invisible(.Call(wrap__HResampler__set_resample_ratio, self, new_ratio, ramp))
+
+HResampler$set_resample_ratio_relative <- function(rel_ratio, ramp) invisible(.Call(wrap__HResampler__set_resample_ratio_relative, self, rel_ratio, ramp))
+
+HResampler$reset <- function() invisible(.Call(wrap__HResampler__reset, self))
+
+HResampler$res_type <- function() .Call(wrap__HResampler__res_type, self)
+
+HResampler$dtype <- function() .Call(wrap__HResampler__dtype, self)
+
+HResampler$print <- function() invisible(.Call(wrap__HResampler__print, self))
+
+#' @export
+`$.HResampler` <- function (self, name) { func <- HResampler[[name]]; environment(func) <- environment(); func }
+
+#' @export
+`[[.HResampler` <- `$.HResampler`
+
 HResamplerType <- new.env(parent = emptyenv())
 
 HResamplerType$fft_fixed_in <- function() .Call(wrap__HResamplerType__fft_fixed_in)
@@ -252,6 +284,22 @@ HAudioOp$to_mono <- function(harray) invisible(.Call(wrap__HAudioOp__to_mono, ha
 
 #' @export
 `[[.HAudioOp` <- `$.HAudioOp`
+
+HFile <- new.env(parent = emptyenv())
+
+HFile$decode <- function(fpath, dtype) .Call(wrap__HFile__decode, fpath, dtype)
+
+HFile$metadata_from_file <- function(fpath, metadata_type) .Call(wrap__HFile__metadata_from_file, fpath, metadata_type)
+
+HFile$get_params_from_file <- function(fpath) .Call(wrap__HFile__get_params_from_file, fpath)
+
+HFile$verify_file <- function(fpath) .Call(wrap__HFile__verify_file, fpath)
+
+#' @export
+`$.HFile` <- function (self, name) { func <- HFile[[name]]; environment(func) <- environment(); func }
+
+#' @export
+`[[.HFile` <- `$.HFile`
 
 
 # nolint end

@@ -1,5 +1,5 @@
-use crate::hdatatype::HDataType;
-use extendr_api::{prelude::*, wrapper, AsTypedSlice};
+use crate::{conversions::RobjConversions, hdatatype::HDataType};
+use extendr_api::{prelude::*, wrapper};
 use harmonium_core::haudioop::HAudioOpDyn;
 use harmonium_fft::fft::{FftComplex, FftFloat};
 use ndarray::IxDyn;
@@ -8,7 +8,10 @@ use std::{any::Any, sync::Arc};
 
 pub trait HArrayR: Send + Sync {
     fn as_any(&self) -> &dyn Any;
-    fn len(&self) -> i32;
+    fn as_any_mut(&mut self) -> &mut dyn Any;
+    fn len(&self) -> usize;
+    fn shape(&self) -> &[usize];
+    fn ndim(&self) -> usize;
     fn print(&self);
     fn collect(&self) -> Robj;
     fn dtype(&self) -> HDataType;
@@ -26,8 +29,20 @@ impl HArrayR for harmonium_core::array::HArray<f32, IxDyn> {
         self
     }
 
-    fn len(&self) -> i32 {
-        i32::try_from(self.len()).unwrap()
+    fn as_any_mut(&mut self) -> &mut dyn Any {
+        self
+    }
+
+    fn len(&self) -> usize {
+        self.len()
+    }
+
+    fn shape(&self) -> &[usize] {
+        self.shape()
+    }
+
+    fn ndim(&self) -> usize {
+        self.ndim()
     }
 
     fn print(&self) {
@@ -63,7 +78,7 @@ impl HArrayR for harmonium_core::array::HArray<f32, IxDyn> {
     }
 
     fn fft_mut(&mut self) {
-        panic!();
+        panic!("Operation only allowed for complex HArrays");
     }
 
     fn clone_inner(&self) -> Arc<dyn HArrayR> {
@@ -79,9 +94,7 @@ impl HArrayR for harmonium_core::array::HArray<f32, IxDyn> {
     }
 
     fn db_to_power(&mut self, reference: Robj) {
-        assert!(reference.len() == 1);
-        let reference: &[f64] = reference.as_typed_slice().unwrap();
-        let reference = reference[0];
+        let reference: f64 = reference.robj_to_scalar();
         HAudioOpDyn::db_to_power(self, reference as f32);
     }
 
@@ -95,8 +108,20 @@ impl HArrayR for harmonium_core::array::HArray<f64, IxDyn> {
         self
     }
 
-    fn len(&self) -> i32 {
-        i32::try_from(self.len()).unwrap()
+    fn as_any_mut(&mut self) -> &mut dyn Any {
+        self
+    }
+
+    fn len(&self) -> usize {
+        self.len()
+    }
+
+    fn shape(&self) -> &[usize] {
+        self.shape()
+    }
+
+    fn ndim(&self) -> usize {
+        self.ndim()
     }
 
     fn print(&self) {
@@ -132,7 +157,7 @@ impl HArrayR for harmonium_core::array::HArray<f64, IxDyn> {
     }
 
     fn fft_mut(&mut self) {
-        panic!();
+        panic!("Operation only allowed for complex HArrays");
     }
 
     fn clone_inner(&self) -> Arc<dyn HArrayR> {
@@ -148,9 +173,7 @@ impl HArrayR for harmonium_core::array::HArray<f64, IxDyn> {
     }
 
     fn db_to_power(&mut self, reference: Robj) {
-        assert!(reference.len() == 1);
-        let reference: &[f64] = reference.as_typed_slice().unwrap();
-        let reference = reference[0];
+        let reference: f64 = reference.robj_to_scalar();
         HAudioOpDyn::db_to_power(self, reference);
     }
 
@@ -164,8 +187,20 @@ impl HArrayR for harmonium_core::array::HArray<Complex<f32>, IxDyn> {
         self
     }
 
-    fn len(&self) -> i32 {
-        i32::try_from(self.len()).unwrap()
+    fn as_any_mut(&mut self) -> &mut dyn Any {
+        self
+    }
+
+    fn len(&self) -> usize {
+        self.len()
+    }
+
+    fn shape(&self) -> &[usize] {
+        self.shape()
+    }
+
+    fn ndim(&self) -> usize {
+        self.ndim()
     }
 
     fn print(&self) {
@@ -230,8 +265,20 @@ impl HArrayR for harmonium_core::array::HArray<Complex<f64>, IxDyn> {
         self
     }
 
-    fn len(&self) -> i32 {
-        i32::try_from(self.len()).unwrap()
+    fn as_any_mut(&mut self) -> &mut dyn Any {
+        self
+    }
+
+    fn len(&self) -> usize {
+        self.len()
+    }
+
+    fn shape(&self) -> &[usize] {
+        self.shape()
+    }
+
+    fn ndim(&self) -> usize {
+        self.ndim()
     }
 
     fn print(&self) {

@@ -106,7 +106,7 @@ impl HAudioSink {
     ///
     /// _________
     ///
-    pub fn append_from_file(&self, fpath: &str) {
+    fn append_from_file(&self, fpath: &str) {
         let (harray, sr) = decode::<f32>(fpath).unwrap();
         let audio = Audio::D2(&harray);
         self.0.append_from_harray(&audio, sr);
@@ -133,7 +133,7 @@ impl HAudioSink {
     ///
     /// _________
     ///
-    pub fn play(&self) {
+    fn play(&self) {
         self.0.play();
     }
 
@@ -159,7 +159,7 @@ impl HAudioSink {
     ///
     /// _________
     ///
-    pub fn stop(&self) {
+    fn stop(&self) {
         self.0.stop();
     }
 
@@ -184,7 +184,7 @@ impl HAudioSink {
     ///
     /// _________
     ///
-    pub fn pause(&self) {
+    fn pause(&self) {
         self.0.pause();
     }
 
@@ -212,7 +212,7 @@ impl HAudioSink {
     ///
     /// _________
     ///
-    pub fn is_paused(&self) -> bool {
+    fn is_paused(&self) -> bool {
         self.0.is_paused()
     }
 
@@ -238,7 +238,7 @@ impl HAudioSink {
     ///
     /// _________
     ///
-    pub fn volume(&self) -> f64 {
+    fn volume(&self) -> f64 {
         self.0.volume() as f64
     }
 
@@ -266,7 +266,7 @@ impl HAudioSink {
     ///
     /// _________
     ///
-    pub fn set_volume(&self, value: f64) {
+    fn set_volume(&self, value: f64) {
         self.0.set_volume(value as f32);
     }
 
@@ -292,7 +292,7 @@ impl HAudioSink {
     ///
     /// _________
     ///
-    pub fn speed(&self) -> f64 {
+    fn speed(&self) -> f64 {
         self.0.speed() as f64
     }
 
@@ -320,7 +320,7 @@ impl HAudioSink {
     ///
     /// _________
     ///
-    pub fn set_speed(&self, value: f64) {
+    fn set_speed(&self, value: f64) {
         self.0.set_speed(value as f32);
     }
 
@@ -341,7 +341,7 @@ impl HAudioSink {
     ///
     /// _________
     ///
-    pub fn sleep_until_end(&self) {
+    fn sleep_until_end(&self) {
         self.0.sleep_until_end();
     }
 
@@ -368,7 +368,7 @@ impl HAudioSink {
     ///
     /// _________
     ///
-    pub fn len(&self) -> i32 {
+    fn len(&self) -> i32 {
         self.0.len() as i32
     }
 
@@ -392,7 +392,7 @@ impl HAudioSink {
     ///
     /// _________
     ///
-    pub fn is_empty(&self) -> bool {
+    fn is_empty(&self) -> bool {
         self.0.is_empty()
     }
 
@@ -415,7 +415,7 @@ impl HAudioSink {
     ///
     /// _________
     ///
-    pub fn clear(&self) {
+    fn clear(&self) {
         self.0.clear()
     }
 
@@ -441,7 +441,7 @@ impl HAudioSink {
     ///
     /// _________
     ///
-    pub fn skip_one(&self) {
+    fn skip_one(&self) {
         self.0.skip_one()
     }
 
@@ -464,7 +464,7 @@ impl HAudioSink {
     ///
     /// _________
     ///
-    pub fn audio_output_devices() -> Strings {
+    fn audio_output_devices() -> Strings {
         let v = play::audio_output_devices().unwrap();
         Strings::from_values(v)
     }
@@ -488,7 +488,7 @@ impl HAudioSink {
     ///
     /// _________
     ///
-    pub fn audio_default_device() -> String {
+    fn audio_default_device() -> String {
         play::audio_default_device().unwrap()
     }
 
@@ -517,7 +517,7 @@ impl HAudioSink {
     ///
     /// _________
     ///
-    pub fn audio_supported_configs() -> Strings {
+    fn audio_supported_configs() -> Strings {
         let v = play::audio_supported_configs().unwrap();
         Strings::from_values(v)
     }

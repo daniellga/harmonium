@@ -33,8 +33,8 @@
   lockEnvironment(HArray, bindings = TRUE)
   lockEnvironment(HAudioSink, bindings = TRUE)
   lockEnvironment(HWindow, bindings = TRUE)
-  #lockEnvironment(HFile, bindings = TRUE)
-  #lockEnvironment(HResampler, bindings = TRUE)
+  lockEnvironment(HFile, bindings = TRUE)
+  lockEnvironment(HResampler, bindings = TRUE)
   lockEnvironment(HFft, bindings = TRUE)
   
   # Lazy load hconfig. This is needed because HConfig uses rust functions, which are loaded after the scripts are run.

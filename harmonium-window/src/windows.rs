@@ -2,7 +2,7 @@ use harmonium_core::{
     array::HArray,
     errors::{HError, HResult},
 };
-use ndarray::{ArcArray1, Ix1};
+use ndarray::Ix1;
 use num_traits::{Float, FloatConst};
 use realfft::{num_complex::Complex, FftNum, RealFftPlanner};
 use rustfft::FftPlanner;
@@ -59,33 +59,6 @@ where
 
     // Ok to unwrap.
     HArray::new_from_shape_vec(npoints, window).unwrap()
-}
-
-pub fn barthann2<T>(npoints: usize, window_type: WindowType) -> HArray<T, Ix1>
-where
-    T: Float + FloatConst,
-{
-    let np_f = match window_type {
-        WindowType::Symmetric => T::from(npoints - 1).unwrap(),
-        WindowType::Periodic => T::from(npoints).unwrap(),
-    };
-
-    let pi2 = T::TAU();
-    let a = T::from(0.62).unwrap();
-    let b = T::from(0.48).unwrap();
-    let c = T::from(0.38).unwrap();
-    let half = T::from(0.5).unwrap();
-    let one = T::from(1).unwrap();
-
-    let mut x_float = T::zero();
-    let mut window = ArcArray1::<T>::zeros(npoints);
-    window.mapv_inplace(|_| {
-        let fac = (x_float / (np_f) - half).abs();
-        x_float = x_float + one;
-        a - b * fac + c * (pi2 * fac).cos()
-    });
-
-    HArray(window)
 }
 
 /// Returns a Bartlett window.
