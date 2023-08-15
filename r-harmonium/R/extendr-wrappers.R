@@ -35,21 +35,9 @@ HPolynomialDegree$ne <- function(other) .Call(wrap__HPolynomialDegree__ne, self,
 #' @export
 `[[.HPolynomialDegree` <- `$.HPolynomialDegree`
 
-HError <- new.env(parent = emptyenv())
-
-HError$to_error1 <- function() .Call(wrap__HError__to_error1)
-
-HError$to_error2 <- function() .Call(wrap__HError__to_error2)
-
-#' @export
-`$.HError` <- function (self, name) { func <- HError[[name]]; environment(func) <- environment(); func }
-
-#' @export
-`[[.HError` <- `$.HError`
-
 HArray <- new.env(parent = emptyenv())
 
-HArray$new_from_values <- function(robj, dtype) .Call(wrap__HArray__new_from_values, robj, dtype)
+HArray$new_from_values <- function(arr, dtype) .Call(wrap__HArray__new_from_values, arr, dtype)
 
 HArray$len <- function() .Call(wrap__HArray__len, self)
 
@@ -289,11 +277,11 @@ HFile <- new.env(parent = emptyenv())
 
 HFile$decode <- function(fpath, dtype) .Call(wrap__HFile__decode, fpath, dtype)
 
-HFile$metadata_from_file <- function(fpath, metadata_type) .Call(wrap__HFile__metadata_from_file, fpath, metadata_type)
+HFile$metadata <- function(fpath, metadata_type) .Call(wrap__HFile__metadata, fpath, metadata_type)
 
-HFile$get_params_from_file <- function(fpath) .Call(wrap__HFile__get_params_from_file, fpath)
+HFile$params <- function(fpath) .Call(wrap__HFile__params, fpath)
 
-HFile$verify_file <- function(fpath) .Call(wrap__HFile__verify_file, fpath)
+HFile$verify <- function(fpath) .Call(wrap__HFile__verify, fpath)
 
 #' @export
 `$.HFile` <- function (self, name) { func <- HFile[[name]]; environment(func) <- environment(); func }

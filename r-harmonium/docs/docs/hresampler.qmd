@@ -91,7 +91,7 @@ _________
 
 ## new_sinc
 
-`new_sinc(resample_ratio: double, max_resample_ratio_relative: double, parameters: HSincInterpolationParams, chunk_size: integer, nbr_channels: integer, res_type: HResamplerType, dtype: HDataType) -> HResampler` \
+`new_sinc(resample_ratio: double, max_resample_ratio_relative: double, parameters: HSincInterpolationParams, chunk_size: integer, nchannels: integer, res_type: HResamplerType, dtype: HDataType) -> HResampler` \
 
 Creates a new Sinc type HResampler. \
 Supports any of  `[sinc_fixed_in, sinc_fixed_out]` `HResamplerType`. \
@@ -116,7 +116,7 @@ ratio is the reciprocal of the maximum. For example, with `max_resample_ratio_re
 An `HSincInterpolationParams`. Parameters for interpolation. \
 * `chunk_size` \
 Chunks size of input or output data in frames. \
-* `nbr_channels` \
+* `nchannels` \
 Number of channels in input and output. \
 Must be the same number of channels as the `HAudio` that will be processed by the `HResampler`. \
 * `res_type` \
@@ -138,18 +138,18 @@ resample_ratio = sr_out / sr_in
 max_resample_ratio_relative = 2
 hparams = HSincInterpolationParams$new(256, 0.95, 256, "linear", "blackmanharris2")
 chunk_size = 512L
-nbr_channels = 2L
+nchannels = 2L
 res_type = HResamplerType$sinc_fixed_out
 dtype = HDataType$float32
 
-res = HResampler$new_sinc(resample_ratio, max_resample_ratio_relative, hparams, chunk_size, nbr_channels, res_type, dtype)
+res = HResampler$new_sinc(resample_ratio, max_resample_ratio_relative, hparams, chunk_size, nchannels, res_type, dtype)
 ```
 
 _________
 
 ## new_fast
 
-`new_sinc(resample_ratio: double, max_resample_ratio_relative: double, pol_deg: HPolynomialDegree, chunk_size: integer, nbr_channels: integer, res_type: HResamplerType, dtype: HDataType) -> HResampler` \
+`new_sinc(resample_ratio: double, max_resample_ratio_relative: double, pol_deg: HPolynomialDegree, chunk_size: integer, nchannels: integer, res_type: HResamplerType, dtype: HDataType) -> HResampler` \
 
 Creates a new Fast type HResampler. \
 Supports any of  `[fast_fixed_in, fast_fixed_out]` `HResamplerType`. \
@@ -175,7 +175,7 @@ ratio is the reciprocal of the maximum. For example, with `max_resample_ratio_re
 An `HPolynomialDegree`. Used to select the polynomial degree for interpolation. \
 * `chunk_size` \
 Chunks size of input or output data in frames. \
-* `nbr_channels` \
+* `nchannels` \
 Number of channels in input and output. \
 Must be the same number of channels as the `HAudio` that will be processed by the `HResampler`. \
 * `res_type` \
@@ -197,18 +197,18 @@ resample_ratio = sr_out / sr_in
 max_resample_ratio_relative = 2
 pol_deg = HPolynomialDegree$linear
 chunk_size = 512L
-nbr_channels = 2L
+nchannels = 2L
 res_type = HResamplerType$fast_fixed_out
 dtype = HDataType$float32
 
-res = HResampler$new_fast(resample_ratio, max_resample_ratio_relative, pol_deg, chunk_size, nbr_channels, res_type, dtype)
+res = HResampler$new_fast(resample_ratio, max_resample_ratio_relative, pol_deg, chunk_size, nchannels, res_type, dtype)
 ```
 
 _________
 
 ## process
 
-`process(haudio: HAudio, sr_out: integer)` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hresampler.rs#L456) </span> \
+`process(haudio: HAudio, sr_out: integer)` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hresampler.rs#L471) </span> \
 
 Process the resampler, changing the `HAudio`'s sampling rate. \
 
@@ -233,7 +233,7 @@ _________
 
 ## set_resample_ratio
 
-`set_resample_ratio(new_ratio: double, ramp: bool)` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hresampler.rs#L488) </span> \
+`set_resample_ratio(new_ratio: double, ramp: bool)` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hresampler.rs#L503) </span> \
 
 Update the resample ratio. \
 For asynchronous resamplers, the ratio must be within `original / maximum` to `original * maximum`, where `original` and `maximum` are the resampling ratios that were provided to the constructor. Trying to set the ratio outside these bounds will return an error. \
@@ -260,7 +260,7 @@ _________
 
 ## set_resample_ratio_relative
 
-`set_resample_ratio_relative(rel_ratio: double, ramp: bool)` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hresampler.rs#L521) </span> \
+`set_resample_ratio_relative(rel_ratio: double, ramp: bool)` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hresampler.rs#L539) </span> \
 
 Update the resample ratio as a factor relative to the original one. \
 For asynchronous resamplers, the relative ratio must be within `1 / maximum` to `maximum`, where `maximum` is the maximum resampling ratio that was provided to the constructor. Trying to set the ratio outside these bounds will return an error. \
@@ -288,7 +288,7 @@ _________
 
 ## reset
 
-`reset()` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hresampler.rs#L551) </span> \
+`reset()` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hresampler.rs#L572) </span> \
 
 Reset the resampler state and clear all internal buffers. \
 
@@ -301,11 +301,11 @@ resample_ratio = sr_out / sr_in
 max_resample_ratio_relative = 2
 pol_deg = HPolynomialDegree$linear
 chunk_size = 512L
-nbr_channels = 2L
+nchannels = 2L
 res_type = HResamplerType$fast_fixed_out
 dtype = HDataType$float32
 
-res = HResampler$new_fast(resample_ratio, max_resample_ratio_relative, pol_deg, chunk_size, nbr_channels, res_type, dtype)
+res = HResampler$new_fast(resample_ratio, max_resample_ratio_relative, pol_deg, chunk_size, nchannels, res_type, dtype)
 res$reset()
 ```
 
@@ -313,7 +313,7 @@ _________
 
 ## res_type
 
-`res_type() -> HResamplerType` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hresampler.rs#L585) </span> \
+`res_type() -> HResamplerType` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hresampler.rs#L606) </span> \
 
 Gets the `HResampler`'s type. \
 
@@ -330,11 +330,11 @@ resample_ratio = sr_out / sr_in
 max_resample_ratio_relative = 2
 pol_deg = HPolynomialDegree$linear
 chunk_size = 512L
-nbr_channels = 2L
+nchannels = 2L
 res_type = HResamplerType$fast_fixed_out
 dtype = HDataType$float32
 
-res = HResampler$new_fast(resample_ratio, max_resample_ratio_relative, pol_deg, chunk_size, nbr_channels, res_type, dtype)
+res = HResampler$new_fast(resample_ratio, max_resample_ratio_relative, pol_deg, chunk_size, nchannels, res_type, dtype)
 res$res_type()
 ```
 
@@ -342,7 +342,7 @@ _________
 
 ## dtype
 
-`dtype() -> HDataType` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hresampler.rs#L619) </span> \
+`dtype() -> HDataType` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hresampler.rs#L640) </span> \
 
 Gets the `HResampler`'s dtype.
 
@@ -359,11 +359,11 @@ resample_ratio = sr_out / sr_in
 max_resample_ratio_relative = 2
 pol_deg = HPolynomialDegree$linear
 chunk_size = 512L
-nbr_channels = 2L
+nchannels = 2L
 res_type = HResamplerType$fast_fixed_out
 dtype = HDataType$float32
 
-res = HResampler$new_fast(resample_ratio, max_resample_ratio_relative, pol_deg, chunk_size, nbr_channels, res_type, dtype)
+res = HResampler$new_fast(resample_ratio, max_resample_ratio_relative, pol_deg, chunk_size, nchannels, res_type, dtype)
 res$dtype()
 ```
 
@@ -371,7 +371,7 @@ _________
 
 ## print
 
-`print()` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hresampler.rs#L653) </span> \
+`print()` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hresampler.rs#L674) </span> \
 
 Print the `HResampler`. \
 Differently from R's normal behaviour, `print` doesn't return the value invisibly. \
@@ -385,11 +385,11 @@ resample_ratio = sr_out / sr_in
 max_resample_ratio_relative = 2
 pol_deg = HPolynomialDegree$linear
 chunk_size = 512L
-nbr_channels = 2L
+nchannels = 2L
 res_type = HResamplerType$fast_fixed_out
 dtype = HDataType$float32
 
-res = HResampler$new_fast(resample_ratio, max_resample_ratio_relative, pol_deg, chunk_size, nbr_channels, res_type, dtype)
+res = HResampler$new_fast(resample_ratio, max_resample_ratio_relative, pol_deg, chunk_size, nchannels, res_type, dtype)
 res$print()
 
 # or similarly:

@@ -8,7 +8,7 @@ A collection of window functions. \
 
 ## barthann
 
-`barthann(npoints: integer, sym: bool, dtype: HDataType) -> HArray` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hwindow.rs#L47) </span> \
+`barthann(npoints: integer, sym: bool, dtype: HDataType) -> HArray` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hwindow.rs#L48) </span> \
 
 Returns a modified Bartlett-Hann window. \
 
@@ -39,7 +39,7 @@ HWindow$barthann(npoints = 10L, sym = TRUE, dtype = HDataType$Float64)
 
 ## bartlett
 
-`bartlett(npoints: integer, sym: bool, dtype: HDataType) -> HArray` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hwindow.rs#L106) </span> \
+`bartlett(npoints: integer, sym: bool, dtype: HDataType) -> HArray` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hwindow.rs#L109) </span> \
 
 $w(n) = \frac{2}{npoints-1} (\frac{npoints-1}{2} - |n - \frac{npoints-1}{2}|)$
 
@@ -75,7 +75,7 @@ HWindow$bartlett(npoints = 10L, sym = TRUE, dtype = HDataType$Float64)
 
 ## blackman
 
-`blackman(npoints: integer, sym: bool, dtype: HDataType) -> HArray` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hwindow.rs#L181) </span> \
+`blackman(npoints: integer, sym: bool, dtype: HDataType) -> HArray` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hwindow.rs#L186) </span> \
 
 Returns a Blackman window. \
 
@@ -127,7 +127,7 @@ HWindow$blackman(npoints = 10L, sym = TRUE, dtype = HDataType$Float64)
 
 ## blackmanharris
 
-`blackmanharris(npoints: integer, sym: bool, dtype: HDataType) -> HArray` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hwindow.rs#L235) </span> \
+`blackmanharris(npoints: integer, sym: bool, dtype: HDataType) -> HArray` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hwindow.rs#L242) </span> \
 
 Return a minimum 4-term Blackman-Harris window. \
 
@@ -158,7 +158,7 @@ HWindow$blackmanharris(npoints = 10L, sym = TRUE, dtype = HDataType$Float64)
 
 ## bohman
 
-`bohman(npoints: integer, sym: bool, dtype: HDataType) -> HArray` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hwindow.rs#L291) </span> \
+`bohman(npoints: integer, sym: bool, dtype: HDataType) -> HArray` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hwindow.rs#L298) </span> \
 
 Returns a Bohman window. \
 
@@ -189,7 +189,7 @@ HWindow$bohman(npoints = 10L, sym = TRUE, dtype = HDataType$Float64)
 
 ## boxcar
 
-`boxcar(npoints: integer, dtype: HDataType) -> HArray` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hwindow.rs#L340) </span> \
+`boxcar(npoints: integer, dtype: HDataType) -> HArray` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hwindow.rs#L349) </span> \
 
 Returns a boxcar or rectangular window. \
 
@@ -215,7 +215,7 @@ HWindow$boxcar(npoints = 10L, dtype = HDataType$Float64)
 
 ## cosine
 
-`cosine(npoints: integer, sym: bool, dtype: HDataType) -> HArray` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hwindow.rs#L388) </span> \
+`cosine(npoints: integer, sym: bool, dtype: HDataType) -> HArray` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hwindow.rs#L399) </span> \
 
 Returns a window with a simple cosine shape. \
 
@@ -246,7 +246,7 @@ HWindow$cosine(npoints = 10L, sym = TRUE, dtype = HDataType$Float64)
 
 ## hann
 
-`hann(npoints: integer, sym: bool, dtype: HDataType) -> HArray` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hwindow.rs#L447) </span> \
+`hann(npoints: integer, sym: bool, dtype: HDataType) -> HArray` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hwindow.rs#L460) </span> \
 
 Returns a Hann window. \
 

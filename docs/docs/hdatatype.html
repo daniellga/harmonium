@@ -151,32 +151,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../docs/haudio.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">HAudio</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="../docs/haudiosink.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">HAudioSink</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../docs/hconfig.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">HConfig</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="../docs/hdatatype.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">HDataType</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../docs/hmatrix.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">HMatrix</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -261,7 +243,7 @@ Supports <code>Float32</code>, <code>Float64</code>, <code>Complex32</code> and 
 <h1>Methods</h1>
 <section id="float32" class="level2">
 <h2 class="anchored" data-anchor-id="float32">float32</h2>
-<p><code>float32 -&gt; HDataType</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hdatatype.rs#L39">source</a> </span><br>
+<p><code>float32 -&gt; HDataType</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hdatatype.rs#L39">source</a> </span><br>
 </p>
 <p>Creates a Float32 <code>HDataType</code>.<br>
 </p>
@@ -278,7 +260,7 @@ Supports <code>Float32</code>, <code>Float64</code>, <code>Complex32</code> and 
 </section>
 <section id="float64" class="level2">
 <h2 class="anchored" data-anchor-id="float64">float64</h2>
-<p><code>float64 -&gt; HDataType</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hdatatype.rs#L62">source</a> </span><br>
+<p><code>float64 -&gt; HDataType</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hdatatype.rs#L62">source</a> </span><br>
 </p>
 <p>Creates a Float64 <code>HDataType</code>.<br>
 </p>
@@ -295,7 +277,7 @@ Supports <code>Float32</code>, <code>Float64</code>, <code>Complex32</code> and 
 </section>
 <section id="complex32" class="level2">
 <h2 class="anchored" data-anchor-id="complex32">complex32</h2>
-<p><code>complex32 -&gt; HDataType</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hdatatype.rs#L85">source</a> </span><br>
+<p><code>complex32 -&gt; HDataType</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hdatatype.rs#L85">source</a> </span><br>
 </p>
 <p>Creates a Complex32 <code>HDataType</code>.<br>
 </p>
@@ -312,7 +294,7 @@ Supports <code>Float32</code>, <code>Float64</code>, <code>Complex32</code> and 
 </section>
 <section id="complex64" class="level2">
 <h2 class="anchored" data-anchor-id="complex64">complex64</h2>
-<p><code>complex64 -&gt; HDataType</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hdatatype.rs#L108">source</a> </span><br>
+<p><code>complex64 -&gt; HDataType</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hdatatype.rs#L108">source</a> </span><br>
 </p>
 <p>Creates a Complex64 <code>HDataType</code>.<br>
 </p>
@@ -329,7 +311,7 @@ Supports <code>Float32</code>, <code>Float64</code>, <code>Complex32</code> and 
 </section>
 <section id="print" class="level2">
 <h2 class="anchored" data-anchor-id="print">print</h2>
-<p><code>print()</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hdatatype.rs#L132">source</a> </span><br>
+<p><code>print()</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hdatatype.rs#L132">source</a> </span><br>
 </p>
 <p>Prints the <code>HDataType</code>.<br>
 Differently from R’s behaviour, <code>print</code> doesn’t return the value invisibly.<br>
@@ -346,7 +328,7 @@ Differently from R’s behaviour, <code>print</code> doesn’t return the value 
 </section>
 <section id="eq" class="level2">
 <h2 class="anchored" data-anchor-id="eq">eq</h2>
-<p><code>eq(other: HDataType) -&gt; bool</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hdatatype.rs#L165">source</a> </span><br>
+<p><code>eq(other: HDataType) -&gt; bool</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hdatatype.rs#L165">source</a> </span><br>
 </p>
 <p>Equality with another <code>HDataType</code>.<br>
 </p>
@@ -375,7 +357,7 @@ An <code>HDataType</code>.<br>
 </section>
 <section id="ne" class="level2">
 <h2 class="anchored" data-anchor-id="ne">ne</h2>
-<p><code>ne(other: HDataType) -&gt; bool</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hdatatype.rs#L198">source</a> </span><br>
+<p><code>ne(other: HDataType) -&gt; bool</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hdatatype.rs#L198">source</a> </span><br>
 </p>
 <p>Difference with another <code>HDataType</code>.<br>
 </p>

@@ -1,21 +1,20 @@
 use std::collections::HashMap;
+use std::env;
 use std::fs::File;
 use std::io::{BufRead, BufReader, Write};
 use std::path::PathBuf;
 
 fn main() {
+    println!("{:?}", env::current_dir().unwrap());
     let files = vec![
-        "./harray.rs",
-        "./haudio.rs",
-        "./hmatrix.rs",
-        "./hdatatype.rs",
-        "./haudiosink.rs",
-        "./hresampler.rs",
-        "./hresamplertype.rs",
-        "./hwindow.rs",
-        "./hmetadatatype.rs",
-        "./hpolynomialdegree.rs",
-        "../../../R/hconfig.R",
+        "./rust/src/harray.rs",
+        "./rust/src/hdatatype.rs",
+        "./rust/src/haudiosink.rs",
+        "./rust/src/hresampler.rs",
+        "./rust/src/hresamplertype.rs",
+        "./rust/src/hwindow.rs",
+        "./rust/src/hmetadatatype.rs",
+        "./rust/src/hpolynomialdegree.rs",
     ];
 
     let gh = "https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/";
@@ -24,7 +23,29 @@ fn main() {
 
     generate_r_docs(files, gh, &mut hash);
 
-    let output_path = PathBuf::from("../../../docs/docs");
+    // get r_docs output path from command line.
+    let args: Vec<String> = env::args().collect();
+    let mut output_path: Option<String> = None;
+    let mut index = 1;
+
+    while index < args.len() {
+        let arg = &args[index];
+
+        if arg == "--r_docs-dir" {
+            // Check if the next argument exists
+            if let Some(next_arg) = args.get(index + 1) {
+                output_path = Some(next_arg.clone());
+                index += 2; // Skip the value as well
+                continue;
+            }
+        }
+
+        index += 1;
+    }
+
+    let output_path = PathBuf::from(output_path.unwrap());
+
+    println!("{:?}", output_path);
 
     output_file(hash, output_path)
 }

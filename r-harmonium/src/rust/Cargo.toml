@@ -33,8 +33,8 @@ ndarray = "0.15.6"
 num-traits = "*"
 
 [[bin]]
-name = "generate_r_docs"
-path = "src/generate_r_docs.rs"
+name = "r_docs"
+path = "src/r_docs.rs"
 
 [profile.dev]
 debug = 1 # less precise locations. Reduce size of target dir.

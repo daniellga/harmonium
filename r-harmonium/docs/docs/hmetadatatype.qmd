@@ -9,7 +9,7 @@ Supports `All`, `Text` and `Visual` types. \
 
 ## all
 
-`all -> HMetadataType` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmetadatatype.rs#L39) </span> \
+`all -> HMetadataType` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hmetadatatype.rs#L39) </span> \
 
 Creates an All `HMetadataType`. \
 
@@ -27,7 +27,7 @@ _________
 
 ## text
 
-`text -> HMetadataType` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmetadatatype.rs#L62) </span> \
+`text -> HMetadataType` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hmetadatatype.rs#L62) </span> \
 
 Creates a Text `HMetadataType`. \
 
@@ -45,7 +45,7 @@ _________
 
 ## visual
 
-`visual -> HMetadataType` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmetadatatype.rs#L85) </span> \
+`visual -> HMetadataType` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hmetadatatype.rs#L85) </span> \
 
 Creates a Visual `HMetadataType`. \
 
@@ -63,7 +63,7 @@ _________
 
 ## print
 
-`print()` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmetadatatype.rs#L109) </span> \
+`print()` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hmetadatatype.rs#L109) </span> \
 
 Prints the `HMetadataType`. \
 Differently from R's behaviour, `print` doesn't return the value invisibly. \
@@ -82,7 +82,7 @@ _________
 
 ## eq
 
-`eq(other: HMetadataType) -> bool` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmetadatatype.rs#L142) </span> \
+`eq(other: HMetadataType) -> bool` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hmetadatatype.rs#L142) </span> \
 
 Equality with another `HMetadataType`.
 
@@ -110,7 +110,7 @@ _________
 
 ## ne
 
-`ne(other: HMetadataType) -> bool` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hmetadatatype.rs#L175) </span> \
+`ne(other: HMetadataType) -> bool` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hmetadatatype.rs#L175) </span> \
 
 Difference with another `HMetadataType`.
 

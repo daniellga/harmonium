@@ -23,7 +23,7 @@ Nearest, uses the nearest sample point without any fitting. \
 
 ## Septic
 
-`septic -> HPolynomialDegree` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hpolynomialdegree.rs#L55) </span> \
+`septic -> HPolynomialDegree` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hpolynomialdegree.rs#L55) </span> \
 
 Creates a `Septic` `HPolynomialDegree`. \
 
@@ -41,7 +41,7 @@ _________
 
 ## Quintic
 
-`quintic -> HPolynomialDegree` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hpolynomialdegree.rs#L78) </span> \
+`quintic -> HPolynomialDegree` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hpolynomialdegree.rs#L78) </span> \
 
 Creates a `Quintic` `HPolynomialDegree`. \
 
@@ -59,7 +59,7 @@ _________
 
 ## Cubic
 
-`cubic -> HPolynomialDegree` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hpolynomialdegree.rs#L101) </span> \
+`cubic -> HPolynomialDegree` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hpolynomialdegree.rs#L101) </span> \
 
 Creates a `Cubic` `HPolynomialDegree`. \
 
@@ -77,7 +77,7 @@ _________
 
 ## Linear
 
-`linear -> HPolynomialDegree` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hpolynomialdegree.rs#L124) </span> \
+`linear -> HPolynomialDegree` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hpolynomialdegree.rs#L124) </span> \
 
 Creates a `Linear` `HPolynomialDegree`. \
 
@@ -95,7 +95,7 @@ _________
 
 ## Nearest
 
-`nearest -> HPolynomialDegree` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hpolynomialdegree.rs#L147) </span> \
+`nearest -> HPolynomialDegree` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hpolynomialdegree.rs#L147) </span> \
 
 Creates a `Nearest` `HPolynomialDegree`. \
 
@@ -113,7 +113,7 @@ _________
 
 ## print
 
-`print()` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hpolynomialdegree.rs#L171) </span> \
+`print()` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hpolynomialdegree.rs#L171) </span> \
 
 Prints the `HPolynomialDegree`. \
 Differently from R's behaviour, `print` doesn't return the value invisibly. \
@@ -132,7 +132,7 @@ _________
 
 ## eq
 
-`eq(other: HPolynomialDegree) -> bool` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hpolynomialdegree.rs#L204) </span> \
+`eq(other: HPolynomialDegree) -> bool` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hpolynomialdegree.rs#L204) </span> \
 
 Equality with another `HPolynomialDegree`.
 
@@ -160,7 +160,7 @@ _________
 
 ## ne
 
-`ne(other: HPolynomialDegree) -> bool` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hpolynomialdegree.rs#L237) </span> \
+`ne(other: HPolynomialDegree) -> bool` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hpolynomialdegree.rs#L237) </span> \
 
 Difference with another `HPolynomialDegree`.
 

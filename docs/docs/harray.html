@@ -151,32 +151,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../docs/haudio.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">HAudio</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="../docs/haudiosink.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">HAudioSink</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../docs/hconfig.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">HConfig</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="../docs/hdatatype.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">HDataType</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../docs/hmatrix.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">HMatrix</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -224,19 +206,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#methods" id="toc-methods" class="nav-link active" data-scroll-target="#methods">Methods</a>
   <ul class="collapse">
   <li><a href="#new_from_values" id="toc-new_from_values" class="nav-link" data-scroll-target="#new_from_values">new_from_values</a></li>
-  <li><a href="#new_from_arrow" id="toc-new_from_arrow" class="nav-link" data-scroll-target="#new_from_arrow">new_from_arrow</a></li>
   <li><a href="#len" id="toc-len" class="nav-link" data-scroll-target="#len">len</a></li>
-  <li><a href="#slice" id="toc-slice" class="nav-link" data-scroll-target="#slice">slice</a></li>
+  <li><a href="#shape" id="toc-shape" class="nav-link" data-scroll-target="#shape">shape</a></li>
+  <li><a href="#ndim" id="toc-ndim" class="nav-link" data-scroll-target="#ndim">ndim</a></li>
   <li><a href="#print" id="toc-print" class="nav-link" data-scroll-target="#print">print</a></li>
   <li><a href="#eq" id="toc-eq" class="nav-link" data-scroll-target="#eq">eq</a></li>
   <li><a href="#ne" id="toc-ne" class="nav-link" data-scroll-target="#ne">ne</a></li>
   <li><a href="#clone" id="toc-clone" class="nav-link" data-scroll-target="#clone">clone</a></li>
-  <li><a href="#as_hmatrix" id="toc-as_hmatrix" class="nav-link" data-scroll-target="#as_hmatrix">as_hmatrix</a></li>
   <li><a href="#collect" id="toc-collect" class="nav-link" data-scroll-target="#collect">collect</a></li>
-  <li><a href="#mem_adress" id="toc-mem_adress" class="nav-link" data-scroll-target="#mem_adress">mem_adress</a></li>
   <li><a href="#dtype" id="toc-dtype" class="nav-link" data-scroll-target="#dtype">dtype</a></li>
   <li><a href="#is_shared" id="toc-is_shared" class="nav-link" data-scroll-target="#is_shared">is_shared</a></li>
-  <li><a href="#fft" id="toc-fft" class="nav-link" data-scroll-target="#fft">fft</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -267,15 +246,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h1>Methods</h1>
 <section id="new_from_values" class="level2">
 <h2 class="anchored" data-anchor-id="new_from_values">new_from_values</h2>
-<p><code>new_from_values(values: atomicvector, dtype: HDataType) -&gt; HArray</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./harray.rs#L69">source</a> </span><br>
+<p><code>new_from_array(arr: array, dtype: HDataType) -&gt; HArray</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/harray.rs#L45">source</a> </span><br>
 </p>
-<p>Creates a new <code>HArray</code> from an R atomic vector.<br>
+<p>Creates a new <code>HArray</code> from an R array.<br>
 </p>
 <section id="arguments" class="level4">
 <h4 class="anchored" data-anchor-id="arguments">Arguments</h4>
 <ul>
-<li><code>values</code><br>
-A <code>double</code> or <code>complex</code> atomic vector.</li>
+<li><code>arr</code><br>
+A <code>double</code> or <code>complex</code> array.</li>
 <li><code>dtype</code><br>
 An <code>HDataType</code> to indicate which type of <code>HArray</code> to be created.<br>
 For float dtypes, the atomic vector must be a <code>double</code>. For complex dtypes, a <code>complex</code> atomic vector.</li>
@@ -288,336 +267,238 @@ For float dtypes, the atomic vector must be a <code>double</code>. For complex d
 </section>
 <section id="examples" class="level4">
 <h4 class="anchored" data-anchor-id="examples">Examples</h4>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>values <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>,<span class="dv">9</span>,<span class="dv">10</span>,<span class="dv">11</span>,<span class="dv">12</span>)</span>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>arr <span class="ot">=</span> <span class="fu">array</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>,<span class="dv">9</span>,<span class="dv">10</span>,<span class="dv">11</span>,<span class="dv">12</span>), <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">4</span>))</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>dtype <span class="ot">=</span> HDataType<span class="sc">$</span>float32</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>HArray<span class="sc">$</span><span class="fu">new_from_values</span>(values, dtype)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<hr>
-</section>
-</section>
-<section id="new_from_arrow" class="level2">
-<h2 class="anchored" data-anchor-id="new_from_arrow">new_from_arrow</h2>
-<p><code>new_from_arrow(values: Array, dtype: HDataType) -&gt; HArray</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./harray.rs#L145">source</a> </span><br>
-</p>
-<p>Creates a new <code>HArray</code> from an R’s arrow <a href="https://arrow.apache.org/docs/r/reference/array.html"><code>Array</code></a>.<br>
-The conversion is zero copy.</p>
-<section id="arguments-1" class="level4">
-<h4 class="anchored" data-anchor-id="arguments-1">Arguments</h4>
-<ul>
-<li><code>values</code><br>
-A float32 or float64 arrow <code>Array</code>.</li>
-<li><code>dtype</code><br>
-An <code>HDataType</code> to indicate which type of <code>HArray</code> to be created.</li>
-</ul>
-</section>
-<section id="returns-1" class="level4">
-<h4 class="anchored" data-anchor-id="returns-1">Returns</h4>
-<p>An <code>HArray</code>.</p>
-</section>
-<section id="examples-1" class="level4">
-<h4 class="anchored" data-anchor-id="examples-1">Examples</h4>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>values <span class="ot">=</span> arrow<span class="sc">::</span>Array<span class="sc">$</span><span class="fu">create</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="at">type =</span> arrow<span class="sc">::</span><span class="fu">float32</span>())</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>dtype <span class="ot">=</span> HDataType<span class="sc">$</span>complex32</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>harray <span class="ot">=</span> HArray<span class="sc">$</span><span class="fu">new_from_arrow</span>(values, dtype)</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># to convert back to R's arrow Array.</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>values2 <span class="ot">=</span> arrow<span class="sc">::</span><span class="fu">as_arrow_array</span>(harray)</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(values, values2) <span class="co"># TRUE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>HArray<span class="sc">$</span><span class="fu">new_from_values</span>(arr, dtype)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 </section>
 </section>
 <section id="len" class="level2">
 <h2 class="anchored" data-anchor-id="len">len</h2>
-<p><code>len() -&gt; integer</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./harray.rs#L210">source</a> </span><br>
+<p><code>len() -&gt; integer</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/harray.rs#L117">source</a> </span><br>
 </p>
 <p>Returns the number of elements of this <code>Harray</code>.<br>
 </p>
+<section id="returns-1" class="level4">
+<h4 class="anchored" data-anchor-id="returns-1">Returns</h4>
+<p>An <code>integer</code>.<br>
+</p>
+</section>
+<section id="examples-1" class="level4">
+<h4 class="anchored" data-anchor-id="examples-1">Examples</h4>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>arr <span class="ot">=</span> <span class="fu">array</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>,<span class="dv">9</span>,<span class="dv">10</span>,<span class="dv">11</span>,<span class="dv">12</span>), <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">4</span>))</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>dtype <span class="ot">=</span> HDataType<span class="sc">$</span>float32</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>harray <span class="ot">=</span> HArray<span class="sc">$</span><span class="fu">new_from_values</span>(arr, dtype)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>harray<span class="sc">$</span><span class="fu">len</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+</section>
+</section>
+<section id="shape" class="level2">
+<h2 class="anchored" data-anchor-id="shape">shape</h2>
+<p><code>shape() -&gt; integers</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/harray.rs#L145">source</a> </span><br>
+</p>
+<p>Returns the shape of this <code>HArray</code>.<br>
+</p>
 <section id="returns-2" class="level4">
 <h4 class="anchored" data-anchor-id="returns-2">Returns</h4>
-<p>An <code>integer</code>.<br>
+<p>A vector of integers.<br>
 </p>
 </section>
 <section id="examples-2" class="level4">
 <h4 class="anchored" data-anchor-id="examples-2">Examples</h4>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>harray <span class="ot">=</span> HArray<span class="sc">$</span><span class="fu">new_from_values</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>), HDataType<span class="sc">$</span>float32)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>harray<span class="sc">$</span><span class="fu">len</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>arr <span class="ot">=</span> <span class="fu">array</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>,<span class="dv">9</span>,<span class="dv">10</span>,<span class="dv">11</span>,<span class="dv">12</span>), <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">4</span>))</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>dtype <span class="ot">=</span> HDataType<span class="sc">$</span>float32</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>harray <span class="ot">=</span> HArray<span class="sc">$</span><span class="fu">new_from_values</span>(arr, dtype)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>harray<span class="sc">$</span><span class="fu">shape</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 </section>
 </section>
-<section id="slice" class="level2">
-<h2 class="anchored" data-anchor-id="slice">slice</h2>
-<p><code>slice(offset: integer, length: integer)</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./harray.rs#L252">source</a> </span><br>
+<section id="ndim" class="level2">
+<h2 class="anchored" data-anchor-id="ndim">ndim</h2>
+<p><code>ndim() -&gt; integer</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/harray.rs#L173">source</a> </span><br>
 </p>
-<p>Slice the <code>HArray</code> by an offset and length.<br>
-This operation is O(1).<br>
-The function will modify in-place the current <code>HArray</code>. If a clone of the <code>HArray</code> has been previously made, it will clone the <code>HArray</code> and slice it.<br>
+<p>Returns the number of dimensions of this <code>HArray</code>.<br>
 </p>
-<section id="arguments-2" class="level4">
-<h4 class="anchored" data-anchor-id="arguments-2">Arguments</h4>
-<ul>
-<li><code>offset</code><br>
-An <code>integer</code> representing the offset starting from 0.<br>
-</li>
-<li><code>length</code><br>
-An <code>integer</code> representing the desired length.<br>
-</li>
-</ul>
+<section id="returns-3" class="level4">
+<h4 class="anchored" data-anchor-id="returns-3">Returns</h4>
+<p>An integer.<br>
+</p>
 </section>
 <section id="examples-3" class="level4">
 <h4 class="anchored" data-anchor-id="examples-3">Examples</h4>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>harray <span class="ot">=</span> HArray<span class="sc">$</span><span class="fu">new_from_values</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>), HDataType<span class="sc">$</span>float32)</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>harray<span class="sc">$</span><span class="fu">slice</span>(2L, 3L)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(harray)</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># if the HArray object is not being shared, slicing it will modify the HArray in-place.</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>harray <span class="ot">=</span> HArray<span class="sc">$</span><span class="fu">new_from_values</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>), HDataType<span class="sc">$</span>float32)</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>harray<span class="sc">$</span><span class="fu">slice</span>(1L, 1L)</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co"># if the HArray object is being shared, slicing it will create a new HArray object.</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>harray <span class="ot">=</span> HArray<span class="sc">$</span><span class="fu">new_from_values</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>), HDataType<span class="sc">$</span>float32)</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>harray2 <span class="ot">=</span> harray<span class="sc">$</span><span class="fu">clone</span>()</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>harray<span class="sc">$</span><span class="fu">is_shared</span>() <span class="co"># TRUE</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>harray<span class="sc">$</span><span class="fu">slice</span>(1L, 1L) <span class="co"># now harray is a different object in comparison with harray2, although they share the same underlying data.</span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>harray<span class="sc">$</span><span class="fu">is_shared</span>() <span class="co"># FALSE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>arr <span class="ot">=</span> <span class="fu">array</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>,<span class="dv">9</span>,<span class="dv">10</span>,<span class="dv">11</span>,<span class="dv">12</span>), <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">4</span>))</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>dtype <span class="ot">=</span> HDataType<span class="sc">$</span>float32</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>harray <span class="ot">=</span> HArray<span class="sc">$</span><span class="fu">new_from_values</span>(arr, dtype)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>harray<span class="sc">$</span><span class="fu">ndim</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 </section>
 </section>
 <section id="print" class="level2">
 <h2 class="anchored" data-anchor-id="print">print</h2>
-<p><code>print()</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./harray.rs#L277">source</a> </span><br>
+<p><code>print()</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/harray.rs#L201">source</a> </span><br>
 </p>
-<p>Print the <code>HArray</code>.<br>
+<p>Prints the <code>HArray</code>.<br>
 Differently from R’s normal behaviour, <code>print</code> doesn’t return the value invisibly.<br>
 </p>
 <section id="examples-4" class="level4">
 <h4 class="anchored" data-anchor-id="examples-4">Examples</h4>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>harray <span class="ot">=</span> HArray<span class="sc">$</span><span class="fu">new_from_values</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>), HDataType<span class="sc">$</span>float32)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>harray<span class="sc">$</span><span class="fu">print</span>()</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># or similarly:</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(harray)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>arr <span class="ot">=</span> <span class="fu">array</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>,<span class="dv">9</span>,<span class="dv">10</span>,<span class="dv">11</span>,<span class="dv">12</span>), <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">4</span>))</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>dtype <span class="ot">=</span> HDataType<span class="sc">$</span>float32</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>harray <span class="ot">=</span> HArray<span class="sc">$</span><span class="fu">new_from_values</span>(arr, dtype)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>harray<span class="sc">$</span><span class="fu">print</span>()</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co"># or similarly:</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(harray)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 </section>
 </section>
 <section id="eq" class="level2">
 <h2 class="anchored" data-anchor-id="eq">eq</h2>
-<p><code>eq(other: HArray) -&gt; bool</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./harray.rs#L312">source</a> </span><br>
+<p><code>eq(other: HArray) -&gt; bool</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/harray.rs#L242">source</a> </span><br>
 </p>
 <p>Equality with another <code>HArray</code>.<br>
 The comparison only checks if the dtype and the values are the same. To compare if the underlying data is the same in memory, check <code>mem_adress</code>.<br>
 </p>
-<section id="arguments-3" class="level4">
-<h4 class="anchored" data-anchor-id="arguments-3">Arguments</h4>
+<section id="arguments-1" class="level4">
+<h4 class="anchored" data-anchor-id="arguments-1">Arguments</h4>
 <ul>
 <li><code>other</code><br>
 An <code>HArray</code>.<br>
 </li>
 </ul>
 </section>
-<section id="returns-3" class="level4">
-<h4 class="anchored" data-anchor-id="returns-3">Returns</h4>
+<section id="returns-4" class="level4">
+<h4 class="anchored" data-anchor-id="returns-4">Returns</h4>
 <p>A <code>bool</code>.<br>
 </p>
 </section>
 <section id="examples-5" class="level4">
 <h4 class="anchored" data-anchor-id="examples-5">Examples</h4>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>harray1 <span class="ot">=</span> HArray<span class="sc">$</span><span class="fu">new_from_values</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>), HDataType<span class="sc">$</span>float32)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>harray2 <span class="ot">=</span> HArray<span class="sc">$</span><span class="fu">new_from_values</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>), HDataType<span class="sc">$</span>float32)</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>harray1<span class="sc">$</span><span class="fu">eq</span>(harray2) <span class="co"># TRUE</span></span>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>arr <span class="ot">=</span> <span class="fu">array</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>,<span class="dv">9</span>,<span class="dv">10</span>,<span class="dv">11</span>,<span class="dv">12</span>), <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">4</span>))</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>dtype <span class="ot">=</span> HDataType<span class="sc">$</span>float32</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>harray1 <span class="ot">=</span> HArray<span class="sc">$</span><span class="fu">new_from_values</span>(arr, dtype)</span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co"># or similarly:</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>harray1 <span class="sc">==</span> harray2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>arr <span class="ot">=</span> <span class="fu">array</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>,<span class="dv">9</span>,<span class="dv">10</span>,<span class="dv">11</span>,<span class="dv">12</span>), <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">4</span>))</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>dtype <span class="ot">=</span> HDataType<span class="sc">$</span>float32</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>harray2 <span class="ot">=</span> HArray<span class="sc">$</span><span class="fu">new_from_values</span>(arr, dtype)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>harray1<span class="sc">$</span><span class="fu">eq</span>(harray2) <span class="co"># TRUE</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co"># or similarly:</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>harray1 <span class="sc">==</span> harray2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 </section>
 </section>
 <section id="ne" class="level2">
 <h2 class="anchored" data-anchor-id="ne">ne</h2>
-<p><code>ne(other: HArray) -&gt; bool</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./harray.rs#L347">source</a> </span><br>
+<p><code>ne(other: HArray) -&gt; bool</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/harray.rs#L285">source</a> </span><br>
 </p>
 <p>Difference with another <code>HArray</code>.<br>
 The comparison only checks if the dtype and the values are the same. To compare if the underlying data is the same in memory, check <code>mem_adress</code>.</p>
-<section id="arguments-4" class="level4">
-<h4 class="anchored" data-anchor-id="arguments-4">Arguments</h4>
+<section id="arguments-2" class="level4">
+<h4 class="anchored" data-anchor-id="arguments-2">Arguments</h4>
 <ul>
 <li><code>other</code><br>
 An <code>HArray</code>.</li>
 </ul>
 </section>
-<section id="returns-4" class="level4">
-<h4 class="anchored" data-anchor-id="returns-4">Returns</h4>
+<section id="returns-5" class="level4">
+<h4 class="anchored" data-anchor-id="returns-5">Returns</h4>
 <p>A <code>bool</code>.</p>
 </section>
 <section id="examples-6" class="level4">
 <h4 class="anchored" data-anchor-id="examples-6">Examples</h4>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>harray1 <span class="ot">=</span> HArray<span class="sc">$</span><span class="fu">new_from_values</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>), HDataType<span class="sc">$</span>float32)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>harray2 <span class="ot">=</span> HArray<span class="sc">$</span><span class="fu">new_from_values</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>), HDataType<span class="sc">$</span>float32)</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>harray1<span class="sc">$</span><span class="fu">ne</span>(harray2) <span class="co"># FALSE</span></span>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>arr <span class="ot">=</span> <span class="fu">array</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>,<span class="dv">9</span>,<span class="dv">10</span>,<span class="dv">11</span>,<span class="dv">12</span>), <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">4</span>))</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>dtype <span class="ot">=</span> HDataType<span class="sc">$</span>float32</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>harray1 <span class="ot">=</span> HArray<span class="sc">$</span><span class="fu">new_from_values</span>(arr, dtype)</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co"># or similarly:</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>harray1 <span class="sc">!=</span> harray2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>arr <span class="ot">=</span> <span class="fu">array</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>,<span class="dv">9</span>,<span class="dv">10</span>,<span class="dv">11</span>,<span class="dv">12</span>), <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">4</span>))</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>dtype <span class="ot">=</span> HDataType<span class="sc">$</span>float32</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>harray2 <span class="ot">=</span> HArray<span class="sc">$</span><span class="fu">new_from_values</span>(arr, dtype)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>harray1<span class="sc">$</span><span class="fu">ne</span>(harray2) <span class="co"># FALSE</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co"># or similarly:</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>harray1 <span class="sc">!=</span> harray2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 </section>
 </section>
 <section id="clone" class="level2">
 <h2 class="anchored" data-anchor-id="clone">clone</h2>
-<p><code>clone() -&gt; HArray</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./harray.rs#L373">source</a> </span><br>
+<p><code>clone() -&gt; HArray</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/harray.rs#L314">source</a> </span><br>
 </p>
 <p>Creates a new <code>HArray</code>, with the underlying data pointing to the same place in memory.</p>
-<section id="returns-5" class="level4">
-<h4 class="anchored" data-anchor-id="returns-5">Returns</h4>
+<section id="returns-6" class="level4">
+<h4 class="anchored" data-anchor-id="returns-6">Returns</h4>
 <p>An <code>HArray</code>.</p>
 </section>
 <section id="examples-7" class="level4">
 <h4 class="anchored" data-anchor-id="examples-7">Examples</h4>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>harray1 <span class="ot">=</span> HArray<span class="sc">$</span><span class="fu">new_from_values</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>), HDataType<span class="sc">$</span>float32)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>harray2 <span class="ot">=</span> harray1<span class="sc">$</span><span class="fu">clone</span>()</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>harray1 <span class="sc">==</span> harray2 <span class="co"># TRUE</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>harray1<span class="sc">$</span><span class="fu">mem_adress</span>() <span class="sc">==</span> harray2<span class="sc">$</span><span class="fu">mem_adress</span>() <span class="co"># TRUE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<hr>
-</section>
-</section>
-<section id="as_hmatrix" class="level2">
-<h2 class="anchored" data-anchor-id="as_hmatrix">as_hmatrix</h2>
-<p><code>as_hmatrix(ncols: integer) -&gt; HMatrix</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./harray.rs#L405">source</a> </span><br>
-</p>
-<p>Creates a new <code>HMatrix</code>, with the underlying data pointing to the same place in memory.<br>
-</p>
-<section id="arguments-5" class="level4">
-<h4 class="anchored" data-anchor-id="arguments-5">Arguments</h4>
-<ul>
-<li><code>ncols</code><br>
-An <code>integer</code> representing the number of columns desired.<br>
-Will return an error if <code>ncols</code> is not a divider of the length of the <code>HArray</code>.<br>
-</li>
-</ul>
-</section>
-<section id="returns-6" class="level4">
-<h4 class="anchored" data-anchor-id="returns-6">Returns</h4>
-<p>An <code>HMatrix</code>.</p>
-</section>
-<section id="examples-8" class="level4">
-<h4 class="anchored" data-anchor-id="examples-8">Examples</h4>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>harray <span class="ot">=</span> HArray<span class="sc">$</span><span class="fu">new_from_values</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>), HDataType<span class="sc">$</span>float32)</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>hmatrix <span class="ot">=</span> harray<span class="sc">$</span><span class="fu">as_hmatrix</span>(<span class="at">ncols =</span> 2L)</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>harray<span class="sc">$</span><span class="fu">mem_adress</span>() <span class="sc">==</span> hmatrix<span class="sc">$</span><span class="fu">mem_adress</span>() <span class="co"># TRUE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>arr <span class="ot">=</span> <span class="fu">array</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>,<span class="dv">9</span>,<span class="dv">10</span>,<span class="dv">11</span>,<span class="dv">12</span>), <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">4</span>))</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>dtype <span class="ot">=</span> HDataType<span class="sc">$</span>float32</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>harray1 <span class="ot">=</span> HArray<span class="sc">$</span><span class="fu">new_from_values</span>(arr, dtype)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>harray2 <span class="ot">=</span> harray1<span class="sc">$</span><span class="fu">clone</span>()</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>harray1 <span class="sc">==</span> harray2 <span class="co"># TRUE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 </section>
 </section>
 <section id="collect" class="level2">
 <h2 class="anchored" data-anchor-id="collect">collect</h2>
-<p><code>collect() -&gt; atomicvector</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./harray.rs#L429">source</a> </span><br>
+<p><code>collect() -&gt; array</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/harray.rs#L340">source</a> </span><br>
 </p>
-<p>Creates an R atomic vector from an <code>HArray</code>. The type of the atomic vector created (<code>double</code> or <code>complex</code>) will depend on the <code>HArray</code>’s dtype.</p>
+<p>Creates an R array from an <code>HArray</code>. The type of the array created (<code>double</code> or <code>complex</code>) will depend on the <code>HArray</code>’s dtype.</p>
 <section id="returns-7" class="level4">
 <h4 class="anchored" data-anchor-id="returns-7">Returns</h4>
-<p>An atomic vector of type <code>double</code> or <code>complex</code>.</p>
+<p>An array of type <code>double</code> or <code>complex</code>.</p>
 </section>
-<section id="examples-9" class="level4">
-<h4 class="anchored" data-anchor-id="examples-9">Examples</h4>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>harray <span class="ot">=</span> HArray<span class="sc">$</span><span class="fu">new_from_values</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>), HDataType<span class="sc">$</span>float32)</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>harray<span class="sc">$</span><span class="fu">collect</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<hr>
-</section>
-</section>
-<section id="mem_adress" class="level2">
-<h2 class="anchored" data-anchor-id="mem_adress">mem_adress</h2>
-<p><code>mem_adress() -&gt; string</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./harray.rs#L462">source</a> </span><br>
-</p>
-<p>The memory adress of the first element of the inner data.<br>
-This is useful to check if different objects share the same underlying data.<br>
-It’s important that the offset of both objects is at the same element for this comparison.<br>
-</p>
-<section id="returns-8" class="level4">
-<h4 class="anchored" data-anchor-id="returns-8">Returns</h4>
-<p>A <code>string</code>.<br>
-</p>
-</section>
-<section id="examples-10" class="level4">
-<h4 class="anchored" data-anchor-id="examples-10">Examples</h4>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>harray <span class="ot">=</span> HArray<span class="sc">$</span><span class="fu">new_from_values</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>), HDataType<span class="sc">$</span>float64)</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>hmatrix <span class="ot">=</span> harray<span class="sc">$</span><span class="fu">as_hmatrix</span>(<span class="at">ncols =</span> 2L)</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>harray<span class="sc">$</span><span class="fu">mem_adress</span>() <span class="sc">==</span> hmatrix<span class="sc">$</span><span class="fu">mem_adress</span>() <span class="co"># TRUE</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>harray<span class="sc">$</span><span class="fu">slice</span>(1L,1L) <span class="co"># changing the offset to 1</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>harray<span class="sc">$</span><span class="fu">mem_adress</span>() <span class="sc">==</span> hmatrix<span class="sc">$</span><span class="fu">mem_adress</span>() <span class="co"># FALSE, even though they still share the same underlying data</span></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>harray2 <span class="ot">=</span> harray</span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>harray<span class="sc">$</span><span class="fu">mem_adress</span>() <span class="sc">==</span> harray2<span class="sc">$</span><span class="fu">mem_adress</span>() <span class="co"># TRUE, since `=` operator only creates an alias (harray and harray3 are the same external pointer).</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="examples-8" class="level4">
+<h4 class="anchored" data-anchor-id="examples-8">Examples</h4>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>arr <span class="ot">=</span> <span class="fu">array</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>,<span class="dv">9</span>,<span class="dv">10</span>,<span class="dv">11</span>,<span class="dv">12</span>), <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">4</span>))</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>dtype <span class="ot">=</span> HDataType<span class="sc">$</span>float32</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>harray <span class="ot">=</span> HArray<span class="sc">$</span><span class="fu">new_from_values</span>(arr, dtype)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>harray<span class="sc">$</span><span class="fu">collect</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 </section>
 </section>
 <section id="dtype" class="level2">
 <h2 class="anchored" data-anchor-id="dtype">dtype</h2>
-<p><code>dtype() -&gt; HDataType</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./harray.rs#L486">source</a> </span><br>
+<p><code>dtype() -&gt; HDataType</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/harray.rs#L366">source</a> </span><br>
 </p>
 <p>Gets the <code>HArray</code>’s dtype as an <code>HDataType</code>.</p>
-<section id="returns-9" class="level4">
-<h4 class="anchored" data-anchor-id="returns-9">Returns</h4>
+<section id="returns-8" class="level4">
+<h4 class="anchored" data-anchor-id="returns-8">Returns</h4>
 <p>An <code>HDataType</code>.</p>
 </section>
-<section id="examples-11" class="level4">
-<h4 class="anchored" data-anchor-id="examples-11">Examples</h4>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>harray <span class="ot">=</span> HArray<span class="sc">$</span><span class="fu">new_from_values</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>), HDataType<span class="sc">$</span>float64)</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>harray<span class="sc">$</span><span class="fu">dtype</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="examples-9" class="level4">
+<h4 class="anchored" data-anchor-id="examples-9">Examples</h4>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>arr <span class="ot">=</span> <span class="fu">array</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>,<span class="dv">9</span>,<span class="dv">10</span>,<span class="dv">11</span>,<span class="dv">12</span>), <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">4</span>))</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>dtype <span class="ot">=</span> HDataType<span class="sc">$</span>float32</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>harray <span class="ot">=</span> HArray<span class="sc">$</span><span class="fu">new_from_values</span>(arr, dtype)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>harray<span class="sc">$</span><span class="fu">dtype</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 </section>
 </section>
 <section id="is_shared" class="level2">
 <h2 class="anchored" data-anchor-id="is_shared">is_shared</h2>
-<p><code>is_shared() -&gt; bool</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./harray.rs#L529">source</a> </span><br>
+<p><code>is_shared() -&gt; bool</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/harray.rs#L397">source</a> </span><br>
 </p>
 <p>Checks if the object is shared.<br>
 Since <code>HArray</code> has a COW (<a href="https://doc.rust-lang.org/std/borrow/enum.Cow.html">clone-on-write</a>) behaviour, this function is useful to check if a new object will be created or if the change will be done in-place.<br>
 </p>
-<section id="returns-10" class="level4">
-<h4 class="anchored" data-anchor-id="returns-10">Returns</h4>
+<section id="returns-9" class="level4">
+<h4 class="anchored" data-anchor-id="returns-9">Returns</h4>
 <p>A <code>bool</code>.<br>
 </p>
 </section>
-<section id="examples-12" class="level4">
-<h4 class="anchored" data-anchor-id="examples-12">Examples</h4>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>harray <span class="ot">=</span> HArray<span class="sc">$</span><span class="fu">new_from_values</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>), HDataType<span class="sc">$</span>float64)</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>harray<span class="sc">$</span><span class="fu">is_shared</span>() <span class="co"># FALSE.</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>hmatrix <span class="ot">=</span> harray<span class="sc">$</span><span class="fu">as_hmatrix</span>(<span class="at">ncols =</span> 2L)</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>harray<span class="sc">$</span><span class="fu">is_shared</span>() <span class="co"># FALSE, since there's only one HArray object.</span></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>harray<span class="sc">$</span><span class="fu">mem_adress</span>() <span class="sc">==</span> hmatrix<span class="sc">$</span><span class="fu">mem_adress</span>() <span class="co"># TRUE, since they share the same underlying data.</span></span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>harray2 <span class="ot">=</span> harray<span class="sc">$</span><span class="fu">clone</span>()</span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>harray<span class="sc">$</span><span class="fu">is_shared</span>() <span class="co"># TRUE, HArray object shared with harray2.</span></span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>harray2<span class="sc">$</span><span class="fu">is_shared</span>() <span class="co"># TRUE.</span></span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>harray<span class="sc">$</span><span class="fu">mem_adress</span>() <span class="sc">==</span> harray2<span class="sc">$</span><span class="fu">mem_adress</span>() <span class="co"># TRUE, since they share the same underlying data.</span></span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>harray <span class="ot">=</span> HArray<span class="sc">$</span><span class="fu">new_from_values</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>), HDataType<span class="sc">$</span>float64)</span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>harray2 <span class="ot">=</span> harray<span class="sc">$</span><span class="fu">clone</span>()</span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>harray<span class="sc">$</span><span class="fu">mem_adress</span>() <span class="sc">==</span> harray2<span class="sc">$</span><span class="fu">mem_adress</span>() <span class="co"># TRUE.</span></span>
-<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>harray<span class="sc">$</span><span class="fu">is_shared</span>() <span class="co"># TRUE</span></span>
-<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>harray<span class="sc">$</span><span class="fu">slice</span>(0L, 1L)</span>
-<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>harray<span class="sc">$</span><span class="fu">mem_adress</span>() <span class="sc">==</span> harray2<span class="sc">$</span><span class="fu">mem_adress</span>() <span class="co"># TRUE. harray and harray2 still share the same underlying data.</span></span>
-<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>harray<span class="sc">$</span><span class="fu">is_shared</span>() <span class="co"># FALSE, because a new HArray object was created for harray.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<hr>
-</section>
-</section>
-<section id="fft" class="level2">
-<h2 class="anchored" data-anchor-id="fft">fft</h2>
-<p><code>fft() -&gt; HArray</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./harray.rs#L587">source</a> </span><br>
-</p>
-<p>Computes the fast fourier transform of the <code>HArray</code>.<br>
-FFT (Fast Fourier Transform) refers to a way the discrete Fourier Transform (DFT) can be calculated efficiently, by using symmetries in the calculated terms. The symmetry is highest when n is a power of 2, and the transform is therefore most efficient for these sizes.<br>
-</p>
-<p>The function does not normalize outputs. Callers must manually normalize the results by scaling each element by <code>1/sqrt(n)</code>. Multiple normalization steps can be merged into one via pairwise multiplication, so when doing a forward FFT followed by an inverse callers can normalize once by scaling each element by <code>1/n</code>.<br>
-</p>
-<p>Elements in the output are ordered by ascending frequency, with the first element corresponding to frequency 0.<br>
-</p>
-<section id="returns-11" class="level4">
-<h4 class="anchored" data-anchor-id="returns-11">Returns</h4>
-<p>An <code>HArray</code>.<br>
-</p>
-</section>
-<section id="examples-13" class="level4">
-<h4 class="anchored" data-anchor-id="examples-13">Examples</h4>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>harray <span class="ot">=</span> HArray<span class="sc">$</span><span class="fu">new_from_values</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>), HDataType<span class="sc">$</span>float64)</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>harray<span class="sc">$</span><span class="fu">fft</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="examples-10" class="level4">
+<h4 class="anchored" data-anchor-id="examples-10">Examples</h4>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>arr <span class="ot">=</span> <span class="fu">array</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>,<span class="dv">9</span>,<span class="dv">10</span>,<span class="dv">11</span>,<span class="dv">12</span>), <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">4</span>))</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>dtype <span class="ot">=</span> HDataType<span class="sc">$</span>float32</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>harray1 <span class="ot">=</span> HArray<span class="sc">$</span><span class="fu">new_from_values</span>(arr, dtype)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>harray1<span class="sc">$</span><span class="fu">is_shared</span>() <span class="co"># FALSE.</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>harray2 <span class="ot">=</span> harray1<span class="sc">$</span><span class="fu">clone</span>()</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>harray<span class="sc">$</span><span class="fu">is_shared</span>() <span class="co"># TRUE, HArray object shared with harray2.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 
 

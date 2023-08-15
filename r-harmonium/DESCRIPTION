@@ -7,8 +7,6 @@ Description: Audio analysis and I/O, inspired by python's librosa.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Suggests: 
-    arrow (>= 11.0.0.3),
-    nanoarrow (>= 0.2.0.1),
     testthat (>= 3.0.0)
 Config/rextendr/version: 0.3.1
 Config/testthat/edition: 3

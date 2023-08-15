@@ -18,210 +18,77 @@
     "href": "docs/harray.html#new_from_values",
     "title": "HArray",
     "section": "new_from_values",
-    "text": "new_from_values\nnew_from_values(values: atomicvector, dtype: HDataType) -&gt; HArray  source \n\nCreates a new HArray from an R atomic vector.\n\n\nArguments\n\nvalues\nA double or complex atomic vector.\ndtype\nAn HDataType to indicate which type of HArray to be created.\nFor float dtypes, the atomic vector must be a double. For complex dtypes, a complex atomic vector.\n\n\n\nReturns\nAn HArray.\n\n\n\nExamples\nvalues = c(1,2,3,4,5,6,7,8,9,10,11,12)\ndtype = HDataType$float32\nHArray$new_from_values(values, dtype)"
-  },
-  {
-    "objectID": "docs/harray.html#new_from_arrow",
-    "href": "docs/harray.html#new_from_arrow",
-    "title": "HArray",
-    "section": "new_from_arrow",
-    "text": "new_from_arrow\nnew_from_arrow(values: Array, dtype: HDataType) -&gt; HArray  source \n\nCreates a new HArray from an R’s arrow Array.\nThe conversion is zero copy.\n\nArguments\n\nvalues\nA float32 or float64 arrow Array.\ndtype\nAn HDataType to indicate which type of HArray to be created.\n\n\n\nReturns\nAn HArray.\n\n\nExamples\nvalues = arrow::Array$create(1:10, type = arrow::float32())\ndtype = HDataType$complex32\nharray = HArray$new_from_arrow(values, dtype)\n\n# to convert back to R's arrow Array.\nvalues2 = arrow::as_arrow_array(harray)\nall.equal(values, values2) # TRUE"
+    "text": "new_from_values\nnew_from_array(arr: array, dtype: HDataType) -&gt; HArray  source \n\nCreates a new HArray from an R array.\n\n\nArguments\n\narr\nA double or complex array.\ndtype\nAn HDataType to indicate which type of HArray to be created.\nFor float dtypes, the atomic vector must be a double. For complex dtypes, a complex atomic vector.\n\n\n\nReturns\nAn HArray.\n\n\n\nExamples\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$float32\nHArray$new_from_values(arr, dtype)"
   },
   {
     "objectID": "docs/harray.html#len",
     "href": "docs/harray.html#len",
     "title": "HArray",
     "section": "len",
-    "text": "len\nlen() -&gt; integer  source \n\nReturns the number of elements of this Harray.\n\n\nReturns\nAn integer.\n\n\n\nExamples\nharray = HArray$new_from_values(c(1,2,3), HDataType$float32)\nharray$len()"
+    "text": "len\nlen() -&gt; integer  source \n\nReturns the number of elements of this Harray.\n\n\nReturns\nAn integer.\n\n\n\nExamples\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$float32\nharray = HArray$new_from_values(arr, dtype)\nharray$len()"
   },
   {
-    "objectID": "docs/harray.html#slice",
-    "href": "docs/harray.html#slice",
+    "objectID": "docs/harray.html#shape",
+    "href": "docs/harray.html#shape",
     "title": "HArray",
-    "section": "slice",
-    "text": "slice\nslice(offset: integer, length: integer)  source \n\nSlice the HArray by an offset and length.\nThis operation is O(1).\nThe function will modify in-place the current HArray. If a clone of the HArray has been previously made, it will clone the HArray and slice it.\n\n\nArguments\n\noffset\nAn integer representing the offset starting from 0.\n\nlength\nAn integer representing the desired length.\n\n\n\n\nExamples\nharray = HArray$new_from_values(c(1,2,3,4,5,6,7), HDataType$float32)\nharray$slice(2L, 3L)\nprint(harray)\n\n# if the HArray object is not being shared, slicing it will modify the HArray in-place.\nharray = HArray$new_from_values(c(1,2,3), HDataType$float32)\nharray$slice(1L, 1L)\n\n# if the HArray object is being shared, slicing it will create a new HArray object.\nharray = HArray$new_from_values(c(1,2,3), HDataType$float32)\nharray2 = harray$clone()\nharray$is_shared() # TRUE\nharray$slice(1L, 1L) # now harray is a different object in comparison with harray2, although they share the same underlying data.\nharray$is_shared() # FALSE"
+    "section": "shape",
+    "text": "shape\nshape() -&gt; integers  source \n\nReturns the shape of this HArray.\n\n\nReturns\nA vector of integers.\n\n\n\nExamples\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$float32\nharray = HArray$new_from_values(arr, dtype)\nharray$shape()"
+  },
+  {
+    "objectID": "docs/harray.html#ndim",
+    "href": "docs/harray.html#ndim",
+    "title": "HArray",
+    "section": "ndim",
+    "text": "ndim\nndim() -&gt; integer  source \n\nReturns the number of dimensions of this HArray.\n\n\nReturns\nAn integer.\n\n\n\nExamples\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$float32\nharray = HArray$new_from_values(arr, dtype)\nharray$ndim()"
   },
   {
     "objectID": "docs/harray.html#print",
     "href": "docs/harray.html#print",
     "title": "HArray",
     "section": "print",
-    "text": "print\nprint()  source \n\nPrint the HArray.\nDifferently from R’s normal behaviour, print doesn’t return the value invisibly.\n\n\nExamples\nharray = HArray$new_from_values(c(1,2,3), HDataType$float32)\nharray$print()\n\n# or similarly:\nprint(harray)"
+    "text": "print\nprint()  source \n\nPrints the HArray.\nDifferently from R’s normal behaviour, print doesn’t return the value invisibly.\n\n\nExamples\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$float32\nharray = HArray$new_from_values(arr, dtype)\nharray$print()\n\n# or similarly:\nprint(harray)"
   },
   {
     "objectID": "docs/harray.html#eq",
     "href": "docs/harray.html#eq",
     "title": "HArray",
     "section": "eq",
-    "text": "eq\neq(other: HArray) -&gt; bool  source \n\nEquality with another HArray.\nThe comparison only checks if the dtype and the values are the same. To compare if the underlying data is the same in memory, check mem_adress.\n\n\nArguments\n\nother\nAn HArray.\n\n\n\n\nReturns\nA bool.\n\n\n\nExamples\nharray1 = HArray$new_from_values(c(1,2,3,4,5,6,7), HDataType$float32)\nharray2 = HArray$new_from_values(c(1,2,3,4,5,6,7), HDataType$float32)\nharray1$eq(harray2) # TRUE\n\n# or similarly:\nharray1 == harray2"
+    "text": "eq\neq(other: HArray) -&gt; bool  source \n\nEquality with another HArray.\nThe comparison only checks if the dtype and the values are the same. To compare if the underlying data is the same in memory, check mem_adress.\n\n\nArguments\n\nother\nAn HArray.\n\n\n\n\nReturns\nA bool.\n\n\n\nExamples\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$float32\nharray1 = HArray$new_from_values(arr, dtype)\n\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$float32\nharray2 = HArray$new_from_values(arr, dtype)\n\nharray1$eq(harray2) # TRUE\n\n# or similarly:\nharray1 == harray2"
   },
   {
     "objectID": "docs/harray.html#ne",
     "href": "docs/harray.html#ne",
     "title": "HArray",
     "section": "ne",
-    "text": "ne\nne(other: HArray) -&gt; bool  source \n\nDifference with another HArray.\nThe comparison only checks if the dtype and the values are the same. To compare if the underlying data is the same in memory, check mem_adress.\n\nArguments\n\nother\nAn HArray.\n\n\n\nReturns\nA bool.\n\n\nExamples\nharray1 = HArray$new_from_values(c(1,2,3,4,5,6,7), HDataType$float32)\nharray2 = HArray$new_from_values(c(1,2,3,4,5,6,7), HDataType$float32)\nharray1$ne(harray2) # FALSE\n\n# or similarly:\nharray1 != harray2"
+    "text": "ne\nne(other: HArray) -&gt; bool  source \n\nDifference with another HArray.\nThe comparison only checks if the dtype and the values are the same. To compare if the underlying data is the same in memory, check mem_adress.\n\nArguments\n\nother\nAn HArray.\n\n\n\nReturns\nA bool.\n\n\nExamples\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$float32\nharray1 = HArray$new_from_values(arr, dtype)\n\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$float32\nharray2 = HArray$new_from_values(arr, dtype)\n\nharray1$ne(harray2) # FALSE\n\n# or similarly:\nharray1 != harray2"
   },
   {
     "objectID": "docs/harray.html#clone",
     "href": "docs/harray.html#clone",
     "title": "HArray",
     "section": "clone",
-    "text": "clone\nclone() -&gt; HArray  source \n\nCreates a new HArray, with the underlying data pointing to the same place in memory.\n\nReturns\nAn HArray.\n\n\nExamples\nharray1 = HArray$new_from_values(c(1,2,3,4,5,6,7,8), HDataType$float32)\nharray2 = harray1$clone()\nharray1 == harray2 # TRUE\nharray1$mem_adress() == harray2$mem_adress() # TRUE"
-  },
-  {
-    "objectID": "docs/harray.html#as_hmatrix",
-    "href": "docs/harray.html#as_hmatrix",
-    "title": "HArray",
-    "section": "as_hmatrix",
-    "text": "as_hmatrix\nas_hmatrix(ncols: integer) -&gt; HMatrix  source \n\nCreates a new HMatrix, with the underlying data pointing to the same place in memory.\n\n\nArguments\n\nncols\nAn integer representing the number of columns desired.\nWill return an error if ncols is not a divider of the length of the HArray.\n\n\n\n\nReturns\nAn HMatrix.\n\n\nExamples\nharray = HArray$new_from_values(c(1,2,3,4,5,6,7,8), HDataType$float32)\nhmatrix = harray$as_hmatrix(ncols = 2L)\n\nharray$mem_adress() == hmatrix$mem_adress() # TRUE"
+    "text": "clone\nclone() -&gt; HArray  source \n\nCreates a new HArray, with the underlying data pointing to the same place in memory.\n\nReturns\nAn HArray.\n\n\nExamples\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$float32\nharray1 = HArray$new_from_values(arr, dtype)\nharray2 = harray1$clone()\nharray1 == harray2 # TRUE"
   },
   {
     "objectID": "docs/harray.html#collect",
     "href": "docs/harray.html#collect",
     "title": "HArray",
     "section": "collect",
-    "text": "collect\ncollect() -&gt; atomicvector  source \n\nCreates an R atomic vector from an HArray. The type of the atomic vector created (double or complex) will depend on the HArray’s dtype.\n\nReturns\nAn atomic vector of type double or complex.\n\n\nExamples\nharray = HArray$new_from_values(c(1,2,3,4,5,6,7,8), HDataType$float32)\nharray$collect()"
-  },
-  {
-    "objectID": "docs/harray.html#mem_adress",
-    "href": "docs/harray.html#mem_adress",
-    "title": "HArray",
-    "section": "mem_adress",
-    "text": "mem_adress\nmem_adress() -&gt; string  source \n\nThe memory adress of the first element of the inner data.\nThis is useful to check if different objects share the same underlying data.\nIt’s important that the offset of both objects is at the same element for this comparison.\n\n\nReturns\nA string.\n\n\n\nExamples\nharray = HArray$new_from_values(c(1,2,3,4), HDataType$float64)\nhmatrix = harray$as_hmatrix(ncols = 2L)\nharray$mem_adress() == hmatrix$mem_adress() # TRUE\n\nharray$slice(1L,1L) # changing the offset to 1\nharray$mem_adress() == hmatrix$mem_adress() # FALSE, even though they still share the same underlying data\n\nharray2 = harray\nharray$mem_adress() == harray2$mem_adress() # TRUE, since `=` operator only creates an alias (harray and harray3 are the same external pointer)."
+    "text": "collect\ncollect() -&gt; array  source \n\nCreates an R array from an HArray. The type of the array created (double or complex) will depend on the HArray’s dtype.\n\nReturns\nAn array of type double or complex.\n\n\nExamples\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$float32\nharray = HArray$new_from_values(arr, dtype)\nharray$collect()"
   },
   {
     "objectID": "docs/harray.html#dtype",
     "href": "docs/harray.html#dtype",
     "title": "HArray",
     "section": "dtype",
-    "text": "dtype\ndtype() -&gt; HDataType  source \n\nGets the HArray’s dtype as an HDataType.\n\nReturns\nAn HDataType.\n\n\nExamples\nharray = HArray$new_from_values(c(1,2,3,4), HDataType$float64)\nharray$dtype()"
+    "text": "dtype\ndtype() -&gt; HDataType  source \n\nGets the HArray’s dtype as an HDataType.\n\nReturns\nAn HDataType.\n\n\nExamples\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$float32\nharray = HArray$new_from_values(arr, dtype)\nharray$dtype()"
   },
   {
     "objectID": "docs/harray.html#is_shared",
     "href": "docs/harray.html#is_shared",
     "title": "HArray",
     "section": "is_shared",
-    "text": "is_shared\nis_shared() -&gt; bool  source \n\nChecks if the object is shared.\nSince HArray has a COW (clone-on-write) behaviour, this function is useful to check if a new object will be created or if the change will be done in-place.\n\n\nReturns\nA bool.\n\n\n\nExamples\nharray = HArray$new_from_values(c(1,2,3,4), HDataType$float64)\nharray$is_shared() # FALSE.\n\nhmatrix = harray$as_hmatrix(ncols = 2L)\nharray$is_shared() # FALSE, since there's only one HArray object.\nharray$mem_adress() == hmatrix$mem_adress() # TRUE, since they share the same underlying data.\n\nharray2 = harray$clone()\nharray$is_shared() # TRUE, HArray object shared with harray2.\nharray2$is_shared() # TRUE.\nharray$mem_adress() == harray2$mem_adress() # TRUE, since they share the same underlying data.\n\nharray = HArray$new_from_values(c(1,2,3,4), HDataType$float64)\nharray2 = harray$clone()\nharray$mem_adress() == harray2$mem_adress() # TRUE.\nharray$is_shared() # TRUE\nharray$slice(0L, 1L)\nharray$mem_adress() == harray2$mem_adress() # TRUE. harray and harray2 still share the same underlying data.\nharray$is_shared() # FALSE, because a new HArray object was created for harray."
-  },
-  {
-    "objectID": "docs/harray.html#fft",
-    "href": "docs/harray.html#fft",
-    "title": "HArray",
-    "section": "fft",
-    "text": "fft\nfft() -&gt; HArray  source \n\nComputes the fast fourier transform of the HArray.\nFFT (Fast Fourier Transform) refers to a way the discrete Fourier Transform (DFT) can be calculated efficiently, by using symmetries in the calculated terms. The symmetry is highest when n is a power of 2, and the transform is therefore most efficient for these sizes.\n\nThe function does not normalize outputs. Callers must manually normalize the results by scaling each element by 1/sqrt(n). Multiple normalization steps can be merged into one via pairwise multiplication, so when doing a forward FFT followed by an inverse callers can normalize once by scaling each element by 1/n.\n\nElements in the output are ordered by ascending frequency, with the first element corresponding to frequency 0.\n\n\nReturns\nAn HArray.\n\n\n\nExamples\nharray = HArray$new_from_values(c(1,2,3,4), HDataType$float64)\nharray$fft()"
-  },
-  {
-    "objectID": "docs/haudio.html",
-    "href": "docs/haudio.html",
-    "title": "HAudio",
-    "section": "",
-    "text": "A structure to represent audio data. Composed by:"
-  },
-  {
-    "objectID": "docs/haudio.html#new_from_file",
-    "href": "docs/haudio.html#new_from_file",
-    "title": "HAudio",
-    "section": "new_from_file",
-    "text": "new_from_file\nnew_from_file(fpath: string, offset: double, duration: double, dtype: HDataType) -&gt; HAudio\n\nCreates a new HAudio from an audio file.\n\n\nArguments\n\nfpath\nA string for the input file path.\n\noffset (default = NA)\nA double. Start reading the file after offset, in seconds.\nIf NA, will load from the beginning of the file.\n\nduration (default = NA)\nA double. Duration to be loaded, in seconds, counting from offset. Will load the file till the end if offset + duration &gt;= file length.\nIf NA, will load until the end of the file.\n\ndtype\nA float HDataType to indicate which type of HAudio to be created.\n\n\n\n\nReturns\nAn HAudio.\n\n\n\nExamples\ndtype = HDataType$float32\nhaudio = HAudio$new_from_file(fpath = \"../../../testfiles/gs-16b-2c-44100hz.wav\", dtype = dtype)\nhaudio2 = HAudio$new_from_file(fpath = \"../../../testfiles/gs-16b-2c-44100hz.wav\", offset = 1, duration = 2, dtype = dtype) # Reads the file from 1 second to 3 seconds."
-  },
-  {
-    "objectID": "docs/haudio.html#new_from_values",
-    "href": "docs/haudio.html#new_from_values",
-    "title": "HAudio",
-    "section": "new_from_values",
-    "text": "new_from_values\nnew_from_values(values: matrix, sr: integer, dtype: HDataType) -&gt; HAudio  source \n\nCreates a new HAudio from a matrix.\n\n\nArguments\n\nvalues\nA double matrix.\n\nsr\nAn integer. The sampling rate in hz.\n\ndtype\nA float HDataType to indicate which type of HAudio to be created.\n\n\n\n\nReturns\nAn HAudio.\n\n\n\nExamples\nvalues = matrix(c(1,2,3,4,5,6,7,8,9,10,11,12), ncol = 2)\ndtype = HDataType$float32\nHAudio$new_from_values(values = values, sr = 3L, dtype = dtype)"
-  },
-  {
-    "objectID": "docs/haudio.html#len",
-    "href": "docs/haudio.html#len",
-    "title": "HAudio",
-    "section": "len",
-    "text": "len\nlen() -&gt; integer  source \n\nReturns the number of elements of this HAudio.\n\n\nReturns\nAn integer.\n\n\n\nExamples\nvalues = matrix(c(1,2,3,4,5,6,7,8,9,10,11,12), ncol = 2)\ndtype = HDataType$float32\nhaudio = HAudio$new_from_values(values = values, sr = 3L, dtype = dtype)\nhaudio$len()"
-  },
-  {
-    "objectID": "docs/haudio.html#nchannels",
-    "href": "docs/haudio.html#nchannels",
-    "title": "HAudio",
-    "section": "nchannels",
-    "text": "nchannels\nnchannels() -&gt; integer  source \n\nReturns the number of channels of this HAudio.\nThis is the same as the number of columns of the inner HMatrix.\n\n\nReturns\nAn integer.\n\n\n\nExamples\nvalues = matrix(c(1,2,3,4,5,6,7,8,9,10,11,12), ncol = 2)\ndtype = HDataType$float32\nhaudio = HAudio$new_from_values(values = values, sr = 3L, dtype = dtype)\nhaudio$nchannels()"
-  },
-  {
-    "objectID": "docs/haudio.html#nframes",
-    "href": "docs/haudio.html#nframes",
-    "title": "HAudio",
-    "section": "nframes",
-    "text": "nframes\nnframes() -&gt; integer  source \n\nReturns the number of frames of this HAudio.\nThis is the same as the number of rows of the inner HMatrix.\n\n\nReturns\nAn integer.\n\n\n\nExamples\nvalues = matrix(c(1,2,3,4,5,6,7,8,9,10,11,12), ncol = 2)\ndtype = HDataType$float32\nhaudio = HAudio$new_from_values(values = values, sr = 3L, dtype = dtype)\nhaudio$nframes()"
-  },
-  {
-    "objectID": "docs/haudio.html#print",
-    "href": "docs/haudio.html#print",
-    "title": "HAudio",
-    "section": "print",
-    "text": "print\nprint()  source \n\nPrint the HAudio.\nDifferently from R’s normal behaviour, print doesn’t return the value invisibly.\n\n\nExamples\nvalues = matrix(c(1,2,3,4,5,6,7,8,9,10,11,12), ncol = 2)\ndtype = HDataType$float32\nhaudio = HAudio$new_from_values(values = values, sr = 3L, dtype = dtype)\nhaudio$print()\n\n# or similarly:\nprint(haudio)"
-  },
-  {
-    "objectID": "docs/haudio.html#as_hmatrix",
-    "href": "docs/haudio.html#as_hmatrix",
-    "title": "HAudio",
-    "section": "as_hmatrix",
-    "text": "as_hmatrix\nas_hmatrix() -&gt; HMatrix  source \n\nCreates a new HMatrix, with the underlying data pointing to the same place in memory.\n\n\nReturns\nAn HMatrix.\n\n\nExamples\nvalues = matrix(c(1,2,3,4,5,6,7,8,9,10,11,12), ncol = 2)\ndtype = HDataType$float32\nhaudio = HAudio$new_from_values(values = values, sr = 3L, dtype = dtype)\nhmatrix = haudio$as_hmatrix()\n\nhaudio$mem_adress() == hmatrix$mem_adress() # TRUE"
-  },
-  {
-    "objectID": "docs/haudio.html#eq",
-    "href": "docs/haudio.html#eq",
-    "title": "HAudio",
-    "section": "eq",
-    "text": "eq\neq(other: HAudio) -&gt; bool  source \n\nEquality with another HAudio.\nThe comparison only checks if the dtype, the sampling rate and the values are the same. To compare if the underlying data is the same in memory, check mem_adress.\n\n\nArguments\n\nother\nAn HAudio.\n\n\n\n\nReturns\nA bool.\n\n\n\nExamples\nvalues = matrix(c(1,2,3,4,5,6,7,8,9,10,11,12), ncol = 2)\ndtype = HDataType$float32\nhaudio1 = HAudio$new_from_values(values = values, sr = 3L, dtype = dtype)\nhaudio2 = HAudio$new_from_values(values = values, sr = 3L, dtype = dtype)\nhaudio1$eq(haudio2) # TRUE\n\n# or similarly:\nhaudio1 == haudio2"
-  },
-  {
-    "objectID": "docs/haudio.html#ne",
-    "href": "docs/haudio.html#ne",
-    "title": "HAudio",
-    "section": "ne",
-    "text": "ne\nne(other: HAudio) -&gt; bool  source \n\nDifference with another HAudio.\nThe comparison only checks if the dtype, the sampling rate and the values are the same. To compare if the underlying data is the same in memory, check mem_adress.\n\n\nArguments\n\nother\nAn HAudio.\n\n\n\n\nReturns\nA bool.\n\n\n\nExamples\nvalues = matrix(c(1,2,3,4,5,6,7,8,9,10,11,12), ncol = 2)\ndtype = HDataType$float32\nhaudio1 = HAudio$new_from_values(values = values, sr = 3L, dtype = dtype)\nhaudio2 = HAudio$new_from_values(values = values, sr = 3L, dtype = dtype)\nhaudio1$ne(haudio2) # FALSE\n\n# or similarly:\nhaudio1 != haudio2"
-  },
-  {
-    "objectID": "docs/haudio.html#clone",
-    "href": "docs/haudio.html#clone",
-    "title": "HAudio",
-    "section": "clone",
-    "text": "clone\nclone() -&gt; HAudio  source \n\nCreates a new HAudio, with the underlying data pointing to the same place in memory.\n\nReturns\nAn HAudio.\n\n\nExamples\nvalues = matrix(c(1,2,3,4,5,6,7,8,9,10,11,12), ncol = 2)\ndtype = HDataType$float32\nhaudio1 = HAudio$new_from_values(values = values, sr = 3L, dtype = dtype)\nhaudio2 = haudio1$clone()\nhaudio1 == haudio2 # TRUE\nhaudio1$mem_adress() == haudio2$mem_adress() # TRUE"
-  },
-  {
-    "objectID": "docs/haudio.html#collect",
-    "href": "docs/haudio.html#collect",
-    "title": "HAudio",
-    "section": "collect",
-    "text": "collect\ncollect() -&gt; matrix  source \n\nCreates a matrix from an HAudio.\n\nReturns\nA matrix of type double.\n\n\nExamples\nvalues = matrix(c(1,2,3,4,5,6,7,8,9,10,11,12), ncol = 2)\ndtype = HDataType$float32\nhaudio = HAudio$new_from_values(values = values, sr = 3L, dtype = dtype)\nhaudio$collect()"
-  },
-  {
-    "objectID": "docs/haudio.html#sr",
-    "href": "docs/haudio.html#sr",
-    "title": "HAudio",
-    "section": "sr",
-    "text": "sr\nsr() -&gt; integer  source \n\nGet the sampling rate.\n\nReturns\nAn integer.\n\n\nExamples\nvalues = matrix(c(1,2,3,4,5,6,7,8,9,10,11,12), ncol = 2)\ndtype = HDataType$float32\nhaudio = HAudio$new_from_values(values = values, sr = 3L, dtype = dtype)\nhaudio$sr()"
-  },
-  {
-    "objectID": "docs/haudio.html#mem_adress",
-    "href": "docs/haudio.html#mem_adress",
-    "title": "HAudio",
-    "section": "mem_adress",
-    "text": "mem_adress\nmem_adress() -&gt; string  source \n\nThe memory adress of the first element of the inner data.\nThis is useful to check if different objects share the same underlying data.\nIt’s important that the offset of both objects is at the same element for this comparison.\n\n\nReturns\nA string.\n\n\n\nExamples\nharray = HArray$new_from_values(c(1,2,3,4), HDataType$float64)\nhmatrix = harray$as_hmatrix(ncols = 2L)\nhaudio = hmatrix$as_haudio(sr = 3L)\nharray$mem_adress() == hmatrix$mem_adress() # TRUE\nharray$mem_adress() == haudio$mem_adress() # TRUE\n\nharray$slice(1L,1L) # changing the offset to 1\nharray$mem_adress() == haudio$mem_adress() # FALSE, even though they still share the same underlying data\n\nhaudio2 = haudio\nhaudio$mem_adress() == haudio2$mem_adress() # TRUE, since `=` operator only creates an alias (haudio and haudio2 are the same external pointer)."
-  },
-  {
-    "objectID": "docs/haudio.html#dtype",
-    "href": "docs/haudio.html#dtype",
-    "title": "HAudio",
-    "section": "dtype",
-    "text": "dtype\ndtype() -&gt; HDataType  source \n\nGets the HAudio’s dtype as an HDataType.\n\nReturns\nAn HDataType.\n\n\nExamples\nvalues = matrix(c(1,2,3,4,5,6,7,8,9,10,11,12), ncol = 2)\ndtype = HDataType$float32\nhaudio = HAudio$new_from_values(values = values, sr = 3L, dtype = dtype)\nhaudio$dtype()"
-  },
-  {
-    "objectID": "docs/haudio.html#as_mono",
-    "href": "docs/haudio.html#as_mono",
-    "title": "HAudio",
-    "section": "as_mono",
-    "text": "as_mono\nas_mono()  source \n\nConvert to 1 channel by taking the average across channels.\nA new inner array is created. The operation is done in-place.\n\n\nExamples\nvalues = matrix(c(1,2,3,4,5,6,7,8,9,10,11,12), ncol = 2)\ndtype = HDataType$float32\nhaudio = HAudio$new_from_values(values = values, sr = 3L, dtype = dtype)\nmem_adress_before = haudio$mem_adress()\nhaudio$as_mono()\nhaudio$mem_adress() != mem_adress_before # TRUE"
+    "text": "is_shared\nis_shared() -&gt; bool  source \n\nChecks if the object is shared.\nSince HArray has a COW (clone-on-write) behaviour, this function is useful to check if a new object will be created or if the change will be done in-place.\n\n\nReturns\nA bool.\n\n\n\nExamples\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$float32\nharray1 = HArray$new_from_values(arr, dtype)\nharray1$is_shared() # FALSE.\n\nharray2 = harray1$clone()\nharray$is_shared() # TRUE, HArray object shared with harray2."
   },
   {
     "objectID": "docs/haudiosink.html",
@@ -364,62 +231,6 @@
     "text": "audio_supported_configs\naudio_supported_configs() -&gt; atomicvector  source \n\nProvides the supported configurations for the default audio output device.\nThe following informations are given:\n\n\nNumber of channels.\n\nMinimum and maximum value for the sampling rate.\n\nMinimum and maximum value for the buffer size.\n\nType of data expected by the device.\n\n\n\nReturns\nA character atomic vector.\n\n\n\nExamples\nHAudioSink$audio_supported_configs()"
   },
   {
-    "objectID": "docs/hconfig.html",
-    "href": "docs/hconfig.html",
-    "title": "HConfig",
-    "section": "",
-    "text": "Manage configuration variables related to harmonium."
-  },
-  {
-    "objectID": "docs/hconfig.html#get",
-    "href": "docs/hconfig.html#get",
-    "title": "HConfig",
-    "section": "get",
-    "text": "get\nget() -&gt; list\nRetrieves the current settings.\n\n\nReturns\nA list.\n\n\n\nExamples\nHConfig$get()"
-  },
-  {
-    "objectID": "docs/hconfig.html#set_table_max_len",
-    "href": "docs/hconfig.html#set_table_max_len",
-    "title": "HConfig",
-    "section": "set_table_max_len",
-    "text": "set_table_max_len\nset_table_max_len(value: integer)\nSets the H_FMT_MAX_LEN environment variable to value.\nWill result in an error if not passing value’s requirements.\n\n\nArguments\n\nvalue\nAn integer. The new value to be set.\n\n\n\n\nExamples\nHConfig$set_table_max_len(20L)\n\nHConfig$set_table_max_len(20) # Error! Value must be an integer."
-  },
-  {
-    "objectID": "docs/hconfig.html#set_table_max_cols",
-    "href": "docs/hconfig.html#set_table_max_cols",
-    "title": "HConfig",
-    "section": "set_table_max_cols",
-    "text": "set_table_max_cols\nset_table_max_cols(value: integer)\nSets the H_FMT_MAX_COLS environment variable to value.\nWill result in an error if not passing value’s requirements.\n\n\nArguments\n\nvalue\nAn integer. The new value to be set.\n\n\n\n\nExamples\nHConfig$set_table_max_cols(20L)\n\nHConfig$set_table_max_cols(20) # Error! Value must be an integer."
-  },
-  {
-    "objectID": "docs/hconfig.html#set_table_max_rows",
-    "href": "docs/hconfig.html#set_table_max_rows",
-    "title": "HConfig",
-    "section": "set_table_max_rows",
-    "text": "set_table_max_rows\nset_table_max_rows(value: integer)\nSets the H_FMT_MAX_ROWS environment variable to value.\nWill result in an error if not passing value’s requirements.\n\n\nArguments\n\nvalue\nAn integer. The new value to be set.\n\n\n\n\nExamples\nHConfig$set_table_max_rows(20L)\n\nHConfig$set_table_max_rows(20) # Error! Value must be an integer."
-  },
-  {
-    "objectID": "docs/hconfig.html#set_float_fmt",
-    "href": "docs/hconfig.html#set_float_fmt",
-    "title": "HConfig",
-    "section": "set_float_fmt",
-    "text": "set_float_fmt\nset_float_fmt(value: string)\nSets the H_FMT_FLOAT variable to value.\nWill result in an error if not passing value’s requirements.\n\n\nArguments\n\nvalue\nA string. The new value to be set.\nMust be one of [“full”, “mixed”].\n\n\n\n\nExamples\nHConfig$set_float_fmt(\"full\")\n\nHConfig$set_float_fmt(\"whatever\") # Error! Value must be one of [\"full\", \"mixed\"]."
-  },
-  {
-    "objectID": "docs/hconfig.html#set_default",
-    "href": "docs/hconfig.html#set_default",
-    "title": "HConfig",
-    "section": "set_default",
-    "text": "set_default\nset_default()\nSets to the default configuration.\n\n\nExamples\nHConfig$set_default()"
-  },
-  {
-    "objectID": "docs/hconfig.html#set_initial",
-    "href": "docs/hconfig.html#set_initial",
-    "title": "HConfig",
-    "section": "set_initial",
-    "text": "set_initial\nset_initial()\nSets to the initial settings, from before the package was loaded.\n\n\nExamples\nHConfig$set_initial()"
-  },
-  {
     "objectID": "docs/hdatatype.html",
     "href": "docs/hdatatype.html",
     "title": "HDataType",
@@ -474,146 +285,6 @@
     "title": "HDataType",
     "section": "ne",
     "text": "ne\nne(other: HDataType) -&gt; bool  source \n\nDifference with another HDataType.\n\n\nArguments\n\nother\nAn HDataType.\n\n\n\n\nReturns\nA bool.\n\n\n\nExamples\nhdatatype1 = HDataType$float32\nhdatatype2 = HDataType$float64\nhdatatype1$ne(hdatatype2) # TRUE\n\n# or similarly:\nhdatatype1 != hdatatype2"
-  },
-  {
-    "objectID": "docs/hmatrix.html",
-    "href": "docs/hmatrix.html",
-    "title": "HMatrix",
-    "section": "",
-    "text": "A column major matrix representation."
-  },
-  {
-    "objectID": "docs/hmatrix.html#new_from_values",
-    "href": "docs/hmatrix.html#new_from_values",
-    "title": "HMatrix",
-    "section": "new_from_values",
-    "text": "new_from_values\nnew_from_values(values: matrix, dtype: HDataType) -&gt; HMatrix  source \n\nCreates a new HMatrix from a matrix.\n\n\nArguments\n\nvalues\nA double or complex matrix.\n\ndtype\nAn HDataType to indicate which type of HMatrix to be created.\nFor float dtypes, the matrix must be a double. For complex dtypes, a complex.\n\n\n\n\nReturns\nAn HMatrix.\n\n\n\nExamples\nvalues = matrix(c(1,2,3,4,5,6,7,8,9,10,11,12), ncol = 2)\ndtype = HDataType$float32\nHMatrix$new_from_values(values, dtype)"
-  },
-  {
-    "objectID": "docs/hmatrix.html#new_from_arrow",
-    "href": "docs/hmatrix.html#new_from_arrow",
-    "title": "HMatrix",
-    "section": "new_from_arrow",
-    "text": "new_from_arrow\nnew_from_arrow(values: ArrowArray, ncols: i32, dtype: HDataType) -&gt; HMatrix  source \n\nCreates a new HArray from an R’s arrow Array.\nThe conversion is zero copy.\n\n\nArguments\n\nvalues\nA float32 or float64 arrow Array.\nncols\nThe number of columns of the HMatrix.\n\ndtype\nAn HDataType to indicate which type of HMatrix to be created.\n\n\n\n\nReturns\nAn HMatrix.\n\n\n\nExamples\nvalues = arrow::Array$create(1:10, type = arrow::float32())\nncols = 2\ndtype = HDataType$complex32\nhmatrix = HMatrix$new_from_arrow(values, ncols, dtype)\n\n# to convert back to R's arrow FixedSizeListArray.\nvalues2 = arrow::as_arrow_array(hmatrix)\nall.equal(values, values2) # TRUE"
-  },
-  {
-    "objectID": "docs/hmatrix.html#len",
-    "href": "docs/hmatrix.html#len",
-    "title": "HMatrix",
-    "section": "len",
-    "text": "len\nlen() -&gt; integer  source \n\nReturns the number of elements of this HMatrix.\n\n\nReturns\nAn integer.\n\n\n\nExamples\nhmatrix = HMatrix$new_from_values(matrix(c(1,2,3)), HDataType$float32)\nhmatrix$len()"
-  },
-  {
-    "objectID": "docs/hmatrix.html#slice",
-    "href": "docs/hmatrix.html#slice",
-    "title": "HMatrix",
-    "section": "slice",
-    "text": "slice\nslice(offset: integer, length: integer)  source \n\nSlice the HMatrix by an offset and length.\nThe operation is done on a column level, which means that offset always point at the start of a column. For instance, an offset of 2 and length of 3 will slice the columns 3, 4 and 5.\nThis operation is O(1).\nThe function will modify in-place the current HMatrix. If a clone of the HMatrix has been previously made, it will clone the HMatrix and slice it.\n\n\nArguments\n\noffset\nAn integer representing the offset starting from 0.\n\nlength\nAn integer representing the desired length.\n\n\n\n\nExamples\nhmatrix = HMatrix$new_from_values(matrix(c(1,2,3,4,5,6,7,8,9), ncol = 3L), HDataType$float32)\nhmatrix$slice(1L, 1L)\nprint(hmatrix)\n\n# if the HMatrix object is not being shared, slicing it will modify the HMatrix in-place.\nhmatrix = HMatrix$new_from_values(matrix(c(1,2,3,4,5,6,7,8,9), ncol = 3L), HDataType$float32)\nhmatrix$slice(1L, 1L)\n\n# if the HMatrix object is being shared, slicing it will create a new HMatrix object.\nhmatrix = HMatrix$new_from_values(matrix(c(1,2,3,4,5,6,7,8,9), ncol = 3L), HDataType$float32)\nhmatrix2 = hmatrix$clone()\nhmatrix$is_shared() # TRUE\nhmatrix$slice(1L, 1L) # now hmatrix is a different object in comparison with hmatrix2, although they share the same underlying data.\nhmatrix$is_shared() # FALSE"
-  },
-  {
-    "objectID": "docs/hmatrix.html#ncols",
-    "href": "docs/hmatrix.html#ncols",
-    "title": "HMatrix",
-    "section": "ncols",
-    "text": "ncols\nncols() -&gt; integer  source \n\nReturns the number of columns of this HMatrix.\n\n\nReturns\nAn integer.\n\n\n\nExamples\nhmatrix = HMatrix$new_from_values(matrix(c(1,2,3)), HDataType$float32)\nhmatrix$ncols()"
-  },
-  {
-    "objectID": "docs/hmatrix.html#nrows",
-    "href": "docs/hmatrix.html#nrows",
-    "title": "HMatrix",
-    "section": "nrows",
-    "text": "nrows\nnrows() -&gt; integer  source \n\nReturns the number of rows of this HMatrix.\n\n\nReturns\nAn integer.\n\n\n\nExamples\nhmatrix = HMatrix$new_from_values(matrix(c(1,2,3)), HDataType$float32)\nhmatrix$nrows()"
-  },
-  {
-    "objectID": "docs/hmatrix.html#print",
-    "href": "docs/hmatrix.html#print",
-    "title": "HMatrix",
-    "section": "print",
-    "text": "print\nprint()  source \n\nPrint the HMatrix.\nDifferently from R’s normal behaviour, print doesn’t return the value invisibly.\n\n\nExamples\nhmatrix = HMatrix$new_from_values(matrix(c(1,2,3)), HDataType$float32)\nhmatrix$print()\n\n# or similarly:\nprint(hmatrix)"
-  },
-  {
-    "objectID": "docs/hmatrix.html#eq",
-    "href": "docs/hmatrix.html#eq",
-    "title": "HMatrix",
-    "section": "eq",
-    "text": "eq\neq(other: HMatrix) -&gt; bool  source \n\nEquality with another HMatrix.\nThe comparison only checks if the dtype and the values are the same. To compare if the underlying data is the same in memory, check mem_adress.\n\n\nArguments\n\nother\nAn HMatrix.\n\n\n\n\nReturns\nA bool.\n\n\n\nExamples\nhmatrix1 = HMatrix$new_from_values(matrix(c(1,2,3)), HDataType$float32)\nhmatrix2 = HMatrix$new_from_values(matrix(c(1,2,3)), HDataType$float32)\nhmatrix1$eq(hmatrix2) # TRUE\n\n# or similarly:\nhmatrix1 == hmatrix2"
-  },
-  {
-    "objectID": "docs/hmatrix.html#ne",
-    "href": "docs/hmatrix.html#ne",
-    "title": "HMatrix",
-    "section": "ne",
-    "text": "ne\nne(other: HMatrix) -&gt; bool  source \n\nDifference with another HMatrix.\nThe comparison only checks if the dtype and the values are the same. To compare if the underlying data is the same in memory, check mem_adress.\n\nArguments\n\nother\nAn HMatrix.\n\n\n\nReturns\nA bool.\n\n\nExamples\nhmatrix1 = HMatrix$new_from_values(matrix(c(1,2,3)), HDataType$float32)\nhmatrix2 = HMatrix$new_from_values(matrix(c(1,2,3)), HDataType$float32)\nhmatrix1$ne(hmatrix2) # FALSE\n\n# or similarly:\nhmatrix1 != hmatrix2"
-  },
-  {
-    "objectID": "docs/hmatrix.html#clone",
-    "href": "docs/hmatrix.html#clone",
-    "title": "HMatrix",
-    "section": "clone",
-    "text": "clone\nclone() -&gt; HMatrix  source \n\nCreates a new HMatrix, with the underlying data pointing to the same place in memory.\n\nReturns\nAn HMatrix.\n\n\nExamples\nhmatrix1 = HMatrix$new_from_values(matrix(c(1,2,3,4), ncol = 2L), HDataType$float32)\nhmatrix2 = hmatrix1$clone()\nhmatrix1 == hmatrix2 # TRUE\nhmatrix1$mem_adress() == hmatrix2$mem_adress() # TRUE"
-  },
-  {
-    "objectID": "docs/hmatrix.html#as_harray",
-    "href": "docs/hmatrix.html#as_harray",
-    "title": "HMatrix",
-    "section": "as_harray",
-    "text": "as_harray\nas_harray() -&gt; HArray  source \n\nCreates a new HArray, with the underlying data pointing to the same place in memory.\n\n\nReturns\nAn HArray.\n\n\nExamples\nhmatrix = HMatrix$new_from_values(matrix(c(1,2,3,4), ncol = 2L), HDataType$float32)\nharray = hmatrix$as_harray()\n\nharray$mem_adress() == hmatrix$mem_adress() # TRUE"
-  },
-  {
-    "objectID": "docs/hmatrix.html#as_haudio",
-    "href": "docs/hmatrix.html#as_haudio",
-    "title": "HMatrix",
-    "section": "as_haudio",
-    "text": "as_haudio\nas_haudio(sr: integer) -&gt; HAudio  source \n\nCreates a new HAudio, with the underlying data pointing to the same place in memory.\n\n\nArguments\n\nsr\nAn integer. The sampling rate in hz.\n\n\n\n\nReturns\nAn HAudio.\n\n\nExamples\nhmatrix = HMatrix$new_from_values(matrix(c(1,2,3,4), ncol = 2L), HDataType$float32)\nhaudio = hmatrix$as_haudio(sr = 2L)\n\nhaudio$mem_adress() == hmatrix$mem_adress() # TRUE"
-  },
-  {
-    "objectID": "docs/hmatrix.html#collect",
-    "href": "docs/hmatrix.html#collect",
-    "title": "HMatrix",
-    "section": "collect",
-    "text": "collect\ncollect() -&gt; matrix  source \n\nCreates a matrix from an HMatrix. The type of the matrix created (double or complex) will depend on the HMatrix’s dtype.\n\nReturns\nA matrix of type double or complex.\n\n\nExamples\nhmatrix = HMatrix$new_from_values(matrix(c(1,2,3,4), ncol = 2L), HDataType$float32)\nhmatrix$collect()"
-  },
-  {
-    "objectID": "docs/hmatrix.html#mem_adress",
-    "href": "docs/hmatrix.html#mem_adress",
-    "title": "HMatrix",
-    "section": "mem_adress",
-    "text": "mem_adress\nmem_adress() -&gt; string  source \n\nThe memory adress of the first element of the inner data.\nThis is useful to check if different objects share the same underlying data.\nIt’s important that the offset of both objects is at the same element for this comparison.\n\n\nReturns\nA string.\n\n\n\nExamples\nharray = HArray$new_from_values(c(1,2,3,4), HDataType$float64)\nhmatrix = harray$as_hmatrix(ncols = 2L)\nharray$mem_adress() == hmatrix$mem_adress() # TRUE\n\nharray$slice(1L,1L) # changing the offset to 1\nharray$mem_adress() == hmatrix$mem_adress() # FALSE, even though they still share the same underlying data\n\nhmatrix2 = hmatrix\nhmatrix$mem_adress() == hmatrix2$mem_adress() # TRUE, since `=` operator only creates an alias (hmatrix and hmatrix2 are the same external pointer)."
-  },
-  {
-    "objectID": "docs/hmatrix.html#dtype",
-    "href": "docs/hmatrix.html#dtype",
-    "title": "HMatrix",
-    "section": "dtype",
-    "text": "dtype\ndtype() -&gt; HDataType  source \n\nGets the HMatrix’s dtype as an HDataType.\n\nReturns\nAn HDataType.\n\n\nExamples\nhmatrix = HMatrix$new_from_values(matrix(c(1,2,3,4), ncol = 2L), HDataType$float32)\nhmatrix$dtype()"
-  },
-  {
-    "objectID": "docs/hmatrix.html#is_shared",
-    "href": "docs/hmatrix.html#is_shared",
-    "title": "HMatrix",
-    "section": "is_shared",
-    "text": "is_shared\nis_shared() -&gt; bool  source \n\nChecks if the object is shared.\nSince HMatrix has a COW (clone-on-write) behaviour, this function is useful to check if a new object will be created or if the change will be done in-place.\n\n\nReturns\nA bool.\n\n\n\nExamples\nhmatrix = HMatrix$new_from_values(matrix(c(1,2,3,4), ncol = 2L), HDataType$float32)\nhmatrix$is_shared() # FALSE.\n\nharray = hmatrix$as_harray()\nhmatrix$is_shared() # FALSE, since there's only one HMatrix object.\nharray$mem_adress() == hmatrix$mem_adress() # TRUE, since they share the same underlying data.\n\nhmatrix2 = hmatrix$clone()\nhmatrix$is_shared() # TRUE, HMatrix object shared with hmatrix2.\nhmatrix2$is_shared() # TRUE.\nhmatrix$mem_adress() == hmatrix2$mem_adress() # TRUE, since they share the same underlying data.\n\nhmatrix = HMatrix$new_from_values(matrix(c(1,2,3,4), ncol = 2L), HDataType$float32)\nhmatrix2 = hmatrix$clone()\nhmatrix$mem_adress() == hmatrix2$mem_adress() # TRUE\nhmatrix$is_shared() # TRUE\nhmatrix$slice(0L, 1L)\nhmatrix$mem_adress() == hmatrix2$mem_adress() # TRUE. hmatrix and hmatrix2 still share the same underlying data.\nhmatrix$is_shared() # FALSE, because a new HMatrix object was created for hmatrix."
-  },
-  {
-    "objectID": "docs/hmatrix.html#fft",
-    "href": "docs/hmatrix.html#fft",
-    "title": "HMatrix",
-    "section": "fft",
-    "text": "fft\nfft() -&gt; HMatrix  source \n\nComputes the fast fourier transform of the HMatrix. The fft is computed for each column.\nFFT (Fast Fourier Transform) refers to a way the discrete Fourier Transform (DFT) can be calculated efficiently, by using symmetries in the calculated terms. The symmetry is highest when n is a power of 2, and the transform is therefore most efficient for these sizes.\n\nThe function does not normalize outputs. Callers must manually normalize the results by scaling each element by 1/sqrt(n). Multiple normalization steps can be merged into one via pairwise multiplication, so when doing a forward FFT followed by an inverse callers can normalize once by scaling each element by 1/n.\n\nElements in the output are ordered by ascending frequency, with the first element corresponding to frequency 0.\n\n\nReturns\nAn HMatrix.\n\n\n\nExamples\nhmatrix = HMatrix$new_from_values(matrix(c(1,2,3,4), ncol = 2L), HDataType$float32)\nhmatrix$fft()"
-  },
-  {
-    "objectID": "docs/hmatrix.html#mean_cols",
-    "href": "docs/hmatrix.html#mean_cols",
-    "title": "HMatrix",
-    "section": "mean_cols",
-    "text": "mean_cols\nmean_cols()  source \n\nTakes the average across columns.\nA new inner array is created. The operation is done in-place.\n\n\nExamples\nhmatrix = HMatrix$new_from_values(matrix(c(1,2,3,4), ncol = 2L), HDataType$float32)\nmem_adress_before = hmatrix$mem_adress()\nhmatrix$mean_cols()\nhmatrix$mem_adress() != mem_adress_before # TRUE"
-  },
-  {
-    "objectID": "docs/hmatrix.html#db_to_power",
-    "href": "docs/hmatrix.html#db_to_power",
-    "title": "HMatrix",
-    "section": "db_to_power",
-    "text": "db_to_power\ndb_to_power(reference: double)  source \n\n\\(db\\_to\\_power(x) = reference \\cdot 10^{0.1x}\\)\nConverts from dB to power.\nSince HMatrix has a COW (clone-on-write) behaviour, it will create a new inner array if the inner values are being shared.\n\n\nArguments\n\nreference\nOutput value will be multiplied by reference.\n\n\n\n\nExamples\nhmatrix = HMatrix$new_from_values(matrix(c(1,2,3,4), ncol = 2L), HDataType$float32)\nhmatrix$db_to_power(reference = 1)"
   },
   {
     "objectID": "docs/hmetadatatype.html",
@@ -746,14 +417,14 @@
     "href": "docs/hresampler.html#new_sinc",
     "title": "HResampler",
     "section": "new_sinc",
-    "text": "new_sinc\nnew_sinc(resample_ratio: double, max_resample_ratio_relative: double, parameters: HSincInterpolationParams, chunk_size: integer, nbr_channels: integer, res_type: HResamplerType, dtype: HDataType) -&gt; HResampler\n\nCreates a new Sinc type HResampler.\nSupports any of [sinc_fixed_in, sinc_fixed_out] HResamplerType.\nThe resampling is done by creating a number of intermediate points (defined by oversampling_factor) by sinc interpolation.\nThe new samples are then calculated by interpolating between these points.\n\n\nsinc_fixed_in\nAn asynchronous resampler that accepts a fixed number of audio frames for input and returns a variable number of frames.\n\nsinc_fixed_out\nAn asynchronous resampler that accepts a variable number of audio frames for input nad returns a fixed number of frames.\n\n\n\nArguments\n\nresample_ratio\nThe output’s sampling rate divided by the input’s sampling rate.\n\nmax_resample_ratio_relative\nMaximum ratio that can be set with set_resample_ratio relative to resample_ratio, must be &gt;= 1.0. The minimum relative\nratio is the reciprocal of the maximum. For example, with max_resample_ratio_relative of 10.0, the ratio can be set between\nresample_ratio * 10.0 and resample_ratio / 10.0.\n\nparameters\nAn HSincInterpolationParams. Parameters for interpolation.\n\nchunk_size\nChunks size of input or output data in frames.\n\nnbr_channels\nNumber of channels in input and output.\nMust be the same number of channels as the HAudio that will be processed by the HResampler.\n\nres_type\nAn HResamplerType. Indicates which type of HResampler to be created.\n\ndtype\nA float HDataType to indicate the dtype that the HResampler will be working with.\nMust be the same as the HAudio’s dtype that will be processed by the HResampler.\n\n\n\n\nReturns\nA Sinc type HResampler.\n\n\n\nExamples\nsr_in = 44100L\nsr_out = 48000L\nresample_ratio = sr_out / sr_in\nmax_resample_ratio_relative = 2\nhparams = HSincInterpolationParams$new(256, 0.95, 256, \"linear\", \"blackmanharris2\")\nchunk_size = 512L\nnbr_channels = 2L\nres_type = HResamplerType$sinc_fixed_out\ndtype = HDataType$float32\n\nres = HResampler$new_sinc(resample_ratio, max_resample_ratio_relative, hparams, chunk_size, nbr_channels, res_type, dtype)"
+    "text": "new_sinc\nnew_sinc(resample_ratio: double, max_resample_ratio_relative: double, parameters: HSincInterpolationParams, chunk_size: integer, nchannels: integer, res_type: HResamplerType, dtype: HDataType) -&gt; HResampler\n\nCreates a new Sinc type HResampler.\nSupports any of [sinc_fixed_in, sinc_fixed_out] HResamplerType.\nThe resampling is done by creating a number of intermediate points (defined by oversampling_factor) by sinc interpolation.\nThe new samples are then calculated by interpolating between these points.\n\n\nsinc_fixed_in\nAn asynchronous resampler that accepts a fixed number of audio frames for input and returns a variable number of frames.\n\nsinc_fixed_out\nAn asynchronous resampler that accepts a variable number of audio frames for input nad returns a fixed number of frames.\n\n\n\nArguments\n\nresample_ratio\nThe output’s sampling rate divided by the input’s sampling rate.\n\nmax_resample_ratio_relative\nMaximum ratio that can be set with set_resample_ratio relative to resample_ratio, must be &gt;= 1.0. The minimum relative\nratio is the reciprocal of the maximum. For example, with max_resample_ratio_relative of 10.0, the ratio can be set between\nresample_ratio * 10.0 and resample_ratio / 10.0.\n\nparameters\nAn HSincInterpolationParams. Parameters for interpolation.\n\nchunk_size\nChunks size of input or output data in frames.\n\nnchannels\nNumber of channels in input and output.\nMust be the same number of channels as the HAudio that will be processed by the HResampler.\n\nres_type\nAn HResamplerType. Indicates which type of HResampler to be created.\n\ndtype\nA float HDataType to indicate the dtype that the HResampler will be working with.\nMust be the same as the HAudio’s dtype that will be processed by the HResampler.\n\n\n\n\nReturns\nA Sinc type HResampler.\n\n\n\nExamples\nsr_in = 44100L\nsr_out = 48000L\nresample_ratio = sr_out / sr_in\nmax_resample_ratio_relative = 2\nhparams = HSincInterpolationParams$new(256, 0.95, 256, \"linear\", \"blackmanharris2\")\nchunk_size = 512L\nnchannels = 2L\nres_type = HResamplerType$sinc_fixed_out\ndtype = HDataType$float32\n\nres = HResampler$new_sinc(resample_ratio, max_resample_ratio_relative, hparams, chunk_size, nchannels, res_type, dtype)"
   },
   {
     "objectID": "docs/hresampler.html#new_fast",
     "href": "docs/hresampler.html#new_fast",
     "title": "HResampler",
     "section": "new_fast",
-    "text": "new_fast\nnew_sinc(resample_ratio: double, max_resample_ratio_relative: double, pol_deg: HPolynomialDegree, chunk_size: integer, nbr_channels: integer, res_type: HResamplerType, dtype: HDataType) -&gt; HResampler\n\nCreates a new Fast type HResampler.\nSupports any of [fast_fixed_in, fast_fixed_out] HResamplerType.\nThe resampling is done by interpolating between the input samples by fitting polynomials.\nNote that no anti-aliasing filter is used. This makes it run considerably faster than the corresponding SincFixedIn, which performs anti-aliasing filtering. The price is that the resampling creates some artefacts\nin the output, mainly at higher frequencies. Use SincFixedIn if this can not be tolerated.\n\n\nfast_fixed_in\nAn asynchronous resampler that accepts a fixed number of audio frames for input and returns a variable number of frames.\n\nfast_fixed_out\nAn asynchronous resampler that accepts a variable number of audio frames for input nad returns a fixed number of frames.\n\n\n\nArguments\n\nresample_ratio\nThe output’s sampling rate divided by the input’s sampling rate.\n\nmax_resample_ratio_relative\nMaximum ratio that can be set with set_resample_ratio relative to resample_ratio, must be &gt;= 1.0. The minimum relative\nratio is the reciprocal of the maximum. For example, with max_resample_ratio_relative of 10.0, the ratio can be set between\nresample_ratio * 10.0 and resample_ratio / 10.0.\n\npol_deg\nAn HPolynomialDegree. Used to select the polynomial degree for interpolation.\n\nchunk_size\nChunks size of input or output data in frames.\n\nnbr_channels\nNumber of channels in input and output.\nMust be the same number of channels as the HAudio that will be processed by the HResampler.\n\nres_type\nAn HResamplerType. Indicates which type of HResampler to be created.\n\ndtype\nA float HDataType to indicate the dtype that the HResampler will be working with.\nMust be the same as the HAudio’s dtype that will be processed by the HResampler.\n\n\n\n\nReturns\nA Fast type HResampler.\n\n\n\nExamples\nsr_in = 44100L\nsr_out = 48000L\nresample_ratio = sr_out / sr_in\nmax_resample_ratio_relative = 2\npol_deg = HPolynomialDegree$linear\nchunk_size = 512L\nnbr_channels = 2L\nres_type = HResamplerType$fast_fixed_out\ndtype = HDataType$float32\n\nres = HResampler$new_fast(resample_ratio, max_resample_ratio_relative, pol_deg, chunk_size, nbr_channels, res_type, dtype)"
+    "text": "new_fast\nnew_sinc(resample_ratio: double, max_resample_ratio_relative: double, pol_deg: HPolynomialDegree, chunk_size: integer, nchannels: integer, res_type: HResamplerType, dtype: HDataType) -&gt; HResampler\n\nCreates a new Fast type HResampler.\nSupports any of [fast_fixed_in, fast_fixed_out] HResamplerType.\nThe resampling is done by interpolating between the input samples by fitting polynomials.\nNote that no anti-aliasing filter is used. This makes it run considerably faster than the corresponding SincFixedIn, which performs anti-aliasing filtering. The price is that the resampling creates some artefacts\nin the output, mainly at higher frequencies. Use SincFixedIn if this can not be tolerated.\n\n\nfast_fixed_in\nAn asynchronous resampler that accepts a fixed number of audio frames for input and returns a variable number of frames.\n\nfast_fixed_out\nAn asynchronous resampler that accepts a variable number of audio frames for input nad returns a fixed number of frames.\n\n\n\nArguments\n\nresample_ratio\nThe output’s sampling rate divided by the input’s sampling rate.\n\nmax_resample_ratio_relative\nMaximum ratio that can be set with set_resample_ratio relative to resample_ratio, must be &gt;= 1.0. The minimum relative\nratio is the reciprocal of the maximum. For example, with max_resample_ratio_relative of 10.0, the ratio can be set between\nresample_ratio * 10.0 and resample_ratio / 10.0.\n\npol_deg\nAn HPolynomialDegree. Used to select the polynomial degree for interpolation.\n\nchunk_size\nChunks size of input or output data in frames.\n\nnchannels\nNumber of channels in input and output.\nMust be the same number of channels as the HAudio that will be processed by the HResampler.\n\nres_type\nAn HResamplerType. Indicates which type of HResampler to be created.\n\ndtype\nA float HDataType to indicate the dtype that the HResampler will be working with.\nMust be the same as the HAudio’s dtype that will be processed by the HResampler.\n\n\n\n\nReturns\nA Fast type HResampler.\n\n\n\nExamples\nsr_in = 44100L\nsr_out = 48000L\nresample_ratio = sr_out / sr_in\nmax_resample_ratio_relative = 2\npol_deg = HPolynomialDegree$linear\nchunk_size = 512L\nnchannels = 2L\nres_type = HResamplerType$fast_fixed_out\ndtype = HDataType$float32\n\nres = HResampler$new_fast(resample_ratio, max_resample_ratio_relative, pol_deg, chunk_size, nchannels, res_type, dtype)"
   },
   {
     "objectID": "docs/hresampler.html#process",
@@ -781,28 +452,28 @@
     "href": "docs/hresampler.html#reset",
     "title": "HResampler",
     "section": "reset",
-    "text": "reset\nreset()  source \n\nReset the resampler state and clear all internal buffers.\n\n\nExamples\nsr_in = 44100L\nsr_out = 48000L\nresample_ratio = sr_out / sr_in\nmax_resample_ratio_relative = 2\npol_deg = HPolynomialDegree$linear\nchunk_size = 512L\nnbr_channels = 2L\nres_type = HResamplerType$fast_fixed_out\ndtype = HDataType$float32\n\nres = HResampler$new_fast(resample_ratio, max_resample_ratio_relative, pol_deg, chunk_size, nbr_channels, res_type, dtype)\nres$reset()"
+    "text": "reset\nreset()  source \n\nReset the resampler state and clear all internal buffers.\n\n\nExamples\nsr_in = 44100L\nsr_out = 48000L\nresample_ratio = sr_out / sr_in\nmax_resample_ratio_relative = 2\npol_deg = HPolynomialDegree$linear\nchunk_size = 512L\nnchannels = 2L\nres_type = HResamplerType$fast_fixed_out\ndtype = HDataType$float32\n\nres = HResampler$new_fast(resample_ratio, max_resample_ratio_relative, pol_deg, chunk_size, nchannels, res_type, dtype)\nres$reset()"
   },
   {
     "objectID": "docs/hresampler.html#res_type",
     "href": "docs/hresampler.html#res_type",
     "title": "HResampler",
     "section": "res_type",
-    "text": "res_type\nres_type() -&gt; HResamplerType  source \n\nGets the HResampler’s type.\n\n\nReturns\nAn HResamplerType.\n\n\nExamples\nsr_in = 44100L\nsr_out = 48000L\nresample_ratio = sr_out / sr_in\nmax_resample_ratio_relative = 2\npol_deg = HPolynomialDegree$linear\nchunk_size = 512L\nnbr_channels = 2L\nres_type = HResamplerType$fast_fixed_out\ndtype = HDataType$float32\n\nres = HResampler$new_fast(resample_ratio, max_resample_ratio_relative, pol_deg, chunk_size, nbr_channels, res_type, dtype)\nres$res_type()"
+    "text": "res_type\nres_type() -&gt; HResamplerType  source \n\nGets the HResampler’s type.\n\n\nReturns\nAn HResamplerType.\n\n\nExamples\nsr_in = 44100L\nsr_out = 48000L\nresample_ratio = sr_out / sr_in\nmax_resample_ratio_relative = 2\npol_deg = HPolynomialDegree$linear\nchunk_size = 512L\nnchannels = 2L\nres_type = HResamplerType$fast_fixed_out\ndtype = HDataType$float32\n\nres = HResampler$new_fast(resample_ratio, max_resample_ratio_relative, pol_deg, chunk_size, nchannels, res_type, dtype)\nres$res_type()"
   },
   {
     "objectID": "docs/hresampler.html#dtype",
     "href": "docs/hresampler.html#dtype",
     "title": "HResampler",
     "section": "dtype",
-    "text": "dtype\ndtype() -&gt; HDataType  source \n\nGets the HResampler’s dtype.\n\nReturns\nAn HDataType.\n\n\nExamples\nsr_in = 44100L\nsr_out = 48000L\nresample_ratio = sr_out / sr_in\nmax_resample_ratio_relative = 2\npol_deg = HPolynomialDegree$linear\nchunk_size = 512L\nnbr_channels = 2L\nres_type = HResamplerType$fast_fixed_out\ndtype = HDataType$float32\n\nres = HResampler$new_fast(resample_ratio, max_resample_ratio_relative, pol_deg, chunk_size, nbr_channels, res_type, dtype)\nres$dtype()"
+    "text": "dtype\ndtype() -&gt; HDataType  source \n\nGets the HResampler’s dtype.\n\nReturns\nAn HDataType.\n\n\nExamples\nsr_in = 44100L\nsr_out = 48000L\nresample_ratio = sr_out / sr_in\nmax_resample_ratio_relative = 2\npol_deg = HPolynomialDegree$linear\nchunk_size = 512L\nnchannels = 2L\nres_type = HResamplerType$fast_fixed_out\ndtype = HDataType$float32\n\nres = HResampler$new_fast(resample_ratio, max_resample_ratio_relative, pol_deg, chunk_size, nchannels, res_type, dtype)\nres$dtype()"
   },
   {
     "objectID": "docs/hresampler.html#print",
     "href": "docs/hresampler.html#print",
     "title": "HResampler",
     "section": "print",
-    "text": "print\nprint()  source \n\nPrint the HResampler.\nDifferently from R’s normal behaviour, print doesn’t return the value invisibly.\n\n\nExamples\nsr_in = 44100L\nsr_out = 48000L\nresample_ratio = sr_out / sr_in\nmax_resample_ratio_relative = 2\npol_deg = HPolynomialDegree$linear\nchunk_size = 512L\nnbr_channels = 2L\nres_type = HResamplerType$fast_fixed_out\ndtype = HDataType$float32\n\nres = HResampler$new_fast(resample_ratio, max_resample_ratio_relative, pol_deg, chunk_size, nbr_channels, res_type, dtype)\nres$print()\n\n# or similarly:\nprint(res)"
+    "text": "print\nprint()  source \n\nPrint the HResampler.\nDifferently from R’s normal behaviour, print doesn’t return the value invisibly.\n\n\nExamples\nsr_in = 44100L\nsr_out = 48000L\nresample_ratio = sr_out / sr_in\nmax_resample_ratio_relative = 2\npol_deg = HPolynomialDegree$linear\nchunk_size = 512L\nnchannels = 2L\nres_type = HResamplerType$fast_fixed_out\ndtype = HDataType$float32\n\nres = HResampler$new_fast(resample_ratio, max_resample_ratio_relative, pol_deg, chunk_size, nchannels, res_type, dtype)\nres$print()\n\n# or similarly:\nprint(res)"
   },
   {
     "objectID": "docs/hresamplertype.html",

@@ -1,7 +1,6 @@
 use extendr_api::prelude::*;
 
 mod conversions;
-mod generate_r_docs;
 mod harray;
 mod harrayr;
 mod haudioop;
@@ -16,6 +15,7 @@ mod hresamplertype;
 mod hsincinterpolationparams;
 mod hwindow;
 mod partialeq;
+mod r_docs;
 
 // Macro to generate exports.
 // This ensures exported functions are registered with R.

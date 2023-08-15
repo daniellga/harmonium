@@ -9,7 +9,7 @@ Supports `Float32`, `Float64`, `Complex32` and `Complex64` types. \
 
 ## float32
 
-`float32 -> HDataType` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hdatatype.rs#L39) </span> \
+`float32 -> HDataType` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hdatatype.rs#L39) </span> \
 
 Creates a Float32 `HDataType`. \
 
@@ -27,7 +27,7 @@ _________
 
 ## float64
 
-`float64 -> HDataType` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hdatatype.rs#L62) </span> \
+`float64 -> HDataType` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hdatatype.rs#L62) </span> \
 
 Creates a Float64 `HDataType`. \
 
@@ -45,7 +45,7 @@ _________
 
 ## complex32
 
-`complex32 -> HDataType` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hdatatype.rs#L85) </span> \
+`complex32 -> HDataType` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hdatatype.rs#L85) </span> \
 
 Creates a Complex32 `HDataType`. \
 
@@ -63,7 +63,7 @@ _________
 
 ## complex64
 
-`complex64 -> HDataType` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hdatatype.rs#L108) </span> \
+`complex64 -> HDataType` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hdatatype.rs#L108) </span> \
 
 Creates a Complex64 `HDataType`. \
 
@@ -81,7 +81,7 @@ _________
 
 ## print
 
-`print()` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hdatatype.rs#L132) </span> \
+`print()` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hdatatype.rs#L132) </span> \
 
 Prints the `HDataType`. \
 Differently from R's behaviour, `print` doesn't return the value invisibly. \
@@ -100,7 +100,7 @@ _________
 
 ## eq
 
-`eq(other: HDataType) -> bool` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hdatatype.rs#L165) </span> \
+`eq(other: HDataType) -> bool` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hdatatype.rs#L165) </span> \
 
 Equality with another `HDataType`. \
 
@@ -128,7 +128,7 @@ _________
 
 ## ne
 
-`ne(other: HDataType) -> bool` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./hdatatype.rs#L198) </span> \
+`ne(other: HDataType) -> bool` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hdatatype.rs#L198) </span> \
 
 Difference with another `HDataType`. \
 
