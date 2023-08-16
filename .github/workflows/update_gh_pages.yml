@@ -1,0 +1,23 @@
+name: Update Github Pages
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  run_commands:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Set up Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+
+      - name: Run commands
+        run: |
+          rm -rf docs
+          cd r-harmonium/docs
+          quarto render

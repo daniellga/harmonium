@@ -21,11 +21,8 @@ $(STATLIB):
 	fi && \
 		export PATH="$(PATH):$(HOME)/.cargo/bin" && \
 		cargo build --lib --release --manifest-path=./rust/Cargo.toml --target-dir $(TARGET_DIR) && \
-		rm ./../docs/docs/* &&
-		rm -rf ./../../docs
+		rm ./../docs/docs/* && \
 		cargo run --bin r_docs --release --manifest-path=./rust/Cargo.toml --target-dir $(TARGET_DIR) -- --r_docs-dir $(DOCSDIR) && \
-		cd ../docs && quarto render && \
-		cd $(CURDIR)
 	if [ "$(NOT_CRAN)" != "true" ]; then \
 		rm -rf $(CARGOTMP) && \
 		rm -rf $(LIBDIR)/build; \
