@@ -1,75 +1,25 @@
 test_that(
-  "Slice works.",
+  "slice works",
   {
-
-    check_harray = function(values, dtype, offset, length, result) {
-      harray = HArray$new_from_values(values, dtype)
-      harray$slice(offset, length)
-      expect_equal(harray$collect(), result)
+    check_slice = function(arr, dtype, dtype_result) {
+      harray = HArray$new_from_values(arr, dtype)
+      
+      slice = harray$slice(list(c(0L, 2L, 1L), c(0L, 2L, 1L)))
+      expect_equal(slice$shape(), c(2, 2))
+      expect_equal(harray$mem_adress(), slice$mem_adress())
+      
+      # Out-of-bounds check.
+      expect_error(harray$slice(list(c(0L, 5L, 1L), c(0L, 2L, 1L))))
+      # Step = 0 check.
+      expect_error(harray$slice(list(c(0L, 2L, 0L), c(0L, 2L, 1L))))
     }
-
-    check_harray_shared = function(values, dtype, offset, length, result) {
-      harray = HArray$new_from_values(values, dtype)
-      expect_false(harray$is_shared())
-      harray2 = harray$clone()
-      expect_true(harray$is_shared())
-      harray$slice(offset, length)
-      expect_false(harray$is_shared())
-      expect_equal(harray$collect(), result)
-    }
-
-    values = c(1,2,3,4,5,6,7,8,9,10,11,12)
-    result = c(4,5)
-    offset = 3
-    length = 2
-    check_harray(values, HDataType$float32, offset, length, result)
-    check_harray(values, HDataType$float64, offset, length, result)
-    check_harray_shared(values, HDataType$float32, offset, length, result)
-    check_harray_shared(values, HDataType$float64, offset, length, result)
-
-    values = c(1+2i,3+4i,5-6i,7+8i,9-10i,10+11i,11-12i,12+13i)
-    result = c(7+8i,9-10i)
-    offset = 3
-    length = 2
-    check_harray(values, HDataType$complex32, offset, length, result)
-    check_harray(values, HDataType$complex64, offset, length, result)
-    check_harray_shared(values, HDataType$complex32, offset, length, result)
-    check_harray_shared(values, HDataType$complex64, offset, length, result)
-
-    check_hmatrix = function(values, dtype, ncols, offset, length, result) {
-      hmatrix = HArray$new_from_values(values, dtype)$as_hmatrix(ncols)
-      hmatrix$slice(offset, length)
-      expect_equal(hmatrix$collect(), result)
-    }
-
-    check_hmatrix_shared = function(values, dtype, ncols, offset, length, result) {
-      hmatrix = HArray$new_from_values(values, dtype)$as_hmatrix(ncols)
-      expect_false(hmatrix$is_shared())
-      hmatrix2 = hmatrix$clone()
-      expect_true(hmatrix$is_shared())
-      hmatrix$slice(offset, length)
-      expect_false(hmatrix$is_shared())
-      expect_equal(hmatrix$collect(), result)
-    }
-
-    values = c(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18)
-    ncols = 3
-    result = matrix(c(1,2,3,4,5,6,7,8,9,10,11,12), ncol = 2)
-    offset = 0
-    length = 2
-    check_hmatrix(values, HDataType$float32, ncols, offset, length, result)
-    check_hmatrix(values, HDataType$float64, ncols, offset, length, result)
-    check_hmatrix_shared(values, HDataType$float32, ncols, offset, length, result)
-    check_hmatrix_shared(values, HDataType$float64, ncols, offset, length, result)
-
-    values = c(1+2i,3+4i,5-6i,7+8i,9-10i,10+11i,11-12i,12+13i, 13+14i)
-    ncols = 3
-    result = matrix(c(1+2i,3+4i,5-6i,7+8i,9-10i,10+11i), ncol = 2)
-    offset = 0
-    length = 2
-    check_hmatrix(values, HDataType$complex32, ncols, offset, length, result)
-    check_hmatrix(values, HDataType$complex64, ncols, offset, length, result)
-    check_hmatrix_shared(values, HDataType$complex32, ncols, offset, length, result)
-    check_hmatrix_shared(values, HDataType$complex64, ncols, offset, length, result)
+    
+    arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3, 4))
+    check_slice(arr, HDataType$float32, HDataType$float32)
+    check_slice(arr, HDataType$float64, HDataType$float64)
+    
+    arr = array(c(1+2i,3+4i,5-6i,7+8i,9-10i,10+11i,11-12i,12+13i,14+15i,16+17i,18+19i, 20+21i), c(3, 4))
+    check_slice(arr, HDataType$complex32, HDataType$complex32)
+    check_slice(arr, HDataType$complex64, HDataType$complex64)
   }
 )

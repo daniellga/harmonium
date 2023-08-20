@@ -16,7 +16,7 @@ impl HArray {
     /// HArray
     /// ## new_from_values
     ///
-    /// `new_from_array(arr: array, dtype: HDataType) -> HArray` \
+    /// `new_from_values(arr: array, dtype: HDataType) -> HArray` \
     ///
     /// Creates a new `HArray` from an R array. \
     ///
@@ -174,6 +174,42 @@ impl HArray {
         let ndim = self.0.ndim() as i32;
         let rint = Rint::from(ndim);
         rint.into()
+    }
+
+    /// HArray
+    /// ## slice
+    ///
+    /// `slice(range: list[atomicvector]) -> HArray` \
+    ///
+    /// Slices the HArray. \
+    /// This operation has a COW ([clone-on-write](https://doc.rust-lang.org/std/borrow/enum.Cow.html)) behaviour. The created slice shares the inner data with
+    /// the original array until one of them is modified. \
+    ///
+    /// #### Arguments
+    ///
+    /// * `range` \
+    /// A list of vectors of integers.
+    /// The number of vectors in the list must be equal to the number of dimensions in the original HArray as they represent the slice information for each axis. \
+    /// Each vector must be composed of 3 elements: [start, end, step]. All 3 values can be
+    /// positive or negative, although step can't be 0. \
+    ///
+    /// #### Returns
+    ///
+    /// An `HArray`. \
+    ///
+    /// #### Examples
+    ///
+    /// ```r
+    /// arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
+    /// dtype = HDataType$float32
+    /// harray = HArray$new_from_values(arr, dtype)
+    /// harray$slice(list(c(0L, 2L, 1L), c(1L, 3L, 1L)))
+    /// ```
+    ///
+    /// _________
+    ///
+    fn slice(&self, range: Robj) -> HArray {
+        HArray(self.0.slice(range))
     }
 
     /// HArray
@@ -398,6 +434,33 @@ impl HArray {
         let bool = Arc::weak_count(&self.0) + Arc::strong_count(&self.0) != 1;
         let rbool = Rbool::from(bool);
         rbool.into()
+    }
+
+    /// HArray
+    /// ## mem_adress
+    ///
+    /// `mem_adress() -> string` \
+    ///
+    /// The memory adress of the first element of the inner array. \
+    /// This is useful to check if different objects share the same underlying data. \
+    ///
+    /// #### Returns
+    ///
+    /// A `string`. \
+    ///
+    /// #### Examples
+    ///
+    /// ```r
+    /// arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
+    /// dtype = HDataType$float32
+    /// harray = HArray$new_from_values(arr, dtype)
+    /// harray$mem_adress()
+    /// ```
+    ///
+    /// _________
+    ///
+    pub fn mem_adress(&self) -> String {
+        self.0.mem_adress()
     }
 }
 

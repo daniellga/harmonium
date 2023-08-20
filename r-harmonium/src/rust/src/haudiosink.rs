@@ -39,23 +39,24 @@ impl HAudioSink {
     }
 
     /// HAudioSink
-    /// ## append_from_haudio
+    /// ## append_from_harray
     ///
-    /// `append_from_haudio(haudio: HAudio)` \
+    /// `append_from_harray(harray: HArray)` \
     ///
     /// Appends a sound to the queue of sounds to play. \
     ///
     /// #### Arguments
     ///
-    /// * `haudio` \
-    /// An `HAudio`. \
+    /// * `harray` \
+    /// An `HArray`. \
     ///
     /// #### Examples
     ///
     /// ```r
     /// haudiosink = HAudioSink$new()
-    /// haudio = HAudio$new_from_file(fpath = "../../../testfiles/gs-16b-2c-44100hz.wav", dtype = HDataType$float32)
-    /// haudiosink$append_from_haudio(haudio)
+    /// l = HFile$decode(fpath = "../../../testfiles/gs-16b-2c-44100hz.wav", dtype = HDataType$float32)
+    /// harray = l[[1]]
+    /// haudiosink$append_from_harray(harray)
     /// ```
     ///
     /// _________

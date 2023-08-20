@@ -45,6 +45,8 @@ HArray$shape <- function() .Call(wrap__HArray__shape, self)
 
 HArray$ndim <- function() .Call(wrap__HArray__ndim, self)
 
+HArray$slice <- function(range) .Call(wrap__HArray__slice, self, range)
+
 HArray$print <- function() invisible(.Call(wrap__HArray__print, self))
 
 HArray$eq <- function(other) .Call(wrap__HArray__eq, self, other)
@@ -58,6 +60,8 @@ HArray$collect <- function() .Call(wrap__HArray__collect, self)
 HArray$dtype <- function() .Call(wrap__HArray__dtype, self)
 
 HArray$is_shared <- function() .Call(wrap__HArray__is_shared, self)
+
+HArray$mem_adress <- function() .Call(wrap__HArray__mem_adress, self)
 
 #' @export
 `$.HArray` <- function (self, name) { func <- HArray[[name]]; environment(func) <- environment(); func }
@@ -251,6 +255,8 @@ HFft$fft <- function(harray) .Call(wrap__HFft__fft, harray)
 
 HFft$fft_mut <- function(harray) invisible(.Call(wrap__HFft__fft_mut, harray))
 
+HFft$fft_real_mut <- function(harray) invisible(.Call(wrap__HFft__fft_real_mut, harray))
+
 #' @export
 `$.HFft` <- function (self, name) { func <- HFft[[name]]; environment(func) <- environment(); func }
 
@@ -263,7 +269,7 @@ HAudioOp$nchannels <- function(harray) .Call(wrap__HAudioOp__nchannels, harray)
 
 HAudioOp$nframes <- function(harray) .Call(wrap__HAudioOp__nframes, harray)
 
-HAudioOp$db_to_power <- function(harray, reference) invisible(.Call(wrap__HAudioOp__db_to_power, harray, reference))
+HAudioOp$db_to_amplitude <- function(harray, reference, power) invisible(.Call(wrap__HAudioOp__db_to_amplitude, harray, reference, power))
 
 HAudioOp$to_mono <- function(harray) invisible(.Call(wrap__HAudioOp__to_mono, harray))
 
@@ -277,6 +283,8 @@ HFile <- new.env(parent = emptyenv())
 
 HFile$decode <- function(fpath, dtype) .Call(wrap__HFile__decode, fpath, dtype)
 
+HFile$decode_stream <- function(fpath, frames, dtype) .Call(wrap__HFile__decode_stream, fpath, frames, dtype)
+
 HFile$metadata <- function(fpath, metadata_type) .Call(wrap__HFile__metadata, fpath, metadata_type)
 
 HFile$params <- function(fpath) .Call(wrap__HFile__params, fpath)
@@ -288,6 +296,21 @@ HFile$verify <- function(fpath) .Call(wrap__HFile__verify, fpath)
 
 #' @export
 `[[.HFile` <- `$.HFile`
+
+#' HDecoderStream
+#' An iterator that decodes audio in streams. \
+#'
+#' # Methods
+#'
+HDecoderStream <- new.env(parent = emptyenv())
+
+HDecoderStream$stream <- function() .Call(wrap__HDecoderStream__stream, self)
+
+#' @export
+`$.HDecoderStream` <- function (self, name) { func <- HDecoderStream[[name]]; environment(func) <- environment(); func }
+
+#' @export
+`[[.HDecoderStream` <- `$.HDecoderStream`
 
 
 # nolint end

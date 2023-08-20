@@ -74,20 +74,22 @@ impl HAudioOp {
     }
 
     /// HAudioOp
-    /// ## db_to_power
+    /// ## db_to_amplitude
     ///
-    /// `db_to_power(harray: HArray, reference: double)` \
+    /// `db_to_amplitude(harray: HArray, reference: double)` \
     ///
-    /// Converts from dB to power. \
-    /// $db_to_power(x) = reference * 10.0**(x * 0.1)$ \
+    /// Converts the `HArray` input from dB to amplitude. \
+    /// $db_to_amplitude(x) = reference * (10.0**(x * 0.1))**power$ \
     /// The operation is done in-place. \
     ///
     /// #### Arguments
     ///
     /// * `harray` \
-    /// A 1D or 2D float `HArray`.
+    /// A 1D or 2D float `HArray`. \
     /// * `reference` \
     /// A double that scales the output. \
+    /// * `power` \
+    /// A double. If 1.0, will compute DB to power. If 0.5, will compute DB to amplitude. \
     ///
     /// #### Examples
     ///
@@ -95,14 +97,14 @@ impl HAudioOp {
     /// arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
     /// dtype = HDataType$float32
     /// harray = HArray$new_from_values(arr, dtype)
-    /// HAudioOp$db_to_power(harray, 2)
+    /// HAudioOp$db_to_amplitude(harray, 2, 1)
     /// ```
     ///
     /// _________
     ///
-    fn db_to_power(harray: &mut HArray, reference: Robj) {
+    fn db_to_amplitude(harray: &mut HArray, reference: Robj, power: Robj) {
         let inner_mut = harray.get_inner_mut();
-        inner_mut.db_to_power(reference);
+        inner_mut.db_to_amplitude(&reference, &power);
     }
 
     /// HAudioOp

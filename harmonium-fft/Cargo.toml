@@ -9,6 +9,7 @@ edition = "2021"
 harmonium-core = { path = "../harmonium-core" }
 harmonium-io = { path = "../harmonium-io" }
 rustfft = { workspace = true }
+realfft = { workspace = true }
 cached = { workspace = true }
 ndarray = { workspace = true }
 

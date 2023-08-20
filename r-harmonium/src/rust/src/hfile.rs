@@ -1,11 +1,16 @@
 use extendr_api::prelude::*;
-use harmonium_core::conversions::IntoDynamic;
+use harmonium_core::{conversions::IntoDynamic, errors::HResult};
 use harmonium_io::decode;
+use ndarray::Ix2;
 use std::sync::Arc;
 
-use crate::{harray::HArray, hdatatype::HDataType, hmetadatatype::HMetadataType};
+use crate::{
+    conversions::RobjConversions, harray::HArray, hdatatype::HDataType,
+    hmetadatatype::HMetadataType,
+};
 
 struct HFile;
+struct HDecoderStream(Box<dyn HDecoderStreamR>);
 
 #[extendr]
 impl HFile {
@@ -15,11 +20,14 @@ impl HFile {
     /// `decode(fpath: string, dtype: HDataType) -> list[HArray, integer]` \
     ///
     /// Decode an audio file, providing its decoded data and the sampling rate. \
+    /// The samples are normalized to fit in the range of \[-1.0, 1.0\].
     ///
     /// #### Arguments
     ///
     /// * `fpath` \
     /// The file path as a string. \
+    /// * `dtype` \
+    /// A float `HDataType`. \
     ///
     /// #### Returns
     ///
@@ -52,6 +60,54 @@ impl HFile {
                 let harray = HArray(Arc::new(harray));
                 let sr = Rint::from(sr as i32);
                 List::from_values(&[Robj::from(harray), Robj::from(sr)]).into()
+            }
+            _ => panic!("Operation only allowed for float dtypes."),
+        }
+    }
+
+    /// HFile
+    /// ## stream
+    ///
+    /// `decode_stream(fpath: string, frames: integer, dtype: HDataType) -> HDecoderStream` \
+    ///
+    /// Creates an `HDecoderStream`, used as an iterator to stream frames of decoded audio. \
+    ///
+    ///
+    /// #### Arguments
+    ///
+    /// * `fpath` \
+    /// The file path as a string. \
+    /// * `frames` \
+    /// Number of frames to decode per iteration. \
+    /// * `dtype` \
+    /// A float `HDataType`. \
+    ///
+    /// #### Returns
+    ///
+    /// An `HDecoderStream`. \
+    ///
+    /// #### Examples
+    ///
+    /// ```r
+    /// fpath = "testfiles/gs-16b-2c-44100hz.flac"
+    /// dtype = HDataType$float32
+    /// frames = 1000L
+    /// HFile$decode_stream(fpath, frames, dtype)
+    /// ```
+    ///
+    /// _________
+    ///
+    fn decode_stream(fpath: &str, frames: Robj, dtype: &HDataType) -> HDecoderStream {
+        let frames: i32 = frames.robj_to_scalar();
+        let frames = frames as usize;
+        match dtype {
+            HDataType::Float32 => {
+                let streamer = harmonium_io::decode::stream::<f32>(fpath, frames).unwrap();
+                HDecoderStream(Box::new(streamer))
+            }
+            HDataType::Float64 => {
+                let streamer = harmonium_io::decode::stream::<f64>(fpath, frames).unwrap();
+                HDecoderStream(Box::new(streamer))
             }
             _ => panic!("Operation only allowed for float dtypes."),
         }
@@ -200,14 +256,6 @@ impl HFile {
         doubles.into()
     }
 
-    /// Verify an audio file.
-    /// @description
-    ///
-    /// @param fpath \[String\] - The path to the input file.
-    /// @examples
-    /// fname = "audio_test_files/gs-16b-2c-44100hz.flac"
-    /// verify_file(fname)
-
     /// HFile
     /// ## verify
     ///
@@ -240,6 +288,67 @@ impl HFile {
             decode::HVerifyDecode::Passed => "passed",
             decode::HVerifyDecode::Failed => "failed",
             decode::HVerifyDecode::NotSupported => "not_supported",
+        }
+    }
+}
+
+/// HDecoderStream
+/// An iterator that decodes audio in streams. \
+///
+/// # Methods
+///
+#[extendr]
+impl HDecoderStream {
+    /// HDecoderStream
+    /// ## stream
+    ///
+    /// `stream() -> HArray` \
+    ///
+    /// Gets the next wave of frames as an `HArray`. \
+    /// Returns `NULL` if it's end of stream or if an error ocurred in
+    /// the decoding process. \
+    ///
+    /// The decoded audio as a float HArray. \
+    /// The number of frames streamed is the one used as input in the creation of `HDecoderStream`. \
+    ///
+    /// #### Examples
+    ///
+    /// ```r
+    /// fpath = "testfiles/gs-16b-2c-44100hz.flac"
+    /// dtype = HDataType$float32
+    /// frames = 1000L
+    /// hdecoder_stream = HFile$decode_stream(fpath, frames, dtype)
+    /// hdecoder_stream$stream()
+    ///
+    /// ```
+    ///
+    /// _________
+    ///
+    fn stream(&mut self) -> Robj {
+        self.0.next()
+    }
+}
+
+pub trait HDecoderStreamR {
+    fn next(&mut self) -> Robj;
+}
+
+impl HDecoderStreamR for harmonium_io::decode::DecoderStream<f32> {
+    fn next(&mut self) -> Robj {
+        if let Some(x) = std::iter::Iterator::next(self) {
+            HArray(Arc::new(x.into_dynamic())).into()
+        } else {
+            NULL.into()
+        }
+    }
+}
+
+impl HDecoderStreamR for harmonium_io::decode::DecoderStream<f64> {
+    fn next(&mut self) -> Robj {
+        if let Some(x) = std::iter::Iterator::next(self) {
+            HArray(Arc::new(x.into_dynamic())).into()
+        } else {
+            NULL.into()
         }
     }
 }
@@ -312,4 +421,5 @@ fn list_from_visualmetadata(visual: decode::HVisualMetadata) -> List {
 extendr_module! {
     mod hfile;
     impl HFile;
+    impl HDecoderStream;
 }

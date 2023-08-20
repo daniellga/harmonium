@@ -11,7 +11,7 @@ where
 {
     fn nchannels(&self) -> usize;
     fn nframes(&self) -> usize;
-    fn db_to_power(&mut self, reference: T);
+    fn db_to_amplitude(&mut self, reference: T, power: T);
     fn to_mono(&self) -> HResult<HArray<T, Ix1>>;
 }
 
@@ -21,7 +21,7 @@ where
 {
     fn nchannels(&self) -> usize;
     fn nframes(&self) -> usize;
-    fn db_to_power(&mut self, reference: T);
+    fn db_to_amplitude(&mut self, reference: T, power: T);
     fn to_mono(&self) -> HResult<HArray<T, IxDyn>>;
 }
 
@@ -49,12 +49,13 @@ where
     }
 
     /// Converts from dB to power.
-    /// $db_to_power(x) = reference * 10.0**(x * 0.1)$
-    fn db_to_power(&mut self, reference: T) {
+    /// $db_to_amplitude(x) = reference * 10.0**(x * 0.1)$
+    fn db_to_amplitude(&mut self, reference: T, power: T) {
         let a = T::from(10).unwrap();
         let b = T::from(0.1).unwrap();
 
-        self.0.mapv_inplace(|x| reference * a.powf(b * x));
+        self.0
+            .mapv_inplace(|x| reference * a.powf(b * x).powf(power));
     }
 
     fn to_mono(&self) -> HResult<HArray<T, Ix1>> {
@@ -80,12 +81,13 @@ where
     }
 
     /// Converts from dB to power.
-    /// $db_to_power(x) = reference * 10.0**(x * 0.1)$
-    fn db_to_power(&mut self, reference: T) {
+    /// $db_to_amplitude(x) = reference * 10.0**(x * 0.1)$
+    fn db_to_amplitude(&mut self, reference: T, power: T) {
         let a = T::from(10).unwrap();
         let b = T::from(0.1).unwrap();
 
-        self.0.mapv_inplace(|x| reference * a.powf(b * x));
+        self.0
+            .mapv_inplace(|x| reference * a.powf(b * x).powf(power));
     }
 
     fn to_mono(&self) -> HResult<HArray<T, Ix1>> {
@@ -114,12 +116,13 @@ where
     }
 
     /// Converts from dB to power.
-    /// $db_to_power(x) = reference * 10.0**(x * 0.1)$
-    fn db_to_power(&mut self, reference: T) {
+    /// $db_to_amplitude(x) = reference * (10.0**(x * 0.1))**power$
+    fn db_to_amplitude(&mut self, reference: T, power: T) {
         let a = T::from(10).unwrap();
         let b = T::from(0.1).unwrap();
 
-        self.0.mapv_inplace(|x| reference * a.powf(b * x));
+        self.0
+            .mapv_inplace(|x| reference * a.powf(b * x).powf(power));
     }
 
     /// Convert to 1 channel by taking the average across channels.
@@ -139,10 +142,10 @@ mod tests {
     use crate::comparison::compare_harray;
 
     #[test]
-    fn db_to_power_test() {
+    fn db_to_amplitude_test() {
         let mut lhs =
             HArray::new_from_shape_vec((2, 4), vec![1., 2., 3., 4., 5., 6., 7., 8.]).unwrap();
-        lhs.db_to_power(1.0);
+        lhs.db_to_amplitude(1.0, 1.0);
 
         let rhs = HArray::new_from_shape_vec(
             (2, 4),

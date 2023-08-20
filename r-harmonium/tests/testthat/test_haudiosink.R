@@ -3,11 +3,11 @@ test_that(
   {
     filepath = file.path("..", "..", "testfiles", "gs-16b-2c-44100hz.wav")
     
-    # haudiosink from haudio.
+    # haudiosink from harray
     haudiosink = HAudioSink$new()
     expect_true(haudiosink$is_empty())
-    haudio = HAudio$new_from_file(filepath, dtype = HDataType$float32)
-    expect_silent(haudiosink$append_from_haudio(haudio))
+    l = HFile$decode(filepath, dtype = HDataType$float32)
+    expect_silent(haudiosink$append_from_harray(l[[1]], l[[2]]))
     expect_false(haudiosink$is_empty())
 
     # haudiosink from file.

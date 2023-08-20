@@ -44,3 +44,23 @@ results <- bench::press(
   }
 )
 ggplot(results) + geom_point(aes(x = n, y = median, color = as.character(expression)))
+
+# fft_real_matrix with floats
+results <- bench::press(
+  n = seq(30, 400000, 30000),
+  {
+    x = as.double(sample(100, n, replace = TRUE))
+    x = matrix(x, ncol = 10)
+    mark(
+      torch = as_array(torch::torch_fft_rfft(torch_tensor(x, dtype = torch_float64()), dim = 1)),
+      harmonium = {
+        harray = HArray$new_from_values(x, HDataType$float64)
+        HFft$fft_real_mut(harray)
+        harray$collect()
+      },
+      iterations = 50,
+      check = TRUE
+    )
+  }
+)
+ggplot(results) + geom_point(aes(x = n, y = median, color = as.character(expression)))

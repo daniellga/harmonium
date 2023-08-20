@@ -198,8 +198,6 @@ where
 /// # Arguments
 ///
 /// `fpath` - The input file.
-/// `offset` - Start reading the file after the offset, in seconds.
-/// `duration` - Duration to be decoded, in seconds, counting from the offset. Will decode the file till the end if offset + duration >= file length.
 /// `frames` - Number of frames to decode per iteration.
 ///
 /// # Examples
@@ -208,7 +206,7 @@ where
 /// //let test_file = "../testfiles/gs-16b-2c-44100hz.wav";
 /// //stream(test_file, Some(1.0_f64), Some(1.0_f64), 1000)
 /// ```
-pub fn stream<T>(fpath: &str, frames: usize) -> HResult<StreamStruct<T>>
+pub fn stream<T>(fpath: &str, frames: usize) -> HResult<DecoderStream<T>>
 where
     T: Float + FloatConst + ConvertibleSample,
 {
@@ -252,7 +250,7 @@ where
     let sample_buf: Option<SampleBuffer<T>> = None;
     let last_idx = 0;
 
-    let stream_struct = StreamStruct::new(
+    let stream_struct = DecoderStream::new(
         reader,
         decoder,
         track_id,
@@ -266,7 +264,7 @@ where
     Ok(stream_struct)
 }
 
-pub struct StreamStruct<T>
+pub struct DecoderStream<T>
 where
     T: Float + FloatConst + ConvertibleSample,
 {
@@ -288,7 +286,7 @@ where
     last_idx: usize,
 }
 
-impl<T> StreamStruct<T>
+impl<T> DecoderStream<T>
 where
     T: Float + FloatConst + ConvertibleSample,
 {
@@ -303,7 +301,7 @@ where
         frames: usize,
         last_idx: usize,
     ) -> Self {
-        StreamStruct {
+        DecoderStream {
             reader,
             decoder,
             track_id,
@@ -316,11 +314,11 @@ where
     }
 }
 
-impl<T> Iterator for StreamStruct<T>
+impl<T> Iterator for DecoderStream<T>
 where
     T: Float + FloatConst + ConvertibleSample,
 {
-    type Item = HResult<HArray<T, Ix2>>;
+    type Item = HArray<T, Ix2>;
 
     fn next(&mut self) -> Option<Self::Item> {
         if self.nframes < self.frames {
@@ -359,7 +357,7 @@ where
 
                     self.nframes -= self.frames;
                     let harray = HArray(ndarray);
-                    return Some(Ok(harray));
+                    return Some(harray);
                 }
             };
         }
@@ -428,7 +426,7 @@ where
 
                             self.nframes -= self.frames;
                             let harray = HArray(ndarray);
-                            return Some(Ok(harray));
+                            return Some(harray);
                         }
                     }
                 }
@@ -897,7 +895,7 @@ mod tests {
                         let mut stream_struct = stream::<$t>(fpath, frames).unwrap();
 
                         // test first iteration
-                        let harray_next = stream_struct.next().unwrap().unwrap();
+                        let harray_next = stream_struct.next().unwrap();
                         let lhs = (harray_next.nchannels(), harray_next.nframes());
                         let rhs = (nchannels, frames);
                         assert_eq!(lhs, rhs);
@@ -909,7 +907,7 @@ mod tests {
                         assert_eq!(lhs, rhs);
 
                         // test second iteration
-                        let harray_next = stream_struct.next().unwrap().unwrap();
+                        let harray_next = stream_struct.next().unwrap();
                         let lhs = (harray_next.nchannels(), harray_next.nframes());
                         let rhs = (nchannels, frames);
                         assert_eq!(lhs, rhs);
@@ -921,7 +919,7 @@ mod tests {
                         assert_eq!(lhs, rhs);
 
                         // test last iteration
-                        let harray_next = stream_struct.last().unwrap().unwrap();
+                        let harray_next = stream_struct.last().unwrap();
                         let lhs = (harray_next.nchannels(), harray_next.nframes());
                         let rhs = (nchannels, frames);
                         assert_eq!(lhs, rhs);

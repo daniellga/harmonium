@@ -8,7 +8,7 @@ An array representation. \
 
 ## new_from_values
 
-`new_from_array(arr: array, dtype: HDataType) -> HArray` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/harray.rs#L45) </span> \
+`new_from_values(arr: array, dtype: HDataType) -> HArray` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/harray.rs#L45) </span> \
 
 Creates a new `HArray` from an R array. \
 
@@ -97,9 +97,40 @@ harray$ndim()
 
 _________
 
+## slice
+
+`slice(range: list[atomicvector]) -> HArray` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/harray.rs#L211) </span> \
+
+Slices the HArray. \
+This operation has a COW ([clone-on-write](https://doc.rust-lang.org/std/borrow/enum.Cow.html)) behaviour. The created slice shares the inner data with
+the original array until one of them is modified. \
+
+#### Arguments
+
+* `range` \
+A list of vectors of integers.
+The number of vectors in the list must be equal to the number of dimensions in the original HArray as they represent the slice information for each axis. \
+Each vector must be composed of 3 elements: [start, end, step]. All 3 values can be
+positive or negative, although step can't be 0. \
+
+#### Returns
+
+An `HArray`. \
+
+#### Examples
+
+```r
+arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
+dtype = HDataType$float32
+harray = HArray$new_from_values(arr, dtype)
+harray$slice(list(c(0L, 2L, 1L), c(1L, 3L, 1L)))
+```
+
+_________
+
 ## print
 
-`print()` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/harray.rs#L201) </span> \
+`print()` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/harray.rs#L237) </span> \
 
 Prints the `HArray`. \
 Differently from R's normal behaviour, `print` doesn't return the value invisibly. \
@@ -120,7 +151,7 @@ _________
 
 ## eq
 
-`eq(other: HArray) -> bool` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/harray.rs#L242) </span> \
+`eq(other: HArray) -> bool` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/harray.rs#L278) </span> \
 
 Equality with another `HArray`. \
 The comparison only checks if the dtype and the values are the same. To compare if the
@@ -156,7 +187,7 @@ _________
 
 ## ne
 
-`ne(other: HArray) -> bool` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/harray.rs#L285) </span> \
+`ne(other: HArray) -> bool` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/harray.rs#L321) </span> \
 
 Difference with another `HArray`. \
 The comparison only checks if the dtype and the values are the same. To compare if the
@@ -192,7 +223,7 @@ _________
 
 ## clone
 
-`clone() -> HArray` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/harray.rs#L314) </span> \
+`clone() -> HArray` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/harray.rs#L350) </span> \
 
 Creates a new `HArray`, with the underlying data pointing to the same place in memory.
 
@@ -214,7 +245,7 @@ _________
 
 ## collect
 
-`collect() -> array` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/harray.rs#L340) </span> \
+`collect() -> array` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/harray.rs#L376) </span> \
 
 Creates an R array from an `HArray`. The type of the array created (`double` or `complex`) will depend on the `HArray`'s dtype.
 
@@ -235,7 +266,7 @@ _________
 
 ## dtype
 
-`dtype() -> HDataType` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/harray.rs#L366) </span> \
+`dtype() -> HDataType` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/harray.rs#L402) </span> \
 
 Gets the `HArray`'s dtype as an `HDataType`.
 
@@ -256,7 +287,7 @@ _________
 
 ## is_shared
 
-`is_shared() -> bool` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/harray.rs#L397) </span> \
+`is_shared() -> bool` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/harray.rs#L433) </span> \
 
 Checks if the object is shared. \
 Since `HArray` has a COW ([clone-on-write](https://doc.rust-lang.org/std/borrow/enum.Cow.html)) behaviour, this function is useful to check if a new
@@ -276,6 +307,28 @@ harray1$is_shared() # FALSE.
 
 harray2 = harray1$clone()
 harray$is_shared() # TRUE, HArray object shared with harray2.
+```
+
+_________
+
+## mem_adress
+
+`mem_adress() -> string` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/harray.rs#L462) </span> \
+
+The memory adress of the first element of the inner array. \
+This is useful to check if different objects share the same underlying data. \
+
+#### Returns
+
+A `string`. \
+
+#### Examples
+
+```r
+arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
+dtype = HDataType$float32
+harray = HArray$new_from_values(arr, dtype)
+harray$mem_adress()
 ```
 
 _________

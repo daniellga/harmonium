@@ -105,4 +105,10 @@ impl From<rodio::cpal::SupportedStreamConfigsError> for HError {
     }
 }
 
+impl From<realfft::FftError> for HError {
+    fn from(err: realfft::FftError) -> Self {
+        HError::OutOfSpecError(err.to_string())
+    }
+}
+
 pub type HResult<T> = Result<T, HError>;

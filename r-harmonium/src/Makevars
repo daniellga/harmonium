@@ -1,8 +1,7 @@
 TARGET_DIR = ./rust/target
 LIBDIR = $(TARGET_DIR)/release
 STATLIB = $(LIBDIR)/libharmonium.a
-QUARTODIR = ./../docs
-DOCSDIR = $(QUARTODIR)/docs
+DOCSDIR = ./../docs/docs
 # Set library flags based on OS
 PKG_LIBS = `os=\`uname -s\`; if [ "$$os" = "Linux" ]; then echo "-L${LIBDIR} -lharmonium -lasound"; else echo ="-L${LIBDIR} -lharmonium"; fi`
 
@@ -21,8 +20,10 @@ $(STATLIB):
 	fi && \
 		export PATH="$(PATH):$(HOME)/.cargo/bin" && \
 		cargo build --lib --release --manifest-path=./rust/Cargo.toml --target-dir $(TARGET_DIR) && \
-		rm ./../docs/docs/* && \
-		cargo run --bin r_docs --release --manifest-path=./rust/Cargo.toml --target-dir $(TARGET_DIR) -- --r_docs-dir $(DOCSDIR) && \
+		if [ -d "$(DOCSDIR)" ]; then \
+			rm -f $(DOCSDIR)/*; \
+		fi && \
+		cargo run --bin r_docs --release --manifest-path=./rust/Cargo.toml --target-dir $(TARGET_DIR) -- --r_docs-dir $(DOCSDIR)
 	if [ "$(NOT_CRAN)" != "true" ]; then \
 		rm -rf $(CARGOTMP) && \
 		rm -rf $(LIBDIR)/build; \

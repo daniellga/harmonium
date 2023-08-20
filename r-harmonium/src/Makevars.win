@@ -2,8 +2,7 @@ TARGET = $(subst 64,x86_64,$(subst 32,i686,$(WIN)))-pc-windows-gnu
 TARGET_DIR = ./rust/target
 LIBDIR = $(TARGET_DIR)/$(TARGET)/release
 STATLIB = $(LIBDIR)/libharmonium.a
-QUARTODIR = ./../docs
-DOCSDIR = $(QUARTODIR)/docs
+DOCSDIR = ./../docs/docs
 PKG_LIBS = -L$(LIBDIR) -lharmonium -lws2_32 -ladvapi32 -luserenv -lbcrypt -lntdll -lole32 -loleaut32 
 
 all: C_clean
@@ -29,8 +28,10 @@ $(STATLIB):
 		export CARGO_TARGET_X86_64_PC_WINDOWS_GNU_LINKER="$(CARGO_LINKER)" && \
 		export LIBRARY_PATH="$${LIBRARY_PATH};$(CURDIR)/$(TARGET_DIR)/libgcc_mock" && \
 		cargo build --target=$(TARGET) --lib --release --manifest-path=./rust/Cargo.toml --target-dir $(TARGET_DIR)
-		rm ./../docs/docs/* && \
-		cargo run --bin r_docs --release --manifest-path=./rust/Cargo.toml --target-dir $(TARGET_DIR) -- --r_docs-dir $(DOCSDIR) && \
+		if [ -d "$(DOCSDIR)" ]; then \
+			rm -f $(DOCSDIR)/*; \
+		fi && \
+		cargo run --bin r_docs --release --manifest-path=./rust/Cargo.toml --target-dir $(TARGET_DIR) -- --r_docs-dir $(DOCSDIR)
 	if [ "$(NOT_CRAN)" != "true" ]; then \
 		rm -rf $(CARGOTMP) && \
 		rm -rf $(LIBDIR)/build; \
