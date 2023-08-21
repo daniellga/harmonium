@@ -445,25 +445,23 @@ impl HResampler {
     /// HResampler
     /// ## process
     ///
-    /// `process(haudio: HAudio, sr_out: integer)` \
+    /// `process(harray: HArray)` \
     ///
-    /// Process the resampler, changing the `HAudio`'s sampling rate. \
+    /// Process the resampler, changing the `HArray`'s sampling rate. \
     ///
     /// #### Arguments
     ///
-    /// * `haudio` \
-    /// The `HAudio` that will have it's sampling rate converted. \
-    /// * `sr_out` \
-    /// The output sampling rate in hz. \
+    /// * `harray` \
+    /// An `HArray` that will have it's sampling rate converted. \
     ///
     /// #### Examples
     ///
     /// ```r
-    /// data = matrix(0, nrow = 512, ncol = 2)
-    /// haudio = HAudio$new_from_values(data, 44100, dtype = HDataType$float64)
+    /// arr = matrix(0, nrow = 512, ncol = 2)
+    /// harray = HArray$new_from_values(arr, dtype = HDataType$float64)
     /// hparams = HSincInterpolationParams$new(256L, 0.95, 256L, "linear", "blackmanharris2")
     /// res = HResampler$new_sinc(48000L / 44100L, 2, hparams, 512L, 2L, HResamplerType$sinc_fixed_in, HDataType$float64)
-    /// res$process(haudio, sr_out = 48000)
+    /// res$process(harray)
     /// ```
     ///
     /// _________
