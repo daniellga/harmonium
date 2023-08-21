@@ -12,5 +12,4 @@ rubato = { workspace = true }
 ndarray = { workspace = true }
 symphonia = { workspace = true }
 rodio = { workspace = true }
-realfft = { workspace = true }
 

@@ -1,7 +1,6 @@
 use extendr_api::prelude::*;
-use harmonium_core::{conversions::IntoDynamic, errors::HResult};
+use harmonium_core::conversions::IntoDynamic;
 use harmonium_io::decode;
-use ndarray::Ix2;
 use std::sync::Arc;
 
 use crate::{
