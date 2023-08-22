@@ -22,5 +22,6 @@ jobs:
           cd r-harmonium/docs
           quarto render
           cd ../../docs/docs/
+          echo KKKKKKKKKK
           ls
           
