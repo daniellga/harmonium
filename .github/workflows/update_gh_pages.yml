@@ -21,7 +21,13 @@ jobs:
           rm -rf docs
           cd r-harmonium/docs
           quarto render
-          cd ../../docs/docs/
-          echo KKKKKKKKKK
-          ls
-          
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.email "${GITHUB_ACTOR_ID}+${GITHUB_ACTOR}@users.noreply.github.com"
+          git config --global user.name "${GITHUB_ACTOR}"
+
+          git add .
+          git commit -m "Created github pages docs"
+          git push origin master
+
