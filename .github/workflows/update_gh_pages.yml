@@ -1,4 +1,4 @@
-name: Update Github Pages
+name: Create docs for github pages
 
 on:
   push:
@@ -28,6 +28,7 @@ jobs:
           git config --global user.name "${GITHUB_ACTOR}"
 
           git add .
+          git status
           git commit -m "Created github pages docs"
           git push origin master
 
