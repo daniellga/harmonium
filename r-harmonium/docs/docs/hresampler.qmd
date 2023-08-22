@@ -208,32 +208,30 @@ _________
 
 ## process
 
-`process(haudio: HAudio, sr_out: integer)` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hresampler.rs#L471) </span> \
+`process(harray: HArray)` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hresampler.rs#L469) </span> \
 
-Process the resampler, changing the `HAudio`'s sampling rate. \
+Process the resampler, changing the `HArray`'s sampling rate. \
 
 #### Arguments
 
-* `haudio` \
-The `HAudio` that will have it's sampling rate converted. \
-* `sr_out` \
-The output sampling rate in hz. \
+* `harray` \
+An `HArray` that will have it's sampling rate converted. \
 
 #### Examples
 
 ```r
-data = matrix(0, nrow = 512, ncol = 2)
-haudio = HAudio$new_from_values(data, 44100, dtype = HDataType$float64)
+arr = matrix(0, nrow = 512, ncol = 2)
+harray = HArray$new_from_values(arr, dtype = HDataType$float64)
 hparams = HSincInterpolationParams$new(256L, 0.95, 256L, "linear", "blackmanharris2")
 res = HResampler$new_sinc(48000L / 44100L, 2, hparams, 512L, 2L, HResamplerType$sinc_fixed_in, HDataType$float64)
-res$process(haudio, sr_out = 48000)
+res$process(harray)
 ```
 
 _________
 
 ## set_resample_ratio
 
-`set_resample_ratio(new_ratio: double, ramp: bool)` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hresampler.rs#L503) </span> \
+`set_resample_ratio(new_ratio: double, ramp: bool)` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hresampler.rs#L501) </span> \
 
 Update the resample ratio. \
 For asynchronous resamplers, the ratio must be within `original / maximum` to `original * maximum`, where `original` and `maximum` are the resampling ratios that were provided to the constructor. Trying to set the ratio outside these bounds will return an error. \
@@ -260,7 +258,7 @@ _________
 
 ## set_resample_ratio_relative
 
-`set_resample_ratio_relative(rel_ratio: double, ramp: bool)` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hresampler.rs#L539) </span> \
+`set_resample_ratio_relative(rel_ratio: double, ramp: bool)` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hresampler.rs#L537) </span> \
 
 Update the resample ratio as a factor relative to the original one. \
 For asynchronous resamplers, the relative ratio must be within `1 / maximum` to `maximum`, where `maximum` is the maximum resampling ratio that was provided to the constructor. Trying to set the ratio outside these bounds will return an error. \
@@ -288,7 +286,7 @@ _________
 
 ## reset
 
-`reset()` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hresampler.rs#L572) </span> \
+`reset()` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hresampler.rs#L570) </span> \
 
 Reset the resampler state and clear all internal buffers. \
 
@@ -313,7 +311,7 @@ _________
 
 ## res_type
 
-`res_type() -> HResamplerType` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hresampler.rs#L606) </span> \
+`res_type() -> HResamplerType` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hresampler.rs#L604) </span> \
 
 Gets the `HResampler`'s type. \
 
@@ -342,7 +340,7 @@ _________
 
 ## dtype
 
-`dtype() -> HDataType` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hresampler.rs#L640) </span> \
+`dtype() -> HDataType` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hresampler.rs#L638) </span> \
 
 Gets the `HResampler`'s dtype.
 
@@ -371,7 +369,7 @@ _________
 
 ## print
 
-`print()` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hresampler.rs#L674) </span> \
+`print()` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hresampler.rs#L672) </span> \
 
 Print the `HResampler`. \
 Differently from R's normal behaviour, `print` doesn't return the value invisibly. \
