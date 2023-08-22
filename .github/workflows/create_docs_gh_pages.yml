@@ -1,0 +1,34 @@
+name: Create docs for github pages
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  run_commands:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Set up Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+
+      - name: Run commands
+        run: |
+          rm -rf docs
+          cd r-harmonium/docs
+          quarto render
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.email "${GITHUB_ACTOR_ID}+${GITHUB_ACTOR}@users.noreply.github.com"
+          git config --global user.name "${GITHUB_ACTOR}"
+
+          git add .
+          git status
+          git commit -m "Created github pages docs"
+          git push origin master
+
