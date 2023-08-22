@@ -21,3 +21,6 @@ jobs:
           rm -rf docs
           cd r-harmonium/docs
           quarto render
+          cd ../../docs/docs/
+          ls
+          
