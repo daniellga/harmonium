@@ -54,6 +54,6 @@ jobs:
       - name: Run R CMD check
         uses: r-lib/actions/check-r-package@v2
         with:
-          path: ./r-harmonium
+          working-directory: ./r-harmonium
           args: 'c("--no-manual", "--no-build-vignettes", "--no-codoc", "--no-examples", "--no-tests")'
           error-on: '"error"'
