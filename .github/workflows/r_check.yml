@@ -38,7 +38,7 @@ jobs:
         run: |
           sudo apt update
           sudo apt install -y --no-install-recommends libasound2-dev
-        if: contains(matrix.os, 'ubuntu')
+        if: contains(matrix.config.os, 'ubuntu')
 
       - name: Set up Pandoc
         uses: r-lib/actions/setup-pandoc@v2
