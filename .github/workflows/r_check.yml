@@ -34,21 +34,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Change working directory
-        run: cd r-harmonium
-
-      - uses: actions/setup-node@v2
-        with:
-          node-version: '14'
-          cache: 'npm'
-          cache-dependency-path: r-harmonium/package-lock.json`
-
       - name: Set up Pandoc
         uses: r-lib/actions/setup-pandoc@v2
+        with: 
+          path: ./r-harmonium
 
       - name: Set up R
         uses: r-lib/actions/setup-r@v2
         with:
+          path: ./r-harmonium
           r-version: ${{ matrix.config.r }}
           http-user-agent: ${{ matrix.config.http-user-agent }}
           use-public-rspm: true
@@ -56,11 +50,13 @@ jobs:
       - name: Set up R dependencies
         uses: r-lib/actions/setup-r-dependencies@v2
         with:
+          path: ./r-harmonium
           extra-packages: any::rcmdcheck
           needs: check
 
       - name: Run R CMD check
         uses: r-lib/actions/check-r-package@v2
         with:
+          path: ./r-harmonium
           args: 'c("--no-manual", "--no-build-vignettes", "--no-codoc", "--no-examples", "--no-tests")'
           error-on: '"error"'
