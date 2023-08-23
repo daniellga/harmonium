@@ -10,13 +10,13 @@ on:
 
 name: R-CMD-check
 
+defaults:
+  run:
+    working-directory: aaa
+
 jobs:
   R-CMD-check:
     runs-on: ${{ matrix.config.os }}
-    defaults:
-      run:
-        working-directory: r-harmonium
-
 
     name: ${{ matrix.config.os }} (${{ matrix.config.r }})
 
