@@ -1,7 +1,8 @@
 test_that(
   "hfile works.",
   {
-    filepath = file.path("..", "..", "testfiles", "gs-16b-2c-44100hz.flac")
+    harmonium_path = system.file(package = "harmonium")
+    filepath = file.path(harmonium_path, "testfiles", "gs-16b-2c-44100hz.flac")
     expect_equal(HFile$params(filepath), c(44100.00000,698194.00000,2.00000,15.8320635))
     expect_equal(HFile$verify(filepath), "passed")
     expect_equal(HFile$metadata(filepath, HMetadataType$text), list(c(tag_key = "title", tag_std_key = "TrackTitle", tag_value = "Galway"
@@ -11,11 +12,10 @@ test_that(
     expect_equal(HFile$metadata(filepath, HMetadataType$visual), list())
 
     # wav file having "\0" character which is not supported by R.
-    filepath = file.path("..", "..", "testfiles", "gs-16b-1c-44100hz.wav")
-    expect_error(HFile$metadata(filepath, HMetadataType$text))
+    filepath2 = file.path(harmonium_path, "testfiles", "gs-16b-1c-44100hz.wav")
+    expect_error(HFile$metadata(filepath2, HMetadataType$text))
     
     # Decode and stream tests.
-    filepath = file.path("..", "..", "testfiles", "gs-16b-2c-44100hz.flac")
     dtype = HDataType$float32
     l = HFile$decode(filepath, dtype)
     expect_equal(l[[1]]$shape(), c(2, 698194))

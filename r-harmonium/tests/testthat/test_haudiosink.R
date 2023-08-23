@@ -1,7 +1,8 @@
 test_that(
   "haudiosink works.",
   {
-    filepath = file.path("..", "..", "testfiles", "gs-16b-2c-44100hz.wav")
+    harmonium_path = system.file(package = "harmonium")
+    filepath = file.path(harmonium_path, "testfiles", "gs-16b-2c-44100hz.wav")
     
     # haudiosink from harray
     haudiosink = HAudioSink$new()
