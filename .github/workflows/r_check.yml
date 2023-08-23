@@ -34,6 +34,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: install linux deps
+        run: |
+          sudo apt update
+          sudo apt install -y --no-install-recommends libasound2-dev
+        if: contains(matrix.os, 'ubuntu-latest')
+
       - name: Set up Pandoc
         uses: r-lib/actions/setup-pandoc@v2
 
