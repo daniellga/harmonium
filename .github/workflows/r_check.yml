@@ -37,6 +37,12 @@ jobs:
       - name: Change working directory
         run: cd r-harmonium
 
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+          cache: 'npm'
+          cache-dependency-path: r-harmonium/package-lock.json`
+
       - name: Set up Pandoc
         uses: r-lib/actions/setup-pandoc@v2
 
