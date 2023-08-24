@@ -209,7 +209,7 @@ impl HArray {
     /// _________
     ///
     fn slice(&self, range: Robj) -> HArray {
-        HArray(self.0.slice(range))
+        HArray(self.0.slice(&range))
     }
 
     /// HArray

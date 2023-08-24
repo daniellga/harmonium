@@ -16,7 +16,7 @@ codegen-units = 1
 # prevents package from thinking it's in the workspace
 
 [dependencies]
-extendr-api = { git = "https://github.com/extendr/extendr", rev = "a1f6bc0"}
+extendr-api = "0.4.0"
 #harmonium-core = { path = "../../../harmonium-core" }
 #harmonium-io = { path = "../../../harmonium-io" }
 #harmonium-resample = { path = "../../../harmonium-resample" }

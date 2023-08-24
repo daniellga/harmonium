@@ -12,7 +12,7 @@ pub trait HArrayR: Send + Sync {
     fn len(&self) -> usize;
     fn shape(&self) -> &[usize];
     fn ndim(&self) -> usize;
-    fn slice(&self, range: Robj) -> Arc<dyn HArrayR>;
+    fn slice(&self, range: &Robj) -> Arc<dyn HArrayR>;
     fn print(&self);
     fn collect(&self) -> Robj;
     fn dtype(&self) -> HDataType;
@@ -48,9 +48,9 @@ impl HArrayR for harmonium_core::array::HArray<f32, IxDyn> {
         self.ndim()
     }
 
-    fn slice(&self, range: Robj) -> Arc<dyn HArrayR> {
-        // ndarray already panics if an index is out of bounds or step size is zero. Or if D is IxDyn and info does not match the number of array axes.
-        let range = List::try_from(&range).unwrap();
+    fn slice(&self, range: &Robj) -> Arc<dyn HArrayR> {
+        // ndarray already panics if an index is out of bounds or step size is zero. Also panics if D is IxDyn and info does not match the number of array axes.
+        let range = List::try_from(range).unwrap();
         let list_len = range.len();
 
         let mut vec_ranges: Vec<SliceInfoElem> = Vec::with_capacity(list_len);
@@ -167,9 +167,9 @@ impl HArrayR for harmonium_core::array::HArray<f64, IxDyn> {
         self.ndim()
     }
 
-    fn slice(&self, range: Robj) -> Arc<dyn HArrayR> {
+    fn slice(&self, range: &Robj) -> Arc<dyn HArrayR> {
         let ndim = self.ndim();
-        let range = List::try_from(&range).unwrap();
+        let range = List::try_from(range).unwrap();
         let list_len = range.len();
 
         assert_eq!(
@@ -289,9 +289,9 @@ impl HArrayR for harmonium_core::array::HArray<Complex<f32>, IxDyn> {
         self.ndim()
     }
 
-    fn slice(&self, range: Robj) -> Arc<dyn HArrayR> {
+    fn slice(&self, range: &Robj) -> Arc<dyn HArrayR> {
         let ndim = self.ndim();
-        let range = List::try_from(&range).unwrap();
+        let range = List::try_from(range).unwrap();
         let list_len = range.len();
 
         assert_eq!(
@@ -409,9 +409,9 @@ impl HArrayR for harmonium_core::array::HArray<Complex<f64>, IxDyn> {
         self.ndim()
     }
 
-    fn slice(&self, range: Robj) -> Arc<dyn HArrayR> {
+    fn slice(&self, range: &Robj) -> Arc<dyn HArrayR> {
         let ndim = self.ndim();
-        let range = List::try_from(&range).unwrap();
+        let range = List::try_from(range).unwrap();
         let list_len = range.len();
 
         assert_eq!(
