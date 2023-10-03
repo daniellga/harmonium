@@ -3,7 +3,7 @@ LIBDIR = $(TARGET_DIR)/release
 STATLIB = $(LIBDIR)/libharmonium.a
 DOCSDIR = ./../docs/docs
 # Set library flags based on OS
-PKG_LIBS = `os=\`uname -s\`; if [ "$$os" = "Linux" ]; then echo "-L${LIBDIR} -lharmonium -lasound"; else echo ="-L${LIBDIR} -lharmonium"; fi`
+PKG_LIBS = `os=\`uname -s\`; if [ "$$os" = "Linux" ]; then echo "-L${LIBDIR} -lharmonium -lasound"; else echo "-L${LIBDIR} -lharmonium"; fi`
 
 all: C_clean
 
