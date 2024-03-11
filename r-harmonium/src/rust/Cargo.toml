@@ -27,7 +27,7 @@ harmonium-io = { git = "https://github.com/daniellga/harmonium.git" }
 harmonium-resample = { git = "https://github.com/daniellga/harmonium.git" }
 harmonium-fft = { git = "https://github.com/daniellga/harmonium.git" }
 harmonium-window = { git = "https://github.com/daniellga/harmonium.git" }
-rubato = "0.14.1"
+rubato = "0.15.0"
 ndarray = "0.15.6"
 num-complex = { version = "0.4", features = ["bytemuck"] }
 
