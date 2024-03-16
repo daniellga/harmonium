@@ -43,52 +43,48 @@ impl HArray {
     /// _________
     ///
     fn new_from_values(arr: Robj, dtype: &HDataType) -> Robj {
-        assert!(arr.is_array());
+        if let Some(dim) = arr.dim() {
+            let mut dim: Vec<_> = dim.iter().map(|z| z.inner() as usize).collect();
+            dim.reverse();
 
-        // Ok to unwrap since it was checked that robj is an array.
-        let mut dim: Vec<usize> = arr
-            .dim()
-            .unwrap()
-            .iter()
-            .map(|z| z.inner() as usize)
-            .collect();
-        dim.reverse();
-
-        match (arr.rtype(), dtype) {
-            (Rtype::Doubles, HDataType::Float32) => {
-                let slice: &[f64] = arr.robj_to_slice();
-                let v: Vec<f32> = slice.iter().map(|x| *x as f32).collect();
-                let harray = harmonium_core::array::HArray::new_from_shape_vec(dim, v).unwrap();
-                let data = Arc::new(harray);
-                HArray(data).into()
+            match (arr.rtype(), dtype) {
+                (Rtype::Doubles, HDataType::Float32) => {
+                    let slice: &[f64] = arr.robj_to_slice();
+                    let v: Vec<f32> = slice.iter().map(|x| *x as f32).collect();
+                    let harray = harmonium_core::array::HArray::new_from_shape_vec(dim, v).unwrap();
+                    let data = Arc::new(harray);
+                    HArray(data).into()
+                }
+                (Rtype::Doubles, HDataType::Float64) => {
+                    let v: Vec<f64> = arr.robj_to_slice().to_vec();
+                    let harray = harmonium_core::array::HArray::new_from_shape_vec(dim, v).unwrap();
+                    let data = Arc::new(harray);
+                    HArray(data).into()
+                }
+                (Rtype::Complexes, HDataType::Complex32) => {
+                    let slice: &[Rcplx] = arr.robj_to_slice();
+                    let v: Vec<Complex<f32>> = slice
+                        .iter()
+                        .map(|z| Complex::new(z.re().inner() as f32, z.im().inner() as f32))
+                        .collect();
+                    let harray = harmonium_core::array::HArray::new_from_shape_vec(dim, v).unwrap();
+                    let data = Arc::new(harray);
+                    HArray(data).into()
+                }
+                (Rtype::Complexes, HDataType::Complex64) => {
+                    let slice: &[Rcplx] = arr.robj_to_slice();
+                    let v: Vec<Complex<f64>> = slice
+                        .iter()
+                        .map(|z| Complex::new(z.re().inner(), z.im().inner()))
+                        .collect();
+                    let harray = harmonium_core::array::HArray::new_from_shape_vec(dim, v).unwrap();
+                    let data = Arc::new(harray);
+                    HArray(data).into()
+                }
+                _ => panic!("not valid input types"),
             }
-            (Rtype::Doubles, HDataType::Float64) => {
-                let v: Vec<f64> = arr.robj_to_slice().to_vec();
-                let harray = harmonium_core::array::HArray::new_from_shape_vec(dim, v).unwrap();
-                let data = Arc::new(harray);
-                HArray(data).into()
-            }
-            (Rtype::Complexes, HDataType::Complex32) => {
-                let slice: &[Rcplx] = arr.robj_to_slice();
-                let v: Vec<Complex<f32>> = slice
-                    .iter()
-                    .map(|z| Complex::new(z.re().inner() as f32, z.im().inner() as f32))
-                    .collect();
-                let harray = harmonium_core::array::HArray::new_from_shape_vec(dim, v).unwrap();
-                let data = Arc::new(harray);
-                HArray(data).into()
-            }
-            (Rtype::Complexes, HDataType::Complex64) => {
-                let slice: &[Rcplx] = arr.robj_to_slice();
-                let v: Vec<Complex<f64>> = slice
-                    .iter()
-                    .map(|z| Complex::new(z.re().inner(), z.im().inner()))
-                    .collect();
-                let harray = harmonium_core::array::HArray::new_from_shape_vec(dim, v).unwrap();
-                let data = Arc::new(harray);
-                HArray(data).into()
-            }
-            _ => panic!("not valid input types"),
+        } else {
+            panic!("arr must be of array type.");
         }
     }
 

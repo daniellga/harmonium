@@ -60,16 +60,12 @@ pub enum HMetadataType {
     Visual,
 }
 
-/// Decode an audio file as an HFloatAudio.
+/// Decode an audio file as an HArray.
 /// The decoded samples are normalized to fit in the range of \[-1.0, 1.0\].
 ///
 /// # Arguments
 ///
 /// * `fpath` - The input file.
-/// * `offset` - Start reading the file after offset, in seconds.
-/// If `None`, will decode from the beginning of the file.
-/// * `duration` - Duration to be loaded, in seconds, counting from `offset`. Will load the file till the end if `offset + duration >= file length`.
-/// If `None`, will decode until the end of the file.
 ///
 /// # Examples
 ///

@@ -62,7 +62,7 @@ impl HFft {
     /// ```r
     /// arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
     /// dtype = HDataType$float32
-    /// HArray$new_from_values(arr, dtype)
+    /// harray = HArray$new_from_values(arr, dtype)
     /// HFft$fft_mut(harray)
     /// ```
     ///
@@ -79,6 +79,7 @@ impl HFft {
     /// `fft_real_mut()` \
     ///
     /// Computes the fast fourier transform of a real-valued `HArray`. \
+    /// The operation is not done in-place, although the same external pointer is used to store the new HArray. \
     /// The FFT of a real signal is Hermitian-symmetric, X[i] = conj(X[-i]) so the output contains only the positive frequencies
     /// below the Nyquist frequency. \
     /// FFT (Fast Fourier Transform) refers to a way the discrete Fourier Transform (DFT) can be calculated efficiently,
@@ -96,7 +97,7 @@ impl HFft {
     /// ```r
     /// arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
     /// dtype = HDataType$float32
-    /// HArray$new_from_values(arr, dtype)
+    /// harray = HArray$new_from_values(arr, dtype)
     /// HFft$fft_real_mut(harray)
     /// ```
     ///

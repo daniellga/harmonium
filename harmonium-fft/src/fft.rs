@@ -232,7 +232,7 @@ impl_fft!(
     (
         f32,
         create_planner_1d_f32,
-        create_planner_12_f32,
+        create_planner_2d_f32,
         creat_planner_mut_f32,
         create_real_planner_1d_f32,
         create_real_planner_2d_f32
@@ -240,7 +240,7 @@ impl_fft!(
     (
         f64,
         create_planner_1d_f64,
-        create_planner_12_f64,
+        create_planner_2d_f64,
         creat_planner_mut_f64,
         create_real_planner_1d_f64,
         create_real_planner_2d_f64
