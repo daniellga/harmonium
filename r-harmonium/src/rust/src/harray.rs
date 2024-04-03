@@ -1,6 +1,9 @@
-use crate::{conversions::RobjConversions, harrayr::HArrayR, hdatatype::HDataType};
-use extendr_api::prelude::*;
+use crate::{harrayr::HArrayR, hdatatype::HDataType};
+use ndarray::{IxDyn, SliceInfo, SliceInfoElem};
 use num_complex::Complex;
+use savvy::{
+    savvy, ListSexp, OwnedIntegerSexp, OwnedLogicalSexp, OwnedStringSexp, Sexp, TypedSexp,
+};
 use std::sync::Arc;
 
 /// HArray
@@ -11,7 +14,7 @@ use std::sync::Arc;
 #[derive(Clone)]
 pub struct HArray(pub Arc<dyn HArrayR>);
 
-#[extendr]
+#[savvy]
 impl HArray {
     /// HArray
     /// ## new_from_values
@@ -42,44 +45,41 @@ impl HArray {
     ///
     /// _________
     ///
-    fn new_from_values(arr: Robj, dtype: &HDataType) -> Robj {
-        if let Some(dim) = arr.dim() {
-            let mut dim: Vec<_> = dim.iter().map(|z| z.inner() as usize).collect();
+    fn new_from_values(arr: Sexp, dtype: &HDataType) -> savvy::Result<HArray> {
+        if let Some(dim) = arr.get_dim() {
+            let mut dim: Vec<usize> = dim.iter().map(|z| *z as usize).collect();
             dim.reverse();
 
-            match (arr.rtype(), dtype) {
-                (Rtype::Doubles, HDataType::Float32) => {
-                    let slice: &[f64] = arr.robj_to_slice();
+            match (arr.into_typed(), dtype) {
+                (TypedSexp::Real(arr), HDataType::Float32) => {
+                    dim.reverse();
+                    let slice: &[f64] = arr.as_slice();
                     let v: Vec<f32> = slice.iter().map(|x| *x as f32).collect();
                     let harray = harmonium_core::array::HArray::new_from_shape_vec(dim, v).unwrap();
                     let data = Arc::new(harray);
-                    HArray(data).into()
+                    Ok(HArray(data))
                 }
-                (Rtype::Doubles, HDataType::Float64) => {
-                    let v: Vec<f64> = arr.robj_to_slice().to_vec();
+                (TypedSexp::Real(arr), HDataType::Float64) => {
+                    let v: Vec<f64> = arr.as_slice().to_vec();
                     let harray = harmonium_core::array::HArray::new_from_shape_vec(dim, v).unwrap();
                     let data = Arc::new(harray);
-                    HArray(data).into()
+                    Ok(HArray(data))
                 }
-                (Rtype::Complexes, HDataType::Complex32) => {
-                    let slice: &[Rcplx] = arr.robj_to_slice();
+                (TypedSexp::Complex(arr), HDataType::Complex32) => {
+                    let slice: &[Complex<f64>] = arr.as_slice();
                     let v: Vec<Complex<f32>> = slice
                         .iter()
-                        .map(|z| Complex::new(z.re().inner() as f32, z.im().inner() as f32))
+                        .map(|z| Complex::new(z.re as f32, z.im as f32))
                         .collect();
                     let harray = harmonium_core::array::HArray::new_from_shape_vec(dim, v).unwrap();
                     let data = Arc::new(harray);
-                    HArray(data).into()
+                    Ok(HArray(data))
                 }
-                (Rtype::Complexes, HDataType::Complex64) => {
-                    let slice: &[Rcplx] = arr.robj_to_slice();
-                    let v: Vec<Complex<f64>> = slice
-                        .iter()
-                        .map(|z| Complex::new(z.re().inner(), z.im().inner()))
-                        .collect();
+                (TypedSexp::Complex(arr), HDataType::Complex64) => {
+                    let v: Vec<Complex<f64>> = arr.as_slice().to_vec();
                     let harray = harmonium_core::array::HArray::new_from_shape_vec(dim, v).unwrap();
                     let data = Arc::new(harray);
-                    HArray(data).into()
+                    Ok(HArray(data))
                 }
                 _ => panic!("not valid input types"),
             }
@@ -110,10 +110,10 @@ impl HArray {
     ///
     /// _________
     ///
-    fn len(&self) -> Robj {
+    fn len(&self) -> savvy::Result<Sexp> {
         let len: i32 = self.0.len().try_into().unwrap();
-        let rint = Rint::from(len);
-        rint.into()
+        let integer_sexp: OwnedIntegerSexp = len.try_into()?;
+        integer_sexp.into()
     }
 
     /// HArray
@@ -138,10 +138,15 @@ impl HArray {
     ///
     /// _________
     ///
-    fn shape(&self) -> Robj {
+    fn shape(&self) -> savvy::Result<Sexp> {
         let shape = self.0.shape();
-        let integers: Integers = shape.iter().map(|z| Rint::from(*z as i32)).collect();
-        integers.into()
+        let mut integer_sexp = unsafe { OwnedIntegerSexp::new_without_init(shape.len())? };
+        shape
+            .iter()
+            .map(|z| *z as i32)
+            .zip(integer_sexp.as_mut_slice().iter_mut())
+            .for_each(|(sh, int_sxp)| *int_sxp = sh);
+        integer_sexp.into()
     }
 
     /// HArray
@@ -166,10 +171,10 @@ impl HArray {
     ///
     /// _________
     ///
-    fn ndim(&self) -> Robj {
+    fn ndim(&self) -> savvy::Result<Sexp> {
         let ndim = self.0.ndim() as i32;
-        let rint = Rint::from(ndim);
-        rint.into()
+        let integer_sexp: OwnedIntegerSexp = ndim.try_into()?;
+        integer_sexp.into()
     }
 
     /// HArray
@@ -204,8 +209,42 @@ impl HArray {
     ///
     /// _________
     ///
-    fn slice(&self, range: Robj) -> HArray {
-        HArray(self.0.slice(&range))
+    fn slice(&self, range: Sexp) -> savvy::Result<HArray> {
+        // ndarray already panics if an index is out of bounds or step size is zero. Also panics if D is IxDyn and info does not match the number of array axes.
+        let range = ListSexp::try_from(range)?;
+        let list_len = range.len();
+
+        assert_eq!(
+            list_len,
+            self.0.ndim(),
+            "The list must have the same length as the number of dimensions."
+        );
+
+        let mut vec_ranges: Vec<SliceInfoElem> = Vec::with_capacity(list_len);
+        for obj in range.values_iter() {
+            match obj.into_typed() {
+                TypedSexp::Integer(integer_sexp) => {
+                    assert_eq!(
+                        integer_sexp.len(),
+                        3,
+                        "Each element must have a length of 3."
+                    );
+                    let slice: &[i32] = integer_sexp.as_slice();
+                    let slice_info_elem = SliceInfoElem::Slice {
+                        start: slice[0] as isize,
+                        end: Some(slice[1] as isize),
+                        step: slice[2] as isize,
+                    };
+                    vec_ranges.push(slice_info_elem);
+                }
+                _ => panic!("Each element in the list must be a vector of integers."),
+            }
+        }
+
+        let slice_info: SliceInfo<Vec<SliceInfoElem>, IxDyn, IxDyn> =
+            vec_ranges.try_into().unwrap();
+
+        Ok(HArray(self.0.slice(slice_info)))
     }
 
     /// HArray
@@ -230,8 +269,9 @@ impl HArray {
     ///
     /// _________
     ///
-    fn print(&self) {
+    fn print(&self) -> savvy::Result<()> {
         self.0.print();
+        Ok(())
     }
 
     /// HArray
@@ -271,10 +311,10 @@ impl HArray {
     ///
     /// _________
     ///
-    fn eq(&self, other: &HArray) -> Robj {
+    fn eq(&self, other: &HArray) -> savvy::Result<Sexp> {
         let eq = self.0.eq(&other.0);
-        let rbool = Rbool::from(eq);
-        rbool.into()
+        let logical_sexp: OwnedLogicalSexp = eq.try_into()?;
+        logical_sexp.into()
     }
 
     /// HArray
@@ -314,10 +354,10 @@ impl HArray {
     ///
     /// _________
     ///
-    fn ne(&self, other: &HArray) -> Robj {
+    fn ne(&self, other: &HArray) -> savvy::Result<Sexp> {
         let ne = self.0.ne(&other.0);
-        let rbool = Rbool::from(ne);
-        rbool.into()
+        let logical_sexp: OwnedLogicalSexp = ne.try_into()?;
+        logical_sexp.into()
     }
 
     /// HArray
@@ -343,8 +383,8 @@ impl HArray {
     ///
     /// _________
     ///
-    fn clone(&self) -> HArray {
-        std::clone::Clone::clone(self)
+    fn clone(&self) -> savvy::Result<HArray> {
+        Ok(std::clone::Clone::clone(self))
     }
 
     /// HArray
@@ -369,7 +409,7 @@ impl HArray {
     ///
     /// _________
     ///
-    fn collect(&self) -> Robj {
+    fn collect(&self) -> savvy::Result<Sexp> {
         self.0.collect()
     }
 
@@ -395,8 +435,8 @@ impl HArray {
     ///
     /// _________
     ///
-    fn dtype(&self) -> HDataType {
-        self.0.dtype()
+    fn dtype(&self) -> savvy::Result<HDataType> {
+        Ok(self.0.dtype())
     }
 
     /// HArray
@@ -426,10 +466,10 @@ impl HArray {
     ///
     /// _________
     ///
-    fn is_shared(&self) -> Robj {
+    fn is_shared(&self) -> savvy::Result<Sexp> {
         let bool = Arc::weak_count(&self.0) + Arc::strong_count(&self.0) != 1;
-        let rbool = Rbool::from(bool);
-        rbool.into()
+        let logical_sexp: OwnedLogicalSexp = bool.try_into()?;
+        logical_sexp.into()
     }
 
     /// HArray
@@ -455,8 +495,9 @@ impl HArray {
     ///
     /// _________
     ///
-    pub fn mem_adress(&self) -> String {
-        self.0.mem_adress()
+    pub fn mem_adress(&self) -> savvy::Result<Sexp> {
+        let string_sexp: OwnedStringSexp = self.0.mem_adress().try_into()?;
+        string_sexp.into()
     }
 }
 
@@ -468,9 +509,4 @@ impl HArray {
         }
         Arc::get_mut(&mut self.0).expect("implementation error")
     }
-}
-
-extendr_module! {
-    mod harray;
-    impl HArray;
 }

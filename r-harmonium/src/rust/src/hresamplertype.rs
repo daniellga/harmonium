@@ -1,4 +1,4 @@
-use extendr_api::prelude::*;
+use savvy::{r_println, savvy, OwnedLogicalSexp, Sexp};
 use std::fmt;
 
 /// HResamplerType
@@ -18,7 +18,7 @@ pub enum HResamplerType {
     FastFixedOut,
 }
 
-#[extendr(use_try_from = true)]
+#[savvy]
 impl HResamplerType {
     /// HResamplerType
     /// ## fft_fixed_in
@@ -201,8 +201,9 @@ impl HResamplerType {
     ///
     /// _________
     ///
-    fn print(&self) {
-        rprintln!("{}", self);
+    fn print(&self) -> savvy::Result<()> {
+        r_println!("{}", self);
+        Ok(())
     }
 
     /// HResamplerType
@@ -234,8 +235,10 @@ impl HResamplerType {
     ///
     /// _________
     ///
-    fn eq(&self, other: &HResamplerType) -> bool {
-        std::cmp::PartialEq::eq(self, other)
+    fn eq(&self, other: &HResamplerType) -> savvy::Result<Sexp> {
+        let eq = std::cmp::PartialEq::eq(self, other);
+        let logical_sexp: OwnedLogicalSexp = eq.try_into()?;
+        logical_sexp.into()
     }
 
     /// HResamplerType
@@ -267,8 +270,10 @@ impl HResamplerType {
     ///
     /// _________
     ///
-    fn ne(&self, other: &HResamplerType) -> bool {
-        std::cmp::PartialEq::ne(self, other)
+    fn ne(&self, other: &HResamplerType) -> savvy::Result<Sexp> {
+        let ne = std::cmp::PartialEq::ne(self, other);
+        let logical_sexp: OwnedLogicalSexp = ne.try_into()?;
+        logical_sexp.into()
     }
 }
 
@@ -285,9 +290,4 @@ impl fmt::Display for HResamplerType {
         }
         Ok(())
     }
-}
-
-extendr_module! {
-    mod hresamplertype;
-    impl HResamplerType;
 }

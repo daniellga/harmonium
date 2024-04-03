@@ -1,7 +1,7 @@
 use crate::{harray::HArray, hdatatype::HDataType};
-use extendr_api::prelude::*;
 use harmonium_core::conversions::IntoDynamic;
 use harmonium_window::windows::*;
+use savvy::{savvy, Sexp, TypedSexp};
 use std::sync::Arc;
 
 /// HWindow
@@ -11,7 +11,7 @@ use std::sync::Arc;
 ///
 pub struct HWindow;
 
-#[extendr]
+#[savvy]
 impl HWindow {
     /// HWindow
     /// ## barthann
@@ -45,8 +45,21 @@ impl HWindow {
     /// HWindow$barthann(npoints = 10L, sym = TRUE, dtype = HDataType$Float64)
     /// ```
     ///
-    fn barthann(npoints: i32, sym: bool, dtype: &HDataType) -> HArray {
+    fn barthann(npoints: Sexp, sym: Sexp, dtype: &HDataType) -> savvy::Result<HArray> {
+        let npoints = match npoints.into_typed() {
+            TypedSexp::Integer(integer_sexp) if integer_sexp.len() == 1 => {
+                integer_sexp.as_slice()[0]
+            }
+            _ => panic!("npoints must be an integer of length 1."),
+        };
         let npoints = npoints.try_into().unwrap();
+
+        let sym = match sym.into_typed() {
+            TypedSexp::Logical(logical_sexp) if logical_sexp.len() == 1 => {
+                logical_sexp.as_slice_raw()[0] == 1
+            }
+            _ => panic!("sym must be a logical of length 1."),
+        };
 
         let window_type = if sym {
             WindowType::Symmetric
@@ -58,12 +71,12 @@ impl HWindow {
             HDataType::Float32 => {
                 let harray = harmonium_window::windows::barthann::<f32>(npoints, window_type);
                 let harray = harray.into_dynamic();
-                HArray(Arc::new(harray))
+                Ok(HArray(Arc::new(harray)))
             }
             HDataType::Float64 => {
                 let harray = harmonium_window::windows::barthann::<f64>(npoints, window_type);
                 let harray = harray.into_dynamic();
-                HArray(Arc::new(harray))
+                Ok(HArray(Arc::new(harray)))
             }
             _ => panic!("not a valid dtype"),
         }
@@ -106,8 +119,21 @@ impl HWindow {
     /// HWindow$bartlett(npoints = 10L, sym = TRUE, dtype = HDataType$Float64)
     /// ```
     ///
-    fn bartlett(npoints: i32, sym: bool, dtype: &HDataType) -> HArray {
+    fn bartlett(npoints: Sexp, sym: Sexp, dtype: &HDataType) -> savvy::Result<HArray> {
+        let npoints = match npoints.into_typed() {
+            TypedSexp::Integer(integer_sexp) if integer_sexp.len() == 1 => {
+                integer_sexp.as_slice()[0]
+            }
+            _ => panic!("npoints must be an integer of length 1."),
+        };
         let npoints = npoints.try_into().unwrap();
+
+        let sym = match sym.into_typed() {
+            TypedSexp::Logical(logical_sexp) if logical_sexp.len() == 1 => {
+                logical_sexp.as_slice_raw()[0] == 1
+            }
+            _ => panic!("sym must be a logical of length 1."),
+        };
 
         let window_type = if sym {
             WindowType::Symmetric
@@ -119,12 +145,12 @@ impl HWindow {
             HDataType::Float32 => {
                 let harray = harmonium_window::windows::bartlett::<f32>(npoints, window_type);
                 let harray = harray.into_dynamic();
-                HArray(Arc::new(harray))
+                Ok(HArray(Arc::new(harray)))
             }
             HDataType::Float64 => {
                 let harray = harmonium_window::windows::bartlett::<f64>(npoints, window_type);
                 let harray = harray.into_dynamic();
-                HArray(Arc::new(harray))
+                Ok(HArray(Arc::new(harray)))
             }
             _ => panic!("not a valid dtype"),
         }
@@ -183,8 +209,21 @@ impl HWindow {
     /// HWindow$blackman(npoints = 10L, sym = TRUE, dtype = HDataType$Float64)
     /// ```
     ///
-    fn blackman(npoints: i32, sym: bool, dtype: &HDataType) -> HArray {
+    fn blackman(npoints: Sexp, sym: Sexp, dtype: &HDataType) -> savvy::Result<HArray> {
+        let npoints = match npoints.into_typed() {
+            TypedSexp::Integer(integer_sexp) if integer_sexp.len() == 1 => {
+                integer_sexp.as_slice()[0]
+            }
+            _ => panic!("npoints must be an integer of length 1."),
+        };
         let npoints = npoints.try_into().unwrap();
+
+        let sym = match sym.into_typed() {
+            TypedSexp::Logical(logical_sexp) if logical_sexp.len() == 1 => {
+                logical_sexp.as_slice_raw()[0] == 1
+            }
+            _ => panic!("sym must be a logical of length 1."),
+        };
 
         let window_type = if sym {
             WindowType::Symmetric
@@ -196,12 +235,12 @@ impl HWindow {
             HDataType::Float32 => {
                 let harray = harmonium_window::windows::blackman::<f32>(npoints, window_type);
                 let harray = harray.into_dynamic();
-                HArray(Arc::new(harray))
+                Ok(HArray(Arc::new(harray)))
             }
             HDataType::Float64 => {
                 let harray = harmonium_window::windows::blackman::<f64>(npoints, window_type);
                 let harray = harray.into_dynamic();
-                HArray(Arc::new(harray))
+                Ok(HArray(Arc::new(harray)))
             }
             _ => panic!("not a valid dtype"),
         }
@@ -239,8 +278,21 @@ impl HWindow {
     /// HWindow$blackmanharris(npoints = 10L, sym = TRUE, dtype = HDataType$Float64)
     /// ```
     ///
-    fn blackmanharris(npoints: i32, sym: bool, dtype: &HDataType) -> HArray {
+    fn blackmanharris(npoints: Sexp, sym: Sexp, dtype: &HDataType) -> savvy::Result<HArray> {
+        let npoints = match npoints.into_typed() {
+            TypedSexp::Integer(integer_sexp) if integer_sexp.len() == 1 => {
+                integer_sexp.as_slice()[0]
+            }
+            _ => panic!("npoints must be an integer of length 1."),
+        };
         let npoints = npoints.try_into().unwrap();
+
+        let sym = match sym.into_typed() {
+            TypedSexp::Logical(logical_sexp) if logical_sexp.len() == 1 => {
+                logical_sexp.as_slice_raw()[0] == 1
+            }
+            _ => panic!("sym must be a logical of length 1."),
+        };
 
         let window_type = if sym {
             WindowType::Symmetric
@@ -252,12 +304,12 @@ impl HWindow {
             HDataType::Float32 => {
                 let harray = harmonium_window::windows::blackmanharris::<f32>(npoints, window_type);
                 let harray = harray.into_dynamic();
-                HArray(Arc::new(harray))
+                Ok(HArray(Arc::new(harray)))
             }
             HDataType::Float64 => {
                 let harray = harmonium_window::windows::blackmanharris::<f64>(npoints, window_type);
                 let harray = harray.into_dynamic();
-                HArray(Arc::new(harray))
+                Ok(HArray(Arc::new(harray)))
             }
             _ => panic!("not a valid dtype"),
         }
@@ -295,8 +347,21 @@ impl HWindow {
     /// HWindow$bohman(npoints = 10L, sym = TRUE, dtype = HDataType$Float64)
     /// ```
     ///
-    fn bohman(npoints: i32, sym: bool, dtype: &HDataType) -> HArray {
+    fn bohman(npoints: Sexp, sym: Sexp, dtype: &HDataType) -> savvy::Result<HArray> {
+        let npoints = match npoints.into_typed() {
+            TypedSexp::Integer(integer_sexp) if integer_sexp.len() == 1 => {
+                integer_sexp.as_slice()[0]
+            }
+            _ => panic!("npoints must be an integer of length 1."),
+        };
         let npoints = npoints.try_into().unwrap();
+
+        let sym = match sym.into_typed() {
+            TypedSexp::Logical(logical_sexp) if logical_sexp.len() == 1 => {
+                logical_sexp.as_slice_raw()[0] == 1
+            }
+            _ => panic!("sym must be a logical of length 1."),
+        };
 
         let window_type = if sym {
             WindowType::Symmetric
@@ -308,12 +373,12 @@ impl HWindow {
             HDataType::Float32 => {
                 let harray = harmonium_window::windows::bohman::<f32>(npoints, window_type);
                 let harray = harray.into_dynamic();
-                HArray(Arc::new(harray))
+                Ok(HArray(Arc::new(harray)))
             }
             HDataType::Float64 => {
                 let harray = harmonium_window::windows::bohman::<f64>(npoints, window_type);
                 let harray = harray.into_dynamic();
-                HArray(Arc::new(harray))
+                Ok(HArray(Arc::new(harray)))
             }
             _ => panic!("not a valid dtype"),
         }
@@ -346,19 +411,25 @@ impl HWindow {
     /// HWindow$boxcar(npoints = 10L, dtype = HDataType$Float64)
     /// ```
     ///
-    fn boxcar(npoints: i32, dtype: &HDataType) -> HArray {
+    fn boxcar(npoints: Sexp, dtype: &HDataType) -> savvy::Result<HArray> {
+        let npoints = match npoints.into_typed() {
+            TypedSexp::Integer(integer_sexp) if integer_sexp.len() == 1 => {
+                integer_sexp.as_slice()[0]
+            }
+            _ => panic!("npoints must be an integer of length 1."),
+        };
         let npoints = npoints.try_into().unwrap();
 
         match dtype {
             HDataType::Float32 => {
                 let harray = harmonium_window::windows::boxcar::<f32>(npoints);
                 let harray = harray.into_dynamic();
-                HArray(Arc::new(harray))
+                Ok(HArray(Arc::new(harray)))
             }
             HDataType::Float64 => {
                 let harray = harmonium_window::windows::boxcar::<f64>(npoints);
                 let harray = harray.into_dynamic();
-                HArray(Arc::new(harray))
+                Ok(HArray(Arc::new(harray)))
             }
             _ => panic!("not a valid dtype"),
         }
@@ -396,8 +467,21 @@ impl HWindow {
     /// HWindow$cosine(npoints = 10L, sym = TRUE, dtype = HDataType$Float64)
     /// ```
     ///
-    fn cosine(npoints: i32, sym: bool, dtype: &HDataType) -> HArray {
+    fn cosine(npoints: Sexp, sym: Sexp, dtype: &HDataType) -> savvy::Result<HArray> {
+        let npoints = match npoints.into_typed() {
+            TypedSexp::Integer(integer_sexp) if integer_sexp.len() == 1 => {
+                integer_sexp.as_slice()[0]
+            }
+            _ => panic!("npoints must be an integer of length 1."),
+        };
         let npoints = npoints.try_into().unwrap();
+
+        let sym = match sym.into_typed() {
+            TypedSexp::Logical(logical_sexp) if logical_sexp.len() == 1 => {
+                logical_sexp.as_slice_raw()[0] == 1
+            }
+            _ => panic!("sym must be a logical of length 1."),
+        };
 
         let window_type = if sym {
             WindowType::Symmetric
@@ -409,12 +493,12 @@ impl HWindow {
             HDataType::Float32 => {
                 let harray = harmonium_window::windows::cosine::<f32>(npoints, window_type);
                 let harray = harray.into_dynamic();
-                HArray(Arc::new(harray))
+                Ok(HArray(Arc::new(harray)))
             }
             HDataType::Float64 => {
                 let harray = harmonium_window::windows::cosine::<f64>(npoints, window_type);
                 let harray = harray.into_dynamic();
-                HArray(Arc::new(harray))
+                Ok(HArray(Arc::new(harray)))
             }
             _ => panic!("not a valid dtype"),
         }
@@ -457,8 +541,21 @@ impl HWindow {
     /// HWindow$hann(npoints = 10L, sym = TRUE, dtype = HDataType$Float64)
     /// ```
     ///
-    fn hann(npoints: i32, sym: bool, dtype: &HDataType) -> HArray {
+    fn hann(npoints: Sexp, sym: Sexp, dtype: &HDataType) -> savvy::Result<HArray> {
+        let npoints = match npoints.into_typed() {
+            TypedSexp::Integer(integer_sexp) if integer_sexp.len() == 1 => {
+                integer_sexp.as_slice()[0]
+            }
+            _ => panic!("npoints must be an integer of length 1."),
+        };
         let npoints = npoints.try_into().unwrap();
+
+        let sym = match sym.into_typed() {
+            TypedSexp::Logical(logical_sexp) if logical_sexp.len() == 1 => {
+                logical_sexp.as_slice_raw()[0] == 1
+            }
+            _ => panic!("sym must be a logical of length 1."),
+        };
 
         let window_type = if sym {
             WindowType::Symmetric
@@ -470,19 +567,14 @@ impl HWindow {
             HDataType::Float32 => {
                 let harray = harmonium_window::windows::hann::<f32>(npoints, window_type);
                 let harray = harray.into_dynamic();
-                HArray(Arc::new(harray))
+                Ok(HArray(Arc::new(harray)))
             }
             HDataType::Float64 => {
                 let harray = harmonium_window::windows::hann::<f64>(npoints, window_type);
                 let harray = harray.into_dynamic();
-                HArray(Arc::new(harray))
+                Ok(HArray(Arc::new(harray)))
             }
             _ => panic!("not a valid dtype"),
         }
     }
-}
-
-extendr_module! {
-    mod hwindow;
-    impl HWindow;
 }

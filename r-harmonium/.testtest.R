@@ -39,5 +39,3 @@ haudiosink = HAudioSink$new()
 l = HFile$decode(fpath = "testfiles/gs-16b-2c-44100hz.wav", dtype = HDataType$float32)
 harray = l[[1]]
 haudiosink$append_from_harray(l[[1]], l[[2]])
-
-

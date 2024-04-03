@@ -1,5 +1,5 @@
 use crate::harray::HArray;
-use extendr_api::prelude::*;
+use savvy::{savvy, OwnedIntegerSexp, Sexp, TypedSexp};
 
 /// HAudioOp
 ///
@@ -12,7 +12,7 @@ use extendr_api::prelude::*;
 ///
 pub struct HAudioOp;
 
-#[extendr]
+#[savvy]
 impl HAudioOp {
     /// HAudioOp
     /// ## nchannels
@@ -37,10 +37,10 @@ impl HAudioOp {
     ///
     /// _________
     ///
-    fn nchannels(harray: &HArray) -> Robj {
-        let nchannels = harray.0.nchannels();
-        let rint = Rint::from(i32::try_from(nchannels).unwrap());
-        rint.into()
+    fn nchannels(harray: &HArray) -> savvy::Result<Sexp> {
+        let nchannels: i32 = harray.0.nchannels().try_into().unwrap();
+        let integer_sexp: OwnedIntegerSexp = nchannels.try_into()?;
+        integer_sexp.into()
     }
 
     /// HAudioOp
@@ -67,10 +67,10 @@ impl HAudioOp {
     ///
     /// _________
     ///
-    fn nframes(harray: &HArray) -> Robj {
-        let nframes = harray.0.nframes();
-        let rint = Rint::from(i32::try_from(nframes).unwrap());
-        rint.into()
+    fn nframes(harray: &HArray) -> savvy::Result<Sexp> {
+        let nframes: i32 = harray.0.nframes().try_into().unwrap();
+        let integer_sexp: OwnedIntegerSexp = nframes.try_into()?;
+        integer_sexp.into()
     }
 
     /// HAudioOp
@@ -102,9 +102,22 @@ impl HAudioOp {
     ///
     /// _________
     ///
-    fn db_to_amplitude(harray: &mut HArray, reference: Robj, power: Robj) {
+    fn db_to_amplitude(harray: &mut HArray, reference: Sexp, power: Sexp) -> savvy::Result<()> {
         let inner_mut = harray.get_inner_mut();
-        inner_mut.db_to_amplitude(&reference, &power);
+
+        let reference: f64 = match reference.into_typed() {
+            TypedSexp::Real(real_sexp) if real_sexp.len() == 1 => real_sexp.as_slice()[0],
+            _ => panic!("reference must be a double of length 1."),
+        };
+
+        let power: f64 = match power.into_typed() {
+            TypedSexp::Real(real_sexp) if real_sexp.len() == 1 => real_sexp.as_slice()[0],
+            _ => panic!("reference must be a double of length 1."),
+        };
+
+        inner_mut.db_to_amplitude(reference, power);
+
+        Ok(())
     }
 
     /// HAudioOp
@@ -131,13 +144,9 @@ impl HAudioOp {
     ///
     /// _________
     ///
-    fn to_mono(harray: &mut HArray) {
+    fn to_mono(harray: &mut HArray) -> savvy::Result<()> {
         let inner_mut = harray.get_inner_mut();
         inner_mut.to_mono();
+        Ok(())
     }
-}
-
-extendr_module! {
-    mod haudioop;
-    impl HAudioOp;
 }

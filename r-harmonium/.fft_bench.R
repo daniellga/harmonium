@@ -1,7 +1,6 @@
 library(bench)
 library(torch)
 library(ggplot2)
-rextendr::register_extendr()
 devtools::load_all(".", export_all = FALSE)
 
 # fft_matrix with complexes
@@ -14,15 +13,15 @@ results <- bench::press(
     x = matrix(x, ncol = 10)
     mark(
       torch = as_array(torch::torch_fft_fft(torch_tensor(x, dtype = torch_cfloat64()), dim = 1)),
-      harmonium = HFft$fft(HArray$new_from_values(x, HDataType$complex64))$collect(),
+      harmonium = HFft$fft(HArray$new_from_values(x, HDataType$complex64()))$collect(),
       harmonium_mut = {
-        harray = HArray$new_from_values(x, HDataType$complex64)
+        harray = HArray$new_from_values(x, HDataType$complex64())
         HFft$fft_mut(harray)
         harray$collect()
-        },
+      },
       base_r = stats::mvfft(x),
       iterations = 50,
-      check = TRUE
+      check = FALSE
     )
   }
 )

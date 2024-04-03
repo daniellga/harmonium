@@ -1,5 +1,5 @@
-use extendr_api::prelude::*;
 use rubato::PolynomialDegree;
+use savvy::{r_println, savvy, OwnedLogicalSexp, Sexp};
 use std::fmt;
 
 /// HPolynomialDegree
@@ -31,7 +31,7 @@ pub enum HPolynomialDegree {
     Nearest,
 }
 
-#[extendr(use_try_from = true)]
+#[savvy]
 impl HPolynomialDegree {
     /// HPolynomialDegree
     /// ## Septic
@@ -168,8 +168,9 @@ impl HPolynomialDegree {
     ///
     /// _________
     ///
-    fn print(&self) {
-        rprintln!("{}", self);
+    fn print(&self) -> savvy::Result<()> {
+        r_println!("{}", self);
+        Ok(())
     }
 
     /// HPolynomialDegree
@@ -201,8 +202,10 @@ impl HPolynomialDegree {
     ///
     /// _________
     ///
-    fn eq(&self, other: &HPolynomialDegree) -> bool {
-        std::cmp::PartialEq::eq(self, other)
+    fn eq(&self, other: &HPolynomialDegree) -> savvy::Result<Sexp> {
+        let eq = std::cmp::PartialEq::eq(self, other);
+        let logical_sexp: OwnedLogicalSexp = eq.try_into()?;
+        logical_sexp.into()
     }
 
     /// HPolynomialDegree
@@ -234,8 +237,10 @@ impl HPolynomialDegree {
     ///
     /// _________
     ///
-    fn ne(&self, other: &HPolynomialDegree) -> bool {
-        std::cmp::PartialEq::ne(self, other)
+    fn ne(&self, other: &HPolynomialDegree) -> savvy::Result<Sexp> {
+        let ne = std::cmp::PartialEq::ne(self, other);
+        let logical_sexp: OwnedLogicalSexp = ne.try_into()?;
+        logical_sexp.into()
     }
 }
 
@@ -262,9 +267,4 @@ impl From<&HPolynomialDegree> for PolynomialDegree {
             HPolynomialDegree::Nearest => PolynomialDegree::Nearest,
         }
     }
-}
-
-extendr_module! {
-    mod hpolynomialdegree;
-    impl HPolynomialDegree;
 }

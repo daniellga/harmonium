@@ -1,4 +1,4 @@
-TARGET = 
+TARGET = @TARGET@
 
 TARGET_DIR = $(CURDIR)/rust/target
 LIBDIR = $(TARGET_DIR)/$(TARGET)/release

@@ -1,6 +1,4 @@
-use extendr_api::prelude::*;
-
-mod conversions;
+//mod conversions;
 mod harray;
 mod harrayr;
 mod haudioop;
@@ -15,23 +13,4 @@ mod hresamplertype;
 mod hsincinterpolationparams;
 mod hwindow;
 mod partialeq;
-mod r_docs;
-
-// Macro to generate exports.
-// This ensures exported functions are registered with R.
-// See corresponding C code in `entrypoint.c`.
-extendr_module! {
-    mod harmonium;
-    use hpolynomialdegree;
-    use harray;
-    use hsincinterpolationparams;
-    use haudiosink;
-    use hdatatype;
-    use hwindow;
-    use hmetadatatype;
-    use hresampler;
-    use hresamplertype;
-    use hfft;
-    use haudioop;
-    use hfile;
-}
+//mod r_docs;

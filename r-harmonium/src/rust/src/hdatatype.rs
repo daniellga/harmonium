@@ -1,4 +1,4 @@
-use extendr_api::prelude::*;
+use savvy::{r_println, savvy, OwnedLogicalSexp, Sexp};
 use std::fmt;
 
 /// HDataType
@@ -15,7 +15,7 @@ pub enum HDataType {
     Complex64,
 }
 
-#[extendr(use_try_from = true)]
+#[savvy]
 impl HDataType {
     /// HDataType
     /// ## float32
@@ -129,8 +129,9 @@ impl HDataType {
     ///
     /// _________
     ///
-    fn print(&self) {
-        rprintln!("{}", self);
+    fn print(&self) -> savvy::Result<()> {
+        r_println!("{}", self);
+        Ok(())
     }
 
     /// HDataType
@@ -162,8 +163,10 @@ impl HDataType {
     ///
     /// _________
     ///
-    fn eq(&self, other: &HDataType) -> bool {
-        std::cmp::PartialEq::eq(self, other)
+    fn eq(&self, other: &HDataType) -> savvy::Result<Sexp> {
+        let eq = std::cmp::PartialEq::eq(self, other);
+        let logical_sexp: OwnedLogicalSexp = eq.try_into()?;
+        logical_sexp.into()
     }
 
     /// HDataType
@@ -195,8 +198,10 @@ impl HDataType {
     ///
     /// _________
     ///
-    fn ne(&self, other: &HDataType) -> bool {
-        std::cmp::PartialEq::ne(self, other)
+    fn ne(&self, other: &HDataType) -> savvy::Result<Sexp> {
+        let ne = std::cmp::PartialEq::ne(self, other);
+        let logical_sexp: OwnedLogicalSexp = ne.try_into()?;
+        logical_sexp.into()
     }
 }
 
@@ -210,9 +215,4 @@ impl fmt::Display for HDataType {
         }
         Ok(())
     }
-}
-
-extendr_module! {
-    mod hdatatype;
-    impl HDataType;
 }

@@ -1,9 +1,9 @@
-use crate::{conversions::RobjConversions, hdatatype::HDataType};
-use extendr_api::{prelude::*, wrapper};
+use crate::hdatatype::HDataType;
 use harmonium_core::haudioop::HAudioOpDyn;
 use harmonium_fft::fft::{FftComplex, FftFloat};
 use ndarray::{IxDyn, SliceInfo, SliceInfoElem};
 use num_complex::Complex;
+use savvy::{r_println, OwnedComplexSexp, OwnedIntegerSexp, OwnedRealSexp, Sexp};
 use std::{any::Any, sync::Arc};
 
 pub trait HArrayR: Send + Sync {
@@ -12,9 +12,9 @@ pub trait HArrayR: Send + Sync {
     fn len(&self) -> usize;
     fn shape(&self) -> &[usize];
     fn ndim(&self) -> usize;
-    fn slice(&self, range: &Robj) -> Arc<dyn HArrayR>;
+    fn slice(&self, range: SliceInfo<Vec<SliceInfoElem>, IxDyn, IxDyn>) -> Arc<dyn HArrayR>;
     fn print(&self);
-    fn collect(&self) -> Robj;
+    fn collect(&self) -> savvy::Result<Sexp>;
     fn dtype(&self) -> HDataType;
     fn mem_adress(&self) -> String;
     fn fft(&self) -> Arc<dyn HArrayR>;
@@ -23,7 +23,7 @@ pub trait HArrayR: Send + Sync {
     fn clone_inner(&self) -> Arc<dyn HArrayR>;
     fn nchannels(&self) -> usize;
     fn nframes(&self) -> usize;
-    fn db_to_amplitude(&mut self, reference: &Robj, power: &Robj);
+    fn db_to_amplitude(&mut self, reference: f64, power: f64);
     fn to_mono(&mut self);
 }
 
@@ -48,57 +48,34 @@ impl HArrayR for harmonium_core::array::HArray<f32, IxDyn> {
         self.ndim()
     }
 
-    fn slice(&self, range: &Robj) -> Arc<dyn HArrayR> {
-        // ndarray already panics if an index is out of bounds or step size is zero. Also panics if D is IxDyn and info does not match the number of array axes.
-        let range = List::try_from(range).unwrap();
-        let list_len = range.len();
-
-        let mut vec_ranges: Vec<SliceInfoElem> = Vec::with_capacity(list_len);
-        for robj in range.values() {
-            assert!(
-                robj.is_integer() && robj.len() == 3,
-                "Each vector in the list must be of integers and have a length of 3."
-            );
-            let slice: &[i32] = robj.robj_to_slice();
-
-            // Ok to unsafe because we checked robj.len() == 3.
-            let slice_info_elem = SliceInfoElem::Slice {
-                start: unsafe { *slice.get_unchecked(0) as isize },
-                end: Some(unsafe { *slice.get_unchecked(1) as isize }),
-                step: unsafe { *slice.get_unchecked(2) as isize },
-            };
-            vec_ranges.push(slice_info_elem);
-        }
-
-        let slice_info: SliceInfo<Vec<SliceInfoElem>, IxDyn, IxDyn> =
-            vec_ranges.try_into().unwrap();
-
+    fn slice(&self, slice_info: SliceInfo<Vec<SliceInfoElem>, IxDyn, IxDyn>) -> Arc<dyn HArrayR> {
         let ndarray = self.0.clone().slice_move(slice_info);
-
         Arc::new(harmonium_core::array::HArray(ndarray))
     }
 
     fn print(&self) {
-        rprintln!("{}", self);
+        r_println!("{}", self);
     }
 
-    fn collect(&self) -> Robj {
-        let dim = self
-            .shape()
+    fn collect(&self) -> savvy::Result<Sexp> {
+        let mut dim = unsafe { OwnedIntegerSexp::new_without_init(self.shape().len())? };
+        self.shape()
             .iter()
             .rev()
-            .map(|z| Rint::from(*z as i32))
-            .collect::<Integers>();
+            .map(|z| *z as i32)
+            .zip(dim.as_mut_slice().iter_mut())
+            .for_each(|(sh, int_sxp)| *int_sxp = sh);
 
-        let robj: Robj = self
-            .0
+        let mut real_sexp = unsafe { OwnedRealSexp::new_without_init(self.0.len())? };
+        self.0
             .iter()
-            .map(|z| Rfloat::from(*z as f64))
-            .collect::<Doubles>()
-            .into();
+            .map(|z| *z as f64)
+            .zip(real_sexp.as_mut_slice().iter_mut())
+            .for_each(|(k, real_sxp)| *real_sxp = k);
 
-        // Ok to unwrap.
-        robj.set_attrib(wrapper::symbol::dim_symbol(), dim).unwrap()
+        real_sexp.set_attrib("dim", dim.into())?;
+
+        real_sexp.into()
     }
 
     fn dtype(&self) -> HDataType {
@@ -116,7 +93,7 @@ impl HArrayR for harmonium_core::array::HArray<f32, IxDyn> {
     }
 
     fn fft_mut(&mut self) {
-        panic!("Operation only allowed for complex HArrays");
+        panic!("Operation only allowed for complex HArrays.");
     }
 
     fn fft_real_mut(&mut self) -> Arc<dyn HArrayR> {
@@ -135,9 +112,7 @@ impl HArrayR for harmonium_core::array::HArray<f32, IxDyn> {
         HAudioOpDyn::nframes(self)
     }
 
-    fn db_to_amplitude(&mut self, reference: &Robj, power: &Robj) {
-        let reference: f64 = reference.robj_to_scalar();
-        let power: f64 = power.robj_to_scalar();
+    fn db_to_amplitude(&mut self, reference: f64, power: f64) {
         HAudioOpDyn::db_to_amplitude(self, reference as f32, power as f32);
     }
 
@@ -167,60 +142,33 @@ impl HArrayR for harmonium_core::array::HArray<f64, IxDyn> {
         self.ndim()
     }
 
-    fn slice(&self, range: &Robj) -> Arc<dyn HArrayR> {
-        let ndim = self.ndim();
-        let range = List::try_from(range).unwrap();
-        let list_len = range.len();
-
-        assert_eq!(
-            list_len, ndim,
-            "The list must have the same length as the number of dimensions."
-        );
-
-        let mut vec_ranges: Vec<SliceInfoElem> = Vec::with_capacity(list_len);
-        for robj in range.values() {
-            assert!(
-                robj.is_integer() && robj.len() == 3,
-                "Each vector in the list must be of integers and have a length of 3."
-            );
-            let slice: &[i32] = robj.robj_to_slice();
-            let slice_info_elem = SliceInfoElem::Slice {
-                start: slice[0] as isize,
-                end: Some(slice[1] as isize),
-                step: slice[2] as isize,
-            };
-            vec_ranges.push(slice_info_elem);
-        }
-
-        let slice_info: SliceInfo<Vec<SliceInfoElem>, IxDyn, IxDyn> =
-            vec_ranges.try_into().unwrap();
-
+    fn slice(&self, slice_info: SliceInfo<Vec<SliceInfoElem>, IxDyn, IxDyn>) -> Arc<dyn HArrayR> {
         let ndarray = self.0.clone().slice_move(slice_info);
-
         Arc::new(harmonium_core::array::HArray(ndarray))
     }
 
     fn print(&self) {
-        rprintln!("{}", self);
+        r_println!("{}", self);
     }
 
-    fn collect(&self) -> Robj {
-        let dim = self
-            .shape()
+    fn collect(&self) -> savvy::Result<Sexp> {
+        let mut dim = unsafe { OwnedIntegerSexp::new_without_init(self.shape().len())? };
+        self.shape()
             .iter()
             .rev()
-            .map(|z| Rint::from(*z as i32))
-            .collect::<Integers>();
+            .map(|z| *z as i32)
+            .zip(dim.as_mut_slice().iter_mut())
+            .for_each(|(sh, int_sxp)| *int_sxp = sh);
 
-        let robj: Robj = self
-            .0
+        let mut real_sexp = unsafe { OwnedRealSexp::new_without_init(self.0.len())? };
+        self.0
             .iter()
-            .map(|z| Rfloat::from(*z))
-            .collect::<Doubles>()
-            .into();
+            .zip(real_sexp.as_mut_slice().iter_mut())
+            .for_each(|(k, real_sxp)| *real_sxp = *k);
 
-        // Ok to unwrap.
-        robj.set_attrib(wrapper::symbol::dim_symbol(), dim).unwrap()
+        real_sexp.set_attrib("dim", dim.into())?;
+
+        real_sexp.into()
     }
 
     fn dtype(&self) -> HDataType {
@@ -238,7 +186,7 @@ impl HArrayR for harmonium_core::array::HArray<f64, IxDyn> {
     }
 
     fn fft_mut(&mut self) {
-        panic!("Operation only allowed for complex HArrays");
+        panic!("Operation only allowed for complex HArrays.");
     }
 
     fn fft_real_mut(&mut self) -> Arc<dyn HArrayR> {
@@ -257,9 +205,7 @@ impl HArrayR for harmonium_core::array::HArray<f64, IxDyn> {
         HAudioOpDyn::nframes(self)
     }
 
-    fn db_to_amplitude(&mut self, reference: &Robj, power: &Robj) {
-        let reference: f64 = reference.robj_to_scalar();
-        let power: f64 = power.robj_to_scalar();
+    fn db_to_amplitude(&mut self, reference: f64, power: f64) {
         HAudioOpDyn::db_to_amplitude(self, reference, power);
     }
 
@@ -289,60 +235,34 @@ impl HArrayR for harmonium_core::array::HArray<Complex<f32>, IxDyn> {
         self.ndim()
     }
 
-    fn slice(&self, range: &Robj) -> Arc<dyn HArrayR> {
-        let ndim = self.ndim();
-        let range = List::try_from(range).unwrap();
-        let list_len = range.len();
-
-        assert_eq!(
-            list_len, ndim,
-            "The list must have the same length as the number of dimensions."
-        );
-
-        let mut vec_ranges: Vec<SliceInfoElem> = Vec::with_capacity(list_len);
-        for robj in range.values() {
-            assert!(
-                robj.is_integer() && robj.len() == 3,
-                "Each vector in the list must be of integers and have a length of 3."
-            );
-            let slice: &[i32] = robj.robj_to_slice();
-            let slice_info_elem = SliceInfoElem::Slice {
-                start: slice[0] as isize,
-                end: Some(slice[1] as isize),
-                step: slice[2] as isize,
-            };
-            vec_ranges.push(slice_info_elem);
-        }
-
-        let slice_info: SliceInfo<Vec<SliceInfoElem>, IxDyn, IxDyn> =
-            vec_ranges.try_into().unwrap();
-
+    fn slice(&self, slice_info: SliceInfo<Vec<SliceInfoElem>, IxDyn, IxDyn>) -> Arc<dyn HArrayR> {
         let ndarray = self.0.clone().slice_move(slice_info);
-
         Arc::new(harmonium_core::array::HArray(ndarray))
     }
 
     fn print(&self) {
-        rprintln!("{}", self);
+        r_println!("{}", self);
     }
 
-    fn collect(&self) -> Robj {
-        let dim = self
-            .shape()
+    fn collect(&self) -> savvy::Result<Sexp> {
+        let mut dim = unsafe { OwnedIntegerSexp::new_without_init(self.shape().len())? };
+        self.shape()
             .iter()
             .rev()
-            .map(|z| Rint::from(*z as i32))
-            .collect::<Integers>();
+            .map(|z| *z as i32)
+            .zip(dim.as_mut_slice().iter_mut())
+            .for_each(|(sh, int_sxp)| *int_sxp = sh);
 
-        let robj: Robj = self
-            .0
+        let mut complex_sexp = unsafe { OwnedComplexSexp::new_without_init(self.0.len())? };
+        self.0
             .iter()
-            .map(|z| Rcplx::new(z.re as f64, z.im as f64))
-            .collect::<Complexes>()
-            .into();
+            .map(|z| Complex::<f64>::new(z.re as f64, z.im as f64))
+            .zip(complex_sexp.as_mut_slice().iter_mut())
+            .for_each(|(k, complex_sxp)| *complex_sxp = k);
 
-        // Ok to unwrap.
-        robj.set_attrib(wrapper::symbol::dim_symbol(), dim).unwrap()
+        complex_sexp.set_attrib("dim", dim.into())?;
+
+        complex_sexp.into()
     }
 
     fn dtype(&self) -> HDataType {
@@ -364,7 +284,7 @@ impl HArrayR for harmonium_core::array::HArray<Complex<f32>, IxDyn> {
     }
 
     fn fft_real_mut(&mut self) -> Arc<dyn HArrayR> {
-        panic!("Operation only allowed for float HArrays");
+        panic!("Operation only allowed for float HArrays.");
     }
 
     fn clone_inner(&self) -> Arc<dyn HArrayR> {
@@ -372,19 +292,19 @@ impl HArrayR for harmonium_core::array::HArray<Complex<f32>, IxDyn> {
     }
 
     fn nchannels(&self) -> usize {
-        panic!("Operation only allowed for float HArrays");
+        panic!("Operation only allowed for float HArrays.");
     }
 
     fn nframes(&self) -> usize {
-        panic!("Operation only allowed for float HArrays");
+        panic!("Operation only allowed for float HArrays.");
     }
 
-    fn db_to_amplitude(&mut self, _: &Robj, _: &Robj) {
-        panic!("Operation only allowed for float HArrays");
+    fn db_to_amplitude(&mut self, _: f64, _: f64) {
+        panic!("Operation only allowed for float HArrays.");
     }
 
     fn to_mono(&mut self) {
-        panic!("Operation only allowed for float HArrays");
+        panic!("Operation only allowed for float HArrays.");
     }
 }
 
@@ -409,60 +329,33 @@ impl HArrayR for harmonium_core::array::HArray<Complex<f64>, IxDyn> {
         self.ndim()
     }
 
-    fn slice(&self, range: &Robj) -> Arc<dyn HArrayR> {
-        let ndim = self.ndim();
-        let range = List::try_from(range).unwrap();
-        let list_len = range.len();
-
-        assert_eq!(
-            list_len, ndim,
-            "The list must have the same length as the number of dimensions."
-        );
-
-        let mut vec_ranges: Vec<SliceInfoElem> = Vec::with_capacity(list_len);
-        for robj in range.values() {
-            assert!(
-                robj.is_integer() && robj.len() == 3,
-                "Each vector in the list must be of integers and have a length of 3."
-            );
-            let slice: &[i32] = robj.robj_to_slice();
-            let slice_info_elem = SliceInfoElem::Slice {
-                start: slice[0] as isize,
-                end: Some(slice[1] as isize),
-                step: slice[2] as isize,
-            };
-            vec_ranges.push(slice_info_elem);
-        }
-
-        let slice_info: SliceInfo<Vec<SliceInfoElem>, IxDyn, IxDyn> =
-            vec_ranges.try_into().unwrap();
-
+    fn slice(&self, slice_info: SliceInfo<Vec<SliceInfoElem>, IxDyn, IxDyn>) -> Arc<dyn HArrayR> {
         let ndarray = self.0.clone().slice_move(slice_info);
-
         Arc::new(harmonium_core::array::HArray(ndarray))
     }
 
     fn print(&self) {
-        rprintln!("{}", self);
+        r_println!("{}", self);
     }
 
-    fn collect(&self) -> Robj {
-        let dim = self
-            .shape()
+    fn collect(&self) -> savvy::Result<Sexp> {
+        let mut dim = unsafe { OwnedIntegerSexp::new_without_init(self.shape().len())? };
+        self.shape()
             .iter()
             .rev()
-            .map(|z| Rint::from(*z as i32))
-            .collect::<Integers>();
+            .map(|z| *z as i32)
+            .zip(dim.as_mut_slice().iter_mut())
+            .for_each(|(sh, int_sxp)| *int_sxp = sh);
 
-        let robj: Robj = self
-            .0
+        let mut complex_sexp = unsafe { OwnedComplexSexp::new_without_init(self.0.len())? };
+        self.0
             .iter()
-            .map(|z| Rcplx::new(z.re, z.im))
-            .collect::<Complexes>()
-            .into();
+            .zip(complex_sexp.as_mut_slice().iter_mut())
+            .for_each(|(k, complex_sxp)| *complex_sxp = *k);
 
-        // Ok to unwrap.
-        robj.set_attrib(wrapper::symbol::dim_symbol(), dim).unwrap()
+        complex_sexp.set_attrib("dim", dim.into())?;
+
+        complex_sexp.into()
     }
 
     fn dtype(&self) -> HDataType {
@@ -484,7 +377,7 @@ impl HArrayR for harmonium_core::array::HArray<Complex<f64>, IxDyn> {
     }
 
     fn fft_real_mut(&mut self) -> Arc<dyn HArrayR> {
-        panic!("Operation only allowed for float HArrays");
+        panic!("Operation only allowed for float HArrays.");
     }
 
     fn clone_inner(&self) -> Arc<dyn HArrayR> {
@@ -492,18 +385,18 @@ impl HArrayR for harmonium_core::array::HArray<Complex<f64>, IxDyn> {
     }
 
     fn nchannels(&self) -> usize {
-        panic!("Operation only allowed for float HArrays");
+        panic!("Operation only allowed for float HArrays.");
     }
 
     fn nframes(&self) -> usize {
-        panic!("Operation only allowed for float HArrays");
+        panic!("Operation only allowed for float HArrays.");
     }
 
-    fn db_to_amplitude(&mut self, _: &Robj, _: &Robj) {
-        panic!("Operation only allowed for float HArrays");
+    fn db_to_amplitude(&mut self, _: f64, _: f64) {
+        panic!("Operation only allowed for float HArrays.");
     }
 
     fn to_mono(&mut self) {
-        panic!("Operation only allowed for float HArrays");
+        panic!("Operation only allowed for float HArrays.");
     }
 }

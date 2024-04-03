@@ -1,6 +1,6 @@
 use std::fmt;
 
-use extendr_api::prelude::*;
+use savvy::{r_println, savvy, OwnedLogicalSexp, Sexp};
 
 /// HMetadataType
 /// A metadata type representation. \
@@ -15,7 +15,7 @@ pub enum HMetadataType {
     Visual,
 }
 
-#[extendr]
+#[savvy]
 impl HMetadataType {
     /// HMetadataType
     /// ## all
@@ -106,8 +106,9 @@ impl HMetadataType {
     ///
     /// _________
     ///
-    fn print(&self) {
-        rprintln!("{}", self);
+    fn print(&self) -> savvy::Result<()> {
+        r_println!("{}", self);
+        Ok(())
     }
 
     /// HMetadataType
@@ -139,8 +140,10 @@ impl HMetadataType {
     ///
     /// _________
     ///
-    fn eq(&self, other: &HMetadataType) -> bool {
-        std::cmp::PartialEq::eq(self, other)
+    fn eq(&self, other: &HMetadataType) -> savvy::Result<Sexp> {
+        let eq = std::cmp::PartialEq::eq(self, other);
+        let logical_sexp: OwnedLogicalSexp = eq.try_into()?;
+        logical_sexp.into()
     }
 
     /// HMetadataType
@@ -172,8 +175,10 @@ impl HMetadataType {
     ///
     /// _________
     ///
-    fn ne(&self, other: &HMetadataType) -> bool {
-        std::cmp::PartialEq::ne(self, other)
+    fn ne(&self, other: &HMetadataType) -> savvy::Result<Sexp> {
+        let ne = std::cmp::PartialEq::ne(self, other);
+        let logical_sexp: OwnedLogicalSexp = ne.try_into()?;
+        logical_sexp.into()
     }
 }
 
@@ -186,9 +191,4 @@ impl fmt::Display for HMetadataType {
         }
         Ok(())
     }
-}
-
-extendr_module! {
-    mod hmetadatatype;
-    impl HMetadataType;
 }

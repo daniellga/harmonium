@@ -1,9 +1,9 @@
 use crate::harray::HArray;
-use extendr_api::prelude::*;
+use savvy::savvy;
 
 pub struct HFft;
 
-#[extendr]
+#[savvy]
 impl HFft {
     /// HFft
     /// ## fft
@@ -36,8 +36,8 @@ impl HFft {
     ///
     /// _________
     ///
-    fn fft(harray: &HArray) -> HArray {
-        HArray(harray.0.fft())
+    fn fft(harray: &HArray) -> savvy::Result<HArray> {
+        Ok(HArray(harray.0.fft()))
     }
 
     /// HFft
@@ -68,9 +68,10 @@ impl HFft {
     ///
     /// _________
     ///
-    fn fft_mut(harray: &mut HArray) {
+    fn fft_mut(harray: &mut HArray) -> savvy::Result<()> {
         let inner_mut = harray.get_inner_mut();
-        inner_mut.fft_mut()
+        inner_mut.fft_mut();
+        Ok(())
     }
 
     /// HFft
@@ -103,13 +104,9 @@ impl HFft {
     ///
     /// _________
     ///
-    fn fft_real_mut(harray: &mut HArray) {
+    fn fft_real_mut(harray: &mut HArray) -> savvy::Result<()> {
         let inner_mut = harray.get_inner_mut();
         *harray = HArray(inner_mut.fft_real_mut());
+        Ok(())
     }
-}
-
-extendr_module! {
-    mod hfft;
-    impl HFft;
 }

@@ -1,17 +1,13 @@
-use extendr_api::prelude::*;
+use crate::{harray::HArray, hdatatype::HDataType, hmetadatatype::HMetadataType};
 use harmonium_core::conversions::IntoDynamic;
 use harmonium_io::decode;
+use savvy::{savvy, ListSexp, OwnedListSexp, OwnedRealSexp, OwnedStringSexp, Sexp, TypedSexp};
 use std::sync::Arc;
-
-use crate::{
-    conversions::RobjConversions, harray::HArray, hdatatype::HDataType,
-    hmetadatatype::HMetadataType,
-};
 
 struct HFile;
 struct HDecoderStream(Box<dyn HDecoderStreamR>);
 
-#[extendr]
+#[savvy]
 impl HFile {
     /// HFile
     /// ## decode
@@ -44,21 +40,41 @@ impl HFile {
     ///
     /// _________
     ///
-    fn decode(fpath: &str, dtype: &HDataType) -> Robj {
+    fn decode(fpath: Sexp, dtype: &HDataType) -> savvy::Result<ListSexp> {
         match dtype {
             HDataType::Float32 => {
                 let (harray, sr) = harmonium_io::decode::decode::<f32>(fpath).unwrap();
                 let harray = harray.into_dynamic();
                 let harray = HArray(Arc::new(harray));
-                let sr = Rint::from(sr as i32);
-                List::from_values(&[Robj::from(harray), Robj::from(sr)]).into()
+                let fpath = match fpath.into_typed() {
+                    TypedSexp::String(string_sexp) if string_sexp.len() == 1 => {
+                        // Ok to unwrap since the size was checked.
+                        string_sexp.iter().next().unwrap()
+                    }
+                    _ => panic!("fpath must be a string of length 1."),
+                };
+                let sr = OwnedIntegerSexp::try_from(&[sr as i32])?;
+                let list = OwnedListSexp::new(2, false)?;
+                ListSexp::set_value(0, harray.into());
+                ListSexp::set_value(1, sr.into());
+                Ok(list.into())
             }
             HDataType::Float64 => {
                 let (harray, sr) = harmonium_io::decode::decode::<f64>(fpath).unwrap();
                 let harray = harray.into_dynamic();
                 let harray = HArray(Arc::new(harray));
-                let sr = Rint::from(sr as i32);
-                List::from_values(&[Robj::from(harray), Robj::from(sr)]).into()
+                let fpath = match fpath.into_typed() {
+                    TypedSexp::String(string_sexp) if string_sexp.len() == 1 => {
+                        // Ok to unwrap since the size was checked.
+                        string_sexp.iter().next().unwrap()
+                    }
+                    _ => panic!("fpath must be a string of length 1."),
+                };
+                let sr = OwnedIntegerSexp::try_from(&[sr as i32])?;
+                let list = OwnedListSexp::new(2, false)?;
+                ListSexp::set_value(0, harray.into());
+                ListSexp::set_value(1, sr.into());
+                Ok(list.into())
             }
             _ => panic!("Operation only allowed for float dtypes."),
         }
@@ -96,17 +112,33 @@ impl HFile {
     ///
     /// _________
     ///
-    fn decode_stream(fpath: &str, frames: Robj, dtype: &HDataType) -> HDecoderStream {
-        let frames: i32 = frames.robj_to_scalar();
-        let frames = frames as usize;
+    fn decode_stream(
+        fpath: Sexp,
+        frames: Robj,
+        dtype: &HDataType,
+    ) -> savvy::Result<HDecoderStream> {
+        let fpath = match fpath.into_typed() {
+            TypedSexp::String(string_sexp) if string_sexp.len() == 1 => {
+                // Ok to unwrap since the size was checked.
+                string_sexp.iter().next().unwrap()
+            }
+            _ => panic!("fpath must be a string of length 1."),
+        };
+        let frames: i32 = match frames.into_typed() {
+            TypedSexp::Integer(integer_sexp) if integer_sexp.len() == 1 => {
+                integer_sexp.as_slice()[0]
+            }
+            _ => panic!("frames must be an integer of length 1."),
+        };
+        let frames = usize::try_into(frames).unwrap();
         match dtype {
             HDataType::Float32 => {
                 let streamer = harmonium_io::decode::stream::<f32>(fpath, frames).unwrap();
-                HDecoderStream(Box::new(streamer))
+                Ok(HDecoderStream(Box::new(streamer)))
             }
             HDataType::Float64 => {
                 let streamer = harmonium_io::decode::stream::<f64>(fpath, frames).unwrap();
-                HDecoderStream(Box::new(streamer))
+                Ok(HDecoderStream(Box::new(streamer)))
             }
             _ => panic!("Operation only allowed for float dtypes."),
         }
@@ -193,7 +225,14 @@ impl HFile {
     ///
     /// _________
     ///
-    fn metadata(fpath: &str, metadata_type: &HMetadataType) -> Robj {
+    fn metadata(fpath: Sexp, metadata_type: &HMetadataType) -> savvy::Result<Sexp> {
+        let fpath = match fpath.into_typed() {
+            TypedSexp::String(string_sexp) if string_sexp.len() == 1 => {
+                // Ok to unwrap since the size was checked.
+                string_sexp.iter().next().unwrap()
+            }
+            _ => panic!("fpath must be a string of length 1."),
+        };
         let metadata_type = match metadata_type {
             HMetadataType::All => decode::HMetadataType::All,
             HMetadataType::Text => decode::HMetadataType::Text,
@@ -206,15 +245,19 @@ impl HFile {
                 decode::HMetadata::All((text, visual)) => {
                     let list1 = list_from_textmetadata(text);
                     let list2 = list_from_visualmetadata(visual);
-                    List::from_names_and_values(&["text", "visual"], &[list1, list2])
-                        .unwrap()
-                        .into()
+                    let list = OwnedListSexp::new(2, true)?;
+                    ListSexp::set_value(0, list1.into());
+                    ListSexp::set_value(1, list2.into());
+                    ListSexp::set_name(0, "text");
+                    ListSexp::set_name(1, "visual");
+                    Ok(list.into())
                 }
                 decode::HMetadata::Text(text) => list_from_textmetadata(text).into(),
                 decode::HMetadata::Visual(visual) => list_from_visualmetadata(visual).into(),
             }
         } else {
-            List::new(0).into()
+            let list = OwnedListSexp::new(0, false);
+            Ok(list.into())
         }
     }
 
@@ -248,11 +291,18 @@ impl HFile {
     ///
     /// _________
     ///
-    fn params(fpath: &str) -> Robj {
+    fn params(fpath: Sexp) -> savvy::Result<Sexp> {
+        let fpath = match fpath.into_typed() {
+            TypedSexp::String(string_sexp) if string_sexp.len() == 1 => {
+                // Ok to unwrap since the size was checked.
+                string_sexp.iter().next().unwrap()
+            }
+            _ => panic!("fpath must be a string of length 1."),
+        };
         let (sr, nframes, nchannels, duration) = decode::get_params_from_file(fpath).unwrap();
         let arr = [sr as f64, nframes as f64, nchannels as f64, duration];
-        let doubles: Doubles = arr.iter().map(|x| Rfloat::from(*x)).collect();
-        doubles.into()
+        let real_sexp = OwnedRealSexp::try_from_slice(&arr);
+        Ok(real_sexp.into())
     }
 
     /// HFile
@@ -282,12 +332,21 @@ impl HFile {
     ///
     /// _________
     ///
-    fn verify(fpath: &str) -> &str {
-        match decode::verify_file(fpath).unwrap() {
+    fn verify(fpath: Sexp) -> savvy::Result<Sexp> {
+        let fpath = match fpath.into_typed() {
+            TypedSexp::String(string_sexp) if string_sexp.len() == 1 => {
+                // Ok to unwrap since the size was checked.
+                string_sexp.iter().next().unwrap()
+            }
+            _ => panic!("fpath must be a string of length 1."),
+        };
+        let verified = match decode::verify_file(fpath).unwrap() {
             decode::HVerifyDecode::Passed => "passed",
             decode::HVerifyDecode::Failed => "failed",
             decode::HVerifyDecode::NotSupported => "not_supported",
-        }
+        };
+        let string_sexp: OwnedStringSexp = verified.try_into()?;
+        Ok(string_sexp.into())
     }
 }
 
@@ -296,7 +355,7 @@ impl HFile {
 ///
 /// # Methods
 ///
-#[extendr]
+#[savvy]
 impl HDecoderStream {
     /// HDecoderStream
     /// ## stream
@@ -323,13 +382,13 @@ impl HDecoderStream {
     ///
     /// _________
     ///
-    fn stream(&mut self) -> Robj {
+    fn stream(&mut self) -> savvy::Result<Sexp> {
         self.0.next()
     }
 }
 
 pub trait HDecoderStreamR {
-    fn next(&mut self) -> Robj;
+    fn next(&mut self) -> savvy::Result<Sexp>;
 }
 
 impl HDecoderStreamR for harmonium_io::decode::DecoderStream<f32> {
@@ -368,7 +427,7 @@ fn list_from_textmetadata(text: decode::HTextMetadata) -> List {
     }
 }
 
-fn list_from_visualmetadata(visual: decode::HVisualMetadata) -> List {
+fn list_from_visualmetadata(visual: decode::HVisualMetadata) -> OwnedListSexp {
     if let Some(svm_vec) = visual.0 {
         let iter = svm_vec.iter().map(|x| {
             let strings = Strings::from_values(&[
@@ -413,12 +472,6 @@ fn list_from_visualmetadata(visual: decode::HVisualMetadata) -> List {
         });
         List::from_values(iter)
     } else {
-        List::new(0)
+        OwnedListSexp::new(0, false)?
     }
-}
-
-extendr_module! {
-    mod hfile;
-    impl HFile;
-    impl HDecoderStream;
 }

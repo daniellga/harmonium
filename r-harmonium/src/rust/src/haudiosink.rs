@@ -1,7 +1,9 @@
-use extendr_api::prelude::*;
 use harmonium_core::haudioop::Audio;
 use harmonium_io::{decode::decode, play};
 use ndarray::IxDyn;
+use savvy::{
+    savvy, OwnedIntegerSexp, OwnedLogicalSexp, OwnedRealSexp, OwnedStringSexp, Sexp, TypedSexp,
+};
 
 use crate::{harray::HArray, hdatatype::HDataType};
 
@@ -12,7 +14,7 @@ use crate::{harray::HArray, hdatatype::HDataType};
 ///
 pub struct HAudioSink(play::HAudioSink);
 
-#[extendr]
+#[savvy]
 impl HAudioSink {
     /// HAudioSink
     /// ## new
@@ -61,8 +63,15 @@ impl HAudioSink {
     ///
     /// _________
     ///
-    fn append_from_harray(&self, harray: &HArray, sr: i32) {
+    fn append_from_harray(&self, harray: &HArray, sr: Sexp) -> savvy::Result<()> {
+        let sr = match sr.into_typed() {
+            TypedSexp::Integer(integer_sexp) if integer_sexp.len() == 1 => {
+                integer_sexp.as_slice()[0]
+            }
+            _ => panic!("value must be an integer of length 1."),
+        };
         let sr = sr.try_into().unwrap();
+
         match harray.0.dtype() {
             HDataType::Float32 => {
                 let harray = harray
@@ -72,6 +81,7 @@ impl HAudioSink {
                     .unwrap();
                 let audio = Audio::Dyn(harray);
                 self.0.append_from_harray::<f32>(&audio, sr);
+                Ok(())
             }
             HDataType::Float64 => {
                 let harray = harray
@@ -81,6 +91,7 @@ impl HAudioSink {
                     .unwrap();
                 let audio = Audio::Dyn(harray);
                 self.0.append_from_harray::<f64>(&audio, sr);
+                Ok(())
             }
             _ => panic!("Not a valid HDataType."),
         }
@@ -107,10 +118,19 @@ impl HAudioSink {
     ///
     /// _________
     ///
-    fn append_from_file(&self, fpath: &str) {
+    fn append_from_file(&self, fpath: Sexp) -> savvy::Result<()> {
+        let fpath = match fpath.into_typed() {
+            TypedSexp::String(string_sexp) if string_sexp.len() == 1 => {
+                // Ok to unwrap since the size was checked.
+                string_sexp.iter().next().unwrap()
+            }
+            _ => panic!("fpath must be a string of length 1."),
+        };
+
         let (harray, sr) = decode::<f32>(fpath).unwrap();
         let audio = Audio::D2(&harray);
         self.0.append_from_harray(&audio, sr);
+        Ok(())
     }
 
     /// HAudioSink
@@ -134,8 +154,9 @@ impl HAudioSink {
     ///
     /// _________
     ///
-    fn play(&self) {
+    fn play(&self) -> savvy::Result<()> {
         self.0.play();
+        Ok(())
     }
 
     /// HAudioSink
@@ -160,8 +181,9 @@ impl HAudioSink {
     ///
     /// _________
     ///
-    fn stop(&self) {
+    fn stop(&self) -> savvy::Result<()> {
         self.0.stop();
+        Ok(())
     }
 
     /// HAudioSink
@@ -185,8 +207,9 @@ impl HAudioSink {
     ///
     /// _________
     ///
-    fn pause(&self) {
+    fn pause(&self) -> savvy::Result<()> {
         self.0.pause();
+        Ok(())
     }
 
     /// HAudioSink
@@ -213,8 +236,10 @@ impl HAudioSink {
     ///
     /// _________
     ///
-    fn is_paused(&self) -> bool {
-        self.0.is_paused()
+    fn is_paused(&self) -> savvy::Result<Sexp> {
+        let is_paused = self.0.is_paused();
+        let logical_sexp: OwnedLogicalSexp = is_paused.try_into()?;
+        logical_sexp.into()
     }
 
     /// HAudioSink
@@ -239,8 +264,10 @@ impl HAudioSink {
     ///
     /// _________
     ///
-    fn volume(&self) -> f64 {
-        self.0.volume() as f64
+    fn volume(&self) -> savvy::Result<Sexp> {
+        let volume = self.0.volume() as f64;
+        let real_sexp: OwnedRealSexp = volume.try_into()?;
+        real_sexp.into()
     }
 
     /// HAudioSink
@@ -267,8 +294,14 @@ impl HAudioSink {
     ///
     /// _________
     ///
-    fn set_volume(&self, value: f64) {
+    fn set_volume(&self, value: Sexp) -> savvy::Result<()> {
+        let value = match value.into_typed() {
+            TypedSexp::Real(real_sexp) if real_sexp.len() == 1 => real_sexp.as_slice()[0],
+            _ => panic!("value must be a double of length 1."),
+        };
+
         self.0.set_volume(value as f32);
+        Ok(())
     }
 
     /// HAudioSink
@@ -293,8 +326,10 @@ impl HAudioSink {
     ///
     /// _________
     ///
-    fn speed(&self) -> f64 {
-        self.0.speed() as f64
+    fn speed(&self) -> savvy::Result<Sexp> {
+        let speed = self.0.speed() as f64;
+        let real_sexp: OwnedRealSexp = speed.try_into()?;
+        real_sexp.into()
     }
 
     /// HAudioSink
@@ -321,8 +356,13 @@ impl HAudioSink {
     ///
     /// _________
     ///
-    fn set_speed(&self, value: f64) {
+    fn set_speed(&self, value: Sexp) -> savvy::Result<()> {
+        let value = match value.into_typed() {
+            TypedSexp::Real(real_sexp) if real_sexp.len() == 1 => real_sexp.as_slice()[0],
+            _ => panic!("value must be a double of length 1."),
+        };
         self.0.set_speed(value as f32);
+        Ok(())
     }
 
     /// HAudioSink
@@ -342,8 +382,9 @@ impl HAudioSink {
     ///
     /// _________
     ///
-    fn sleep_until_end(&self) {
+    fn sleep_until_end(&self) -> savvy::Result<()> {
         self.0.sleep_until_end();
+        Ok(())
     }
 
     /// HAudioSink
@@ -369,8 +410,10 @@ impl HAudioSink {
     ///
     /// _________
     ///
-    fn len(&self) -> i32 {
-        self.0.len() as i32
+    fn len(&self) -> savvy::Result<Sexp> {
+        let len = self.0.len() as i32;
+        let integer_sexp: OwnedIntegerSexp = len.try_into()?;
+        integer_sexp.into()
     }
 
     /// HAudioSink
@@ -393,8 +436,10 @@ impl HAudioSink {
     ///
     /// _________
     ///
-    fn is_empty(&self) -> bool {
-        self.0.is_empty()
+    fn is_empty(&self) -> savvy::Result<Sexp> {
+        let is_empty = self.0.is_empty();
+        let logical_sexp: OwnedLogicalSexp = is_empty.try_into()?;
+        logical_sexp.into()
     }
 
     /// HAudioSink
@@ -416,8 +461,9 @@ impl HAudioSink {
     ///
     /// _________
     ///
-    fn clear(&self) {
-        self.0.clear()
+    fn clear(&self) -> savvy::Result<()> {
+        self.0.clear();
+        Ok(())
     }
 
     /// HAudioSink
@@ -442,8 +488,9 @@ impl HAudioSink {
     ///
     /// _________
     ///
-    fn skip_one(&self) {
-        self.0.skip_one()
+    fn skip_one(&self) -> savvy::Result<()> {
+        self.0.skip_one();
+        Ok(())
     }
 
     /// HAudioSink
@@ -465,9 +512,10 @@ impl HAudioSink {
     ///
     /// _________
     ///
-    fn audio_output_devices() -> Strings {
-        let v = play::audio_output_devices().unwrap();
-        Strings::from_values(v)
+    fn audio_output_devices() -> savvy::Result<Sexp> {
+        let output_devices = play::audio_output_devices().unwrap();
+        let string_sexp = OwnedStringSexp::try_from(output_devices)?;
+        string_sexp.into()
     }
 
     /// HAudioSink
@@ -489,8 +537,10 @@ impl HAudioSink {
     ///
     /// _________
     ///
-    fn audio_default_device() -> String {
-        play::audio_default_device().unwrap()
+    fn audio_default_device() -> savvy::Result<Sexp> {
+        let default_device = play::audio_default_device().unwrap();
+        let string_sexp = OwnedStringSexp::try_from(default_device)?;
+        string_sexp.into()
     }
 
     /// HAudioSink
@@ -518,13 +568,9 @@ impl HAudioSink {
     ///
     /// _________
     ///
-    fn audio_supported_configs() -> Strings {
-        let v = play::audio_supported_configs().unwrap();
-        Strings::from_values(v)
+    fn audio_supported_configs() -> savvy::Result<Sexp> {
+        let supported_configs = play::audio_supported_configs().unwrap();
+        let string_sexp = OwnedStringSexp::try_from(supported_configs)?;
+        string_sexp.into()
     }
-}
-
-extendr_module! {
-    mod haudiosink;
-    impl HAudioSink;
 }
