@@ -1,10 +1,16 @@
-use crate::{harray::HArray, hdatatype::HDataType, hmetadatatype::HMetadataType};
+use crate::{
+    conversions::Conversions, harray::HArray, hdatatype::HDataType, hmetadatatype::HMetadataType,
+};
 use harmonium_core::conversions::IntoDynamic;
 use harmonium_io::decode;
-use savvy::{savvy, ListSexp, OwnedListSexp, OwnedRealSexp, OwnedStringSexp, Sexp, TypedSexp};
+use savvy::{
+    savvy, NullSexp, OwnedIntegerSexp, OwnedListSexp, OwnedRealSexp, OwnedStringSexp, Sexp,
+};
 use std::sync::Arc;
 
+#[savvy]
 struct HFile;
+#[savvy]
 struct HDecoderStream(Box<dyn HDecoderStreamR>);
 
 #[savvy]
@@ -40,40 +46,27 @@ impl HFile {
     ///
     /// _________
     ///
-    fn decode(fpath: Sexp, dtype: &HDataType) -> savvy::Result<ListSexp> {
+    fn decode(fpath: Sexp, dtype: &HDataType) -> savvy::Result<Sexp> {
+        let fpath: &str = fpath.to_scalar()?;
         match dtype {
             HDataType::Float32 => {
                 let (harray, sr) = harmonium_io::decode::decode::<f32>(fpath).unwrap();
                 let harray = harray.into_dynamic();
                 let harray = HArray(Arc::new(harray));
-                let fpath = match fpath.into_typed() {
-                    TypedSexp::String(string_sexp) if string_sexp.len() == 1 => {
-                        // Ok to unwrap since the size was checked.
-                        string_sexp.iter().next().unwrap()
-                    }
-                    _ => panic!("fpath must be a string of length 1."),
-                };
-                let sr = OwnedIntegerSexp::try_from(&[sr as i32])?;
-                let list = OwnedListSexp::new(2, false)?;
-                ListSexp::set_value(0, harray.into());
-                ListSexp::set_value(1, sr.into());
+                let sr = OwnedIntegerSexp::try_from_scalar(sr as i32)?;
+                let mut list = OwnedListSexp::new(2, false)?;
+                unsafe { list.set_value_unchecked(0, Sexp::try_from(harray)?.0) };
+                unsafe { list.set_value_unchecked(1, Sexp::from(sr).0) };
                 Ok(list.into())
             }
             HDataType::Float64 => {
                 let (harray, sr) = harmonium_io::decode::decode::<f64>(fpath).unwrap();
                 let harray = harray.into_dynamic();
                 let harray = HArray(Arc::new(harray));
-                let fpath = match fpath.into_typed() {
-                    TypedSexp::String(string_sexp) if string_sexp.len() == 1 => {
-                        // Ok to unwrap since the size was checked.
-                        string_sexp.iter().next().unwrap()
-                    }
-                    _ => panic!("fpath must be a string of length 1."),
-                };
-                let sr = OwnedIntegerSexp::try_from(&[sr as i32])?;
-                let list = OwnedListSexp::new(2, false)?;
-                ListSexp::set_value(0, harray.into());
-                ListSexp::set_value(1, sr.into());
+                let sr = OwnedIntegerSexp::try_from_scalar(sr as i32)?;
+                let mut list = OwnedListSexp::new(2, false)?;
+                unsafe { list.set_value_unchecked(0, Sexp::try_from(harray)?.0) };
+                unsafe { list.set_value_unchecked(1, Sexp::from(sr).0) };
                 Ok(list.into())
             }
             _ => panic!("Operation only allowed for float dtypes."),
@@ -114,23 +107,12 @@ impl HFile {
     ///
     fn decode_stream(
         fpath: Sexp,
-        frames: Robj,
+        frames: Sexp,
         dtype: &HDataType,
     ) -> savvy::Result<HDecoderStream> {
-        let fpath = match fpath.into_typed() {
-            TypedSexp::String(string_sexp) if string_sexp.len() == 1 => {
-                // Ok to unwrap since the size was checked.
-                string_sexp.iter().next().unwrap()
-            }
-            _ => panic!("fpath must be a string of length 1."),
-        };
-        let frames: i32 = match frames.into_typed() {
-            TypedSexp::Integer(integer_sexp) if integer_sexp.len() == 1 => {
-                integer_sexp.as_slice()[0]
-            }
-            _ => panic!("frames must be an integer of length 1."),
-        };
-        let frames = usize::try_into(frames).unwrap();
+        let fpath: &str = fpath.to_scalar()?;
+        let frames: i32 = frames.to_scalar()?;
+        let frames = usize::try_from(frames).unwrap();
         match dtype {
             HDataType::Float32 => {
                 let streamer = harmonium_io::decode::stream::<f32>(fpath, frames).unwrap();
@@ -226,13 +208,7 @@ impl HFile {
     /// _________
     ///
     fn metadata(fpath: Sexp, metadata_type: &HMetadataType) -> savvy::Result<Sexp> {
-        let fpath = match fpath.into_typed() {
-            TypedSexp::String(string_sexp) if string_sexp.len() == 1 => {
-                // Ok to unwrap since the size was checked.
-                string_sexp.iter().next().unwrap()
-            }
-            _ => panic!("fpath must be a string of length 1."),
-        };
+        let fpath: &str = fpath.to_scalar()?;
         let metadata_type = match metadata_type {
             HMetadataType::All => decode::HMetadataType::All,
             HMetadataType::Text => decode::HMetadataType::Text,
@@ -243,20 +219,30 @@ impl HFile {
         if let Some(metadata) = opt_metadata {
             match metadata {
                 decode::HMetadata::All((text, visual)) => {
-                    let list1 = list_from_textmetadata(text);
-                    let list2 = list_from_visualmetadata(visual);
-                    let list = OwnedListSexp::new(2, true)?;
-                    ListSexp::set_value(0, list1.into());
-                    ListSexp::set_value(1, list2.into());
-                    ListSexp::set_name(0, "text");
-                    ListSexp::set_name(1, "visual");
+                    let list1 = list_from_textmetadata(text)?;
+                    let list2 = list_from_visualmetadata(visual)?;
+                    let mut list = OwnedListSexp::new(2, true)?;
+                    unsafe { list.set_value_unchecked(0, Sexp::from(list1).0) };
+                    unsafe { list.set_value_unchecked(1, Sexp::from(list2).0) };
+                    unsafe {
+                        list.set_name_unchecked(
+                            0,
+                            Sexp::from(OwnedStringSexp::try_from_scalar("text")?).0,
+                        )
+                    };
+                    unsafe {
+                        list.set_name_unchecked(
+                            1,
+                            Sexp::from(OwnedStringSexp::try_from_scalar("visual")?).0,
+                        )
+                    };
                     Ok(list.into())
                 }
-                decode::HMetadata::Text(text) => list_from_textmetadata(text).into(),
-                decode::HMetadata::Visual(visual) => list_from_visualmetadata(visual).into(),
+                decode::HMetadata::Text(text) => list_from_textmetadata(text)?.into(),
+                decode::HMetadata::Visual(visual) => list_from_visualmetadata(visual)?.into(),
             }
         } else {
-            let list = OwnedListSexp::new(0, false);
+            let list = OwnedListSexp::new(0, false)?;
             Ok(list.into())
         }
     }
@@ -292,16 +278,10 @@ impl HFile {
     /// _________
     ///
     fn params(fpath: Sexp) -> savvy::Result<Sexp> {
-        let fpath = match fpath.into_typed() {
-            TypedSexp::String(string_sexp) if string_sexp.len() == 1 => {
-                // Ok to unwrap since the size was checked.
-                string_sexp.iter().next().unwrap()
-            }
-            _ => panic!("fpath must be a string of length 1."),
-        };
+        let fpath: &str = fpath.to_scalar()?;
         let (sr, nframes, nchannels, duration) = decode::get_params_from_file(fpath).unwrap();
         let arr = [sr as f64, nframes as f64, nchannels as f64, duration];
-        let real_sexp = OwnedRealSexp::try_from_slice(&arr);
+        let real_sexp = OwnedRealSexp::try_from_slice(arr.as_slice())?;
         Ok(real_sexp.into())
     }
 
@@ -333,13 +313,7 @@ impl HFile {
     /// _________
     ///
     fn verify(fpath: Sexp) -> savvy::Result<Sexp> {
-        let fpath = match fpath.into_typed() {
-            TypedSexp::String(string_sexp) if string_sexp.len() == 1 => {
-                // Ok to unwrap since the size was checked.
-                string_sexp.iter().next().unwrap()
-            }
-            _ => panic!("fpath must be a string of length 1."),
-        };
+        let fpath: &str = fpath.to_scalar()?;
         let verified = match decode::verify_file(fpath).unwrap() {
             decode::HVerifyDecode::Passed => "passed",
             decode::HVerifyDecode::Failed => "failed",
@@ -392,86 +366,88 @@ pub trait HDecoderStreamR {
 }
 
 impl HDecoderStreamR for harmonium_io::decode::DecoderStream<f32> {
-    fn next(&mut self) -> Robj {
+    fn next(&mut self) -> savvy::Result<Sexp> {
         if let Some(x) = std::iter::Iterator::next(self) {
-            HArray(Arc::new(x.into_dynamic())).into()
+            HArray(Arc::new(x.into_dynamic())).try_into()
         } else {
-            NULL.into()
+            Ok(NullSexp.into())
         }
     }
 }
 
 impl HDecoderStreamR for harmonium_io::decode::DecoderStream<f64> {
-    fn next(&mut self) -> Robj {
+    fn next(&mut self) -> savvy::Result<Sexp> {
         if let Some(x) = std::iter::Iterator::next(self) {
-            HArray(Arc::new(x.into_dynamic())).into()
+            HArray(Arc::new(x.into_dynamic())).try_into()
         } else {
-            NULL.into()
+            Ok(NullSexp.into())
         }
     }
 }
 
-fn list_from_textmetadata(text: decode::HTextMetadata) -> List {
+fn list_from_textmetadata(text: decode::HTextMetadata) -> savvy::Result<OwnedListSexp> {
     if let Some(tags_vec) = text.0 {
-        let iter = tags_vec.iter().map(|x| {
-            let strings =
-                Strings::from_values(&[&x.tag_key[..], &x.tag_std_key[..], &x.tag_value[..]]);
-            let mut robj: Robj = strings.into();
-            robj.set_names(&["tag_key", "tag_std_key", "tag_value"])
-                .unwrap();
-            robj
-        });
-        List::from_values(iter)
+        let mut list = OwnedListSexp::new(tags_vec.len(), false)?;
+        for (i, htag) in tags_vec.as_slice().iter().enumerate() {
+            let mut string_sexp = OwnedStringSexp::try_from_slice(&[
+                htag.tag_key.as_str(),
+                htag.tag_std_key.as_str(),
+                htag.tag_value.as_str(),
+            ])?;
+            string_sexp.set_names(&["tag_key", "tag_std_key", "tag_value"])?;
+            unsafe { list.set_value_unchecked(i, Sexp::from(string_sexp).0) };
+        }
+        Ok(list)
     } else {
-        List::new(0)
+        OwnedListSexp::new(0, false)
     }
 }
 
-fn list_from_visualmetadata(visual: decode::HVisualMetadata) -> OwnedListSexp {
+fn list_from_visualmetadata(visual: decode::HVisualMetadata) -> savvy::Result<OwnedListSexp> {
     if let Some(svm_vec) = visual.0 {
-        let iter = svm_vec.iter().map(|x| {
-            let strings = Strings::from_values(&[
-                &x.usage[..],
-                &x.media_type[..],
-                &x.dimensions[..],
-                &x.bpp[..],
-                &x.color_mode[..],
-                &x.size[..],
-            ]);
+        let mut list = OwnedListSexp::new(svm_vec.len(), false)?;
+        for (i, hsvm) in svm_vec.as_slice().iter().enumerate() {
+            let mut inner_list = OwnedListSexp::new(2, false)?;
+            let mut string_sexp = OwnedStringSexp::try_from_slice(&[
+                hsvm.usage.as_str(),
+                hsvm.media_type.as_str(),
+                hsvm.dimensions.as_str(),
+                hsvm.bpp.as_str(),
+                hsvm.color_mode.as_str(),
+                hsvm.size.as_str(),
+            ])?;
+            string_sexp.set_names(&[
+                "usage",
+                "media_type",
+                "dimensions",
+                "bpp",
+                "color_mode",
+                "size",
+            ])?;
+            unsafe { inner_list.set_value_unchecked(0, Sexp::from(string_sexp).0) };
 
-            let mut robj1: Robj = strings.into();
-            robj1
-                .set_names(&[
-                    "usage",
-                    "media_type",
-                    "dimensions",
-                    "bpp",
-                    "color_mode",
-                    "size",
-                ])
-                .unwrap();
-
-            let robj2: Robj = if let Some(tags_vec) = &x.tags_vec {
-                let inner_iter = tags_vec.iter().map(|z| {
-                    let strings = Strings::from_values(&[
-                        &z.tag_key[..],
-                        &z.tag_std_key[..],
-                        &z.tag_value[..],
-                    ]);
-                    let mut robj: Robj = strings.into();
-                    robj.set_names(&["tag_key", "tag_std_key", "tag_value"])
-                        .unwrap();
-                    robj
-                });
-                List::from_values(inner_iter).into()
+            let inner_inner_list = if let Some(tags_vec) = &hsvm.tags_vec {
+                let mut inner_inner_list = OwnedListSexp::new(tags_vec.len(), false)?;
+                for (i, htag) in tags_vec.as_slice().iter().enumerate() {
+                    let mut string_sexp = OwnedStringSexp::try_from_slice(&[
+                        htag.tag_key.as_str(),
+                        htag.tag_std_key.as_str(),
+                        htag.tag_value.as_str(),
+                    ])?;
+                    string_sexp.set_names(&["tag_key", "tag_std_key", "tag_value"])?;
+                    unsafe { inner_inner_list.set_value_unchecked(i, Sexp::from(string_sexp).0) };
+                }
+                inner_inner_list
             } else {
-                List::new(0).into()
+                OwnedListSexp::new(0, false)?
             };
 
-            List::from_values(&[robj1, robj2])
-        });
-        List::from_values(iter)
+            unsafe { inner_list.set_value_unchecked(1, Sexp::from(inner_inner_list).0) };
+
+            unsafe { list.set_value_unchecked(i, Sexp::from(inner_list).0) };
+        }
+        Ok(list)
     } else {
-        OwnedListSexp::new(0, false)?
+        OwnedListSexp::new(0, false)
     }
 }

@@ -9,6 +9,7 @@ use savvy::{r_println, savvy, OwnedLogicalSexp, Sexp};
 /// # Methods
 ///
 #[derive(PartialEq)]
+#[savvy]
 pub enum HMetadataType {
     All,
     Text,

@@ -1,13 +1,14 @@
 use crate::{
-    harray::HArray, hdatatype::HDataType, hpolynomialdegree::HPolynomialDegree,
-    hresamplertype::HResamplerType, hsincinterpolationparams::HSincInterpolationParameters,
+    conversions::Conversions, harray::HArray, hdatatype::HDataType,
+    hpolynomialdegree::HPolynomialDegree, hresamplertype::HResamplerType,
+    hsincinterpolationparams::HSincInterpolationParameters,
 };
 use harmonium_resample::resample::ProcessResampler;
 use ndarray::IxDyn;
 use rubato::{
     FastFixedIn, FastFixedOut, FftFixedIn, FftFixedInOut, FftFixedOut, SincFixedIn, SincFixedOut,
 };
-use savvy::{r_println, savvy, Sexp, TypedSexp};
+use savvy::{r_println, savvy, Sexp};
 
 pub trait HResamplerR: Send {
     fn process(&mut self, harray: &mut HArray);
@@ -49,6 +50,7 @@ pub trait HResamplerR: Send {
 ///
 /// # Methods
 ///
+#[savvy]
 pub struct HResampler(pub Box<dyn HResamplerR>);
 
 #[savvy]
@@ -121,36 +123,11 @@ impl HResampler {
         res_type: &HResamplerType,
         dtype: &HDataType,
     ) -> savvy::Result<HResampler> {
-        let sr_in: i32 = match sr_in.into_typed() {
-            TypedSexp::Integer(integer_sexp) if integer_sexp.len() == 1 => {
-                integer_sexp.as_slice()[0]
-            }
-            _ => panic!("sr_in must be an integer of length 1."),
-        };
-        let sr_out: i32 = match sr_out.into_typed() {
-            TypedSexp::Integer(integer_sexp) if integer_sexp.len() == 1 => {
-                integer_sexp.as_slice()[0]
-            }
-            _ => panic!("sr_out must be an integer of length 1."),
-        };
-        let chunk_size: i32 = match chunk_size.into_typed() {
-            TypedSexp::Integer(integer_sexp) if integer_sexp.len() == 1 => {
-                integer_sexp.as_slice()[0]
-            }
-            _ => panic!("chunk_size must be an integer of length 1."),
-        };
-        let sub_chunks: i32 = match sub_chunks.into_typed() {
-            TypedSexp::Integer(integer_sexp) if integer_sexp.len() == 1 => {
-                integer_sexp.as_slice()[0]
-            }
-            _ => panic!("sub_chunks must be an integer of length 1."),
-        };
-        let nchannels: i32 = match nchannels.into_typed() {
-            TypedSexp::Integer(integer_sexp) if integer_sexp.len() == 1 => {
-                integer_sexp.as_slice()[0]
-            }
-            _ => panic!("nchannels must be an integer of length 1."),
-        };
+        let sr_in: i32 = sr_in.to_scalar()?;
+        let sr_out: i32 = sr_out.to_scalar()?;
+        let chunk_size: i32 = chunk_size.to_scalar()?;
+        let sub_chunks: i32 = sub_chunks.to_scalar()?;
+        let nchannels: i32 = nchannels.to_scalar()?;
 
         match (res_type, dtype) {
             (HResamplerType::FftFixedIn, HDataType::Float32) => {
@@ -289,26 +266,10 @@ impl HResampler {
         res_type: &HResamplerType,
         dtype: &HDataType,
     ) -> savvy::Result<HResampler> {
-        let resample_ratio: f64 = match resample_ratio.into_typed() {
-            TypedSexp::Real(real_sexp) if real_sexp.len() == 1 => real_sexp.as_slice()[0],
-            _ => panic!("resample_ratio must be a double of length 1."),
-        };
-        let max_resample_ratio_relative: f64 = match max_resample_ratio_relative.into_typed() {
-            TypedSexp::Real(real_sexp) if real_sexp.len() == 1 => real_sexp.as_slice()[0],
-            _ => panic!("max_resample_ratio_relative must be a double of length 1."),
-        };
-        let chunk_size: i32 = match chunk_size.into_typed() {
-            TypedSexp::Integer(integer_sexp) if integer_sexp.len() == 1 => {
-                integer_sexp.as_slice()[0]
-            }
-            _ => panic!("chunk_size must be an integer of length 1."),
-        };
-        let nchannels: i32 = match nchannels.into_typed() {
-            TypedSexp::Integer(integer_sexp) if integer_sexp.len() == 1 => {
-                integer_sexp.as_slice()[0]
-            }
-            _ => panic!("nchannels must be an integer of length 1."),
-        };
+        let resample_ratio: f64 = resample_ratio.to_scalar()?;
+        let max_resample_ratio_relative: f64 = max_resample_ratio_relative.to_scalar()?;
+        let chunk_size: i32 = chunk_size.to_scalar()?;
+        let nchannels: i32 = nchannels.to_scalar()?;
 
         match (res_type, dtype) {
             (HResamplerType::SincFixedIn, HDataType::Float32) => {
@@ -428,26 +389,10 @@ impl HResampler {
         res_type: &HResamplerType,
         dtype: &HDataType,
     ) -> savvy::Result<HResampler> {
-        let resample_ratio: f64 = match resample_ratio.into_typed() {
-            TypedSexp::Real(real_sexp) if real_sexp.len() == 1 => real_sexp.as_slice()[0],
-            _ => panic!("resample_ratio must be a double of length 1."),
-        };
-        let max_resample_ratio_relative: f64 = match max_resample_ratio_relative.into_typed() {
-            TypedSexp::Real(real_sexp) if real_sexp.len() == 1 => real_sexp.as_slice()[0],
-            _ => panic!("max_resample_ratio_relative must be a double of length 1."),
-        };
-        let chunk_size: i32 = match chunk_size.into_typed() {
-            TypedSexp::Integer(integer_sexp) if integer_sexp.len() == 1 => {
-                integer_sexp.as_slice()[0]
-            }
-            _ => panic!("chunk_size must be an integer of length 1."),
-        };
-        let nchannels: i32 = match nchannels.into_typed() {
-            TypedSexp::Integer(integer_sexp) if integer_sexp.len() == 1 => {
-                integer_sexp.as_slice()[0]
-            }
-            _ => panic!("nchannels must be an integer of length 1."),
-        };
+        let resample_ratio: f64 = resample_ratio.to_scalar()?;
+        let max_resample_ratio_relative: f64 = max_resample_ratio_relative.to_scalar()?;
+        let chunk_size: i32 = chunk_size.to_scalar()?;
+        let nchannels: i32 = nchannels.to_scalar()?;
 
         match (res_type, dtype) {
             (HResamplerType::FastFixedIn, HDataType::Float32) => {
@@ -556,16 +501,8 @@ impl HResampler {
     /// _________
     ///
     fn set_resample_ratio(&mut self, new_ratio: Sexp, ramp: Sexp) -> savvy::Result<()> {
-        let new_ratio: f64 = match new_ratio.into_typed() {
-            TypedSexp::Real(real_sexp) if real_sexp.len() == 1 => real_sexp.as_slice()[0],
-            _ => panic!("new_ratio must be a double of length 1."),
-        };
-        let ramp: bool = match ramp.into_typed() {
-            TypedSexp::Logical(logical_sexp) if logical_sexp.len() == 1 => {
-                logical_sexp.as_slice_raw()[0] == 1
-            }
-            _ => panic!("ramp must be a logical of length 1."),
-        };
+        let new_ratio: f64 = new_ratio.to_scalar()?;
+        let ramp: bool = ramp.to_scalar()?;
         self.0.set_resample_ratio(new_ratio, ramp);
         Ok(())
     }
@@ -600,16 +537,8 @@ impl HResampler {
     /// _________
     ///
     fn set_resample_ratio_relative(&mut self, rel_ratio: Sexp, ramp: Sexp) -> savvy::Result<()> {
-        let rel_ratio: f64 = match rel_ratio.into_typed() {
-            TypedSexp::Real(real_sexp) if real_sexp.len() == 1 => real_sexp.as_slice()[0],
-            _ => panic!("rel_ratio must be a double of length 1."),
-        };
-        let ramp: bool = match ramp.into_typed() {
-            TypedSexp::Logical(logical_sexp) if logical_sexp.len() == 1 => {
-                logical_sexp.as_slice_raw()[0] == 1
-            }
-            _ => panic!("ramp must be a logical of length 1."),
-        };
+        let rel_ratio: f64 = rel_ratio.to_scalar()?;
+        let ramp: bool = ramp.to_scalar()?;
         self.0.set_resample_ratio_relative(rel_ratio, ramp);
         Ok(())
     }

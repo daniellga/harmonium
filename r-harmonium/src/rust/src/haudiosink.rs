@@ -1,17 +1,16 @@
 use harmonium_core::haudioop::Audio;
 use harmonium_io::{decode::decode, play};
 use ndarray::IxDyn;
-use savvy::{
-    savvy, OwnedIntegerSexp, OwnedLogicalSexp, OwnedRealSexp, OwnedStringSexp, Sexp, TypedSexp,
-};
+use savvy::{savvy, OwnedIntegerSexp, OwnedLogicalSexp, OwnedRealSexp, OwnedStringSexp, Sexp};
 
-use crate::{harray::HArray, hdatatype::HDataType};
+use crate::{conversions::Conversions, harray::HArray, hdatatype::HDataType};
 
 /// HAudioSink
 /// Handle to a device that outputs sounds. \
 ///
 /// # Methods
 ///
+#[savvy]
 pub struct HAudioSink(play::HAudioSink);
 
 #[savvy]
@@ -64,12 +63,7 @@ impl HAudioSink {
     /// _________
     ///
     fn append_from_harray(&self, harray: &HArray, sr: Sexp) -> savvy::Result<()> {
-        let sr = match sr.into_typed() {
-            TypedSexp::Integer(integer_sexp) if integer_sexp.len() == 1 => {
-                integer_sexp.as_slice()[0]
-            }
-            _ => panic!("value must be an integer of length 1."),
-        };
+        let sr: i32 = sr.to_scalar()?;
         let sr = sr.try_into().unwrap();
 
         match harray.0.dtype() {
@@ -119,13 +113,7 @@ impl HAudioSink {
     /// _________
     ///
     fn append_from_file(&self, fpath: Sexp) -> savvy::Result<()> {
-        let fpath = match fpath.into_typed() {
-            TypedSexp::String(string_sexp) if string_sexp.len() == 1 => {
-                // Ok to unwrap since the size was checked.
-                string_sexp.iter().next().unwrap()
-            }
-            _ => panic!("fpath must be a string of length 1."),
-        };
+        let fpath: &str = fpath.to_scalar()?;
 
         let (harray, sr) = decode::<f32>(fpath).unwrap();
         let audio = Audio::D2(&harray);
@@ -295,11 +283,7 @@ impl HAudioSink {
     /// _________
     ///
     fn set_volume(&self, value: Sexp) -> savvy::Result<()> {
-        let value = match value.into_typed() {
-            TypedSexp::Real(real_sexp) if real_sexp.len() == 1 => real_sexp.as_slice()[0],
-            _ => panic!("value must be a double of length 1."),
-        };
-
+        let value: f64 = value.to_scalar()?;
         self.0.set_volume(value as f32);
         Ok(())
     }
@@ -357,10 +341,7 @@ impl HAudioSink {
     /// _________
     ///
     fn set_speed(&self, value: Sexp) -> savvy::Result<()> {
-        let value = match value.into_typed() {
-            TypedSexp::Real(real_sexp) if real_sexp.len() == 1 => real_sexp.as_slice()[0],
-            _ => panic!("value must be a double of length 1."),
-        };
+        let value: f64 = value.to_scalar()?;
         self.0.set_speed(value as f32);
         Ok(())
     }

@@ -8,6 +8,7 @@ use std::fmt;
 /// # Methods
 ///
 #[derive(PartialEq)]
+#[savvy]
 pub enum HDataType {
     Float32,
     Float64,

@@ -1,5 +1,5 @@
-use crate::harray::HArray;
-use savvy::{savvy, OwnedIntegerSexp, Sexp, TypedSexp};
+use crate::{conversions::Conversions, harray::HArray};
+use savvy::{savvy, OwnedIntegerSexp, Sexp};
 
 /// HAudioOp
 ///
@@ -105,16 +105,8 @@ impl HAudioOp {
     fn db_to_amplitude(harray: &mut HArray, reference: Sexp, power: Sexp) -> savvy::Result<()> {
         let inner_mut = harray.get_inner_mut();
 
-        let reference: f64 = match reference.into_typed() {
-            TypedSexp::Real(real_sexp) if real_sexp.len() == 1 => real_sexp.as_slice()[0],
-            _ => panic!("reference must be a double of length 1."),
-        };
-
-        let power: f64 = match power.into_typed() {
-            TypedSexp::Real(real_sexp) if real_sexp.len() == 1 => real_sexp.as_slice()[0],
-            _ => panic!("reference must be a double of length 1."),
-        };
-
+        let reference: f64 = reference.to_scalar()?;
+        let power: f64 = power.to_scalar()?;
         inner_mut.db_to_amplitude(reference, power);
 
         Ok(())

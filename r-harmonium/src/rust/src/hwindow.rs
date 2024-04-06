@@ -1,7 +1,7 @@
-use crate::{harray::HArray, hdatatype::HDataType};
+use crate::{conversions::Conversions, harray::HArray, hdatatype::HDataType};
 use harmonium_core::conversions::IntoDynamic;
 use harmonium_window::windows::*;
-use savvy::{savvy, Sexp, TypedSexp};
+use savvy::{savvy, Sexp};
 use std::sync::Arc;
 
 /// HWindow
@@ -46,20 +46,10 @@ impl HWindow {
     /// ```
     ///
     fn barthann(npoints: Sexp, sym: Sexp, dtype: &HDataType) -> savvy::Result<HArray> {
-        let npoints = match npoints.into_typed() {
-            TypedSexp::Integer(integer_sexp) if integer_sexp.len() == 1 => {
-                integer_sexp.as_slice()[0]
-            }
-            _ => panic!("npoints must be an integer of length 1."),
-        };
+        let npoints: i32 = npoints.to_scalar()?;
         let npoints = npoints.try_into().unwrap();
 
-        let sym = match sym.into_typed() {
-            TypedSexp::Logical(logical_sexp) if logical_sexp.len() == 1 => {
-                logical_sexp.as_slice_raw()[0] == 1
-            }
-            _ => panic!("sym must be a logical of length 1."),
-        };
+        let sym: bool = sym.to_scalar()?;
 
         let window_type = if sym {
             WindowType::Symmetric
@@ -120,20 +110,10 @@ impl HWindow {
     /// ```
     ///
     fn bartlett(npoints: Sexp, sym: Sexp, dtype: &HDataType) -> savvy::Result<HArray> {
-        let npoints = match npoints.into_typed() {
-            TypedSexp::Integer(integer_sexp) if integer_sexp.len() == 1 => {
-                integer_sexp.as_slice()[0]
-            }
-            _ => panic!("npoints must be an integer of length 1."),
-        };
+        let npoints: i32 = npoints.to_scalar()?;
         let npoints = npoints.try_into().unwrap();
 
-        let sym = match sym.into_typed() {
-            TypedSexp::Logical(logical_sexp) if logical_sexp.len() == 1 => {
-                logical_sexp.as_slice_raw()[0] == 1
-            }
-            _ => panic!("sym must be a logical of length 1."),
-        };
+        let sym: bool = sym.to_scalar()?;
 
         let window_type = if sym {
             WindowType::Symmetric
@@ -210,20 +190,10 @@ impl HWindow {
     /// ```
     ///
     fn blackman(npoints: Sexp, sym: Sexp, dtype: &HDataType) -> savvy::Result<HArray> {
-        let npoints = match npoints.into_typed() {
-            TypedSexp::Integer(integer_sexp) if integer_sexp.len() == 1 => {
-                integer_sexp.as_slice()[0]
-            }
-            _ => panic!("npoints must be an integer of length 1."),
-        };
+        let npoints: i32 = npoints.to_scalar()?;
         let npoints = npoints.try_into().unwrap();
 
-        let sym = match sym.into_typed() {
-            TypedSexp::Logical(logical_sexp) if logical_sexp.len() == 1 => {
-                logical_sexp.as_slice_raw()[0] == 1
-            }
-            _ => panic!("sym must be a logical of length 1."),
-        };
+        let sym: bool = sym.to_scalar()?;
 
         let window_type = if sym {
             WindowType::Symmetric
@@ -279,20 +249,10 @@ impl HWindow {
     /// ```
     ///
     fn blackmanharris(npoints: Sexp, sym: Sexp, dtype: &HDataType) -> savvy::Result<HArray> {
-        let npoints = match npoints.into_typed() {
-            TypedSexp::Integer(integer_sexp) if integer_sexp.len() == 1 => {
-                integer_sexp.as_slice()[0]
-            }
-            _ => panic!("npoints must be an integer of length 1."),
-        };
+        let npoints: i32 = npoints.to_scalar()?;
         let npoints = npoints.try_into().unwrap();
 
-        let sym = match sym.into_typed() {
-            TypedSexp::Logical(logical_sexp) if logical_sexp.len() == 1 => {
-                logical_sexp.as_slice_raw()[0] == 1
-            }
-            _ => panic!("sym must be a logical of length 1."),
-        };
+        let sym: bool = sym.to_scalar()?;
 
         let window_type = if sym {
             WindowType::Symmetric
@@ -348,20 +308,10 @@ impl HWindow {
     /// ```
     ///
     fn bohman(npoints: Sexp, sym: Sexp, dtype: &HDataType) -> savvy::Result<HArray> {
-        let npoints = match npoints.into_typed() {
-            TypedSexp::Integer(integer_sexp) if integer_sexp.len() == 1 => {
-                integer_sexp.as_slice()[0]
-            }
-            _ => panic!("npoints must be an integer of length 1."),
-        };
+        let npoints: i32 = npoints.to_scalar()?;
         let npoints = npoints.try_into().unwrap();
 
-        let sym = match sym.into_typed() {
-            TypedSexp::Logical(logical_sexp) if logical_sexp.len() == 1 => {
-                logical_sexp.as_slice_raw()[0] == 1
-            }
-            _ => panic!("sym must be a logical of length 1."),
-        };
+        let sym: bool = sym.to_scalar()?;
 
         let window_type = if sym {
             WindowType::Symmetric
@@ -412,12 +362,7 @@ impl HWindow {
     /// ```
     ///
     fn boxcar(npoints: Sexp, dtype: &HDataType) -> savvy::Result<HArray> {
-        let npoints = match npoints.into_typed() {
-            TypedSexp::Integer(integer_sexp) if integer_sexp.len() == 1 => {
-                integer_sexp.as_slice()[0]
-            }
-            _ => panic!("npoints must be an integer of length 1."),
-        };
+        let npoints: i32 = npoints.to_scalar()?;
         let npoints = npoints.try_into().unwrap();
 
         match dtype {
@@ -468,20 +413,10 @@ impl HWindow {
     /// ```
     ///
     fn cosine(npoints: Sexp, sym: Sexp, dtype: &HDataType) -> savvy::Result<HArray> {
-        let npoints = match npoints.into_typed() {
-            TypedSexp::Integer(integer_sexp) if integer_sexp.len() == 1 => {
-                integer_sexp.as_slice()[0]
-            }
-            _ => panic!("npoints must be an integer of length 1."),
-        };
+        let npoints: i32 = npoints.to_scalar()?;
         let npoints = npoints.try_into().unwrap();
 
-        let sym = match sym.into_typed() {
-            TypedSexp::Logical(logical_sexp) if logical_sexp.len() == 1 => {
-                logical_sexp.as_slice_raw()[0] == 1
-            }
-            _ => panic!("sym must be a logical of length 1."),
-        };
+        let sym: bool = sym.to_scalar()?;
 
         let window_type = if sym {
             WindowType::Symmetric
@@ -542,20 +477,10 @@ impl HWindow {
     /// ```
     ///
     fn hann(npoints: Sexp, sym: Sexp, dtype: &HDataType) -> savvy::Result<HArray> {
-        let npoints = match npoints.into_typed() {
-            TypedSexp::Integer(integer_sexp) if integer_sexp.len() == 1 => {
-                integer_sexp.as_slice()[0]
-            }
-            _ => panic!("npoints must be an integer of length 1."),
-        };
+        let npoints: i32 = npoints.to_scalar()?;
         let npoints = npoints.try_into().unwrap();
 
-        let sym = match sym.into_typed() {
-            TypedSexp::Logical(logical_sexp) if logical_sexp.len() == 1 => {
-                logical_sexp.as_slice_raw()[0] == 1
-            }
-            _ => panic!("sym must be a logical of length 1."),
-        };
+        let sym: bool = sym.to_scalar()?;
 
         let window_type = if sym {
             WindowType::Symmetric

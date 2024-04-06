@@ -1,7 +1,10 @@
 use rubato::{SincInterpolationParameters, SincInterpolationType, WindowFunction};
-use savvy::{r_println, savvy, Sexp, TypedSexp};
+use savvy::{r_println, savvy, Sexp};
+
+use crate::conversions::Conversions;
 
 #[derive(Debug)]
+#[savvy]
 pub struct HSincInterpolationParameters {
     sinc_len: i32,
     f_cutoff: f64,
@@ -19,40 +22,11 @@ impl HSincInterpolationParameters {
         interpolation: Sexp,
         window: Sexp,
     ) -> savvy::Result<HSincInterpolationParameters> {
-        let sinc_len: i32 = match sinc_len.into_typed() {
-            TypedSexp::Integer(integer_sexp) if integer_sexp.len() == 1 => {
-                integer_sexp.as_slice()[0]
-            }
-            _ => panic!("sinc_len must be an integer of length 1."),
-        };
-
-        let f_cutoff: f64 = match f_cutoff.into_typed() {
-            TypedSexp::Real(real_sexp) if real_sexp.len() == 1 => real_sexp.as_slice()[0],
-            _ => panic!("f_cutoff must be a double of length 1."),
-        };
-
-        let oversampling_factor: i32 = match oversampling_factor.into_typed() {
-            TypedSexp::Integer(integer_sexp) if integer_sexp.len() == 1 => {
-                integer_sexp.as_slice()[0]
-            }
-            _ => panic!("oversampling_factor must be an integer of length 1."),
-        };
-
-        let interpolation = match interpolation.into_typed() {
-            TypedSexp::String(string_sexp) if string_sexp.len() == 1 => {
-                // Ok to unwrap since the size was checked.
-                string_sexp.iter().next().unwrap()
-            }
-            _ => panic!("interpolation must be a string of length 1."),
-        };
-
-        let window = match window.into_typed() {
-            TypedSexp::String(string_sexp) if string_sexp.len() == 1 => {
-                // Ok to unwrap since the size was checked.
-                string_sexp.iter().next().unwrap()
-            }
-            _ => panic!("window must be a string of length 1."),
-        };
+        let sinc_len: i32 = sinc_len.to_scalar()?;
+        let f_cutoff: f64 = f_cutoff.to_scalar()?;
+        let oversampling_factor: i32 = oversampling_factor.to_scalar()?;
+        let interpolation: &str = interpolation.to_scalar()?;
+        let window: &str = window.to_scalar()?;
 
         Ok(HSincInterpolationParameters {
             sinc_len,

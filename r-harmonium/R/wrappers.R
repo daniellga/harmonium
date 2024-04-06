@@ -13,34 +13,7 @@ NULL
 }
 
 
-
-HArray <- new.env(parent = emptyenv())
-HArray$new_from_values <- function(arr, dtype) {
-  dtype <- .savvy_extract_ptr(dtype, "HDataType")
-  .savvy_wrap_HArray(.Call(HArray_new_from_values__impl, arr, dtype))
-}
-
-
-.savvy_wrap_HArray <- function(ptr) {
-  e <- new.env(parent = emptyenv())
-  e$.ptr <- ptr
-  e$len <- HArray_len(ptr)
-  e$shape <- HArray_shape(ptr)
-  e$ndim <- HArray_ndim(ptr)
-  e$slice <- HArray_slice(ptr)
-  e$print <- HArray_print(ptr)
-  e$eq <- HArray_eq(ptr)
-  e$ne <- HArray_ne(ptr)
-  e$clone <- HArray_clone(ptr)
-  e$collect <- HArray_collect(ptr)
-  e$dtype <- HArray_dtype(ptr)
-  e$is_shared <- HArray_is_shared(ptr)
-  e$mem_adress <- HArray_mem_adress(ptr)
-
-  class(e) <- "HArray"
-  e
-}
-
+### wrapper functions for HArray
 
 HArray_len <- function(self) {
   function() {
@@ -116,9 +89,60 @@ HArray_mem_adress <- function(self) {
   }
 }
 
+.savvy_wrap_HArray <- function(ptr) {
+  e <- new.env(parent = emptyenv())
+  e$.ptr <- ptr
+    e$len <- HArray_len(ptr)
+  e$shape <- HArray_shape(ptr)
+  e$ndim <- HArray_ndim(ptr)
+  e$slice <- HArray_slice(ptr)
+  e$print <- HArray_print(ptr)
+  e$eq <- HArray_eq(ptr)
+  e$ne <- HArray_ne(ptr)
+  e$clone <- HArray_clone(ptr)
+  e$collect <- HArray_collect(ptr)
+  e$dtype <- HArray_dtype(ptr)
+  e$is_shared <- HArray_is_shared(ptr)
+  e$mem_adress <- HArray_mem_adress(ptr)
+  
+  class(e) <- "HArray"
+  e
+}
+
+
+#' HArray
+#' An array representation. \
+#'
+#' # Methods
+#'
+HArray <- new.env(parent = emptyenv())
+
+### associated functions for HArray
+
+HArray$new_from_values <- function(arr, dtype) {
+  dtype <- .savvy_extract_ptr(dtype, "HDataType")
+  .savvy_wrap_HArray(.Call(HArray_new_from_values__impl, arr, dtype))
+}
+
+
+### wrapper functions for HAudioOp
+
+
+.savvy_wrap_HAudioOp <- function(ptr) {
+  e <- new.env(parent = emptyenv())
+  e$.ptr <- ptr
+  
+  
+  class(e) <- "HAudioOp"
+  e
+}
+
 
 
 HAudioOp <- new.env(parent = emptyenv())
+
+### associated functions for HAudioOp
+
 HAudioOp$nchannels <- function(harray) {
   harray <- .savvy_extract_ptr(harray, "HArray")
 .Call(HAudioOp_nchannels__impl, harray)
@@ -140,60 +164,7 @@ invisible(.Call(HAudioOp_to_mono__impl, harray))
 }
 
 
-.savvy_wrap_HAudioOp <- function(ptr) {
-  e <- new.env(parent = emptyenv())
-  e$.ptr <- ptr
-
-
-  class(e) <- "HAudioOp"
-  e
-}
-
-
-
-
-
-HAudioSink <- new.env(parent = emptyenv())
-HAudioSink$new <- function() {
-  .savvy_wrap_HAudioSink(.Call(HAudioSink_new__impl))
-}
-
-HAudioSink$audio_output_devices <- function() {
-.Call(HAudioSink_audio_output_devices__impl)
-}
-
-HAudioSink$audio_default_device <- function() {
-.Call(HAudioSink_audio_default_device__impl)
-}
-
-HAudioSink$audio_supported_configs <- function() {
-.Call(HAudioSink_audio_supported_configs__impl)
-}
-
-
-.savvy_wrap_HAudioSink <- function(ptr) {
-  e <- new.env(parent = emptyenv())
-  e$.ptr <- ptr
-  e$append_from_harray <- HAudioSink_append_from_harray(ptr)
-  e$append_from_file <- HAudioSink_append_from_file(ptr)
-  e$play <- HAudioSink_play(ptr)
-  e$stop <- HAudioSink_stop(ptr)
-  e$pause <- HAudioSink_pause(ptr)
-  e$is_paused <- HAudioSink_is_paused(ptr)
-  e$volume <- HAudioSink_volume(ptr)
-  e$set_volume <- HAudioSink_set_volume(ptr)
-  e$speed <- HAudioSink_speed(ptr)
-  e$set_speed <- HAudioSink_set_speed(ptr)
-  e$sleep_until_end <- HAudioSink_sleep_until_end(ptr)
-  e$len <- HAudioSink_len(ptr)
-  e$is_empty <- HAudioSink_is_empty(ptr)
-  e$clear <- HAudioSink_clear(ptr)
-  e$skip_one <- HAudioSink_skip_one(ptr)
-
-  class(e) <- "HAudioSink"
-  e
-}
-
+### wrapper functions for HAudioSink
 
 HAudioSink_append_from_harray <- function(self) {
   function(harray, sr) {
@@ -286,37 +257,57 @@ HAudioSink_skip_one <- function(self) {
   }
 }
 
-
-
-HDataType <- new.env(parent = emptyenv())
-HDataType$float32 <- function() {
-  .savvy_wrap_HDataType(.Call(HDataType_float32__impl))
-}
-
-HDataType$float64 <- function() {
-  .savvy_wrap_HDataType(.Call(HDataType_float64__impl))
-}
-
-HDataType$complex32 <- function() {
-  .savvy_wrap_HDataType(.Call(HDataType_complex32__impl))
-}
-
-HDataType$complex64 <- function() {
-  .savvy_wrap_HDataType(.Call(HDataType_complex64__impl))
-}
-
-
-.savvy_wrap_HDataType <- function(ptr) {
+.savvy_wrap_HAudioSink <- function(ptr) {
   e <- new.env(parent = emptyenv())
   e$.ptr <- ptr
-  e$print <- HDataType_print(ptr)
-  e$eq <- HDataType_eq(ptr)
-  e$ne <- HDataType_ne(ptr)
-
-  class(e) <- "HDataType"
+    e$append_from_harray <- HAudioSink_append_from_harray(ptr)
+  e$append_from_file <- HAudioSink_append_from_file(ptr)
+  e$play <- HAudioSink_play(ptr)
+  e$stop <- HAudioSink_stop(ptr)
+  e$pause <- HAudioSink_pause(ptr)
+  e$is_paused <- HAudioSink_is_paused(ptr)
+  e$volume <- HAudioSink_volume(ptr)
+  e$set_volume <- HAudioSink_set_volume(ptr)
+  e$speed <- HAudioSink_speed(ptr)
+  e$set_speed <- HAudioSink_set_speed(ptr)
+  e$sleep_until_end <- HAudioSink_sleep_until_end(ptr)
+  e$len <- HAudioSink_len(ptr)
+  e$is_empty <- HAudioSink_is_empty(ptr)
+  e$clear <- HAudioSink_clear(ptr)
+  e$skip_one <- HAudioSink_skip_one(ptr)
+  
+  class(e) <- "HAudioSink"
   e
 }
 
+
+#' HAudioSink
+#' Handle to a device that outputs sounds. \
+#'
+#' # Methods
+#'
+HAudioSink <- new.env(parent = emptyenv())
+
+### associated functions for HAudioSink
+
+HAudioSink$new <- function() {
+  .savvy_wrap_HAudioSink(.Call(HAudioSink_new__impl))
+}
+
+HAudioSink$audio_output_devices <- function() {
+.Call(HAudioSink_audio_output_devices__impl)
+}
+
+HAudioSink$audio_default_device <- function() {
+.Call(HAudioSink_audio_default_device__impl)
+}
+
+HAudioSink$audio_supported_configs <- function() {
+.Call(HAudioSink_audio_supported_configs__impl)
+}
+
+
+### wrapper functions for HDataType
 
 HDataType_print <- function(self) {
   function() {
@@ -338,9 +329,93 @@ HDataType_ne <- function(self) {
   }
 }
 
+.savvy_wrap_HDataType <- function(ptr) {
+  e <- new.env(parent = emptyenv())
+  e$.ptr <- ptr
+    e$print <- HDataType_print(ptr)
+  e$eq <- HDataType_eq(ptr)
+  e$ne <- HDataType_ne(ptr)
+  
+  class(e) <- "HDataType"
+  e
+}
+
+
+#' HDataType
+#' A type representation. \
+#' Supports `Float32`, `Float64`, `Complex32` and `Complex64` types. \
+#'
+#' # Methods
+#'
+HDataType <- new.env(parent = emptyenv())
+HDataType$Float32 <- .savvy_wrap_HDataType(0L)
+HDataType$Float64 <- .savvy_wrap_HDataType(1L)
+HDataType$Complex32 <- .savvy_wrap_HDataType(2L)
+HDataType$Complex64 <- .savvy_wrap_HDataType(3L)
+
+
+### associated functions for HDataType
+
+HDataType$float32 <- function() {
+  .savvy_wrap_HDataType(.Call(HDataType_float32__impl))
+}
+
+HDataType$float64 <- function() {
+  .savvy_wrap_HDataType(.Call(HDataType_float64__impl))
+}
+
+HDataType$complex32 <- function() {
+  .savvy_wrap_HDataType(.Call(HDataType_complex32__impl))
+}
+
+HDataType$complex64 <- function() {
+  .savvy_wrap_HDataType(.Call(HDataType_complex64__impl))
+}
+
+
+### wrapper functions for HDecoderStream
+
+HDecoderStream_stream <- function(self) {
+  function() {
+  .Call(HDecoderStream_stream__impl, self)
+  }
+}
+
+.savvy_wrap_HDecoderStream <- function(ptr) {
+  e <- new.env(parent = emptyenv())
+  e$.ptr <- ptr
+    e$stream <- HDecoderStream_stream(ptr)
+  
+  class(e) <- "HDecoderStream"
+  e
+}
+
+
+
+HDecoderStream <- new.env(parent = emptyenv())
+
+### associated functions for HDecoderStream
+
+
+
+### wrapper functions for HFft
+
+
+.savvy_wrap_HFft <- function(ptr) {
+  e <- new.env(parent = emptyenv())
+  e$.ptr <- ptr
+  
+  
+  class(e) <- "HFft"
+  e
+}
+
 
 
 HFft <- new.env(parent = emptyenv())
+
+### associated functions for HFft
+
 HFft$fft <- function(harray) {
   harray <- .savvy_extract_ptr(harray, "HArray")
   .savvy_wrap_HArray(.Call(HFft_fft__impl, harray))
@@ -357,44 +432,49 @@ invisible(.Call(HFft_fft_real_mut__impl, harray))
 }
 
 
-.savvy_wrap_HFft <- function(ptr) {
+### wrapper functions for HFile
+
+
+.savvy_wrap_HFile <- function(ptr) {
   e <- new.env(parent = emptyenv())
   e$.ptr <- ptr
-
-
-  class(e) <- "HFft"
+  
+  
+  class(e) <- "HFile"
   e
 }
 
 
 
+HFile <- new.env(parent = emptyenv())
 
+### associated functions for HFile
 
-HMetadataType <- new.env(parent = emptyenv())
-HMetadataType$all <- function() {
-  .savvy_wrap_HMetadataType(.Call(HMetadataType_all__impl))
+HFile$decode <- function(fpath, dtype) {
+  dtype <- .savvy_extract_ptr(dtype, "HDataType")
+.Call(HFile_decode__impl, fpath, dtype)
 }
 
-HMetadataType$text <- function() {
-  .savvy_wrap_HMetadataType(.Call(HMetadataType_text__impl))
+HFile$decode_stream <- function(fpath, frames, dtype) {
+  dtype <- .savvy_extract_ptr(dtype, "HDataType")
+  .savvy_wrap_HDecoderStream(.Call(HFile_decode_stream__impl, fpath, frames, dtype))
 }
 
-HMetadataType$visual <- function() {
-  .savvy_wrap_HMetadataType(.Call(HMetadataType_visual__impl))
+HFile$metadata <- function(fpath, metadata_type) {
+  metadata_type <- .savvy_extract_ptr(metadata_type, "HMetadataType")
+.Call(HFile_metadata__impl, fpath, metadata_type)
+}
+
+HFile$params <- function(fpath) {
+.Call(HFile_params__impl, fpath)
+}
+
+HFile$verify <- function(fpath) {
+.Call(HFile_verify__impl, fpath)
 }
 
 
-.savvy_wrap_HMetadataType <- function(ptr) {
-  e <- new.env(parent = emptyenv())
-  e$.ptr <- ptr
-  e$print <- HMetadataType_print(ptr)
-  e$eq <- HMetadataType_eq(ptr)
-  e$ne <- HMetadataType_ne(ptr)
-
-  class(e) <- "HMetadataType"
-  e
-}
-
+### wrapper functions for HMetadataType
 
 HMetadataType_print <- function(self) {
   function() {
@@ -416,41 +496,46 @@ HMetadataType_ne <- function(self) {
   }
 }
 
-
-
-HPolynomialDegree <- new.env(parent = emptyenv())
-HPolynomialDegree$septic <- function() {
-  .savvy_wrap_HPolynomialDegree(.Call(HPolynomialDegree_septic__impl))
-}
-
-HPolynomialDegree$quintic <- function() {
-  .savvy_wrap_HPolynomialDegree(.Call(HPolynomialDegree_quintic__impl))
-}
-
-HPolynomialDegree$cubic <- function() {
-  .savvy_wrap_HPolynomialDegree(.Call(HPolynomialDegree_cubic__impl))
-}
-
-HPolynomialDegree$linear <- function() {
-  .savvy_wrap_HPolynomialDegree(.Call(HPolynomialDegree_linear__impl))
-}
-
-HPolynomialDegree$nearest <- function() {
-  .savvy_wrap_HPolynomialDegree(.Call(HPolynomialDegree_nearest__impl))
-}
-
-
-.savvy_wrap_HPolynomialDegree <- function(ptr) {
+.savvy_wrap_HMetadataType <- function(ptr) {
   e <- new.env(parent = emptyenv())
   e$.ptr <- ptr
-  e$print <- HPolynomialDegree_print(ptr)
-  e$eq <- HPolynomialDegree_eq(ptr)
-  e$ne <- HPolynomialDegree_ne(ptr)
-
-  class(e) <- "HPolynomialDegree"
+    e$print <- HMetadataType_print(ptr)
+  e$eq <- HMetadataType_eq(ptr)
+  e$ne <- HMetadataType_ne(ptr)
+  
+  class(e) <- "HMetadataType"
   e
 }
 
+
+#' HMetadataType
+#' A metadata type representation. \
+#' Supports `All`, `Text` and `Visual` types. \
+#'
+#' # Methods
+#'
+HMetadataType <- new.env(parent = emptyenv())
+HMetadataType$All <- .savvy_wrap_HMetadataType(0L)
+HMetadataType$Text <- .savvy_wrap_HMetadataType(1L)
+HMetadataType$Visual <- .savvy_wrap_HMetadataType(2L)
+
+
+### associated functions for HMetadataType
+
+HMetadataType$all <- function() {
+  .savvy_wrap_HMetadataType(.Call(HMetadataType_all__impl))
+}
+
+HMetadataType$text <- function() {
+  .savvy_wrap_HMetadataType(.Call(HMetadataType_text__impl))
+}
+
+HMetadataType$visual <- function() {
+  .savvy_wrap_HMetadataType(.Call(HMetadataType_visual__impl))
+}
+
+
+### wrapper functions for HPolynomialDegree
 
 HPolynomialDegree_print <- function(self) {
   function() {
@@ -472,9 +557,237 @@ HPolynomialDegree_ne <- function(self) {
   }
 }
 
+.savvy_wrap_HPolynomialDegree <- function(ptr) {
+  e <- new.env(parent = emptyenv())
+  e$.ptr <- ptr
+    e$print <- HPolynomialDegree_print(ptr)
+  e$eq <- HPolynomialDegree_eq(ptr)
+  e$ne <- HPolynomialDegree_ne(ptr)
+  
+  class(e) <- "HPolynomialDegree"
+  e
+}
 
 
+#' HPolynomialDegree
+#' Degree of the polynomial used for interpolation. A higher degree gives a higher quality result, while taking longer to compute. \
+#'
+#' * `Septic` \
+#' Septic polynomial, fitted using 8 sample points. \
+#'
+#' * `Quintic`. \
+#' Quintic polynomial, fitted using 6 sample points. \
+#'
+#' * `Cubic`. \
+#' Cubic polynomial, fitted using 4 sample points. \
+#'
+#' * `Linear`. \
+#' Linear polynomial, fitted using 2 sample points. \
+#'
+#' * `Nearest`. \
+#' Nearest, uses the nearest sample point without any fitting. \
+#'
+#' # Methods
+#'
+HPolynomialDegree <- new.env(parent = emptyenv())
+HPolynomialDegree$Septic <- .savvy_wrap_HPolynomialDegree(0L)
+HPolynomialDegree$Quintic <- .savvy_wrap_HPolynomialDegree(1L)
+HPolynomialDegree$Cubic <- .savvy_wrap_HPolynomialDegree(2L)
+HPolynomialDegree$Linear <- .savvy_wrap_HPolynomialDegree(3L)
+HPolynomialDegree$Nearest <- .savvy_wrap_HPolynomialDegree(4L)
+
+
+### associated functions for HPolynomialDegree
+
+HPolynomialDegree$septic <- function() {
+  .savvy_wrap_HPolynomialDegree(.Call(HPolynomialDegree_septic__impl))
+}
+
+HPolynomialDegree$quintic <- function() {
+  .savvy_wrap_HPolynomialDegree(.Call(HPolynomialDegree_quintic__impl))
+}
+
+HPolynomialDegree$cubic <- function() {
+  .savvy_wrap_HPolynomialDegree(.Call(HPolynomialDegree_cubic__impl))
+}
+
+HPolynomialDegree$linear <- function() {
+  .savvy_wrap_HPolynomialDegree(.Call(HPolynomialDegree_linear__impl))
+}
+
+HPolynomialDegree$nearest <- function() {
+  .savvy_wrap_HPolynomialDegree(.Call(HPolynomialDegree_nearest__impl))
+}
+
+
+### wrapper functions for HResampler
+
+HResampler_process <- function(self) {
+  function(harray) {
+    harray <- .savvy_extract_ptr(harray, "HArray")
+invisible(.Call(HResampler_process__impl, self, harray))
+  }
+}
+
+HResampler_set_resample_ratio <- function(self) {
+  function(new_ratio, ramp) {
+  invisible(.Call(HResampler_set_resample_ratio__impl, self, new_ratio, ramp))
+  }
+}
+
+HResampler_set_resample_ratio_relative <- function(self) {
+  function(rel_ratio, ramp) {
+  invisible(.Call(HResampler_set_resample_ratio_relative__impl, self, rel_ratio, ramp))
+  }
+}
+
+HResampler_reset <- function(self) {
+  function() {
+  invisible(.Call(HResampler_reset__impl, self))
+  }
+}
+
+HResampler_res_type <- function(self) {
+  function() {
+    .savvy_wrap_HResamplerType(.Call(HResampler_res_type__impl, self))
+  }
+}
+
+HResampler_dtype <- function(self) {
+  function() {
+    .savvy_wrap_HDataType(.Call(HResampler_dtype__impl, self))
+  }
+}
+
+HResampler_print <- function(self) {
+  function() {
+  invisible(.Call(HResampler_print__impl, self))
+  }
+}
+
+.savvy_wrap_HResampler <- function(ptr) {
+  e <- new.env(parent = emptyenv())
+  e$.ptr <- ptr
+    e$process <- HResampler_process(ptr)
+  e$set_resample_ratio <- HResampler_set_resample_ratio(ptr)
+  e$set_resample_ratio_relative <- HResampler_set_resample_ratio_relative(ptr)
+  e$reset <- HResampler_reset(ptr)
+  e$res_type <- HResampler_res_type(ptr)
+  e$dtype <- HResampler_dtype(ptr)
+  e$print <- HResampler_print(ptr)
+  
+  class(e) <- "HResampler"
+  e
+}
+
+
+#' HResampler
+#' A resampler. \
+#'
+#' #### Asynchronous Resamplers
+#'
+#' The resampling is based on band-limited interpolation using sinc interpolation filters. The sinc interpolation upsamples by an adjustable factor, \
+#' and then the new sample points are calculated by interpolating between these points. \
+#' The resampling ratio can be updated at any time. \
+#'
+#' * `SincFixedIn` \
+#'
+#' * `SincFixedOut` \
+#'
+#' * `FastFixedIn` \
+#'
+#' * `FastFixedOut` \
+#'
+#' #### Synchronous Resamplers
+#'
+#' Is implemented via FFT. The data is FFTed, the spectrum modified, and then inverse FFTed to get the resampled data. \
+#' This type of resampler is considerably faster but doesn’t support changing the resampling ratio. \
+#'
+#' * `FftFixedIn` \
+#'
+#' * `FftFixedInOut` \
+#'
+#' * `FftFixedOut` \
+#'
+#' # Methods
+#'
+HResampler <- new.env(parent = emptyenv())
+
+### associated functions for HResampler
+
+HResampler$new_fft <- function(sr_in, sr_out, chunk_size, sub_chunks, nchannels, res_type, dtype) {
+  res_type <- .savvy_extract_ptr(res_type, "HResamplerType")
+  dtype <- .savvy_extract_ptr(dtype, "HDataType")
+  .savvy_wrap_HResampler(.Call(HResampler_new_fft__impl, sr_in, sr_out, chunk_size, sub_chunks, nchannels, res_type, dtype))
+}
+
+HResampler$new_sinc <- function(resample_ratio, max_resample_ratio_relative, parameters, chunk_size, nchannels, res_type, dtype) {
+  parameters <- .savvy_extract_ptr(parameters, "HSincInterpolationParameters")
+  res_type <- .savvy_extract_ptr(res_type, "HResamplerType")
+  dtype <- .savvy_extract_ptr(dtype, "HDataType")
+  .savvy_wrap_HResampler(.Call(HResampler_new_sinc__impl, resample_ratio, max_resample_ratio_relative, parameters, chunk_size, nchannels, res_type, dtype))
+}
+
+HResampler$new_fast <- function(resample_ratio, max_resample_ratio_relative, pol_deg, chunk_size, nchannels, res_type, dtype) {
+  pol_deg <- .savvy_extract_ptr(pol_deg, "HPolynomialDegree")
+  res_type <- .savvy_extract_ptr(res_type, "HResamplerType")
+  dtype <- .savvy_extract_ptr(dtype, "HDataType")
+  .savvy_wrap_HResampler(.Call(HResampler_new_fast__impl, resample_ratio, max_resample_ratio_relative, pol_deg, chunk_size, nchannels, res_type, dtype))
+}
+
+
+### wrapper functions for HResamplerType
+
+HResamplerType_print <- function(self) {
+  function() {
+  invisible(.Call(HResamplerType_print__impl, self))
+  }
+}
+
+HResamplerType_eq <- function(self) {
+  function(other) {
+    other <- .savvy_extract_ptr(other, "HResamplerType")
+.Call(HResamplerType_eq__impl, self, other)
+  }
+}
+
+HResamplerType_ne <- function(self) {
+  function(other) {
+    other <- .savvy_extract_ptr(other, "HResamplerType")
+.Call(HResamplerType_ne__impl, self, other)
+  }
+}
+
+.savvy_wrap_HResamplerType <- function(ptr) {
+  e <- new.env(parent = emptyenv())
+  e$.ptr <- ptr
+    e$print <- HResamplerType_print(ptr)
+  e$eq <- HResamplerType_eq(ptr)
+  e$ne <- HResamplerType_ne(ptr)
+  
+  class(e) <- "HResamplerType"
+  e
+}
+
+
+#' HResamplerType
+#' A resampler type representation. \
+#' Supports `FftFixedIn`, `FftFixedInOut`, `FftFixedOut`, `SincFixedIn` and `SincFixedOut` types. \
+#'
+#' # Methods
+#'
 HResamplerType <- new.env(parent = emptyenv())
+HResamplerType$FftFixedIn <- .savvy_wrap_HResamplerType(0L)
+HResamplerType$FftFixedInOut <- .savvy_wrap_HResamplerType(1L)
+HResamplerType$FftFixedOut <- .savvy_wrap_HResamplerType(2L)
+HResamplerType$SincFixedIn <- .savvy_wrap_HResamplerType(3L)
+HResamplerType$SincFixedOut <- .savvy_wrap_HResamplerType(4L)
+HResamplerType$FastFixedIn <- .savvy_wrap_HResamplerType(5L)
+HResamplerType$FastFixedOut <- .savvy_wrap_HResamplerType(6L)
+
+
+### associated functions for HResamplerType
+
 HResamplerType$fft_fixed_in <- function() {
   .savvy_wrap_HResamplerType(.Call(HResamplerType_fft_fixed_in__impl))
 }
@@ -504,55 +817,7 @@ HResamplerType$fast_fixed_out <- function() {
 }
 
 
-.savvy_wrap_HResamplerType <- function(ptr) {
-  e <- new.env(parent = emptyenv())
-  e$.ptr <- ptr
-  e$print <- HResamplerType_print(ptr)
-  e$eq <- HResamplerType_eq(ptr)
-  e$ne <- HResamplerType_ne(ptr)
-
-  class(e) <- "HResamplerType"
-  e
-}
-
-
-HResamplerType_print <- function(self) {
-  function() {
-  invisible(.Call(HResamplerType_print__impl, self))
-  }
-}
-
-HResamplerType_eq <- function(self) {
-  function(other) {
-    other <- .savvy_extract_ptr(other, "HResamplerType")
-.Call(HResamplerType_eq__impl, self, other)
-  }
-}
-
-HResamplerType_ne <- function(self) {
-  function(other) {
-    other <- .savvy_extract_ptr(other, "HResamplerType")
-.Call(HResamplerType_ne__impl, self, other)
-  }
-}
-
-
-
-HSincInterpolationParameters <- new.env(parent = emptyenv())
-HSincInterpolationParameters$new <- function(sinc_len, f_cutoff, oversampling_factor, interpolation, window) {
-  .savvy_wrap_HSincInterpolationParameters(.Call(HSincInterpolationParameters_new__impl, sinc_len, f_cutoff, oversampling_factor, interpolation, window))
-}
-
-
-.savvy_wrap_HSincInterpolationParameters <- function(ptr) {
-  e <- new.env(parent = emptyenv())
-  e$.ptr <- ptr
-  e$print <- HSincInterpolationParameters_print(ptr)
-
-  class(e) <- "HSincInterpolationParameters"
-  e
-}
-
+### wrapper functions for HSincInterpolationParameters
 
 HSincInterpolationParameters_print <- function(self) {
   function() {
@@ -560,9 +825,44 @@ HSincInterpolationParameters_print <- function(self) {
   }
 }
 
+.savvy_wrap_HSincInterpolationParameters <- function(ptr) {
+  e <- new.env(parent = emptyenv())
+  e$.ptr <- ptr
+    e$print <- HSincInterpolationParameters_print(ptr)
+  
+  class(e) <- "HSincInterpolationParameters"
+  e
+}
+
+
+
+HSincInterpolationParameters <- new.env(parent = emptyenv())
+
+### associated functions for HSincInterpolationParameters
+
+HSincInterpolationParameters$new <- function(sinc_len, f_cutoff, oversampling_factor, interpolation, window) {
+  .savvy_wrap_HSincInterpolationParameters(.Call(HSincInterpolationParameters_new__impl, sinc_len, f_cutoff, oversampling_factor, interpolation, window))
+}
+
+
+### wrapper functions for HWindow
+
+
+.savvy_wrap_HWindow <- function(ptr) {
+  e <- new.env(parent = emptyenv())
+  e$.ptr <- ptr
+  
+  
+  class(e) <- "HWindow"
+  e
+}
+
 
 
 HWindow <- new.env(parent = emptyenv())
+
+### associated functions for HWindow
+
 HWindow$barthann <- function(npoints, sym, dtype) {
   dtype <- .savvy_extract_ptr(dtype, "HDataType")
   .savvy_wrap_HArray(.Call(HWindow_barthann__impl, npoints, sym, dtype))
@@ -602,17 +902,5 @@ HWindow$hann <- function(npoints, sym, dtype) {
   dtype <- .savvy_extract_ptr(dtype, "HDataType")
   .savvy_wrap_HArray(.Call(HWindow_hann__impl, npoints, sym, dtype))
 }
-
-
-.savvy_wrap_HWindow <- function(ptr) {
-  e <- new.env(parent = emptyenv())
-  e$.ptr <- ptr
-
-
-  class(e) <- "HWindow"
-  e
-}
-
-
 
 

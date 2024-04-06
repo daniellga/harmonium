@@ -1,27 +1,60 @@
-use extendr_api::{prelude::*, AsTypedSlice};
+use savvy::{Sexp, TypedSexp};
 
-pub(crate) trait RobjConversions<'a, A>
-where
-    A: PartialEq + Copy + 'a,
-    Self: AsTypedSlice<'a, A>,
-{
-    fn robj_to_scalar(&'a self) -> A;
-    fn robj_to_slice(&'a self) -> &[A];
+pub(crate) trait Conversions<T> {
+    fn to_scalar(self: Self) -> savvy::Result<T>;
 }
 
-impl<'a, A> RobjConversions<'a, A> for Robj
-where
-    A: PartialEq + Copy + 'a,
-    Robj: AsTypedSlice<'a, A>,
-{
-    fn robj_to_scalar(&'a self) -> A {
-        assert!(self.len() == 1);
-        let slice: &'a [A] = self.robj_to_slice();
-        slice[0]
+impl Conversions<&'static str> for Sexp {
+    fn to_scalar(self) -> savvy::Result<&'static str> {
+        match self.into_typed() {
+            TypedSexp::String(string_sexp) if string_sexp.len() == 1 => {
+                // Ok to unwrap since the size was checked.
+                Ok(string_sexp.iter().next().unwrap())
+            }
+            _ => {
+                let err = format!("Argument must be a string of length 1.");
+                Err(err.into())
+            }
+        }
     }
+}
 
-    fn robj_to_slice(&'a self) -> &[A] {
-        let slice: &'a [A] = self.as_typed_slice().unwrap();
-        slice
+impl Conversions<i32> for Sexp {
+    fn to_scalar(self) -> savvy::Result<i32> {
+        match self.into_typed() {
+            TypedSexp::Integer(integer_sexp) if integer_sexp.len() == 1 => {
+                Ok(integer_sexp.as_slice()[0])
+            }
+            _ => {
+                let err = format!("Argument must be an integer of length 1.");
+                Err(err.into())
+            }
+        }
+    }
+}
+
+impl Conversions<f64> for Sexp {
+    fn to_scalar(self) -> savvy::Result<f64> {
+        match self.into_typed() {
+            TypedSexp::Real(real_sexp) if real_sexp.len() == 1 => Ok(real_sexp.as_slice()[0]),
+            _ => {
+                let err = format!("Argument must be a double of length 1.");
+                Err(err.into())
+            }
+        }
+    }
+}
+
+impl Conversions<bool> for Sexp {
+    fn to_scalar(self) -> savvy::Result<bool> {
+        match self.into_typed() {
+            TypedSexp::Logical(logical_sexp) if logical_sexp.len() == 1 => {
+                Ok(logical_sexp.as_slice_raw()[0] == 1)
+            }
+            _ => {
+                let err = format!("Argument must be a logical of length 1.");
+                Err(err.into())
+            }
+        }
     }
 }

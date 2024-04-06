@@ -1,4 +1,4 @@
-//mod conversions;
+mod conversions;
 mod harray;
 mod harrayr;
 mod haudioop;

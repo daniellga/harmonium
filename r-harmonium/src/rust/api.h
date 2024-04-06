@@ -51,10 +51,20 @@ SEXP HDataType_print(SEXP self__);
 SEXP HDataType_eq(SEXP self__, SEXP other);
 SEXP HDataType_ne(SEXP self__, SEXP other);
 
+// methods and associated functions for HDecoderStream
+SEXP HDecoderStream_stream(SEXP self__);
+
 // methods and associated functions for HFft
 SEXP HFft_fft(SEXP harray);
 SEXP HFft_fft_mut(SEXP harray);
 SEXP HFft_fft_real_mut(SEXP harray);
+
+// methods and associated functions for HFile
+SEXP HFile_decode(SEXP fpath, SEXP dtype);
+SEXP HFile_decode_stream(SEXP fpath, SEXP frames, SEXP dtype);
+SEXP HFile_metadata(SEXP fpath, SEXP metadata_type);
+SEXP HFile_params(SEXP fpath);
+SEXP HFile_verify(SEXP fpath);
 
 // methods and associated functions for HMetadataType
 SEXP HMetadataType_all(void);
@@ -73,6 +83,18 @@ SEXP HPolynomialDegree_nearest(void);
 SEXP HPolynomialDegree_print(SEXP self__);
 SEXP HPolynomialDegree_eq(SEXP self__, SEXP other);
 SEXP HPolynomialDegree_ne(SEXP self__, SEXP other);
+
+// methods and associated functions for HResampler
+SEXP HResampler_new_fft(SEXP sr_in, SEXP sr_out, SEXP chunk_size, SEXP sub_chunks, SEXP nchannels, SEXP res_type, SEXP dtype);
+SEXP HResampler_new_sinc(SEXP resample_ratio, SEXP max_resample_ratio_relative, SEXP parameters, SEXP chunk_size, SEXP nchannels, SEXP res_type, SEXP dtype);
+SEXP HResampler_new_fast(SEXP resample_ratio, SEXP max_resample_ratio_relative, SEXP pol_deg, SEXP chunk_size, SEXP nchannels, SEXP res_type, SEXP dtype);
+SEXP HResampler_process(SEXP self__, SEXP harray);
+SEXP HResampler_set_resample_ratio(SEXP self__, SEXP new_ratio, SEXP ramp);
+SEXP HResampler_set_resample_ratio_relative(SEXP self__, SEXP rel_ratio, SEXP ramp);
+SEXP HResampler_reset(SEXP self__);
+SEXP HResampler_res_type(SEXP self__);
+SEXP HResampler_dtype(SEXP self__);
+SEXP HResampler_print(SEXP self__);
 
 // methods and associated functions for HResamplerType
 SEXP HResamplerType_fft_fixed_in(void);

@@ -1,17 +1,17 @@
-# print.HArray = function(x, ...) {
-#   cat(class(x), sep = "\n")
-#   x$dtype()$print()
-#   x$print()
-# }
-# "==.HArray" <- function(e1,e2) e1$eq(e2)
-# "!=.HArray" <- function(e1,e2) e1$ne(e2)
-# 
-# print.HDataType = function(x, ...) {
-#  x$print()
-# }
-# "==.HDataType" <- function(e1,e2) e1$eq(e2)
-# "!=.HDataType" <- function(e1,e2) e1$ne(e2)
-# 
+print.HArray = function(x, ...) {
+  cat(class(x), sep = "\n")
+  x$dtype()$print()
+  x$print()
+}
+"==.HArray" <- function(e1,e2) e1$eq(e2)
+"!=.HArray" <- function(e1,e2) e1$ne(e2)
+
+print.HDataType = function(x, ...) {
+    x$print()
+}
+"==.HDataType" <- function(e1,e2) e1$eq(e2)
+"!=.HDataType" <- function(e1,e2) e1$ne(e2)
+ 
 # print.HMetadataType = function(x, ...) {
 #   x$print()
 # }

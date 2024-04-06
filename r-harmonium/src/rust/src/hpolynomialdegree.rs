@@ -23,6 +23,7 @@ use std::fmt;
 /// # Methods
 ///
 #[derive(PartialEq)]
+#[savvy]
 pub enum HPolynomialDegree {
     Septic,
     Quintic,

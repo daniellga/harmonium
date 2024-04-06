@@ -12,6 +12,7 @@ use std::sync::Arc;
 /// # Methods
 ///
 #[derive(Clone)]
+#[savvy]
 pub struct HArray(pub Arc<dyn HArrayR>);
 
 #[savvy]
