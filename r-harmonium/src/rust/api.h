@@ -14,6 +14,7 @@ SEXP HArray_collect(SEXP self__);
 SEXP HArray_dtype(SEXP self__);
 SEXP HArray_is_shared(SEXP self__);
 SEXP HArray_mem_adress(SEXP self__);
+SEXP HArray_invalidate(SEXP self__);
 
 // methods and associated functions for HAudioOp
 SEXP HAudioOp_nchannels(SEXP harray);
@@ -50,6 +51,7 @@ SEXP HDataType_ne(SEXP self__, SEXP other);
 // methods and associated functions for HDecodedAudio
 SEXP HDecodedAudio_harray(SEXP self__);
 SEXP HDecodedAudio_sr(SEXP self__);
+SEXP HDecodedAudio_invalidate(SEXP self__);
 
 // methods and associated functions for HDecoderStream
 SEXP HDecoderStream_stream(SEXP self__);

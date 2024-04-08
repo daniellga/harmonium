@@ -98,6 +98,11 @@ SEXP HArray_mem_adress__impl(SEXP self__) {
     return handle_result(res);
 }
 
+SEXP HArray_invalidate__impl(SEXP self__) {
+    SEXP res = HArray_invalidate(self__);
+    return handle_result(res);
+}
+
 SEXP HAudioOp_nchannels__impl(SEXP harray) {
     SEXP res = HAudioOp_nchannels(harray);
     return handle_result(res);
@@ -235,6 +240,11 @@ SEXP HDecodedAudio_harray__impl(SEXP self__) {
 
 SEXP HDecodedAudio_sr__impl(SEXP self__) {
     SEXP res = HDecodedAudio_sr(self__);
+    return handle_result(res);
+}
+
+SEXP HDecodedAudio_invalidate__impl(SEXP self__) {
+    SEXP res = HDecodedAudio_invalidate(self__);
     return handle_result(res);
 }
 
@@ -444,6 +454,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"HArray_dtype__impl", (DL_FUNC) &HArray_dtype__impl, 1},
     {"HArray_is_shared__impl", (DL_FUNC) &HArray_is_shared__impl, 1},
     {"HArray_mem_adress__impl", (DL_FUNC) &HArray_mem_adress__impl, 1},
+    {"HArray_invalidate__impl", (DL_FUNC) &HArray_invalidate__impl, 1},
     {"HAudioOp_nchannels__impl", (DL_FUNC) &HAudioOp_nchannels__impl, 1},
     {"HAudioOp_nframes__impl", (DL_FUNC) &HAudioOp_nframes__impl, 1},
     {"HAudioOp_db_to_amplitude__impl", (DL_FUNC) &HAudioOp_db_to_amplitude__impl, 3},
@@ -472,6 +483,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"HDataType_ne__impl", (DL_FUNC) &HDataType_ne__impl, 2},
     {"HDecodedAudio_harray__impl", (DL_FUNC) &HDecodedAudio_harray__impl, 1},
     {"HDecodedAudio_sr__impl", (DL_FUNC) &HDecodedAudio_sr__impl, 1},
+    {"HDecodedAudio_invalidate__impl", (DL_FUNC) &HDecodedAudio_invalidate__impl, 1},
     {"HDecoderStream_stream__impl", (DL_FUNC) &HDecoderStream_stream__impl, 1},
     {"HFft_fft__impl", (DL_FUNC) &HFft_fft__impl, 1},
     {"HFft_fft_mut__impl", (DL_FUNC) &HFft_fft_mut__impl, 1},

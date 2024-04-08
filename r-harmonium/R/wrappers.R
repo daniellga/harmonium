@@ -89,6 +89,12 @@ HArray_mem_adress <- function(self) {
   }
 }
 
+HArray_invalidate <- function(self) {
+  function() {
+  invisible(.Call(HArray_invalidate__impl, self))
+  }
+}
+
 .savvy_wrap_HArray <- function(ptr) {
   e <- new.env(parent = emptyenv())
   e$.ptr <- ptr
@@ -104,6 +110,7 @@ HArray_mem_adress <- function(self) {
   e$dtype <- HArray_dtype(ptr)
   e$is_shared <- HArray_is_shared(ptr)
   e$mem_adress <- HArray_mem_adress(ptr)
+  e$invalidate <- HArray_invalidate(ptr)
   
   class(e) <- "HArray"
   e
@@ -372,11 +379,18 @@ HDecodedAudio_sr <- function(self) {
   }
 }
 
+HDecodedAudio_invalidate <- function(self) {
+  function() {
+  invisible(.Call(HDecodedAudio_invalidate__impl, self))
+  }
+}
+
 .savvy_wrap_HDecodedAudio <- function(ptr) {
   e <- new.env(parent = emptyenv())
   e$.ptr <- ptr
     e$harray <- HDecodedAudio_harray(ptr)
   e$sr <- HDecodedAudio_sr(ptr)
+  e$invalidate <- HDecodedAudio_invalidate(ptr)
   
   class(e) <- "HDecodedAudio"
   e
