@@ -43,13 +43,13 @@ SEXP HAudioSink_audio_default_device(void);
 SEXP HAudioSink_audio_supported_configs(void);
 
 // methods and associated functions for HDataType
-SEXP HDataType_float32(void);
-SEXP HDataType_float64(void);
-SEXP HDataType_complex32(void);
-SEXP HDataType_complex64(void);
 SEXP HDataType_print(SEXP self__);
 SEXP HDataType_eq(SEXP self__, SEXP other);
 SEXP HDataType_ne(SEXP self__, SEXP other);
+
+// methods and associated functions for HDecodedAudio
+SEXP HDecodedAudio_harray(SEXP self__);
+SEXP HDecodedAudio_sr(SEXP self__);
 
 // methods and associated functions for HDecoderStream
 SEXP HDecoderStream_stream(SEXP self__);
@@ -67,19 +67,11 @@ SEXP HFile_params(SEXP fpath);
 SEXP HFile_verify(SEXP fpath);
 
 // methods and associated functions for HMetadataType
-SEXP HMetadataType_all(void);
-SEXP HMetadataType_text(void);
-SEXP HMetadataType_visual(void);
 SEXP HMetadataType_print(SEXP self__);
 SEXP HMetadataType_eq(SEXP self__, SEXP other);
 SEXP HMetadataType_ne(SEXP self__, SEXP other);
 
 // methods and associated functions for HPolynomialDegree
-SEXP HPolynomialDegree_septic(void);
-SEXP HPolynomialDegree_quintic(void);
-SEXP HPolynomialDegree_cubic(void);
-SEXP HPolynomialDegree_linear(void);
-SEXP HPolynomialDegree_nearest(void);
 SEXP HPolynomialDegree_print(SEXP self__);
 SEXP HPolynomialDegree_eq(SEXP self__, SEXP other);
 SEXP HPolynomialDegree_ne(SEXP self__, SEXP other);
@@ -97,13 +89,6 @@ SEXP HResampler_dtype(SEXP self__);
 SEXP HResampler_print(SEXP self__);
 
 // methods and associated functions for HResamplerType
-SEXP HResamplerType_fft_fixed_in(void);
-SEXP HResamplerType_fft_fixed_in_out(void);
-SEXP HResamplerType_fft_fixed_out(void);
-SEXP HResamplerType_sinc_fixed_in(void);
-SEXP HResamplerType_sinc_fixed_out(void);
-SEXP HResamplerType_fast_fixed_in(void);
-SEXP HResamplerType_fast_fixed_out(void);
 SEXP HResamplerType_print(SEXP self__);
 SEXP HResamplerType_eq(SEXP self__, SEXP other);
 SEXP HResamplerType_ne(SEXP self__, SEXP other);

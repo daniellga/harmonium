@@ -3,22 +3,106 @@ use crate::{
 };
 use harmonium_core::conversions::IntoDynamic;
 use harmonium_io::decode;
-use savvy::{
-    savvy, NullSexp, OwnedIntegerSexp, OwnedListSexp, OwnedRealSexp, OwnedStringSexp, Sexp,
-};
+use savvy::{savvy, OwnedIntegerSexp, OwnedListSexp, OwnedRealSexp, OwnedStringSexp, Sexp};
 use std::sync::Arc;
 
 #[savvy]
 struct HFile;
 #[savvy]
 struct HDecoderStream(Box<dyn HDecoderStreamR>);
+#[savvy]
+struct HDecodedAudio {
+    harray: HArray,
+    sr: u32,
+}
+
+#[savvy]
+impl HDecodedAudio {
+    /// HDecodedAudio
+    /// ## harray
+    ///
+    /// `harray() -> HArray` \
+    ///
+    /// Get the decoded HArray.
+    ///
+    /// #### Returns
+    ///
+    /// A float HArray. \
+    ///
+    /// #### Examples
+    ///
+    /// ```r
+    /// fpath = "testfiles/gs-16b-2c-44100hz.flac"
+    /// dtype = HDataType$float32
+    /// hdecodedaudio = HFile$decode(fpath, dtype)
+    /// hdecodedaudio$harray()
+    ///
+    /// ```
+    ///
+    /// _________
+    ///
+    fn harray(&self) -> savvy::Result<HArray> {
+        Ok(self.harray.clone())
+    }
+    /// HDecodedAudio
+    /// ## sr
+    ///
+    /// `sr() -> integer` \
+    ///
+    /// Get the sampling rate of the decoded audio.
+    ///
+    ///
+    /// #### Returns
+    ///
+    /// An integer. \
+    ///
+    /// #### Examples
+    ///
+    /// ```r
+    /// fpath = "testfiles/gs-16b-2c-44100hz.flac"
+    /// dtype = HDataType$float32
+    /// hdecodedaudio = HFile$decode(fpath, dtype)
+    /// hdecodedaudio$sr()
+    ///
+    /// ```
+    ///
+    /// _________
+    ///
+    fn sr(&self) -> savvy::Result<Sexp> {
+        let integer_sexp = OwnedIntegerSexp::try_from_scalar(self.sr.try_into().unwrap())?;
+        integer_sexp.into()
+    }
+    /// HDecodedAudio
+    /// ## invalidate
+    ///
+    /// `invalidate()` \
+    ///
+    /// Replaces the inner value of the external pointer, invalidating it. \
+    /// This function is useful to remove one of the shared references of the inner pointer in rust. \
+    ///
+    /// #### Examples
+    ///
+    /// ```r
+    /// fpath = "testfiles/gs-16b-2c-44100hz.flac"
+    /// dtype = HDataType$float32
+    /// hdecodedaudio = HFile$decode(fpath, dtype)
+    /// harray = hdecodedaudio$harray() # now the inner HArray struct has 2 references.
+    /// hdecodedaudio$invalidate() # back to 1 reference.
+    /// ```
+    ///
+    /// _________
+    ///
+    pub fn invalidate(self) -> savvy::Result<()> {
+        Ok(())
+    }
+}
 
 #[savvy]
 impl HFile {
     /// HFile
     /// ## decode
     ///
-    /// `decode(fpath: string, dtype: HDataType) -> list[HArray, integer]` \
+    /// `decode(fpath: string, dtype: HDataType) -> HDecodedAudio` \
     ///
     /// Decode an audio file, providing its decoded data and the sampling rate. \
     /// The samples are normalized to fit in the range of \[-1.0, 1.0\].
@@ -32,7 +116,7 @@ impl HFile {
     ///
     /// #### Returns
     ///
-    /// A list containing: \
+    /// An HDecodedAudio containing: \
     /// * The decoded audio as a float HArray. \
     /// * The sampling rate as an integer. \
     ///
@@ -46,28 +130,20 @@ impl HFile {
     ///
     /// _________
     ///
-    fn decode(fpath: Sexp, dtype: &HDataType) -> savvy::Result<Sexp> {
+    fn decode(fpath: Sexp, dtype: &HDataType) -> savvy::Result<HDecodedAudio> {
         let fpath: &str = fpath.to_scalar()?;
         match dtype {
             HDataType::Float32 => {
                 let (harray, sr) = harmonium_io::decode::decode::<f32>(fpath).unwrap();
                 let harray = harray.into_dynamic();
                 let harray = HArray(Arc::new(harray));
-                let sr = OwnedIntegerSexp::try_from_scalar(sr as i32)?;
-                let mut list = OwnedListSexp::new(2, false)?;
-                unsafe { list.set_value_unchecked(0, Sexp::try_from(harray)?.0) };
-                unsafe { list.set_value_unchecked(1, Sexp::from(sr).0) };
-                Ok(list.into())
+                Ok(HDecodedAudio { harray, sr })
             }
             HDataType::Float64 => {
                 let (harray, sr) = harmonium_io::decode::decode::<f64>(fpath).unwrap();
                 let harray = harray.into_dynamic();
                 let harray = HArray(Arc::new(harray));
-                let sr = OwnedIntegerSexp::try_from_scalar(sr as i32)?;
-                let mut list = OwnedListSexp::new(2, false)?;
-                unsafe { list.set_value_unchecked(0, Sexp::try_from(harray)?.0) };
-                unsafe { list.set_value_unchecked(1, Sexp::from(sr).0) };
-                Ok(list.into())
+                Ok(HDecodedAudio { harray, sr })
             }
             _ => panic!("Operation only allowed for float dtypes."),
         }
@@ -337,7 +413,7 @@ impl HDecoderStream {
     /// `stream() -> HArray` \
     ///
     /// Gets the next wave of frames as an `HArray`. \
-    /// Returns `NULL` if it's end of stream or if an error ocurred in
+    /// Returns an error if it's end of stream or if an error ocurred in
     /// the decoding process. \
     ///
     /// The decoded audio as a float HArray. \
@@ -351,36 +427,35 @@ impl HDecoderStream {
     /// frames = 1000L
     /// hdecoder_stream = HFile$decode_stream(fpath, frames, dtype)
     /// hdecoder_stream$stream()
-    ///
     /// ```
     ///
     /// _________
     ///
-    fn stream(&mut self) -> savvy::Result<Sexp> {
+    fn stream(&mut self) -> savvy::Result<HArray> {
         self.0.next()
     }
 }
 
 pub trait HDecoderStreamR {
-    fn next(&mut self) -> savvy::Result<Sexp>;
+    fn next(&mut self) -> savvy::Result<HArray>;
 }
 
 impl HDecoderStreamR for harmonium_io::decode::DecoderStream<f32> {
-    fn next(&mut self) -> savvy::Result<Sexp> {
+    fn next(&mut self) -> savvy::Result<HArray> {
         if let Some(x) = std::iter::Iterator::next(self) {
-            HArray(Arc::new(x.into_dynamic())).try_into()
+            Ok(HArray(Arc::new(x.into_dynamic())))
         } else {
-            Ok(NullSexp.into())
+            Err("The iterator has no more values to yield.".into())
         }
     }
 }
 
 impl HDecoderStreamR for harmonium_io::decode::DecoderStream<f64> {
-    fn next(&mut self) -> savvy::Result<Sexp> {
+    fn next(&mut self) -> savvy::Result<HArray> {
         if let Some(x) = std::iter::Iterator::next(self) {
-            HArray(Arc::new(x.into_dynamic())).try_into()
+            Ok(HArray(Arc::new(x.into_dynamic())))
         } else {
-            Ok(NullSexp.into())
+            Err("The iterator has no more values to yield.".into())
         }
     }
 }

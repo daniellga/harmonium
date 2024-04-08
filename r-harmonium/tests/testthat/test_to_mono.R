@@ -4,14 +4,14 @@ test_that(
     # f32
     values = c(1,2,3,4,5,6,7,8,9,10,11,12)
     arr = matrix(values, ncol = 3)
-    harray = HArray$new_from_values(arr, HDataType$float32)
+    harray = HArray$new_from_values(arr, HDataType$Float32)
     HAudioOp$to_mono(harray)
     expect_equal(harray$collect(), as.array(rowMeans(arr)))
 
     # f64
     values = c(1,2,3,4,5,6,7,8,9,10,11,12)
     arr = matrix(values, ncol = 3)
-    harray = HArray$new_from_values(arr, HDataType$float64)
+    harray = HArray$new_from_values(arr, HDataType$Float64)
     HAudioOp$to_mono(harray)
     expect_equal(harray$collect(), as.array(rowMeans(arr)))
   }

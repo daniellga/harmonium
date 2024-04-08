@@ -1,5 +1,5 @@
 use crate::{harrayr::HArrayR, hdatatype::HDataType};
-use ndarray::{IxDyn, SliceInfo, SliceInfoElem};
+use ndarray::{IxDyn, ShapeError, SliceInfo, SliceInfoElem};
 use num_complex::Complex;
 use savvy::{
     savvy, ListSexp, OwnedIntegerSexp, OwnedLogicalSexp, OwnedStringSexp, Sexp, TypedSexp,
@@ -48,12 +48,10 @@ impl HArray {
     ///
     fn new_from_values(arr: Sexp, dtype: &HDataType) -> savvy::Result<HArray> {
         if let Some(dim) = arr.get_dim() {
-            let mut dim: Vec<usize> = dim.iter().map(|z| *z as usize).collect();
-            dim.reverse();
+            let dim: Vec<usize> = dim.iter().map(|z| *z as usize).rev().collect();
 
             match (arr.into_typed(), dtype) {
                 (TypedSexp::Real(arr), HDataType::Float32) => {
-                    dim.reverse();
                     let slice: &[f64] = arr.as_slice();
                     let v: Vec<f32> = slice.iter().map(|x| *x as f32).collect();
                     let harray = harmonium_core::array::HArray::new_from_shape_vec(dim, v).unwrap();
@@ -215,21 +213,19 @@ impl HArray {
         let range = ListSexp::try_from(range)?;
         let list_len = range.len();
 
-        assert_eq!(
-            list_len,
-            self.0.ndim(),
-            "The list must have the same length as the number of dimensions."
-        );
+        if list_len != self.0.ndim() {
+            return savvy::Result::Err(
+                "The list must have the same length as the number of dimensions.".into(),
+            );
+        }
 
         let mut vec_ranges: Vec<SliceInfoElem> = Vec::with_capacity(list_len);
         for obj in range.values_iter() {
             match obj.into_typed() {
                 TypedSexp::Integer(integer_sexp) => {
-                    assert_eq!(
-                        integer_sexp.len(),
-                        3,
-                        "Each element must have a length of 3."
-                    );
+                    if integer_sexp.len() != 3 {
+                        return savvy::Result::Err("Each element must have a length of 3.".into());
+                    }
                     let slice: &[i32] = integer_sexp.as_slice();
                     let slice_info_elem = SliceInfoElem::Slice {
                         start: slice[0] as isize,
@@ -238,12 +234,17 @@ impl HArray {
                     };
                     vec_ranges.push(slice_info_elem);
                 }
-                _ => panic!("Each element in the list must be a vector of integers."),
+                _ => {
+                    return savvy::Result::Err(
+                        "Each element in the list must be a vector of integers.".into(),
+                    )?;
+                }
             }
         }
 
-        let slice_info: SliceInfo<Vec<SliceInfoElem>, IxDyn, IxDyn> =
-            vec_ranges.try_into().unwrap();
+        let slice_info: SliceInfo<Vec<SliceInfoElem>, IxDyn, IxDyn> = vec_ranges
+            .try_into()
+            .map_err(|err: ShapeError| err.to_string())?;
 
         Ok(HArray(self.0.slice(slice_info)))
     }
@@ -499,6 +500,29 @@ impl HArray {
     pub fn mem_adress(&self) -> savvy::Result<Sexp> {
         let string_sexp: OwnedStringSexp = self.0.mem_adress().try_into()?;
         string_sexp.into()
+    }
+
+    /// HArray
+    /// ## invalidate
+    ///
+    /// `invalidate()` \
+    ///
+    /// Replaces the inner value of the external pointer, invalidating it. \
+    /// This function is useful to remove one of the shared references of the inner pointer in rust. \
+    ///
+    /// #### Examples
+    ///
+    /// ```r
+    /// arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
+    /// dtype = HDataType$float32
+    /// harray = HArray$new_from_values(arr, dtype)
+    /// harray$invalidate()
+    /// ```
+    ///
+    /// _________
+    ///
+    pub fn invalidate(self) -> savvy::Result<()> {
+        Ok(())
     }
 }
 

@@ -3,15 +3,15 @@ test_that(
   {
     # SincFixedIn. Test example from rubato repo.
     arr = matrix(0, nrow = 512, ncol = 2)
-    harray = HArray$new_from_values(arr, dtype = HDataType$float64)
-    hparams = HSincInterpolationParams$new(256, 0.95, 256, "linear", "blackmanharris2")
+    harray = HArray$new_from_values(arr, dtype = HDataType$Float64)
+    hparams = HSincInterpolationParameters$new(256L, 0.95, 256L, "linear", "blackmanharris2")
 
-    res = HResampler$new_sinc(48000 / 44100, 2, hparams, 512L, HAudioOp$nchannels(harray), HResamplerType$sinc_fixed_in, HDataType$float32)
+    res = HResampler$new_sinc(48000 / 44100, 2, hparams, 512L, HAudioOp$nchannels(harray), HResamplerType$SincFixedIn, HDataType$Float32)
     expect_error(res$process(harray))
 
-    res = HResampler$new_sinc(48000 / 44100, 2, hparams, 512L, HAudioOp$nchannels(harray), HResamplerType$sinc_fixed_in, HDataType$float64)
-    expect_true(res$res_type() == HResamplerType$sinc_fixed_in)
-    expect_true(res$dtype() == HDataType$float64)
+    res = HResampler$new_sinc(48000 / 44100, 2, hparams, 512L, HAudioOp$nchannels(harray), HResamplerType$SincFixedIn, HDataType$Float64)
+    expect_true(res$res_type() == HResamplerType$SincFixedIn)
+    expect_true(res$dtype() == HDataType$Float64)
     expect_no_error(res$process(harray))
     
     expect_no_error(res$set_resample_ratio(1, FALSE))
@@ -25,15 +25,15 @@ test_that(
     
     # SincFixedOut.
     arr = matrix(0, nrow = 1024, ncol = 2)
-    harray = HArray$new_from_values(arr, dtype = HDataType$float64)
-    hparams = HSincInterpolationParams$new(256, 0.95, 256, "linear", "blackmanharris2")
+    harray = HArray$new_from_values(arr, dtype = HDataType$Float64)
+    hparams = HSincInterpolationParameters$new(256, 0.95, 256, "linear", "blackmanharris2")
     
-    res = HResampler$new_sinc(48000 / 44100, 2, hparams, 512L, HAudioOp$nchannels(harray), HResamplerType$sinc_fixed_out, HDataType$float32)
+    res = HResampler$new_sinc(48000 / 44100, 2, hparams, 512L, HAudioOp$nchannels(harray), HResamplerType$SincFixedOut, HDataType$Float32)
     expect_error(res$process(haudio, sr_out = 48000))
     
-    res = HResampler$new_sinc(48000 / 44100, 2, hparams, 512L, HAudioOp$nchannels(harray), HResamplerType$sinc_fixed_out, HDataType$float64)
-    expect_true(res$res_type() == HResamplerType$sinc_fixed_out)
-    expect_true(res$dtype() == HDataType$float64)
+    res = HResampler$new_sinc(48000 / 44100, 2, hparams, 512L, HAudioOp$nchannels(harray), HResamplerType$SincFixedOut, HDataType$Float64)
+    expect_true(res$res_type() == HResamplerType$SincFixedOut)
+    expect_true(res$dtype() == HDataType$Float64)
     expect_no_error(res$process(harray))
     
     expect_no_error(res$set_resample_ratio(1, FALSE))
@@ -47,14 +47,14 @@ test_that(
     
     # FftFixedIn
     arr = matrix(0, nrow = 1024, ncol = 2)
-    harray = HArray$new_from_values(arr, dtype = HDataType$float64)
+    harray = HArray$new_from_values(arr, dtype = HDataType$Float64)
     
-    res = HResampler$new_fft(44100L, 48000L, 1024L, 2L, 2L, HResamplerType$fft_fixed_in, HDataType$float32)
+    res = HResampler$new_fft(44100L, 48000L, 1024L, 2L, 2L, HResamplerType$FftFixedIn, HDataType$Float32)
     expect_error(res$process(haudio, sr_out = 48000))
     
-    res = HResampler$new_fft(44100L, 48000L, 1024L, 2L, 2L, HResamplerType$fft_fixed_in, HDataType$float64)
-    expect_true(res$res_type() == HResamplerType$fft_fixed_in)
-    expect_true(res$dtype() == HDataType$float64)
+    res = HResampler$new_fft(44100L, 48000L, 1024L, 2L, 2L, HResamplerType$FftFixedIn, HDataType$Float64)
+    expect_true(res$res_type() == HResamplerType$FftFixedIn)
+    expect_true(res$dtype() == HDataType$Float64)
     expect_no_error(res$process(harray))
     
     expect_error(res$set_resample_ratio(1, FALSE))
@@ -68,14 +68,14 @@ test_that(
     
     # FftFixedInOut
     arr = matrix(0, nrow = 1024, ncol = 2)
-    harray = HArray$new_from_values(arr, dtype = HDataType$float64)
+    harray = HArray$new_from_values(arr, dtype = HDataType$Float64)
     
-    res = HResampler$new_fft(44100L, 48000L, 512L, 2L, 2L, HResamplerType$fft_fixed_in_out, HDataType$float32)
+    res = HResampler$new_fft(44100L, 48000L, 512L, 2L, 2L, HResamplerType$FftFixedInOut, HDataType$Float32)
     expect_error(res$process(harray))
     
-    res = HResampler$new_fft(44100L, 48000L, 512L, 2L, 2L, HResamplerType$fft_fixed_in_out, HDataType$float64)
-    expect_true(res$res_type() == HResamplerType$fft_fixed_in_out)
-    expect_true(res$dtype() == HDataType$float64)
+    res = HResampler$new_fft(44100L, 48000L, 512L, 2L, 2L, HResamplerType$FftFixedInOut, HDataType$Float64)
+    expect_true(res$res_type() == HResamplerType$FftFixedInOut)
+    expect_true(res$dtype() == HDataType$Float64)
     expect_no_error(res$process(harray))
     
     expect_error(res$set_resample_ratio(1, FALSE))
@@ -89,14 +89,14 @@ test_that(
     
     # FftFixedOut
     arr = matrix(0, nrow = 1024, ncol = 2)
-    harray = HArray$new_from_values(arr, dtype = HDataType$float64)
+    harray = HArray$new_from_values(arr, dtype = HDataType$Float64)
     
-    res = HResampler$new_fft(44100L, 48000L, 512L, 2L, 2L, HResamplerType$fft_fixed_out, HDataType$float32)
+    res = HResampler$new_fft(44100L, 48000L, 512L, 2L, 2L, HResamplerType$FftFixedOut, HDataType$Float32)
     expect_error(res$process(harray))
     
-    res = HResampler$new_fft(44100L, 48000L, 512L, 2L, 2L, HResamplerType$fft_fixed_out, HDataType$float64)
-    expect_true(res$res_type() == HResamplerType$fft_fixed_out)
-    expect_true(res$dtype() == HDataType$float64)
+    res = HResampler$new_fft(44100L, 48000L, 512L, 2L, 2L, HResamplerType$FftFixedOut, HDataType$Float64)
+    expect_true(res$res_type() == HResamplerType$FftFixedOut)
+    expect_true(res$dtype() == HDataType$Float64)
     expect_no_error(res$process(harray))
     
     expect_error(res$set_resample_ratio(1, FALSE))
@@ -110,14 +110,14 @@ test_that(
     
     # FastFixedIn. Test example from rubato repo.
     arr = matrix(0, nrow = 1024, ncol = 2)
-    harray = HArray$new_from_values(arr, dtype = HDataType$float64)
+    harray = HArray$new_from_values(arr, dtype = HDataType$Float64)
     
-    res = HResampler$new_fast(48000 / 44100, 2, HPolynomialDegree$linear, 512L, HAudioOp$nchannels(harray), HResamplerType$fast_fixed_in, HDataType$float32)
+    res = HResampler$new_fast(48000 / 44100, 2, HPolynomialDegree$Linear, 512L, HAudioOp$nchannels(harray), HResamplerType$FastFixedIn, HDataType$Float32)
     expect_error(res$process(harray))
     
-    res = HResampler$new_fast(48000 / 44100, 2, HPolynomialDegree$linear, 512L, HAudioOp$nchannels(harray), HResamplerType$fast_fixed_in, HDataType$float64)
-    expect_true(res$res_type() == HResamplerType$fast_fixed_in)
-    expect_true(res$dtype() == HDataType$float64)
+    res = HResampler$new_fast(48000 / 44100, 2, HPolynomialDegree$Linear, 512L, HAudioOp$nchannels(harray), HResamplerType$FastFixedIn, HDataType$Float64)
+    expect_true(res$res_type() == HResamplerType$FastFixedIn)
+    expect_true(res$dtype() == HDataType$Float64)
     expect_no_error(res$process(harray))
     
     expect_no_error(res$set_resample_ratio(1, FALSE))
@@ -131,14 +131,14 @@ test_that(
     
     # FastFixedOut. Test example from rubato repo.
     arr = matrix(0, nrow = 512, ncol = 2)
-    harray = HArray$new_from_values(arr, dtype = HDataType$float64)
+    harray = HArray$new_from_values(arr, dtype = HDataType$Float64)
     
-    res = HResampler$new_fast(48000 / 44100, 2, HPolynomialDegree$linear, 512L, HAudioOp$nchannels(harray), HResamplerType$fast_fixed_out, HDataType$float32)
+    res = HResampler$new_fast(48000 / 44100, 2, HPolynomialDegree$Linear, 512L, HAudioOp$nchannels(harray), HResamplerType$FastFixedOut, HDataType$Float32)
     expect_error(res$process(harray))
     
-    res = HResampler$new_fast(48000 / 44100, 2, HPolynomialDegree$linear, 512L, HAudioOp$nchannels(harray), HResamplerType$fast_fixed_out, HDataType$float64)
-    expect_true(res$res_type() == HResamplerType$fast_fixed_out)
-    expect_true(res$dtype() == HDataType$float64)
+    res = HResampler$new_fast(48000 / 44100, 2, HPolynomialDegree$Linear, 512L, HAudioOp$nchannels(harray), HResamplerType$FastFixedOut, HDataType$Float64)
+    expect_true(res$res_type() == HResamplerType$FastFixedOut)
+    expect_true(res$dtype() == HDataType$Float64)
     expect_no_error(res$process(harray))
     
     expect_no_error(res$set_resample_ratio(1, FALSE))

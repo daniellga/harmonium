@@ -3,14 +3,13 @@ devtools::test()
 devtools::check(document = FALSE, cran = FALSE, args = c("--no-manual", "--no-build-vignettes", "--no-codoc", "--no-examples", "--no-tests"))
 
 fpath = "testfiles/gs-16b-2c-44100hz.flac"
-dtype = HDataType$float32
+dtype = HDataType$Float32
 frames = 1000L
 hdecoder_stream = HFile$decode_stream(fpath, frames, dtype)
 hdecoder_stream$stream()
 
-
 arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3, 4))
-a = HArray$new_from_values(arr, HDataType$float32)
+a = HArray$new_from_values(arr, HDataType$Float32)
 b = a$slice(list(c(0L, 2L, 1L), c(0L, 2L, 1L)))
 HAudioOp$nchannels(a)
 HAudioOp$nframes(a)

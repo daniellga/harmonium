@@ -356,28 +356,45 @@ HDataType$Complex64 <- .savvy_wrap_HDataType(3L)
 
 ### associated functions for HDataType
 
-HDataType$float32 <- function() {
-  .savvy_wrap_HDataType(.Call(HDataType_float32__impl))
+
+
+### wrapper functions for HDecodedAudio
+
+HDecodedAudio_harray <- function(self) {
+  function() {
+    .savvy_wrap_HArray(.Call(HDecodedAudio_harray__impl, self))
+  }
 }
 
-HDataType$float64 <- function() {
-  .savvy_wrap_HDataType(.Call(HDataType_float64__impl))
+HDecodedAudio_sr <- function(self) {
+  function() {
+  .Call(HDecodedAudio_sr__impl, self)
+  }
 }
 
-HDataType$complex32 <- function() {
-  .savvy_wrap_HDataType(.Call(HDataType_complex32__impl))
+.savvy_wrap_HDecodedAudio <- function(ptr) {
+  e <- new.env(parent = emptyenv())
+  e$.ptr <- ptr
+    e$harray <- HDecodedAudio_harray(ptr)
+  e$sr <- HDecodedAudio_sr(ptr)
+  
+  class(e) <- "HDecodedAudio"
+  e
 }
 
-HDataType$complex64 <- function() {
-  .savvy_wrap_HDataType(.Call(HDataType_complex64__impl))
-}
+
+
+HDecodedAudio <- new.env(parent = emptyenv())
+
+### associated functions for HDecodedAudio
+
 
 
 ### wrapper functions for HDecoderStream
 
 HDecoderStream_stream <- function(self) {
   function() {
-  .Call(HDecoderStream_stream__impl, self)
+    .savvy_wrap_HArray(.Call(HDecoderStream_stream__impl, self))
   }
 }
 
@@ -452,7 +469,7 @@ HFile <- new.env(parent = emptyenv())
 
 HFile$decode <- function(fpath, dtype) {
   dtype <- .savvy_extract_ptr(dtype, "HDataType")
-.Call(HFile_decode__impl, fpath, dtype)
+  .savvy_wrap_HDecodedAudio(.Call(HFile_decode__impl, fpath, dtype))
 }
 
 HFile$decode_stream <- function(fpath, frames, dtype) {
@@ -522,17 +539,6 @@ HMetadataType$Visual <- .savvy_wrap_HMetadataType(2L)
 
 ### associated functions for HMetadataType
 
-HMetadataType$all <- function() {
-  .savvy_wrap_HMetadataType(.Call(HMetadataType_all__impl))
-}
-
-HMetadataType$text <- function() {
-  .savvy_wrap_HMetadataType(.Call(HMetadataType_text__impl))
-}
-
-HMetadataType$visual <- function() {
-  .savvy_wrap_HMetadataType(.Call(HMetadataType_visual__impl))
-}
 
 
 ### wrapper functions for HPolynomialDegree
@@ -599,25 +605,6 @@ HPolynomialDegree$Nearest <- .savvy_wrap_HPolynomialDegree(4L)
 
 ### associated functions for HPolynomialDegree
 
-HPolynomialDegree$septic <- function() {
-  .savvy_wrap_HPolynomialDegree(.Call(HPolynomialDegree_septic__impl))
-}
-
-HPolynomialDegree$quintic <- function() {
-  .savvy_wrap_HPolynomialDegree(.Call(HPolynomialDegree_quintic__impl))
-}
-
-HPolynomialDegree$cubic <- function() {
-  .savvy_wrap_HPolynomialDegree(.Call(HPolynomialDegree_cubic__impl))
-}
-
-HPolynomialDegree$linear <- function() {
-  .savvy_wrap_HPolynomialDegree(.Call(HPolynomialDegree_linear__impl))
-}
-
-HPolynomialDegree$nearest <- function() {
-  .savvy_wrap_HPolynomialDegree(.Call(HPolynomialDegree_nearest__impl))
-}
 
 
 ### wrapper functions for HResampler
@@ -772,7 +759,8 @@ HResamplerType_ne <- function(self) {
 
 #' HResamplerType
 #' A resampler type representation. \
-#' Supports `FftFixedIn`, `FftFixedInOut`, `FftFixedOut`, `SincFixedIn` and `SincFixedOut` types. \
+#' Supports `FftFixedIn`, `FftFixedInOut`, `FftFixedOut`, `SincFixedIn`, `SincFixedOut`,
+#' `FastFixedIn` and `FastFixedOut` types. \
 #'
 #' # Methods
 #'
@@ -788,33 +776,6 @@ HResamplerType$FastFixedOut <- .savvy_wrap_HResamplerType(6L)
 
 ### associated functions for HResamplerType
 
-HResamplerType$fft_fixed_in <- function() {
-  .savvy_wrap_HResamplerType(.Call(HResamplerType_fft_fixed_in__impl))
-}
-
-HResamplerType$fft_fixed_in_out <- function() {
-  .savvy_wrap_HResamplerType(.Call(HResamplerType_fft_fixed_in_out__impl))
-}
-
-HResamplerType$fft_fixed_out <- function() {
-  .savvy_wrap_HResamplerType(.Call(HResamplerType_fft_fixed_out__impl))
-}
-
-HResamplerType$sinc_fixed_in <- function() {
-  .savvy_wrap_HResamplerType(.Call(HResamplerType_sinc_fixed_in__impl))
-}
-
-HResamplerType$sinc_fixed_out <- function() {
-  .savvy_wrap_HResamplerType(.Call(HResamplerType_sinc_fixed_out__impl))
-}
-
-HResamplerType$fast_fixed_in <- function() {
-  .savvy_wrap_HResamplerType(.Call(HResamplerType_fast_fixed_in__impl))
-}
-
-HResamplerType$fast_fixed_out <- function() {
-  .savvy_wrap_HResamplerType(.Call(HResamplerType_fast_fixed_out__impl))
-}
 
 
 ### wrapper functions for HSincInterpolationParameters

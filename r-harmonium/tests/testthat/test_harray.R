@@ -15,11 +15,11 @@ test_that(
     }
 
     arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3, 4))
-    check_harray(arr, HDataType$float32, HDataType$float32)
-    check_harray(arr, HDataType$float64, HDataType$float64)
+    check_harray(arr, HDataType$Float32, HDataType$Float32)
+    check_harray(arr, HDataType$Float64, HDataType$Float64)
 
     arr = array(c(1+2i,3+4i,5-6i,7+8i,9-10i,10+11i,11-12i,12+13i), c(2, 4))
-    check_harray(arr, HDataType$complex32, HDataType$complex32)
-    check_harray(arr, HDataType$complex64, HDataType$complex64)
+    check_harray(arr, HDataType$Complex32, HDataType$Complex32)
+    check_harray(arr, HDataType$Complex64, HDataType$Complex64)
   }
 )

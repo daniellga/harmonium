@@ -15,6 +15,7 @@ export(HFft)
 export(HAudioOp)
 export(hdocs)
 export(HDecoderStream)
+export(HDecodedAudio)
 
 S3method("==",HArray)
 S3method("==",HDataType)

@@ -9,8 +9,8 @@ test_that(
     
     input = matrix(c(1,2,3,4,5,6,7,8), 4, 2)
     result = matrix(c(1.258925, 1.584893, 1.995262, 2.511886, 3.162278, 3.981072, 5.011872, 6.309574), 4, 2)
-    check_db_to_amplitude(HDataType$float32, input, result)
-    check_db_to_amplitude(HDataType$float64, input, result)
+    check_db_to_amplitude(HDataType$Float32, input, result)
+    check_db_to_amplitude(HDataType$Float64, input, result)
   }
 )
 

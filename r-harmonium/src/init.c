@@ -213,26 +213,6 @@ SEXP HAudioSink_audio_supported_configs__impl(void) {
     return handle_result(res);
 }
 
-SEXP HDataType_float32__impl(void) {
-    SEXP res = HDataType_float32();
-    return handle_result(res);
-}
-
-SEXP HDataType_float64__impl(void) {
-    SEXP res = HDataType_float64();
-    return handle_result(res);
-}
-
-SEXP HDataType_complex32__impl(void) {
-    SEXP res = HDataType_complex32();
-    return handle_result(res);
-}
-
-SEXP HDataType_complex64__impl(void) {
-    SEXP res = HDataType_complex64();
-    return handle_result(res);
-}
-
 SEXP HDataType_print__impl(SEXP self__) {
     SEXP res = HDataType_print(self__);
     return handle_result(res);
@@ -245,6 +225,16 @@ SEXP HDataType_eq__impl(SEXP self__, SEXP other) {
 
 SEXP HDataType_ne__impl(SEXP self__, SEXP other) {
     SEXP res = HDataType_ne(self__, other);
+    return handle_result(res);
+}
+
+SEXP HDecodedAudio_harray__impl(SEXP self__) {
+    SEXP res = HDecodedAudio_harray(self__);
+    return handle_result(res);
+}
+
+SEXP HDecodedAudio_sr__impl(SEXP self__) {
+    SEXP res = HDecodedAudio_sr(self__);
     return handle_result(res);
 }
 
@@ -293,21 +283,6 @@ SEXP HFile_verify__impl(SEXP fpath) {
     return handle_result(res);
 }
 
-SEXP HMetadataType_all__impl(void) {
-    SEXP res = HMetadataType_all();
-    return handle_result(res);
-}
-
-SEXP HMetadataType_text__impl(void) {
-    SEXP res = HMetadataType_text();
-    return handle_result(res);
-}
-
-SEXP HMetadataType_visual__impl(void) {
-    SEXP res = HMetadataType_visual();
-    return handle_result(res);
-}
-
 SEXP HMetadataType_print__impl(SEXP self__) {
     SEXP res = HMetadataType_print(self__);
     return handle_result(res);
@@ -320,31 +295,6 @@ SEXP HMetadataType_eq__impl(SEXP self__, SEXP other) {
 
 SEXP HMetadataType_ne__impl(SEXP self__, SEXP other) {
     SEXP res = HMetadataType_ne(self__, other);
-    return handle_result(res);
-}
-
-SEXP HPolynomialDegree_septic__impl(void) {
-    SEXP res = HPolynomialDegree_septic();
-    return handle_result(res);
-}
-
-SEXP HPolynomialDegree_quintic__impl(void) {
-    SEXP res = HPolynomialDegree_quintic();
-    return handle_result(res);
-}
-
-SEXP HPolynomialDegree_cubic__impl(void) {
-    SEXP res = HPolynomialDegree_cubic();
-    return handle_result(res);
-}
-
-SEXP HPolynomialDegree_linear__impl(void) {
-    SEXP res = HPolynomialDegree_linear();
-    return handle_result(res);
-}
-
-SEXP HPolynomialDegree_nearest__impl(void) {
-    SEXP res = HPolynomialDegree_nearest();
     return handle_result(res);
 }
 
@@ -410,41 +360,6 @@ SEXP HResampler_dtype__impl(SEXP self__) {
 
 SEXP HResampler_print__impl(SEXP self__) {
     SEXP res = HResampler_print(self__);
-    return handle_result(res);
-}
-
-SEXP HResamplerType_fft_fixed_in__impl(void) {
-    SEXP res = HResamplerType_fft_fixed_in();
-    return handle_result(res);
-}
-
-SEXP HResamplerType_fft_fixed_in_out__impl(void) {
-    SEXP res = HResamplerType_fft_fixed_in_out();
-    return handle_result(res);
-}
-
-SEXP HResamplerType_fft_fixed_out__impl(void) {
-    SEXP res = HResamplerType_fft_fixed_out();
-    return handle_result(res);
-}
-
-SEXP HResamplerType_sinc_fixed_in__impl(void) {
-    SEXP res = HResamplerType_sinc_fixed_in();
-    return handle_result(res);
-}
-
-SEXP HResamplerType_sinc_fixed_out__impl(void) {
-    SEXP res = HResamplerType_sinc_fixed_out();
-    return handle_result(res);
-}
-
-SEXP HResamplerType_fast_fixed_in__impl(void) {
-    SEXP res = HResamplerType_fast_fixed_in();
-    return handle_result(res);
-}
-
-SEXP HResamplerType_fast_fixed_out__impl(void) {
-    SEXP res = HResamplerType_fast_fixed_out();
     return handle_result(res);
 }
 
@@ -552,13 +467,11 @@ static const R_CallMethodDef CallEntries[] = {
     {"HAudioSink_audio_output_devices__impl", (DL_FUNC) &HAudioSink_audio_output_devices__impl, 0},
     {"HAudioSink_audio_default_device__impl", (DL_FUNC) &HAudioSink_audio_default_device__impl, 0},
     {"HAudioSink_audio_supported_configs__impl", (DL_FUNC) &HAudioSink_audio_supported_configs__impl, 0},
-    {"HDataType_float32__impl", (DL_FUNC) &HDataType_float32__impl, 0},
-    {"HDataType_float64__impl", (DL_FUNC) &HDataType_float64__impl, 0},
-    {"HDataType_complex32__impl", (DL_FUNC) &HDataType_complex32__impl, 0},
-    {"HDataType_complex64__impl", (DL_FUNC) &HDataType_complex64__impl, 0},
     {"HDataType_print__impl", (DL_FUNC) &HDataType_print__impl, 1},
     {"HDataType_eq__impl", (DL_FUNC) &HDataType_eq__impl, 2},
     {"HDataType_ne__impl", (DL_FUNC) &HDataType_ne__impl, 2},
+    {"HDecodedAudio_harray__impl", (DL_FUNC) &HDecodedAudio_harray__impl, 1},
+    {"HDecodedAudio_sr__impl", (DL_FUNC) &HDecodedAudio_sr__impl, 1},
     {"HDecoderStream_stream__impl", (DL_FUNC) &HDecoderStream_stream__impl, 1},
     {"HFft_fft__impl", (DL_FUNC) &HFft_fft__impl, 1},
     {"HFft_fft_mut__impl", (DL_FUNC) &HFft_fft_mut__impl, 1},
@@ -568,17 +481,9 @@ static const R_CallMethodDef CallEntries[] = {
     {"HFile_metadata__impl", (DL_FUNC) &HFile_metadata__impl, 2},
     {"HFile_params__impl", (DL_FUNC) &HFile_params__impl, 1},
     {"HFile_verify__impl", (DL_FUNC) &HFile_verify__impl, 1},
-    {"HMetadataType_all__impl", (DL_FUNC) &HMetadataType_all__impl, 0},
-    {"HMetadataType_text__impl", (DL_FUNC) &HMetadataType_text__impl, 0},
-    {"HMetadataType_visual__impl", (DL_FUNC) &HMetadataType_visual__impl, 0},
     {"HMetadataType_print__impl", (DL_FUNC) &HMetadataType_print__impl, 1},
     {"HMetadataType_eq__impl", (DL_FUNC) &HMetadataType_eq__impl, 2},
     {"HMetadataType_ne__impl", (DL_FUNC) &HMetadataType_ne__impl, 2},
-    {"HPolynomialDegree_septic__impl", (DL_FUNC) &HPolynomialDegree_septic__impl, 0},
-    {"HPolynomialDegree_quintic__impl", (DL_FUNC) &HPolynomialDegree_quintic__impl, 0},
-    {"HPolynomialDegree_cubic__impl", (DL_FUNC) &HPolynomialDegree_cubic__impl, 0},
-    {"HPolynomialDegree_linear__impl", (DL_FUNC) &HPolynomialDegree_linear__impl, 0},
-    {"HPolynomialDegree_nearest__impl", (DL_FUNC) &HPolynomialDegree_nearest__impl, 0},
     {"HPolynomialDegree_print__impl", (DL_FUNC) &HPolynomialDegree_print__impl, 1},
     {"HPolynomialDegree_eq__impl", (DL_FUNC) &HPolynomialDegree_eq__impl, 2},
     {"HPolynomialDegree_ne__impl", (DL_FUNC) &HPolynomialDegree_ne__impl, 2},
@@ -592,13 +497,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"HResampler_res_type__impl", (DL_FUNC) &HResampler_res_type__impl, 1},
     {"HResampler_dtype__impl", (DL_FUNC) &HResampler_dtype__impl, 1},
     {"HResampler_print__impl", (DL_FUNC) &HResampler_print__impl, 1},
-    {"HResamplerType_fft_fixed_in__impl", (DL_FUNC) &HResamplerType_fft_fixed_in__impl, 0},
-    {"HResamplerType_fft_fixed_in_out__impl", (DL_FUNC) &HResamplerType_fft_fixed_in_out__impl, 0},
-    {"HResamplerType_fft_fixed_out__impl", (DL_FUNC) &HResamplerType_fft_fixed_out__impl, 0},
-    {"HResamplerType_sinc_fixed_in__impl", (DL_FUNC) &HResamplerType_sinc_fixed_in__impl, 0},
-    {"HResamplerType_sinc_fixed_out__impl", (DL_FUNC) &HResamplerType_sinc_fixed_out__impl, 0},
-    {"HResamplerType_fast_fixed_in__impl", (DL_FUNC) &HResamplerType_fast_fixed_in__impl, 0},
-    {"HResamplerType_fast_fixed_out__impl", (DL_FUNC) &HResamplerType_fast_fixed_out__impl, 0},
     {"HResamplerType_print__impl", (DL_FUNC) &HResamplerType_print__impl, 1},
     {"HResamplerType_eq__impl", (DL_FUNC) &HResamplerType_eq__impl, 2},
     {"HResamplerType_ne__impl", (DL_FUNC) &HResamplerType_ne__impl, 2},
