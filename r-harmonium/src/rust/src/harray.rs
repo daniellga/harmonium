@@ -1,4 +1,4 @@
-use crate::{harrayr::HArrayR, hdatatype::HDataType};
+use crate::{errors::HErrorR, harrayr::HArrayR, hdatatype::HDataType};
 use ndarray::{IxDyn, ShapeError, SliceInfo, SliceInfoElem};
 use num_complex::Complex;
 use savvy::{
@@ -54,13 +54,15 @@ impl HArray {
                 (TypedSexp::Real(arr), HDataType::Float32) => {
                     let slice: &[f64] = arr.as_slice();
                     let v: Vec<f32> = slice.iter().map(|x| *x as f32).collect();
-                    let harray = harmonium_core::array::HArray::new_from_shape_vec(dim, v).unwrap();
+                    let harray = harmonium_core::array::HArray::new_from_shape_vec(dim, v)
+                        .map_err(|err| HErrorR::from(err))?;
                     let data = Arc::new(harray);
                     Ok(HArray(data))
                 }
                 (TypedSexp::Real(arr), HDataType::Float64) => {
                     let v: Vec<f64> = arr.as_slice().to_vec();
-                    let harray = harmonium_core::array::HArray::new_from_shape_vec(dim, v).unwrap();
+                    let harray = harmonium_core::array::HArray::new_from_shape_vec(dim, v)
+                        .map_err(|err| HErrorR::from(err))?;
                     let data = Arc::new(harray);
                     Ok(HArray(data))
                 }
@@ -70,20 +72,22 @@ impl HArray {
                         .iter()
                         .map(|z| Complex::new(z.re as f32, z.im as f32))
                         .collect();
-                    let harray = harmonium_core::array::HArray::new_from_shape_vec(dim, v).unwrap();
+                    let harray = harmonium_core::array::HArray::new_from_shape_vec(dim, v)
+                        .map_err(|err| HErrorR::from(err))?;
                     let data = Arc::new(harray);
                     Ok(HArray(data))
                 }
                 (TypedSexp::Complex(arr), HDataType::Complex64) => {
                     let v: Vec<Complex<f64>> = arr.as_slice().to_vec();
-                    let harray = harmonium_core::array::HArray::new_from_shape_vec(dim, v).unwrap();
+                    let harray = harmonium_core::array::HArray::new_from_shape_vec(dim, v)
+                        .map_err(|err| HErrorR::from(err))?;
                     let data = Arc::new(harray);
                     Ok(HArray(data))
                 }
-                _ => panic!("not valid input types"),
+                _ => Err("not valid input types".into()),
             }
         } else {
-            panic!("arr must be of array type.");
+            Err("arr must be of array type.".into())
         }
     }
 
@@ -110,7 +114,11 @@ impl HArray {
     /// _________
     ///
     fn len(&self) -> savvy::Result<Sexp> {
-        let len: i32 = self.0.len().try_into().unwrap();
+        let len: i32 = self
+            .0
+            .len()
+            .try_into()
+            .map_err(|_| savvy::Error::new("Cannot convert usize to i32."))?;
         let integer_sexp: OwnedIntegerSexp = len.try_into()?;
         integer_sexp.into()
     }
@@ -214,9 +222,7 @@ impl HArray {
         let list_len = range.len();
 
         if list_len != self.0.ndim() {
-            return savvy::Result::Err(
-                "The list must have the same length as the number of dimensions.".into(),
-            );
+            return Err("The list must have the same length as the number of dimensions.".into());
         }
 
         let mut vec_ranges: Vec<SliceInfoElem> = Vec::with_capacity(list_len);
@@ -224,7 +230,7 @@ impl HArray {
             match obj.into_typed() {
                 TypedSexp::Integer(integer_sexp) => {
                     if integer_sexp.len() != 3 {
-                        return savvy::Result::Err("Each element must have a length of 3.".into());
+                        return Err("Each element must have a length of 3.".into());
                     }
                     let slice: &[i32] = integer_sexp.as_slice();
                     let slice_info_elem = SliceInfoElem::Slice {
@@ -234,17 +240,13 @@ impl HArray {
                     };
                     vec_ranges.push(slice_info_elem);
                 }
-                _ => {
-                    return savvy::Result::Err(
-                        "Each element in the list must be a vector of integers.".into(),
-                    )?;
-                }
+                _ => return Err("Each element in the list must be a vector of integers.".into()),
             }
         }
 
         let slice_info: SliceInfo<Vec<SliceInfoElem>, IxDyn, IxDyn> = vec_ranges
             .try_into()
-            .map_err(|err: ShapeError| err.to_string())?;
+            .map_err(|err: ShapeError| savvy::Error::new(err.to_string().as_str()))?;
 
         Ok(HArray(self.0.slice(slice_info)))
     }

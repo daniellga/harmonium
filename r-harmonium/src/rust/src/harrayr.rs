@@ -1,4 +1,4 @@
-use crate::hdatatype::HDataType;
+use crate::{errors::HErrorR, hdatatype::HDataType};
 use harmonium_core::haudioop::HAudioOpDyn;
 use harmonium_fft::fft::{FftComplex, FftFloat};
 use ndarray::{IxDyn, SliceInfo, SliceInfoElem};
@@ -24,7 +24,7 @@ pub trait HArrayR: Send + Sync {
     fn nchannels(&self) -> usize;
     fn nframes(&self) -> usize;
     fn db_to_amplitude(&mut self, reference: f64, power: f64);
-    fn to_mono(&mut self);
+    fn to_mono(&mut self) -> savvy::Result<()>;
 }
 
 impl HArrayR for harmonium_core::array::HArray<f32, IxDyn> {
@@ -116,8 +116,9 @@ impl HArrayR for harmonium_core::array::HArray<f32, IxDyn> {
         HAudioOpDyn::db_to_amplitude(self, reference as f32, power as f32);
     }
 
-    fn to_mono(&mut self) {
-        *self = HAudioOpDyn::to_mono(self).unwrap();
+    fn to_mono(&mut self) -> savvy::Result<()> {
+        *self = HAudioOpDyn::to_mono(self).map_err(|err| HErrorR::from(err))?;
+        Ok(())
     }
 }
 
@@ -209,8 +210,9 @@ impl HArrayR for harmonium_core::array::HArray<f64, IxDyn> {
         HAudioOpDyn::db_to_amplitude(self, reference, power);
     }
 
-    fn to_mono(&mut self) {
-        *self = HAudioOpDyn::to_mono(self).unwrap();
+    fn to_mono(&mut self) -> savvy::Result<()> {
+        *self = HAudioOpDyn::to_mono(self).map_err(|err| HErrorR::from(err))?;
+        Ok(())
     }
 }
 
@@ -303,8 +305,8 @@ impl HArrayR for harmonium_core::array::HArray<Complex<f32>, IxDyn> {
         panic!("Operation only allowed for float HArrays.");
     }
 
-    fn to_mono(&mut self) {
-        panic!("Operation only allowed for float HArrays.");
+    fn to_mono(&mut self) -> savvy::Result<()> {
+        Err("Operation only allowed for float HArrays.".into())
     }
 }
 
@@ -396,7 +398,7 @@ impl HArrayR for harmonium_core::array::HArray<Complex<f64>, IxDyn> {
         panic!("Operation only allowed for float HArrays.");
     }
 
-    fn to_mono(&mut self) {
-        panic!("Operation only allowed for float HArrays.");
+    fn to_mono(&mut self) -> savvy::Result<()> {
+        Err("Operation only allowed for float HArrays.".into())
     }
 }

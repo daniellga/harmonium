@@ -1,4 +1,4 @@
-use savvy::{Sexp, TypedSexp};
+use savvy::{OwnedIntegerSexp, Sexp, TypedSexp};
 
 pub(crate) trait Conversions<T> {
     fn to_scalar(self: Self) -> savvy::Result<T>;
@@ -57,4 +57,11 @@ impl Conversions<bool> for Sexp {
             }
         }
     }
+}
+
+pub fn try_from_usize_to_int_sexp(n: usize) -> savvy::Result<OwnedIntegerSexp> {
+    let n: i32 = n
+        .try_into()
+        .map_err(|_| savvy::Error::new("Cannot convert usize to i32."))?;
+    n.try_into()
 }

@@ -1,5 +1,8 @@
-use crate::{conversions::Conversions, harray::HArray};
-use savvy::{savvy, OwnedIntegerSexp, Sexp};
+use crate::{
+    conversions::{try_from_usize_to_int_sexp, Conversions},
+    harray::HArray,
+};
+use savvy::{savvy, Sexp};
 
 /// HAudioOp
 ///
@@ -38,8 +41,8 @@ impl HAudioOp {
     /// _________
     ///
     fn nchannels(harray: &HArray) -> savvy::Result<Sexp> {
-        let nchannels: i32 = harray.0.nchannels().try_into().unwrap();
-        let integer_sexp: OwnedIntegerSexp = nchannels.try_into()?;
+        let nchannels = harray.0.nchannels();
+        let integer_sexp = try_from_usize_to_int_sexp(nchannels)?;
         integer_sexp.into()
     }
 
@@ -68,8 +71,8 @@ impl HAudioOp {
     /// _________
     ///
     fn nframes(harray: &HArray) -> savvy::Result<Sexp> {
-        let nframes: i32 = harray.0.nframes().try_into().unwrap();
-        let integer_sexp: OwnedIntegerSexp = nframes.try_into()?;
+        let nframes = harray.0.nframes();
+        let integer_sexp = try_from_usize_to_int_sexp(nframes)?;
         integer_sexp.into()
     }
 
@@ -104,11 +107,9 @@ impl HAudioOp {
     ///
     fn db_to_amplitude(harray: &mut HArray, reference: Sexp, power: Sexp) -> savvy::Result<()> {
         let inner_mut = harray.get_inner_mut();
-
         let reference: f64 = reference.to_scalar()?;
         let power: f64 = power.to_scalar()?;
         inner_mut.db_to_amplitude(reference, power);
-
         Ok(())
     }
 
@@ -138,7 +139,7 @@ impl HAudioOp {
     ///
     fn to_mono(harray: &mut HArray) -> savvy::Result<()> {
         let inner_mut = harray.get_inner_mut();
-        inner_mut.to_mono();
+        inner_mut.to_mono()?;
         Ok(())
     }
 }
