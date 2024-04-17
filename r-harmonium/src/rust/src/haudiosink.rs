@@ -1,9 +1,8 @@
+use crate::{conversions::Conversions, errors::HErrorR, harray::HArray, hdatatype::HDataType};
 use harmonium_core::haudioop::Audio;
 use harmonium_io::{decode::decode, play};
 use ndarray::IxDyn;
 use savvy::{savvy, OwnedIntegerSexp, OwnedLogicalSexp, OwnedRealSexp, OwnedStringSexp, Sexp};
-
-use crate::{conversions::Conversions, harray::HArray, hdatatype::HDataType};
 
 /// HAudioSink
 /// Handle to a device that outputs sounds. \
@@ -35,8 +34,8 @@ impl HAudioSink {
     ///
     /// _________
     ///
-    fn new() -> Self {
-        Self(play::HAudioSink::try_new().unwrap())
+    fn new() -> savvy::Result<Self> {
+        Ok(Self(play::HAudioSink::try_new().map_err(HErrorR::from)?))
     }
 
     /// HAudioSink
@@ -64,10 +63,13 @@ impl HAudioSink {
     ///
     fn append_from_harray(&self, harray: &HArray, sr: Sexp) -> savvy::Result<()> {
         let sr: i32 = sr.to_scalar()?;
-        let sr = sr.try_into().unwrap();
+        let sr = sr
+            .try_into()
+            .map_err(|_| savvy::Error::new("Cannot convert i32 to u32."))?;
 
         match harray.0.dtype() {
             HDataType::Float32 => {
+                // Ok to unwrap.
                 let harray = harray
                     .0
                     .as_any()
@@ -78,6 +80,7 @@ impl HAudioSink {
                 Ok(())
             }
             HDataType::Float64 => {
+                // Ok to unwrap.
                 let harray = harray
                     .0
                     .as_any()
@@ -87,7 +90,7 @@ impl HAudioSink {
                 self.0.append_from_harray::<f64>(&audio, sr);
                 Ok(())
             }
-            _ => panic!("Not a valid HDataType."),
+            _ => Err("Not a valid HDataType.".into()),
         }
     }
 
@@ -115,7 +118,7 @@ impl HAudioSink {
     fn append_from_file(&self, fpath: Sexp) -> savvy::Result<()> {
         let fpath: &str = fpath.to_scalar()?;
 
-        let (harray, sr) = decode::<f32>(fpath).unwrap();
+        let (harray, sr) = decode::<f32>(fpath).map_err(HErrorR::from)?;
         let audio = Audio::D2(&harray);
         self.0.append_from_harray(&audio, sr);
         Ok(())
@@ -494,7 +497,7 @@ impl HAudioSink {
     /// _________
     ///
     fn audio_output_devices() -> savvy::Result<Sexp> {
-        let output_devices = play::audio_output_devices().unwrap();
+        let output_devices = play::audio_output_devices().map_err(HErrorR::from)?;
         let string_sexp = OwnedStringSexp::try_from(output_devices)?;
         string_sexp.into()
     }
@@ -519,7 +522,7 @@ impl HAudioSink {
     /// _________
     ///
     fn audio_default_device() -> savvy::Result<Sexp> {
-        let default_device = play::audio_default_device().unwrap();
+        let default_device = play::audio_default_device().map_err(HErrorR::from)?;
         let string_sexp = OwnedStringSexp::try_from(default_device)?;
         string_sexp.into()
     }
@@ -550,7 +553,7 @@ impl HAudioSink {
     /// _________
     ///
     fn audio_supported_configs() -> savvy::Result<Sexp> {
-        let supported_configs = play::audio_supported_configs().unwrap();
+        let supported_configs = play::audio_supported_configs().map_err(HErrorR::from)?;
         let string_sexp = OwnedStringSexp::try_from(supported_configs)?;
         string_sexp.into()
     }

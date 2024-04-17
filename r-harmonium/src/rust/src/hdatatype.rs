@@ -117,11 +117,10 @@ impl HDataType {
 impl fmt::Display for HDataType {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
-            HDataType::Float32 => write!(f, "Float32")?,
-            HDataType::Float64 => write!(f, "Float64")?,
-            HDataType::Complex32 => write!(f, "Complex32")?,
-            HDataType::Complex64 => write!(f, "Complex64")?,
+            HDataType::Float32 => write!(f, "Float32"),
+            HDataType::Float64 => write!(f, "Float64"),
+            HDataType::Complex32 => write!(f, "Complex32"),
+            HDataType::Complex64 => write!(f, "Complex64"),
         }
-        Ok(())
     }
 }

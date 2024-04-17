@@ -55,14 +55,14 @@ impl HArray {
                     let slice: &[f64] = arr.as_slice();
                     let v: Vec<f32> = slice.iter().map(|x| *x as f32).collect();
                     let harray = harmonium_core::array::HArray::new_from_shape_vec(dim, v)
-                        .map_err(|err| HErrorR::from(err))?;
+                        .map_err(HErrorR::from)?;
                     let data = Arc::new(harray);
                     Ok(HArray(data))
                 }
                 (TypedSexp::Real(arr), HDataType::Float64) => {
                     let v: Vec<f64> = arr.as_slice().to_vec();
                     let harray = harmonium_core::array::HArray::new_from_shape_vec(dim, v)
-                        .map_err(|err| HErrorR::from(err))?;
+                        .map_err(HErrorR::from)?;
                     let data = Arc::new(harray);
                     Ok(HArray(data))
                 }
@@ -73,14 +73,14 @@ impl HArray {
                         .map(|z| Complex::new(z.re as f32, z.im as f32))
                         .collect();
                     let harray = harmonium_core::array::HArray::new_from_shape_vec(dim, v)
-                        .map_err(|err| HErrorR::from(err))?;
+                        .map_err(HErrorR::from)?;
                     let data = Arc::new(harray);
                     Ok(HArray(data))
                 }
                 (TypedSexp::Complex(arr), HDataType::Complex64) => {
                     let v: Vec<Complex<f64>> = arr.as_slice().to_vec();
                     let harray = harmonium_core::array::HArray::new_from_shape_vec(dim, v)
-                        .map_err(|err| HErrorR::from(err))?;
+                        .map_err(HErrorR::from)?;
                     let data = Arc::new(harray);
                     Ok(HArray(data))
                 }

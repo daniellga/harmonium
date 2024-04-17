@@ -1,5 +1,6 @@
 use crate::{
-    conversions::Conversions, harray::HArray, hdatatype::HDataType, hmetadatatype::HMetadataType,
+    conversions::Conversions, errors::HErrorR, harray::HArray, hdatatype::HDataType,
+    hmetadatatype::HMetadataType,
 };
 use harmonium_core::conversions::IntoDynamic;
 use harmonium_io::decode;
@@ -69,7 +70,12 @@ impl HDecodedAudio {
     /// _________
     ///
     fn sr(&self) -> savvy::Result<Sexp> {
-        let integer_sexp = OwnedIntegerSexp::try_from_scalar(self.sr.try_into().unwrap())?;
+        let sr: i32 = self
+            .sr
+            .try_into()
+            .map_err(|_| savvy::Error::new("Cannot convert u32 to i32."))?;
+
+        let integer_sexp = OwnedIntegerSexp::try_from_scalar(sr)?;
         integer_sexp.into()
     }
     /// HDecodedAudio
@@ -134,18 +140,20 @@ impl HFile {
         let fpath: &str = fpath.to_scalar()?;
         match dtype {
             HDataType::Float32 => {
-                let (harray, sr) = harmonium_io::decode::decode::<f32>(fpath).unwrap();
+                let (harray, sr) =
+                    harmonium_io::decode::decode::<f32>(fpath).map_err(HErrorR::from)?;
                 let harray = harray.into_dynamic();
                 let harray = HArray(Arc::new(harray));
                 Ok(HDecodedAudio { harray, sr })
             }
             HDataType::Float64 => {
-                let (harray, sr) = harmonium_io::decode::decode::<f64>(fpath).unwrap();
+                let (harray, sr) =
+                    harmonium_io::decode::decode::<f64>(fpath).map_err(HErrorR::from)?;
                 let harray = harray.into_dynamic();
                 let harray = HArray(Arc::new(harray));
                 Ok(HDecodedAudio { harray, sr })
             }
-            _ => panic!("Operation only allowed for float dtypes."),
+            _ => Err("Operation only allowed for float dtypes.".into()),
         }
     }
 
@@ -188,17 +196,20 @@ impl HFile {
     ) -> savvy::Result<HDecoderStream> {
         let fpath: &str = fpath.to_scalar()?;
         let frames: i32 = frames.to_scalar()?;
-        let frames = usize::try_from(frames).unwrap();
+        let frames = usize::try_from(frames)
+            .map_err(|_| savvy::Error::new("Cannot convert i32 to usize."))?;
         match dtype {
             HDataType::Float32 => {
-                let streamer = harmonium_io::decode::stream::<f32>(fpath, frames).unwrap();
+                let streamer =
+                    harmonium_io::decode::stream::<f32>(fpath, frames).map_err(HErrorR::from)?;
                 Ok(HDecoderStream(Box::new(streamer)))
             }
             HDataType::Float64 => {
-                let streamer = harmonium_io::decode::stream::<f64>(fpath, frames).unwrap();
+                let streamer =
+                    harmonium_io::decode::stream::<f64>(fpath, frames).map_err(HErrorR::from)?;
                 Ok(HDecoderStream(Box::new(streamer)))
             }
-            _ => panic!("Operation only allowed for float dtypes."),
+            _ => Err("Operation only allowed for float dtypes.".into()),
         }
     }
 
@@ -291,7 +302,8 @@ impl HFile {
             HMetadataType::Visual => decode::HMetadataType::Visual,
         };
 
-        let opt_metadata = decode::metadata_from_file(fpath, metadata_type).unwrap();
+        let opt_metadata =
+            decode::metadata_from_file(fpath, metadata_type).map_err(HErrorR::from)?;
         if let Some(metadata) = opt_metadata {
             match metadata {
                 decode::HMetadata::All((text, visual)) => {
@@ -355,7 +367,8 @@ impl HFile {
     ///
     fn params(fpath: Sexp) -> savvy::Result<Sexp> {
         let fpath: &str = fpath.to_scalar()?;
-        let (sr, nframes, nchannels, duration) = decode::get_params_from_file(fpath).unwrap();
+        let (sr, nframes, nchannels, duration) =
+            decode::get_params_from_file(fpath).map_err(HErrorR::from)?;
         let arr = [sr as f64, nframes as f64, nchannels as f64, duration];
         let real_sexp = OwnedRealSexp::try_from_slice(arr.as_slice())?;
         Ok(real_sexp.into())
@@ -390,7 +403,7 @@ impl HFile {
     ///
     fn verify(fpath: Sexp) -> savvy::Result<Sexp> {
         let fpath: &str = fpath.to_scalar()?;
-        let verified = match decode::verify_file(fpath).unwrap() {
+        let verified = match decode::verify_file(fpath).map_err(HErrorR::from)? {
             decode::HVerifyDecode::Passed => "passed",
             decode::HVerifyDecode::Failed => "failed",
             decode::HVerifyDecode::NotSupported => "not_supported",
@@ -464,7 +477,7 @@ fn list_from_textmetadata(text: decode::HTextMetadata) -> savvy::Result<OwnedLis
     if let Some(tags_vec) = text.0 {
         let mut list = OwnedListSexp::new(tags_vec.len(), false)?;
         for (i, htag) in tags_vec.as_slice().iter().enumerate() {
-            let mut string_sexp = OwnedStringSexp::try_from_slice(&[
+            let mut string_sexp = OwnedStringSexp::try_from_slice([
                 htag.tag_key.as_str(),
                 htag.tag_std_key.as_str(),
                 htag.tag_value.as_str(),
@@ -483,7 +496,7 @@ fn list_from_visualmetadata(visual: decode::HVisualMetadata) -> savvy::Result<Ow
         let mut list = OwnedListSexp::new(svm_vec.len(), false)?;
         for (i, hsvm) in svm_vec.as_slice().iter().enumerate() {
             let mut inner_list = OwnedListSexp::new(2, false)?;
-            let mut string_sexp = OwnedStringSexp::try_from_slice(&[
+            let mut string_sexp = OwnedStringSexp::try_from_slice([
                 hsvm.usage.as_str(),
                 hsvm.media_type.as_str(),
                 hsvm.dimensions.as_str(),
@@ -504,7 +517,7 @@ fn list_from_visualmetadata(visual: decode::HVisualMetadata) -> savvy::Result<Ow
             let inner_inner_list = if let Some(tags_vec) = &hsvm.tags_vec {
                 let mut inner_inner_list = OwnedListSexp::new(tags_vec.len(), false)?;
                 for (i, htag) in tags_vec.as_slice().iter().enumerate() {
-                    let mut string_sexp = OwnedStringSexp::try_from_slice(&[
+                    let mut string_sexp = OwnedStringSexp::try_from_slice([
                         htag.tag_key.as_str(),
                         htag.tag_std_key.as_str(),
                         htag.tag_value.as_str(),

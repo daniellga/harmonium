@@ -121,14 +121,13 @@ impl HResamplerType {
 impl fmt::Display for HResamplerType {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
-            HResamplerType::FftFixedIn => write!(f, "FftFixedIn")?,
-            HResamplerType::FftFixedInOut => write!(f, "FftFixedInOut")?,
-            HResamplerType::FftFixedOut => write!(f, "FftFixedOut")?,
-            HResamplerType::SincFixedIn => write!(f, "SincFixedIn")?,
-            HResamplerType::SincFixedOut => write!(f, "SincFixedOut")?,
-            HResamplerType::FastFixedIn => write!(f, "FastFixedIn")?,
-            HResamplerType::FastFixedOut => write!(f, "FastFixedOut")?,
+            HResamplerType::FftFixedIn => write!(f, "FftFixedIn"),
+            HResamplerType::FftFixedInOut => write!(f, "FftFixedInOut"),
+            HResamplerType::FftFixedOut => write!(f, "FftFixedOut"),
+            HResamplerType::SincFixedIn => write!(f, "SincFixedIn"),
+            HResamplerType::SincFixedOut => write!(f, "SincFixedOut"),
+            HResamplerType::FastFixedIn => write!(f, "FastFixedIn"),
+            HResamplerType::FastFixedOut => write!(f, "FastFixedOut"),
         }
-        Ok(())
     }
 }

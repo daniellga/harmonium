@@ -133,13 +133,12 @@ impl HPolynomialDegree {
 impl fmt::Display for HPolynomialDegree {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
-            HPolynomialDegree::Septic => write!(f, "Septic")?,
-            HPolynomialDegree::Quintic => write!(f, "Quintic")?,
-            HPolynomialDegree::Cubic => write!(f, "Cubic")?,
-            HPolynomialDegree::Linear => write!(f, "Linear")?,
-            HPolynomialDegree::Nearest => write!(f, "Nearest")?,
+            HPolynomialDegree::Septic => write!(f, "Septic"),
+            HPolynomialDegree::Quintic => write!(f, "Quintic"),
+            HPolynomialDegree::Cubic => write!(f, "Cubic"),
+            HPolynomialDegree::Linear => write!(f, "Linear"),
+            HPolynomialDegree::Nearest => write!(f, "Nearest"),
         }
-        Ok(())
     }
 }
 

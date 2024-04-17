@@ -1,8 +1,9 @@
 use crate::{
-    conversions::Conversions, harray::HArray, hdatatype::HDataType,
+    conversions::Conversions, errors::HErrorR, harray::HArray, hdatatype::HDataType,
     hpolynomialdegree::HPolynomialDegree, hresamplertype::HResamplerType,
     hsincinterpolationparams::HSincInterpolationParameters,
 };
+use harmonium_core::errors::HError;
 use harmonium_resample::resample::ProcessResampler;
 use ndarray::IxDyn;
 use rubato::{
@@ -11,9 +12,9 @@ use rubato::{
 use savvy::{r_println, savvy, Sexp};
 
 pub trait HResamplerR: Send {
-    fn process(&mut self, harray: &mut HArray);
-    fn set_resample_ratio(&mut self, new_ratio: f64, ramp: bool);
-    fn set_resample_ratio_relative(&mut self, rel_ratio: f64, ramp: bool);
+    fn process(&mut self, harray: &mut HArray) -> savvy::Result<()>;
+    fn set_resample_ratio(&mut self, new_ratio: f64, ramp: bool) -> savvy::Result<()>;
+    fn set_resample_ratio_relative(&mut self, rel_ratio: f64, ramp: bool) -> savvy::Result<()>;
     fn reset(&mut self);
     fn res_type(&self) -> HResamplerType;
     fn dtype(&self) -> HDataType;
@@ -124,77 +125,74 @@ impl HResampler {
         dtype: &HDataType,
     ) -> savvy::Result<HResampler> {
         let sr_in: i32 = sr_in.to_scalar()?;
+        let sr_in = sr_in
+            .try_into()
+            .map_err(|_| savvy::Error::new("Cannot convert i32 to usize."))?;
         let sr_out: i32 = sr_out.to_scalar()?;
+        let sr_out = sr_out
+            .try_into()
+            .map_err(|_| savvy::Error::new("Cannot convert i32 to usize."))?;
         let chunk_size: i32 = chunk_size.to_scalar()?;
-        let sub_chunks: i32 = sub_chunks.to_scalar()?;
+        let chunk_size = chunk_size
+            .try_into()
+            .map_err(|_| savvy::Error::new("Cannot convert i32 to usize."))?;
         let nchannels: i32 = nchannels.to_scalar()?;
+        let nchannels = nchannels
+            .try_into()
+            .map_err(|_| savvy::Error::new("Cannot convert i32 to usize."))?;
 
         match (res_type, dtype) {
             (HResamplerType::FftFixedIn, HDataType::Float32) => {
-                let resampler = FftFixedIn::<f32>::new(
-                    sr_in.try_into().unwrap(),
-                    sr_out.try_into().unwrap(),
-                    chunk_size.try_into().unwrap(),
-                    sub_chunks.try_into().unwrap(),
-                    nchannels.try_into().unwrap(),
-                )
-                .unwrap();
+                let sub_chunks: i32 = sub_chunks.to_scalar()?;
+                let sub_chunks = sub_chunks
+                    .try_into()
+                    .map_err(|_| savvy::Error::new("Cannot convert i32 to usize."))?;
+                let resampler =
+                    FftFixedIn::<f32>::new(sr_in, sr_out, chunk_size, sub_chunks, nchannels)
+                        .map_err(|err| HErrorR::from(HError::from(err)))?;
                 Ok(HResampler(Box::new(resampler)))
             }
             (HResamplerType::FftFixedIn, HDataType::Float64) => {
-                let resampler = FftFixedIn::<f64>::new(
-                    sr_in.try_into().unwrap(),
-                    sr_out.try_into().unwrap(),
-                    chunk_size.try_into().unwrap(),
-                    sub_chunks.try_into().unwrap(),
-                    nchannels.try_into().unwrap(),
-                )
-                .unwrap();
+                let sub_chunks: i32 = sub_chunks.to_scalar()?;
+                let sub_chunks = sub_chunks
+                    .try_into()
+                    .map_err(|_| savvy::Error::new("Cannot convert i32 to usize."))?;
+                let resampler =
+                    FftFixedIn::<f64>::new(sr_in, sr_out, chunk_size, sub_chunks, nchannels)
+                        .map_err(|err| HErrorR::from(HError::from(err)))?;
                 Ok(HResampler(Box::new(resampler)))
             }
             (HResamplerType::FftFixedInOut, HDataType::Float32) => {
-                let resampler = FftFixedInOut::<f32>::new(
-                    sr_in.try_into().unwrap(),
-                    sr_out.try_into().unwrap(),
-                    chunk_size.try_into().unwrap(),
-                    nchannels.try_into().unwrap(),
-                )
-                .unwrap();
+                let resampler = FftFixedInOut::<f32>::new(sr_in, sr_out, chunk_size, nchannels)
+                    .map_err(|err| HErrorR::from(HError::from(err)))?;
                 Ok(HResampler(Box::new(resampler)))
             }
             (HResamplerType::FftFixedInOut, HDataType::Float64) => {
-                let resampler = FftFixedInOut::<f64>::new(
-                    sr_in.try_into().unwrap(),
-                    sr_out.try_into().unwrap(),
-                    chunk_size.try_into().unwrap(),
-                    nchannels.try_into().unwrap(),
-                )
-                .unwrap();
+                let resampler = FftFixedInOut::<f64>::new(sr_in, sr_out, chunk_size, nchannels)
+                    .map_err(|err| HErrorR::from(HError::from(err)))?;
                 Ok(HResampler(Box::new(resampler)))
             }
             (HResamplerType::FftFixedOut, HDataType::Float32) => {
-                let resampler = FftFixedOut::<f32>::new(
-                    sr_in.try_into().unwrap(),
-                    sr_out.try_into().unwrap(),
-                    chunk_size.try_into().unwrap(),
-                    sub_chunks.try_into().unwrap(),
-                    nchannels.try_into().unwrap(),
-                )
-                .unwrap();
+                let sub_chunks: i32 = sub_chunks.to_scalar()?;
+                let sub_chunks = sub_chunks
+                    .try_into()
+                    .map_err(|_| savvy::Error::new("Cannot convert i32 to usize."))?;
+                let resampler =
+                    FftFixedOut::<f32>::new(sr_in, sr_out, chunk_size, sub_chunks, nchannels)
+                        .map_err(|err| HErrorR::from(HError::from(err)))?;
                 Ok(HResampler(Box::new(resampler)))
             }
             (HResamplerType::FftFixedOut, HDataType::Float64) => {
-                let resampler = FftFixedOut::<f64>::new(
-                    sr_in.try_into().unwrap(),
-                    sr_out.try_into().unwrap(),
-                    chunk_size.try_into().unwrap(),
-                    sub_chunks.try_into().unwrap(),
-                    nchannels.try_into().unwrap(),
-                )
-                .unwrap();
+                let sub_chunks: i32 = sub_chunks.to_scalar()?;
+                let sub_chunks = sub_chunks
+                    .try_into()
+                    .map_err(|_| savvy::Error::new("Cannot convert i32 to usize."))?;
+                let resampler =
+                    FftFixedOut::<f64>::new(sr_in, sr_out, chunk_size, sub_chunks, nchannels)
+                        .map_err(|err| HErrorR::from(HError::from(err)))?;
                 Ok(HResampler(Box::new(resampler)))
             }
-            _ => panic!("Invalid HResamplerType or dtype."),
+            _ => Err("Invalid HResamplerType or dtype.".into()),
         }
     }
 
@@ -268,55 +266,62 @@ impl HResampler {
     ) -> savvy::Result<HResampler> {
         let resample_ratio: f64 = resample_ratio.to_scalar()?;
         let max_resample_ratio_relative: f64 = max_resample_ratio_relative.to_scalar()?;
+        let parameters = parameters.try_into()?;
         let chunk_size: i32 = chunk_size.to_scalar()?;
+        let chunk_size = chunk_size
+            .try_into()
+            .map_err(|_| savvy::Error::new("Cannot convert i32 to usize."))?;
         let nchannels: i32 = nchannels.to_scalar()?;
+        let nchannels = nchannels
+            .try_into()
+            .map_err(|_| savvy::Error::new("Cannot convert i32 to usize."))?;
 
         match (res_type, dtype) {
             (HResamplerType::SincFixedIn, HDataType::Float32) => {
                 let resampler = SincFixedIn::<f32>::new(
                     resample_ratio,
                     max_resample_ratio_relative,
-                    parameters.into(),
-                    chunk_size.try_into().unwrap(),
-                    nchannels.try_into().unwrap(),
+                    parameters,
+                    chunk_size,
+                    nchannels,
                 )
-                .unwrap();
+                .map_err(|err| HErrorR::from(HError::from(err)))?;
                 Ok(HResampler(Box::new(resampler)))
             }
             (HResamplerType::SincFixedIn, HDataType::Float64) => {
                 let resampler = SincFixedIn::<f64>::new(
                     resample_ratio,
                     max_resample_ratio_relative,
-                    parameters.into(),
-                    chunk_size.try_into().unwrap(),
-                    nchannels.try_into().unwrap(),
+                    parameters,
+                    chunk_size,
+                    nchannels,
                 )
-                .unwrap();
+                .map_err(|err| HErrorR::from(HError::from(err)))?;
                 Ok(HResampler(Box::new(resampler)))
             }
             (HResamplerType::SincFixedOut, HDataType::Float32) => {
                 let resampler = SincFixedOut::<f32>::new(
                     resample_ratio,
                     max_resample_ratio_relative,
-                    parameters.into(),
-                    chunk_size.try_into().unwrap(),
-                    nchannels.try_into().unwrap(),
+                    parameters,
+                    chunk_size,
+                    nchannels,
                 )
-                .unwrap();
+                .map_err(|err| HErrorR::from(HError::from(err)))?;
                 Ok(HResampler(Box::new(resampler)))
             }
             (HResamplerType::SincFixedOut, HDataType::Float64) => {
                 let resampler = SincFixedOut::<f64>::new(
                     resample_ratio,
                     max_resample_ratio_relative,
-                    parameters.into(),
-                    chunk_size.try_into().unwrap(),
-                    nchannels.try_into().unwrap(),
+                    parameters,
+                    chunk_size,
+                    nchannels,
                 )
-                .unwrap();
+                .map_err(|err| HErrorR::from(HError::from(err)))?;
                 Ok(HResampler(Box::new(resampler)))
             }
-            _ => panic!("Invalid HResamplerType or dtype."),
+            _ => Err("Invalid HResamplerType or dtype.".into()),
         }
     }
 
@@ -403,7 +408,7 @@ impl HResampler {
                     chunk_size.try_into().unwrap(),
                     nchannels.try_into().unwrap(),
                 )
-                .unwrap();
+                .map_err(|err| HErrorR::from(HError::from(err)))?;
                 Ok(HResampler(Box::new(resampler)))
             }
             (HResamplerType::FastFixedIn, HDataType::Float64) => {
@@ -414,7 +419,7 @@ impl HResampler {
                     chunk_size.try_into().unwrap(),
                     nchannels.try_into().unwrap(),
                 )
-                .unwrap();
+                .map_err(|err| HErrorR::from(HError::from(err)))?;
                 Ok(HResampler(Box::new(resampler)))
             }
             (HResamplerType::FastFixedOut, HDataType::Float32) => {
@@ -425,7 +430,7 @@ impl HResampler {
                     chunk_size.try_into().unwrap(),
                     nchannels.try_into().unwrap(),
                 )
-                .unwrap();
+                .map_err(|err| HErrorR::from(HError::from(err)))?;
                 Ok(HResampler(Box::new(resampler)))
             }
             (HResamplerType::FastFixedOut, HDataType::Float64) => {
@@ -436,10 +441,10 @@ impl HResampler {
                     chunk_size.try_into().unwrap(),
                     nchannels.try_into().unwrap(),
                 )
-                .unwrap();
+                .map_err(|err| HErrorR::from(HError::from(err)))?;
                 Ok(HResampler(Box::new(resampler)))
             }
-            _ => panic!("Invalid HResamplerType or dtype."),
+            _ => Err("Invalid HResamplerType or dtype.".into()),
         }
     }
 
@@ -468,8 +473,7 @@ impl HResampler {
     /// _________
     ///
     fn process(&mut self, harray: &mut HArray) -> savvy::Result<()> {
-        self.0.process(harray);
-        Ok(())
+        self.0.process(harray)
     }
 
     /// HResampler
@@ -503,8 +507,7 @@ impl HResampler {
     fn set_resample_ratio(&mut self, new_ratio: Sexp, ramp: Sexp) -> savvy::Result<()> {
         let new_ratio: f64 = new_ratio.to_scalar()?;
         let ramp: bool = ramp.to_scalar()?;
-        self.0.set_resample_ratio(new_ratio, ramp);
-        Ok(())
+        self.0.set_resample_ratio(new_ratio, ramp)
     }
 
     /// HResampler
@@ -539,8 +542,7 @@ impl HResampler {
     fn set_resample_ratio_relative(&mut self, rel_ratio: Sexp, ramp: Sexp) -> savvy::Result<()> {
         let rel_ratio: f64 = rel_ratio.to_scalar()?;
         let ramp: bool = ramp.to_scalar()?;
-        self.0.set_resample_ratio_relative(rel_ratio, ramp);
-        Ok(())
+        self.0.set_resample_ratio_relative(rel_ratio, ramp)
     }
 
     /// HResampler
@@ -682,19 +684,18 @@ macro_rules! impl_hresamplerfftr {
     ($(($t1:ty, $t2:ty, $e1:expr, $e2: expr, $e3:expr)),+) => {
         $(
             impl HResamplerR for $t1 {
-                fn process(&mut self, harray: &mut HArray) {
-                    // Ok to unwrap.
-                    // downcast_mut already checks if the HAudio and the Resampler have the same HDataType.
-                    let harray = harray.get_inner_mut().as_any_mut().downcast_mut::<$t2>().unwrap();
-                    self.process_resampler(harray).unwrap();
+                fn process(&mut self, harray: &mut HArray) -> savvy::Result<()> {
+                    let harray = harray.get_inner_mut().as_any_mut().downcast_mut::<$t2>().ok_or_else(|| savvy::Error::new("HAudio and HResampler must have the same HDataType."))?;
+                    self.process_resampler(harray).map_err(|err| savvy::Error::from(HErrorR::from(err)))
+
                 }
 
-                fn set_resample_ratio(&mut self, _: f64, _: bool) {
-                    panic!("not available for fft resamplers");
+                fn set_resample_ratio(&mut self, _: f64, _: bool) -> savvy::Result<()> {
+                    Err("not available for fft resamplers".into())
                 }
 
-                fn set_resample_ratio_relative(&mut self, _: f64, _: bool) {
-                    panic!("not available for fft resamplers");
+                fn set_resample_ratio_relative(&mut self, _: f64, _: bool) -> savvy::Result<()> {
+                    Err("not available for fft resamplers".into())
                 }
 
                 fn res_type(&self) -> HResamplerType {
@@ -767,19 +768,17 @@ macro_rules! impl_hresamplersincr {
     ($(($t1:ty, $t2:ty, $e1:expr, $e2:expr, $e3: expr)),+) => {
         $(
             impl HResamplerR for $t1 {
-                fn process(&mut self, harray: &mut HArray) {
-                    // Ok to unwrap.
-                    // downcast_mut already checks if the HAudio and the HResampler have the same HDataType.
-                    let harray = harray.get_inner_mut().as_any_mut().downcast_mut::<$t2>().unwrap();
-                    self.process_resampler(harray).unwrap();
+                fn process(&mut self, harray: &mut HArray) -> savvy::Result<()> {
+                    let harray = harray.get_inner_mut().as_any_mut().downcast_mut::<$t2>().ok_or_else(|| savvy::Error::new("HAudio and HResampler must have the same HDataType."))?;
+                    self.process_resampler(harray).map_err(|err| savvy::Error::from(HErrorR::from(err)))
                 }
 
-                fn set_resample_ratio(&mut self, new_ratio: f64, ramp: bool) {
-                    rubato::Resampler::set_resample_ratio(self, new_ratio, ramp).unwrap();
+                fn set_resample_ratio(&mut self, new_ratio: f64, ramp: bool) -> savvy::Result<()> {
+                    rubato::Resampler::set_resample_ratio(self, new_ratio, ramp).map_err(|err| savvy::Error::from(HErrorR::from(HError::from(err))))
                 }
 
-                fn set_resample_ratio_relative(&mut self, rel_ratio: f64, ramp: bool) {
-                    rubato::Resampler::set_resample_ratio_relative(self, rel_ratio, ramp).unwrap();
+                fn set_resample_ratio_relative(&mut self, rel_ratio: f64, ramp: bool) -> savvy::Result<()> {
+                    rubato::Resampler::set_resample_ratio_relative(self, rel_ratio, ramp).map_err(|err| savvy::Error::from(HErrorR::from(HError::from(err))))
                 }
 
                 /// Reset the resampler state and clear all internal buffers.

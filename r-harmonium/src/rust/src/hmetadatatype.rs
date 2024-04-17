@@ -29,7 +29,7 @@ impl HMetadataType {
     /// #### Examples
     ///
     /// ```r
-    /// metadatatype = HMetadataType$complex64
+    /// metadatatype = HMetadataType$All
     /// metadatatype$print()
     ///
     /// # or similarly:
@@ -117,10 +117,9 @@ impl HMetadataType {
 impl fmt::Display for HMetadataType {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
-            HMetadataType::All => write!(f, "All")?,
-            HMetadataType::Text => write!(f, "Text")?,
-            HMetadataType::Visual => write!(f, "Visual")?,
+            HMetadataType::All => write!(f, "All"),
+            HMetadataType::Text => write!(f, "Text"),
+            HMetadataType::Visual => write!(f, "Visual"),
         }
-        Ok(())
     }
 }
