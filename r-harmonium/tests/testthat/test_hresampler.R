@@ -4,7 +4,7 @@ test_that(
     # SincFixedIn. Test example from rubato repo.
     arr = matrix(0, nrow = 512, ncol = 2)
     harray = HArray$new_from_values(arr, dtype = HDataType$Float64)
-    hparams = HSincInterpolationParameters$new(256L, 0.95, 256L, "linear", "blackmanharris2")
+    hparams = HSincInterpolationParameters$new(256L, 0.95, 256L, HInterpolationType$Linear, HWindowType$BlackmanHarris2)
 
     res = HResampler$new_sinc(48000 / 44100, 2, hparams, 512L, HAudioOp$nchannels(harray), HResamplerType$SincFixedIn, HDataType$Float32)
     expect_error(res$process(harray))
@@ -26,7 +26,7 @@ test_that(
     # SincFixedOut.
     arr = matrix(0, nrow = 1024, ncol = 2)
     harray = HArray$new_from_values(arr, dtype = HDataType$Float64)
-    hparams = HSincInterpolationParameters$new(256, 0.95, 256, "linear", "blackmanharris2")
+    hparams = HSincInterpolationParameters$new(256L, 0.95, 256L, HInterpolationType$Linear, HWindowType$BlackmanHarris2)
     
     res = HResampler$new_sinc(48000 / 44100, 2, hparams, 512L, HAudioOp$nchannels(harray), HResamplerType$SincFixedOut, HDataType$Float32)
     expect_error(res$process(haudio, sr_out = 48000))
@@ -151,3 +151,4 @@ test_that(
     expect_no_error(res$set_resample_ratio_relative(2, TRUE))
   }
 )
+

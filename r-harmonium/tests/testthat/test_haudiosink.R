@@ -8,7 +8,7 @@ test_that(
     haudiosink = HAudioSink$new()
     expect_true(haudiosink$is_empty())
     l = HFile$decode(filepath, dtype = HDataType$Float32)
-    expect_silent(haudiosink$append_from_harray(l[[1]], l[[2]]))
+    expect_silent(haudiosink$append_from_harray(l$harray(), l$sr()))
     expect_false(haudiosink$is_empty())
 
     # haudiosink from file.

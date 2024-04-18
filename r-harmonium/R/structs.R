@@ -37,3 +37,15 @@ print.HPolynomialDegree = function(x, ...) {
 }
 "==.HPolynomialDegree" <- function(e1,e2) e1$eq(e2)
 "!=.HPolynomialDegree" <- function(e1,e2) e1$ne(e2)
+
+print.HWindowType = function(x, ...) {
+  x$print()
+}
+"==.HWindowType" <- function(e1,e2) e1$eq(e2)
+"!=.HWindowType" <- function(e1,e2) e1$ne(e2)
+
+print.HInterpolationType = function(x, ...) {
+  x$print()
+}
+"==.HInterpolationType" <- function(e1,e2) e1$eq(e2)
+"!=.HInterpolationType" <- function(e1,e2) e1$ne(e2)

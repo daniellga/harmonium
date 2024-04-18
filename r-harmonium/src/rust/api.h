@@ -68,6 +68,11 @@ SEXP HFile_metadata(SEXP fpath, SEXP metadata_type);
 SEXP HFile_params(SEXP fpath);
 SEXP HFile_verify(SEXP fpath);
 
+// methods and associated functions for HInterpolationType
+SEXP HInterpolationType_print(SEXP self__);
+SEXP HInterpolationType_eq(SEXP self__, SEXP other);
+SEXP HInterpolationType_ne(SEXP self__, SEXP other);
+
 // methods and associated functions for HMetadataType
 SEXP HMetadataType_print(SEXP self__);
 SEXP HMetadataType_eq(SEXP self__, SEXP other);
@@ -108,3 +113,8 @@ SEXP HWindow_bohman(SEXP npoints, SEXP sym, SEXP dtype);
 SEXP HWindow_boxcar(SEXP npoints, SEXP dtype);
 SEXP HWindow_cosine(SEXP npoints, SEXP sym, SEXP dtype);
 SEXP HWindow_hann(SEXP npoints, SEXP sym, SEXP dtype);
+
+// methods and associated functions for HWindowType
+SEXP HWindowType_print(SEXP self__);
+SEXP HWindowType_eq(SEXP self__, SEXP other);
+SEXP HWindowType_ne(SEXP self__, SEXP other);

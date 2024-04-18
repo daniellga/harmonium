@@ -293,6 +293,21 @@ SEXP HFile_verify__impl(SEXP fpath) {
     return handle_result(res);
 }
 
+SEXP HInterpolationType_print__impl(SEXP self__) {
+    SEXP res = HInterpolationType_print(self__);
+    return handle_result(res);
+}
+
+SEXP HInterpolationType_eq__impl(SEXP self__, SEXP other) {
+    SEXP res = HInterpolationType_eq(self__, other);
+    return handle_result(res);
+}
+
+SEXP HInterpolationType_ne__impl(SEXP self__, SEXP other) {
+    SEXP res = HInterpolationType_ne(self__, other);
+    return handle_result(res);
+}
+
 SEXP HMetadataType_print__impl(SEXP self__) {
     SEXP res = HMetadataType_print(self__);
     return handle_result(res);
@@ -438,6 +453,21 @@ SEXP HWindow_hann__impl(SEXP npoints, SEXP sym, SEXP dtype) {
     return handle_result(res);
 }
 
+SEXP HWindowType_print__impl(SEXP self__) {
+    SEXP res = HWindowType_print(self__);
+    return handle_result(res);
+}
+
+SEXP HWindowType_eq__impl(SEXP self__, SEXP other) {
+    SEXP res = HWindowType_eq(self__, other);
+    return handle_result(res);
+}
+
+SEXP HWindowType_ne__impl(SEXP self__, SEXP other) {
+    SEXP res = HWindowType_ne(self__, other);
+    return handle_result(res);
+}
+
 
 static const R_CallMethodDef CallEntries[] = {
 
@@ -493,6 +523,9 @@ static const R_CallMethodDef CallEntries[] = {
     {"HFile_metadata__impl", (DL_FUNC) &HFile_metadata__impl, 2},
     {"HFile_params__impl", (DL_FUNC) &HFile_params__impl, 1},
     {"HFile_verify__impl", (DL_FUNC) &HFile_verify__impl, 1},
+    {"HInterpolationType_print__impl", (DL_FUNC) &HInterpolationType_print__impl, 1},
+    {"HInterpolationType_eq__impl", (DL_FUNC) &HInterpolationType_eq__impl, 2},
+    {"HInterpolationType_ne__impl", (DL_FUNC) &HInterpolationType_ne__impl, 2},
     {"HMetadataType_print__impl", (DL_FUNC) &HMetadataType_print__impl, 1},
     {"HMetadataType_eq__impl", (DL_FUNC) &HMetadataType_eq__impl, 2},
     {"HMetadataType_ne__impl", (DL_FUNC) &HMetadataType_ne__impl, 2},
@@ -522,6 +555,9 @@ static const R_CallMethodDef CallEntries[] = {
     {"HWindow_boxcar__impl", (DL_FUNC) &HWindow_boxcar__impl, 2},
     {"HWindow_cosine__impl", (DL_FUNC) &HWindow_cosine__impl, 3},
     {"HWindow_hann__impl", (DL_FUNC) &HWindow_hann__impl, 3},
+    {"HWindowType_print__impl", (DL_FUNC) &HWindowType_print__impl, 1},
+    {"HWindowType_eq__impl", (DL_FUNC) &HWindowType_eq__impl, 2},
+    {"HWindowType_ne__impl", (DL_FUNC) &HWindowType_ne__impl, 2},
     {NULL, NULL, 0}
 };
 

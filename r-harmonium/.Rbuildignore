@@ -5,3 +5,6 @@
 ^\.github$
 ^LICENSE\.md$
 ^README\.Rmd$
+
+^src/rust/.cargo$
+^src/rust/target$

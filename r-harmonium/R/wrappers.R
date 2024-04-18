@@ -360,6 +360,16 @@ HDataType$Float64 <- .savvy_wrap_HDataType(1L)
 HDataType$Complex32 <- .savvy_wrap_HDataType(2L)
 HDataType$Complex64 <- .savvy_wrap_HDataType(3L)
 
+#' @export
+print.HDataType <- function(x, ...) {
+  idx <- x$.ptr + 1L
+  label <- c("Float32", "Float64", "Complex32", "Complex64")[idx]
+  if (is.na(label)) {
+    stop("Unexpected value for HDataType", call. = TRUE)
+  }
+  cat("HDataType::", label, sep = "")
+}
+
 
 ### associated functions for HDataType
 
@@ -505,6 +515,67 @@ HFile$verify <- function(fpath) {
 }
 
 
+### wrapper functions for HInterpolationType
+
+HInterpolationType_print <- function(self) {
+  function() {
+  invisible(.Call(HInterpolationType_print__impl, self))
+  }
+}
+
+HInterpolationType_eq <- function(self) {
+  function(other) {
+    other <- .savvy_extract_ptr(other, "HInterpolationType")
+.Call(HInterpolationType_eq__impl, self, other)
+  }
+}
+
+HInterpolationType_ne <- function(self) {
+  function(other) {
+    other <- .savvy_extract_ptr(other, "HInterpolationType")
+.Call(HInterpolationType_ne__impl, self, other)
+  }
+}
+
+.savvy_wrap_HInterpolationType <- function(ptr) {
+  e <- new.env(parent = emptyenv())
+  e$.ptr <- ptr
+    e$print <- HInterpolationType_print(ptr)
+  e$eq <- HInterpolationType_eq(ptr)
+  e$ne <- HInterpolationType_ne(ptr)
+  
+  class(e) <- "HInterpolationType"
+  e
+}
+
+
+#' HInterpolationType
+#' A interpolation type representation. \
+#' Supports `Cubic`, `Linear`, `Quadratic` and `Nearest`. \
+#'
+#' # Methods
+#'
+HInterpolationType <- new.env(parent = emptyenv())
+HInterpolationType$Cubic <- .savvy_wrap_HInterpolationType(0L)
+HInterpolationType$Linear <- .savvy_wrap_HInterpolationType(1L)
+HInterpolationType$Quadratic <- .savvy_wrap_HInterpolationType(2L)
+HInterpolationType$Nearest <- .savvy_wrap_HInterpolationType(3L)
+
+#' @export
+print.HInterpolationType <- function(x, ...) {
+  idx <- x$.ptr + 1L
+  label <- c("Cubic", "Linear", "Quadratic", "Nearest")[idx]
+  if (is.na(label)) {
+    stop("Unexpected value for HInterpolationType", call. = TRUE)
+  }
+  cat("HInterpolationType::", label, sep = "")
+}
+
+
+### associated functions for HInterpolationType
+
+
+
 ### wrapper functions for HMetadataType
 
 HMetadataType_print <- function(self) {
@@ -549,6 +620,16 @@ HMetadataType <- new.env(parent = emptyenv())
 HMetadataType$All <- .savvy_wrap_HMetadataType(0L)
 HMetadataType$Text <- .savvy_wrap_HMetadataType(1L)
 HMetadataType$Visual <- .savvy_wrap_HMetadataType(2L)
+
+#' @export
+print.HMetadataType <- function(x, ...) {
+  idx <- x$.ptr + 1L
+  label <- c("All", "Text", "Visual")[idx]
+  if (is.na(label)) {
+    stop("Unexpected value for HMetadataType", call. = TRUE)
+  }
+  cat("HMetadataType::", label, sep = "")
+}
 
 
 ### associated functions for HMetadataType
@@ -615,6 +696,16 @@ HPolynomialDegree$Quintic <- .savvy_wrap_HPolynomialDegree(1L)
 HPolynomialDegree$Cubic <- .savvy_wrap_HPolynomialDegree(2L)
 HPolynomialDegree$Linear <- .savvy_wrap_HPolynomialDegree(3L)
 HPolynomialDegree$Nearest <- .savvy_wrap_HPolynomialDegree(4L)
+
+#' @export
+print.HPolynomialDegree <- function(x, ...) {
+  idx <- x$.ptr + 1L
+  label <- c("Septic", "Quintic", "Cubic", "Linear", "Nearest")[idx]
+  if (is.na(label)) {
+    stop("Unexpected value for HPolynomialDegree", call. = TRUE)
+  }
+  cat("HPolynomialDegree::", label, sep = "")
+}
 
 
 ### associated functions for HPolynomialDegree
@@ -787,6 +878,16 @@ HResamplerType$SincFixedOut <- .savvy_wrap_HResamplerType(4L)
 HResamplerType$FastFixedIn <- .savvy_wrap_HResamplerType(5L)
 HResamplerType$FastFixedOut <- .savvy_wrap_HResamplerType(6L)
 
+#' @export
+print.HResamplerType <- function(x, ...) {
+  idx <- x$.ptr + 1L
+  label <- c("FftFixedIn", "FftFixedInOut", "FftFixedOut", "SincFixedIn", "SincFixedOut", "FastFixedIn", "FastFixedOut")[idx]
+  if (is.na(label)) {
+    stop("Unexpected value for HResamplerType", call. = TRUE)
+  }
+  cat("HResamplerType::", label, sep = "")
+}
+
 
 ### associated functions for HResamplerType
 
@@ -816,6 +917,8 @@ HSincInterpolationParameters <- new.env(parent = emptyenv())
 ### associated functions for HSincInterpolationParameters
 
 HSincInterpolationParameters$new <- function(sinc_len, f_cutoff, oversampling_factor, interpolation, window) {
+  interpolation <- .savvy_extract_ptr(interpolation, "HInterpolationType")
+  window <- .savvy_extract_ptr(window, "HWindowType")
   .savvy_wrap_HSincInterpolationParameters(.Call(HSincInterpolationParameters_new__impl, sinc_len, f_cutoff, oversampling_factor, interpolation, window))
 }
 
@@ -877,5 +980,68 @@ HWindow$hann <- function(npoints, sym, dtype) {
   dtype <- .savvy_extract_ptr(dtype, "HDataType")
   .savvy_wrap_HArray(.Call(HWindow_hann__impl, npoints, sym, dtype))
 }
+
+
+### wrapper functions for HWindowType
+
+HWindowType_print <- function(self) {
+  function() {
+  invisible(.Call(HWindowType_print__impl, self))
+  }
+}
+
+HWindowType_eq <- function(self) {
+  function(other) {
+    other <- .savvy_extract_ptr(other, "HWindowType")
+.Call(HWindowType_eq__impl, self, other)
+  }
+}
+
+HWindowType_ne <- function(self) {
+  function(other) {
+    other <- .savvy_extract_ptr(other, "HWindowType")
+.Call(HWindowType_ne__impl, self, other)
+  }
+}
+
+.savvy_wrap_HWindowType <- function(ptr) {
+  e <- new.env(parent = emptyenv())
+  e$.ptr <- ptr
+    e$print <- HWindowType_print(ptr)
+  e$eq <- HWindowType_eq(ptr)
+  e$ne <- HWindowType_ne(ptr)
+  
+  class(e) <- "HWindowType"
+  e
+}
+
+
+#' HWindowType
+#' A window type representation. \
+#' Supports `Blackman`, `Blackman2`, `BlackmanHarris`, `BlackmanHarris2`, `Hann` and `Hann2` types. \
+#'
+#' # Methods
+#'
+HWindowType <- new.env(parent = emptyenv())
+HWindowType$Blackman <- .savvy_wrap_HWindowType(0L)
+HWindowType$Blackman2 <- .savvy_wrap_HWindowType(1L)
+HWindowType$BlackmanHarris <- .savvy_wrap_HWindowType(2L)
+HWindowType$BlackmanHarris2 <- .savvy_wrap_HWindowType(3L)
+HWindowType$Hann <- .savvy_wrap_HWindowType(4L)
+HWindowType$Hann2 <- .savvy_wrap_HWindowType(5L)
+
+#' @export
+print.HWindowType <- function(x, ...) {
+  idx <- x$.ptr + 1L
+  label <- c("Blackman", "Blackman2", "BlackmanHarris", "BlackmanHarris2", "Hann", "Hann2")[idx]
+  if (is.na(label)) {
+    stop("Unexpected value for HWindowType", call. = TRUE)
+  }
+  cat("HWindowType::", label, sep = "")
+}
+
+
+### associated functions for HWindowType
+
 
 

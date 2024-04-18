@@ -11,9 +11,10 @@ name = 'harmonium'
 opt-level = 3
 lto = true
 codegen-units = 1
+panic = "unwind" # otherwise savvy craches R when panic.
 
 [workspace]
-# prevents package from thinking it's in the workspace
+# prevents package from thinking it's in the workspace.
 
 [dependencies]
 harmonium-core = { path = "../../../harmonium-core" }
@@ -29,7 +30,7 @@ harmonium-window = { path = "../../../harmonium-window" }
 rubato = "0.15.0"
 ndarray = "0.15.6"
 num-complex = { version = "0.4", features = ["bytemuck"] }
-savvy = { version = "0.5.0", features = ["complex"] }
+savvy = { version = "0.5.3", features = ["complex"] }
 
 [profile.dev]
 debug = 1 # less precise locations. Reduce size of target dir.

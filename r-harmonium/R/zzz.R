@@ -2,6 +2,8 @@
   lockEnvironment(HDataType, bindings = TRUE)
   lockEnvironment(HMetadataType, bindings = TRUE)
   lockEnvironment(HResamplerType, bindings = TRUE)
+  lockEnvironment(HWindowType, bindings = TRUE)
+  lockEnvironment(HInterpolationType, bindings = TRUE)
   lockEnvironment(HPolynomialDegree, bindings = TRUE)
   lockEnvironment(HArray, bindings = TRUE)
   lockEnvironment(HAudioSink, bindings = TRUE)
