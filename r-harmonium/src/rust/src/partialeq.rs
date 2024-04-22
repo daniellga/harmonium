@@ -14,44 +14,44 @@ fn equal_harray(lhs: &dyn HArrayR, rhs: &dyn HArrayR) -> bool {
             let lhs = lhs
                 .as_any()
                 .downcast_ref::<harmonium_core::array::HArray<f32, IxDyn>>()
-                .unwrap();
+                .expect("Should not panic since the type was checked.");
             let rhs = rhs
                 .as_any()
                 .downcast_ref::<harmonium_core::array::HArray<f32, IxDyn>>()
-                .unwrap();
+                .expect("Should not panic since the type was checked.");
             lhs.eq(rhs)
         }
         HDataType::Float64 => {
             let lhs = lhs
                 .as_any()
                 .downcast_ref::<harmonium_core::array::HArray<f64, IxDyn>>()
-                .unwrap();
+                .expect("Should not panic since the type was checked.");
             let rhs = rhs
                 .as_any()
                 .downcast_ref::<harmonium_core::array::HArray<f64, IxDyn>>()
-                .unwrap();
+                .expect("Should not panic since the type was checked.");
             lhs.eq(rhs)
         }
         HDataType::Complex32 => {
             let lhs = lhs
                 .as_any()
                 .downcast_ref::<harmonium_core::array::HArray<Complex<f32>, IxDyn>>()
-                .unwrap();
+                .expect("Should not panic since the type was checked.");
             let rhs = rhs
                 .as_any()
                 .downcast_ref::<harmonium_core::array::HArray<Complex<f32>, IxDyn>>()
-                .unwrap();
+                .expect("Should not panic since the type was checked.");
             lhs.eq(rhs)
         }
         HDataType::Complex64 => {
             let lhs = lhs
                 .as_any()
                 .downcast_ref::<harmonium_core::array::HArray<Complex<f64>, IxDyn>>()
-                .unwrap();
+                .expect("Should not panic since the type was checked.");
             let rhs = rhs
                 .as_any()
                 .downcast_ref::<harmonium_core::array::HArray<Complex<f64>, IxDyn>>()
-                .unwrap();
+                .expect("Should not panic since the type was checked.");
             lhs.eq(rhs)
         }
     }

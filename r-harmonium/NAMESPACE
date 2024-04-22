@@ -41,5 +41,6 @@ S3method(print,HResamplerType)
 S3method(print,HPolynomialDegree)
 S3method(print,HWindowType)
 S3method(print,HInterpolationType)
+S3method(print,HSincInterpolationParameters)
 
 useDynLib(harmonium, .registration = TRUE)

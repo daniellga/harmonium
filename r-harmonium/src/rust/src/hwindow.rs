@@ -68,7 +68,7 @@ impl HWindow {
                 let harray = harray.into_dynamic();
                 Ok(HArray(Arc::new(harray)))
             }
-            _ => Err("not a valid dtype".into()),
+            _ => Err("Not a valid dtype.".into()),
         }
     }
 
@@ -132,7 +132,7 @@ impl HWindow {
                 let harray = harray.into_dynamic();
                 Ok(HArray(Arc::new(harray)))
             }
-            _ => Err("not a valid dtype".into()),
+            _ => Err("Not a valid dtype.".into()),
         }
     }
 
@@ -212,7 +212,7 @@ impl HWindow {
                 let harray = harray.into_dynamic();
                 Ok(HArray(Arc::new(harray)))
             }
-            _ => Err("not a valid dtype".into()),
+            _ => Err("Not a valid dtype.".into()),
         }
     }
 
@@ -271,7 +271,7 @@ impl HWindow {
                 let harray = harray.into_dynamic();
                 Ok(HArray(Arc::new(harray)))
             }
-            _ => Err("not a valid dtype".into()),
+            _ => Err("Not a valid dtype.".into()),
         }
     }
 
@@ -330,7 +330,7 @@ impl HWindow {
                 let harray = harray.into_dynamic();
                 Ok(HArray(Arc::new(harray)))
             }
-            _ => Err("not a valid dtype".into()),
+            _ => Err("Not a valid dtype.".into()),
         }
     }
 
@@ -376,7 +376,7 @@ impl HWindow {
                 let harray = harray.into_dynamic();
                 Ok(HArray(Arc::new(harray)))
             }
-            _ => Err("not a valid dtype".into()),
+            _ => Err("Not a valid dtype.".into()),
         }
     }
 
@@ -435,7 +435,7 @@ impl HWindow {
                 let harray = harray.into_dynamic();
                 Ok(HArray(Arc::new(harray)))
             }
-            _ => Err("not a valid dtype".into()),
+            _ => Err("Not a valid dtype.".into()),
         }
     }
 
@@ -499,7 +499,7 @@ impl HWindow {
                 let harray = harray.into_dynamic();
                 Ok(HArray(Arc::new(harray)))
             }
-            _ => Err("not a valid dtype".into()),
+            _ => Err("Not a valid dtype.".into()),
         }
     }
 }
