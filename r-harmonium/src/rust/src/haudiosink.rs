@@ -1,5 +1,5 @@
 use crate::{conversions::Conversions, errors::HErrorR, harray::HArray, hdatatype::HDataType};
-use harmonium_core::haudioop::Audio;
+use harmonium_core::audioop::Audio;
 use harmonium_io::{decode::decode, play};
 use ndarray::IxDyn;
 use savvy::{savvy, OwnedIntegerSexp, OwnedLogicalSexp, OwnedRealSexp, OwnedStringSexp, Sexp};

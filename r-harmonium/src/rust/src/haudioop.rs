@@ -41,7 +41,7 @@ impl HAudioOp {
     /// _________
     ///
     fn nchannels(harray: &HArray) -> savvy::Result<Sexp> {
-        let nchannels = harray.0.nchannels();
+        let nchannels = harray.0.nchannels()?;
         let integer_sexp = try_from_usize_to_int_sexp(nchannels)?;
         integer_sexp.into()
     }
@@ -71,7 +71,7 @@ impl HAudioOp {
     /// _________
     ///
     fn nframes(harray: &HArray) -> savvy::Result<Sexp> {
-        let nframes = harray.0.nframes();
+        let nframes = harray.0.nframes()?;
         let integer_sexp = try_from_usize_to_int_sexp(nframes)?;
         integer_sexp.into()
     }
@@ -109,8 +109,7 @@ impl HAudioOp {
         let inner_mut = harray.get_inner_mut();
         let reference: f64 = reference.to_scalar()?;
         let power: f64 = power.to_scalar()?;
-        inner_mut.db_to_amplitude(reference, power);
-        Ok(())
+        inner_mut.db_to_amplitude(reference, power)
     }
 
     /// HAudioOp

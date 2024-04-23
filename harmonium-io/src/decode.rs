@@ -793,7 +793,7 @@ pub fn verify_file(fpath: &str) -> HResult<HVerifyDecode> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use harmonium_core::haudioop::HAudioOp;
+    use harmonium_core::audioop::AudioOp;
     use ndarray::s;
 
     macro_rules! decode_test {

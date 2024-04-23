@@ -2,39 +2,31 @@ use crate::{
     array::HArray,
     errors::{HError, HResult},
 };
-use ndarray::{Axis, Ix1, Ix2, IxDyn};
+use ndarray::{Axis, Dimension, Ix1, Ix2, IxDyn};
 use num_traits::{Float, FloatConst, FromPrimitive};
 
-pub trait HAudioOp<T>
+pub trait AudioOp<T, D, U>
 where
     T: Float + FloatConst + FromPrimitive,
+    D: Dimension,
+    U: Dimension,
 {
     fn nchannels(&self) -> usize;
     fn nframes(&self) -> usize;
     fn db_to_amplitude(&mut self, reference: T, power: T);
-    fn to_mono(&self) -> HResult<HArray<T, Ix1>>;
-}
-
-pub trait HAudioOpDyn<T>
-where
-    T: Float + FloatConst + FromPrimitive,
-{
-    fn nchannels(&self) -> usize;
-    fn nframes(&self) -> usize;
-    fn db_to_amplitude(&mut self, reference: T, power: T);
-    fn to_mono(&self) -> HResult<HArray<T, IxDyn>>;
+    fn to_mono(&self) -> HResult<HArray<T, U>>;
 }
 
 pub enum Audio<'a, T>
 where
     T: Float + FloatConst,
 {
-    D1(&'a HArray<T, Ix2>),
+    D1(&'a HArray<T, Ix1>),
     D2(&'a HArray<T, Ix2>),
     Dyn(&'a HArray<T, IxDyn>),
 }
 
-impl<T> HAudioOp<T> for HArray<T, Ix1>
+impl<T> AudioOp<T, Ix1, Ix1> for HArray<T, Ix1>
 where
     T: Float + FloatConst + FromPrimitive,
 {
@@ -66,7 +58,7 @@ where
     }
 }
 
-impl<T> HAudioOp<T> for HArray<T, Ix2>
+impl<T> AudioOp<T, Ix2, Ix1> for HArray<T, Ix2>
 where
     T: Float + FloatConst + FromPrimitive,
 {
@@ -101,7 +93,7 @@ where
     }
 }
 
-impl<T> HAudioOpDyn<T> for HArray<T, IxDyn>
+impl<T> AudioOp<T, IxDyn, IxDyn> for HArray<T, IxDyn>
 where
     T: Float + FloatConst + FromPrimitive,
 {
@@ -155,7 +147,7 @@ mod tests {
         )
         .unwrap();
 
-        assert!(compare_harray(lhs, rhs));
+        assert!(compare_harray(&lhs, &rhs));
     }
 
     #[test]

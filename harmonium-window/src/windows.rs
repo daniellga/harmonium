@@ -590,12 +590,12 @@ mod tests {
             ],
         )
         .unwrap();
-        assert!(compare_harray(v_symmetric, rhs));
+        assert!(compare_harray(&v_symmetric, &rhs));
 
         let v_periodic: HArray<f32, _> = bartlett(8, WindowType::Periodic);
         let rhs =
             HArray::new_from_shape_vec(8, vec![0., 0.25, 0.5, 0.75, 1., 0.75, 0.5, 0.25]).unwrap();
-        assert!(compare_harray(v_periodic, rhs));
+        assert!(compare_harray(&v_periodic, &rhs));
     }
 
     #[test]
@@ -608,7 +608,7 @@ mod tests {
             ],
         )
         .unwrap();
-        assert!(compare_harray(v_symmetric, rhs));
+        assert!(compare_harray(&v_symmetric, &rhs));
 
         let v_periodic: HArray<f32, _> = barthann(8, WindowType::Periodic);
         let rhs = HArray::new_from_shape_vec(
@@ -618,7 +618,7 @@ mod tests {
             ],
         )
         .unwrap();
-        assert!(compare_harray(v_periodic, rhs));
+        assert!(compare_harray(&v_periodic, &rhs));
     }
 
     #[test]
@@ -638,7 +638,7 @@ mod tests {
             ],
         )
         .unwrap();
-        assert!(compare_harray(v_symmetric, rhs));
+        assert!(compare_harray(&v_symmetric, &rhs));
 
         let v_periodic: HArray<f32, _> = blackman(8, WindowType::Periodic);
         let rhs = HArray::new_from_shape_vec(
@@ -655,7 +655,7 @@ mod tests {
             ],
         )
         .unwrap();
-        assert!(compare_harray(v_periodic, rhs));
+        assert!(compare_harray(&v_periodic, &rhs));
     }
 
     #[test]
@@ -675,7 +675,7 @@ mod tests {
             ],
         )
         .unwrap();
-        assert!(compare_harray(v_symmetric, rhs));
+        assert!(compare_harray(&v_symmetric, &rhs));
 
         let v_periodic: HArray<f32, _> = blackmanharris(8, WindowType::Periodic);
         let rhs = HArray::new_from_shape_vec(
@@ -692,7 +692,7 @@ mod tests {
             ],
         )
         .unwrap();
-        assert!(compare_harray(v_periodic, rhs));
+        assert!(compare_harray(&v_periodic, &rhs));
     }
 
     #[test]
@@ -712,7 +712,7 @@ mod tests {
             ],
         )
         .unwrap();
-        assert!(compare_harray(v_symmetric, rhs));
+        assert!(compare_harray(&v_symmetric, &rhs));
 
         let v_periodic: HArray<f32, _> = bohman(8, WindowType::Periodic);
         let rhs = HArray::new_from_shape_vec(
@@ -729,14 +729,14 @@ mod tests {
             ],
         )
         .unwrap();
-        assert!(compare_harray(v_periodic, rhs));
+        assert!(compare_harray(&v_periodic, &rhs));
     }
 
     #[test]
     fn boxcar_test() {
         let v: HArray<f32, _> = boxcar(8);
         let rhs = HArray::new_from_shape_vec(8, vec![1., 1., 1., 1., 1., 1., 1., 1.]).unwrap();
-        assert!(compare_harray(v, rhs));
+        assert!(compare_harray(&v, &rhs));
     }
 
     #[test]
@@ -749,7 +749,7 @@ mod tests {
             ],
         )
         .unwrap();
-        assert!(compare_harray(v_symmetric, rhs));
+        assert!(compare_harray(&v_symmetric, &rhs));
 
         let v_symmetric: HArray<f32, _> = chebwin(9, 70., WindowType::Symmetric);
         let rhs = HArray::new_from_shape_vec(
@@ -760,7 +760,7 @@ mod tests {
             ],
         )
         .unwrap();
-        assert!(compare_harray(v_symmetric, rhs));
+        assert!(compare_harray(&v_symmetric, &rhs));
 
         let v_periodic: HArray<f32, _> = chebwin(8, 70., WindowType::Periodic);
         let rhs = HArray::new_from_shape_vec(
@@ -770,7 +770,7 @@ mod tests {
             ],
         )
         .unwrap();
-        assert!(compare_harray(v_periodic, rhs));
+        assert!(compare_harray(&v_periodic, &rhs));
 
         let v_periodic: HArray<f32, _> = chebwin(9, 70., WindowType::Periodic);
         let rhs = HArray::new_from_shape_vec(
@@ -788,7 +788,7 @@ mod tests {
             ],
         )
         .unwrap();
-        assert!(compare_harray(v_periodic, rhs));
+        assert!(compare_harray(&v_periodic, &rhs));
     }
 
     #[test]
@@ -806,7 +806,7 @@ mod tests {
             ],
         )
         .unwrap();
-        assert!(compare_harray(v_symmetric, rhs));
+        assert!(compare_harray(&v_symmetric, &rhs));
 
         let v_periodic: HArray<f32, _> =
             exponential(8, Some(1.0), 3.0, WindowType::Periodic).unwrap();
@@ -818,7 +818,7 @@ mod tests {
             ],
         )
         .unwrap();
-        assert!(compare_harray(v_periodic, rhs));
+        assert!(compare_harray(&v_periodic, &rhs));
 
         let v_periodic: HArray<f32, _> = exponential(8, None, 3.0, WindowType::Periodic).unwrap();
         let rhs = HArray::new_from_shape_vec(
@@ -828,7 +828,7 @@ mod tests {
             ],
         )
         .unwrap();
-        assert!(compare_harray(v_periodic, rhs));
+        assert!(compare_harray(&v_periodic, &rhs));
 
         // test with center = 0.
         let v_periodic: HArray<f32, _> =
@@ -847,7 +847,7 @@ mod tests {
             ],
         )
         .unwrap();
-        assert!(compare_harray(v_periodic, rhs));
+        assert!(compare_harray(&v_periodic, &rhs));
 
         // test with center = 0.
         let v_periodic: HArray<f32, _> =
@@ -867,7 +867,7 @@ mod tests {
             ],
         )
         .unwrap();
-        assert!(compare_harray(v_periodic, rhs));
+        assert!(compare_harray(&v_periodic, &rhs));
     }
 
     #[test]
@@ -881,7 +881,7 @@ mod tests {
             ],
         )
         .unwrap();
-        assert!(compare_harray(v_symmetric, rhs));
+        assert!(compare_harray(&v_symmetric, &rhs));
 
         let v_periodic: HArray<f32, _> = cosine(8, WindowType::Periodic);
         let rhs = HArray::new_from_shape_vec(
@@ -891,7 +891,7 @@ mod tests {
             ],
         )
         .unwrap();
-        assert!(compare_harray(v_periodic, rhs));
+        assert!(compare_harray(&v_periodic, &rhs));
     }
 
     #[test]
@@ -904,7 +904,7 @@ mod tests {
             ],
         )
         .unwrap();
-        assert!(compare_harray(v_symmetric, rhs));
+        assert!(compare_harray(&v_symmetric, &rhs));
 
         let v_periodic: HArray<f32, _> = hann(8, WindowType::Periodic);
         let rhs = HArray::new_from_shape_vec(
@@ -914,7 +914,7 @@ mod tests {
             ],
         )
         .unwrap();
-        assert!(compare_harray(v_periodic, rhs));
+        assert!(compare_harray(&v_periodic, &rhs));
     }
 
     #[test]
@@ -923,7 +923,7 @@ mod tests {
         let rhs =
             HArray::new_from_shape_vec(10, vec![0.1, 0.3, 0.5, 0.7, 0.9, 0.9, 0.7, 0.5, 0.3, 0.1])
                 .unwrap();
-        assert!(compare_harray(v_symmetric, rhs));
+        assert!(compare_harray(&v_symmetric, &rhs));
 
         let v_symmetric: HArray<f32, _> = triangle(11, WindowType::Symmetric);
         let rhs = HArray::new_from_shape_vec(
@@ -943,7 +943,7 @@ mod tests {
             ],
         )
         .unwrap();
-        assert!(compare_harray(v_symmetric, rhs));
+        assert!(compare_harray(&v_symmetric, &rhs));
 
         let v_periodic: HArray<f32, _> = triangle(10, WindowType::Periodic);
         let rhs = HArray::new_from_shape_vec(
@@ -962,7 +962,7 @@ mod tests {
             ],
         )
         .unwrap();
-        assert!(compare_harray(v_periodic, rhs));
+        assert!(compare_harray(&v_periodic, &rhs));
 
         let v_periodic: HArray<f32, _> = triangle(11, WindowType::Periodic);
         let rhs = HArray::new_from_shape_vec(
@@ -982,6 +982,6 @@ mod tests {
             ],
         )
         .unwrap();
-        assert!(compare_harray(v_periodic, rhs));
+        assert!(compare_harray(&v_periodic, &rhs));
     }
 }

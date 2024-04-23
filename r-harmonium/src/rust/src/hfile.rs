@@ -43,7 +43,7 @@ impl HDecodedAudio {
     /// _________
     ///
     fn harray(&self) -> savvy::Result<HArray> {
-        Ok(self.harray.clone())
+        self.harray.clone()
     }
     /// HDecodedAudio
     /// ## sr

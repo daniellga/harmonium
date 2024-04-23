@@ -1,8 +1,4 @@
-use harmonium_core::{
-    array::HArray,
-    errors::HResult,
-    haudioop::{HAudioOp, HAudioOpDyn},
-};
+use harmonium_core::{array::HArray, audioop::AudioOp, errors::HResult};
 use ndarray::{Dimension, Ix1, Ix2, IxDyn};
 use num_traits::{Float, FloatConst};
 use rubato::{

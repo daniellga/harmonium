@@ -1,6 +1,6 @@
 use crate::{errors::HErrorR, hdatatype::HDataType};
-use harmonium_core::haudioop::HAudioOpDyn;
-use harmonium_fft::fft::{FftComplex, FftFloat};
+use harmonium_core::audioop::AudioOp;
+use harmonium_fft::fft::Fft;
 use ndarray::{IxDyn, SliceInfo, SliceInfoElem};
 use num_complex::Complex;
 use savvy::{r_println, OwnedComplexSexp, OwnedIntegerSexp, OwnedRealSexp, Sexp};
@@ -17,13 +17,16 @@ pub trait HArrayR: Send + Sync {
     fn collect(&self) -> savvy::Result<Sexp>;
     fn dtype(&self) -> HDataType;
     fn mem_adress(&self) -> String;
-    fn fft(&self) -> Arc<dyn HArrayR>;
-    fn fft_mut(&mut self);
-    fn fft_real_mut(&mut self) -> Arc<dyn HArrayR>;
+    fn fft(&self) -> savvy::Result<Arc<dyn HArrayR>>;
+    fn fft_mut(&mut self) -> savvy::Result<()>;
+    fn ifft(&self) -> savvy::Result<Arc<dyn HArrayR>>;
+    fn ifft_mut(&mut self) -> savvy::Result<()>;
+    fn rfft_mut(&mut self) -> savvy::Result<Arc<dyn HArrayR>>;
+    fn irfft_mut(&mut self, length: usize) -> savvy::Result<Arc<dyn HArrayR>>;
     fn clone_inner(&self) -> Arc<dyn HArrayR>;
-    fn nchannels(&self) -> usize;
-    fn nframes(&self) -> usize;
-    fn db_to_amplitude(&mut self, reference: f64, power: f64);
+    fn nchannels(&self) -> savvy::Result<usize>;
+    fn nframes(&self) -> savvy::Result<usize>;
+    fn db_to_amplitude(&mut self, reference: f64, power: f64) -> savvy::Result<()>;
     fn to_mono(&mut self) -> savvy::Result<()>;
 }
 
@@ -87,37 +90,53 @@ impl HArrayR for harmonium_core::array::HArray<f32, IxDyn> {
         s.to_string()
     }
 
-    fn fft(&self) -> Arc<dyn HArrayR> {
-        let harray = FftFloat::<f32, IxDyn>::fft(self);
-        Arc::new(harray)
+    fn fft(&self) -> savvy::Result<Arc<dyn HArrayR>> {
+        let harray = Fft::<f32, IxDyn>::fft(self).map_err(HErrorR::from)?;
+        Ok(Arc::new(harray))
     }
 
-    fn fft_mut(&mut self) {
-        panic!("Operation only allowed for complex HArrays.");
+    fn fft_mut(&mut self) -> savvy::Result<()> {
+        Fft::<f32, IxDyn>::fft_mut(self).map_err(|err| savvy::Error::from(HErrorR::from(err)))
     }
 
-    fn fft_real_mut(&mut self) -> Arc<dyn HArrayR> {
-        Arc::new(FftFloat::<f32, IxDyn>::fft_real(self))
+    fn ifft(&self) -> savvy::Result<Arc<dyn HArrayR>> {
+        let harray = Fft::<f32, IxDyn>::ifft(self).map_err(HErrorR::from)?;
+        Ok(Arc::new(harray))
+    }
+
+    fn ifft_mut(&mut self) -> savvy::Result<()> {
+        Fft::<f32, IxDyn>::ifft_mut(self).map_err(|err| savvy::Error::from(HErrorR::from(err)))
+    }
+
+    fn rfft_mut(&mut self) -> savvy::Result<Arc<dyn HArrayR>> {
+        let harray = Fft::<f32, IxDyn>::rfft(self).map_err(HErrorR::from)?;
+        Ok(Arc::new(harray))
+    }
+
+    fn irfft_mut(&mut self, length: usize) -> savvy::Result<Arc<dyn HArrayR>> {
+        let harray = Fft::<f32, IxDyn>::irfft(self, length).map_err(HErrorR::from)?;
+        Ok(Arc::new(harray))
     }
 
     fn clone_inner(&self) -> Arc<dyn HArrayR> {
         Arc::new(self.clone())
     }
 
-    fn nchannels(&self) -> usize {
-        HAudioOpDyn::nchannels(self)
+    fn nchannels(&self) -> savvy::Result<usize> {
+        Ok(AudioOp::nchannels(self))
     }
 
-    fn nframes(&self) -> usize {
-        HAudioOpDyn::nframes(self)
+    fn nframes(&self) -> savvy::Result<usize> {
+        Ok(AudioOp::nframes(self))
     }
 
-    fn db_to_amplitude(&mut self, reference: f64, power: f64) {
-        HAudioOpDyn::db_to_amplitude(self, reference as f32, power as f32);
+    fn db_to_amplitude(&mut self, reference: f64, power: f64) -> savvy::Result<()> {
+        AudioOp::db_to_amplitude(self, reference as f32, power as f32);
+        Ok(())
     }
 
     fn to_mono(&mut self) -> savvy::Result<()> {
-        *self = HAudioOpDyn::to_mono(self).map_err(|err| HErrorR::from(err))?;
+        *self = AudioOp::to_mono(self).map_err(|err| HErrorR::from(err))?;
         Ok(())
     }
 }
@@ -181,37 +200,53 @@ impl HArrayR for harmonium_core::array::HArray<f64, IxDyn> {
         s.to_string()
     }
 
-    fn fft(&self) -> Arc<dyn HArrayR> {
-        let harray = FftFloat::<f64, IxDyn>::fft(self);
-        Arc::new(harray)
+    fn fft(&self) -> savvy::Result<Arc<dyn HArrayR>> {
+        let harray = Fft::<f64, IxDyn>::fft(self).map_err(HErrorR::from)?;
+        Ok(Arc::new(harray))
     }
 
-    fn fft_mut(&mut self) {
-        panic!("Operation only allowed for complex HArrays.");
+    fn fft_mut(&mut self) -> savvy::Result<()> {
+        Fft::<f64, IxDyn>::fft_mut(self).map_err(|err| savvy::Error::from(HErrorR::from(err)))
     }
 
-    fn fft_real_mut(&mut self) -> Arc<dyn HArrayR> {
-        Arc::new(FftFloat::<f64, IxDyn>::fft_real(self))
+    fn ifft(&self) -> savvy::Result<Arc<dyn HArrayR>> {
+        let harray = Fft::<f64, IxDyn>::ifft(self).map_err(HErrorR::from)?;
+        Ok(Arc::new(harray))
+    }
+
+    fn ifft_mut(&mut self) -> savvy::Result<()> {
+        Fft::<f64, IxDyn>::ifft_mut(self).map_err(|err| savvy::Error::from(HErrorR::from(err)))
+    }
+
+    fn rfft_mut(&mut self) -> savvy::Result<Arc<dyn HArrayR>> {
+        let harray = Fft::<f64, IxDyn>::rfft(self).map_err(HErrorR::from)?;
+        Ok(Arc::new(harray))
+    }
+
+    fn irfft_mut(&mut self, length: usize) -> savvy::Result<Arc<dyn HArrayR>> {
+        let harray = Fft::<f64, IxDyn>::irfft(self, length).map_err(HErrorR::from)?;
+        Ok(Arc::new(harray))
     }
 
     fn clone_inner(&self) -> Arc<dyn HArrayR> {
         Arc::new(self.clone())
     }
 
-    fn nchannels(&self) -> usize {
-        HAudioOpDyn::nchannels(self)
+    fn nchannels(&self) -> savvy::Result<usize> {
+        Ok(AudioOp::nchannels(self))
     }
 
-    fn nframes(&self) -> usize {
-        HAudioOpDyn::nframes(self)
+    fn nframes(&self) -> savvy::Result<usize> {
+        Ok(AudioOp::nframes(self))
     }
 
-    fn db_to_amplitude(&mut self, reference: f64, power: f64) {
-        HAudioOpDyn::db_to_amplitude(self, reference, power);
+    fn db_to_amplitude(&mut self, reference: f64, power: f64) -> savvy::Result<()> {
+        AudioOp::db_to_amplitude(self, reference, power);
+        Ok(())
     }
 
     fn to_mono(&mut self) -> savvy::Result<()> {
-        *self = HAudioOpDyn::to_mono(self).map_err(|err| HErrorR::from(err))?;
+        *self = AudioOp::to_mono(self).map_err(|err| HErrorR::from(err))?;
         Ok(())
     }
 }
@@ -263,7 +298,6 @@ impl HArrayR for harmonium_core::array::HArray<Complex<f32>, IxDyn> {
             .for_each(|(k, complex_sxp)| *complex_sxp = k);
 
         complex_sexp.set_attrib("dim", dim.into())?;
-
         complex_sexp.into()
     }
 
@@ -276,33 +310,48 @@ impl HArrayR for harmonium_core::array::HArray<Complex<f32>, IxDyn> {
         s.to_string()
     }
 
-    fn fft(&self) -> Arc<dyn HArrayR> {
-        let harray = FftComplex::fft(self);
-        Arc::new(harray)
+    fn fft(&self) -> savvy::Result<Arc<dyn HArrayR>> {
+        let harray = Fft::<f32, IxDyn>::fft(self).map_err(HErrorR::from)?;
+        Ok(Arc::new(harray))
     }
 
-    fn fft_mut(&mut self) {
-        FftComplex::fft_mut(self);
+    fn fft_mut(&mut self) -> savvy::Result<()> {
+        Fft::<f32, IxDyn>::fft_mut(self).map_err(|err| savvy::Error::from(HErrorR::from(err)))
     }
 
-    fn fft_real_mut(&mut self) -> Arc<dyn HArrayR> {
-        panic!("Operation only allowed for float HArrays.");
+    fn ifft(&self) -> savvy::Result<Arc<dyn HArrayR>> {
+        let harray = Fft::<f32, IxDyn>::ifft(self).map_err(HErrorR::from)?;
+        Ok(Arc::new(harray))
+    }
+
+    fn ifft_mut(&mut self) -> savvy::Result<()> {
+        Fft::<f32, IxDyn>::ifft_mut(self).map_err(|err| savvy::Error::from(HErrorR::from(err)))
+    }
+
+    fn rfft_mut(&mut self) -> savvy::Result<Arc<dyn HArrayR>> {
+        let harray = Fft::<f32, IxDyn>::rfft(self).map_err(HErrorR::from)?;
+        Ok(Arc::new(harray))
+    }
+
+    fn irfft_mut(&mut self, length: usize) -> savvy::Result<Arc<dyn HArrayR>> {
+        let harray = Fft::<f32, IxDyn>::irfft(self, length).map_err(HErrorR::from)?;
+        Ok(Arc::new(harray))
     }
 
     fn clone_inner(&self) -> Arc<dyn HArrayR> {
         Arc::new(self.clone())
     }
 
-    fn nchannels(&self) -> usize {
-        panic!("Operation only allowed for float HArrays.");
+    fn nchannels(&self) -> savvy::Result<usize> {
+        Err("Operation only allowed for float HArrays.".into())
     }
 
-    fn nframes(&self) -> usize {
-        panic!("Operation only allowed for float HArrays.");
+    fn nframes(&self) -> savvy::Result<usize> {
+        Err("Operation only allowed for float HArrays.".into())
     }
 
-    fn db_to_amplitude(&mut self, _: f64, _: f64) {
-        panic!("Operation only allowed for float HArrays.");
+    fn db_to_amplitude(&mut self, _: f64, _: f64) -> savvy::Result<()> {
+        Err("Operation only allowed for float HArrays.".into())
     }
 
     fn to_mono(&mut self) -> savvy::Result<()> {
@@ -369,33 +418,48 @@ impl HArrayR for harmonium_core::array::HArray<Complex<f64>, IxDyn> {
         s.to_string()
     }
 
-    fn fft(&self) -> Arc<dyn HArrayR> {
-        let harray = FftComplex::fft(self);
-        Arc::new(harray)
+    fn fft(&self) -> savvy::Result<Arc<dyn HArrayR>> {
+        let harray = Fft::<f64, IxDyn>::fft(self).map_err(HErrorR::from)?;
+        Ok(Arc::new(harray))
     }
 
-    fn fft_mut(&mut self) {
-        FftComplex::fft_mut(self);
+    fn fft_mut(&mut self) -> savvy::Result<()> {
+        Fft::<f64, IxDyn>::fft_mut(self).map_err(|err| savvy::Error::from(HErrorR::from(err)))
     }
 
-    fn fft_real_mut(&mut self) -> Arc<dyn HArrayR> {
-        panic!("Operation only allowed for float HArrays.");
+    fn ifft(&self) -> savvy::Result<Arc<dyn HArrayR>> {
+        let harray = Fft::<f64, IxDyn>::ifft(self).map_err(HErrorR::from)?;
+        Ok(Arc::new(harray))
+    }
+
+    fn ifft_mut(&mut self) -> savvy::Result<()> {
+        Fft::<f64, IxDyn>::ifft_mut(self).map_err(|err| savvy::Error::from(HErrorR::from(err)))
+    }
+
+    fn rfft_mut(&mut self) -> savvy::Result<Arc<dyn HArrayR>> {
+        let harray = Fft::<f64, IxDyn>::rfft(self).map_err(HErrorR::from)?;
+        Ok(Arc::new(harray))
+    }
+
+    fn irfft_mut(&mut self, length: usize) -> savvy::Result<Arc<dyn HArrayR>> {
+        let harray = Fft::<f64, IxDyn>::irfft(self, length).map_err(HErrorR::from)?;
+        Ok(Arc::new(harray))
     }
 
     fn clone_inner(&self) -> Arc<dyn HArrayR> {
         Arc::new(self.clone())
     }
 
-    fn nchannels(&self) -> usize {
-        panic!("Operation only allowed for float HArrays.");
+    fn nchannels(&self) -> savvy::Result<usize> {
+        Err("Operation only allowed for float HArrays.".into())
     }
 
-    fn nframes(&self) -> usize {
-        panic!("Operation only allowed for float HArrays.");
+    fn nframes(&self) -> savvy::Result<usize> {
+        Err("Operation only allowed for float HArrays.".into())
     }
 
-    fn db_to_amplitude(&mut self, _: f64, _: f64) {
-        panic!("Operation only allowed for float HArrays.");
+    fn db_to_amplitude(&mut self, _: f64, _: f64) -> savvy::Result<()> {
+        Err("Operation only allowed for float HArrays.".into())
     }
 
     fn to_mono(&mut self) -> savvy::Result<()> {

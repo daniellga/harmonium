@@ -1,120 +1,123 @@
 
 
 // methods and associated functions for HArray
-SEXP HArray_new_from_values(SEXP arr, SEXP dtype);
-SEXP HArray_len(SEXP self__);
-SEXP HArray_shape(SEXP self__);
-SEXP HArray_ndim(SEXP self__);
-SEXP HArray_slice(SEXP self__, SEXP range);
-SEXP HArray_print(SEXP self__);
-SEXP HArray_eq(SEXP self__, SEXP other);
-SEXP HArray_ne(SEXP self__, SEXP other);
-SEXP HArray_clone(SEXP self__);
-SEXP HArray_collect(SEXP self__);
-SEXP HArray_dtype(SEXP self__);
-SEXP HArray_is_shared(SEXP self__);
-SEXP HArray_mem_adress(SEXP self__);
-SEXP HArray_invalidate(SEXP self__);
+SEXP savvy_HArray_new_from_values__ffi(SEXP arr, SEXP dtype);
+SEXP savvy_HArray_len__ffi(SEXP self__);
+SEXP savvy_HArray_shape__ffi(SEXP self__);
+SEXP savvy_HArray_ndim__ffi(SEXP self__);
+SEXP savvy_HArray_slice__ffi(SEXP self__, SEXP range);
+SEXP savvy_HArray_print__ffi(SEXP self__);
+SEXP savvy_HArray_eq__ffi(SEXP self__, SEXP other);
+SEXP savvy_HArray_ne__ffi(SEXP self__, SEXP other);
+SEXP savvy_HArray_clone__ffi(SEXP self__);
+SEXP savvy_HArray_collect__ffi(SEXP self__);
+SEXP savvy_HArray_dtype__ffi(SEXP self__);
+SEXP savvy_HArray_is_shared__ffi(SEXP self__);
+SEXP savvy_HArray_mem_adress__ffi(SEXP self__);
+SEXP savvy_HArray_invalidate__ffi(SEXP self__);
 
 // methods and associated functions for HAudioOp
-SEXP HAudioOp_nchannels(SEXP harray);
-SEXP HAudioOp_nframes(SEXP harray);
-SEXP HAudioOp_db_to_amplitude(SEXP harray, SEXP reference, SEXP power);
-SEXP HAudioOp_to_mono(SEXP harray);
+SEXP savvy_HAudioOp_nchannels__ffi(SEXP harray);
+SEXP savvy_HAudioOp_nframes__ffi(SEXP harray);
+SEXP savvy_HAudioOp_db_to_amplitude__ffi(SEXP harray, SEXP reference, SEXP power);
+SEXP savvy_HAudioOp_to_mono__ffi(SEXP harray);
 
 // methods and associated functions for HAudioSink
-SEXP HAudioSink_new(void);
-SEXP HAudioSink_append_from_harray(SEXP self__, SEXP harray, SEXP sr);
-SEXP HAudioSink_append_from_file(SEXP self__, SEXP fpath);
-SEXP HAudioSink_play(SEXP self__);
-SEXP HAudioSink_stop(SEXP self__);
-SEXP HAudioSink_pause(SEXP self__);
-SEXP HAudioSink_is_paused(SEXP self__);
-SEXP HAudioSink_volume(SEXP self__);
-SEXP HAudioSink_set_volume(SEXP self__, SEXP value);
-SEXP HAudioSink_speed(SEXP self__);
-SEXP HAudioSink_set_speed(SEXP self__, SEXP value);
-SEXP HAudioSink_sleep_until_end(SEXP self__);
-SEXP HAudioSink_len(SEXP self__);
-SEXP HAudioSink_is_empty(SEXP self__);
-SEXP HAudioSink_clear(SEXP self__);
-SEXP HAudioSink_skip_one(SEXP self__);
-SEXP HAudioSink_audio_output_devices(void);
-SEXP HAudioSink_audio_default_device(void);
-SEXP HAudioSink_audio_supported_configs(void);
+SEXP savvy_HAudioSink_new__ffi(void);
+SEXP savvy_HAudioSink_append_from_harray__ffi(SEXP self__, SEXP harray, SEXP sr);
+SEXP savvy_HAudioSink_append_from_file__ffi(SEXP self__, SEXP fpath);
+SEXP savvy_HAudioSink_play__ffi(SEXP self__);
+SEXP savvy_HAudioSink_stop__ffi(SEXP self__);
+SEXP savvy_HAudioSink_pause__ffi(SEXP self__);
+SEXP savvy_HAudioSink_is_paused__ffi(SEXP self__);
+SEXP savvy_HAudioSink_volume__ffi(SEXP self__);
+SEXP savvy_HAudioSink_set_volume__ffi(SEXP self__, SEXP value);
+SEXP savvy_HAudioSink_speed__ffi(SEXP self__);
+SEXP savvy_HAudioSink_set_speed__ffi(SEXP self__, SEXP value);
+SEXP savvy_HAudioSink_sleep_until_end__ffi(SEXP self__);
+SEXP savvy_HAudioSink_len__ffi(SEXP self__);
+SEXP savvy_HAudioSink_is_empty__ffi(SEXP self__);
+SEXP savvy_HAudioSink_clear__ffi(SEXP self__);
+SEXP savvy_HAudioSink_skip_one__ffi(SEXP self__);
+SEXP savvy_HAudioSink_audio_output_devices__ffi(void);
+SEXP savvy_HAudioSink_audio_default_device__ffi(void);
+SEXP savvy_HAudioSink_audio_supported_configs__ffi(void);
 
 // methods and associated functions for HDataType
-SEXP HDataType_print(SEXP self__);
-SEXP HDataType_eq(SEXP self__, SEXP other);
-SEXP HDataType_ne(SEXP self__, SEXP other);
+SEXP savvy_HDataType_print__ffi(SEXP self__);
+SEXP savvy_HDataType_eq__ffi(SEXP self__, SEXP other);
+SEXP savvy_HDataType_ne__ffi(SEXP self__, SEXP other);
 
 // methods and associated functions for HDecodedAudio
-SEXP HDecodedAudio_harray(SEXP self__);
-SEXP HDecodedAudio_sr(SEXP self__);
-SEXP HDecodedAudio_invalidate(SEXP self__);
+SEXP savvy_HDecodedAudio_harray__ffi(SEXP self__);
+SEXP savvy_HDecodedAudio_sr__ffi(SEXP self__);
+SEXP savvy_HDecodedAudio_invalidate__ffi(SEXP self__);
 
 // methods and associated functions for HDecoderStream
-SEXP HDecoderStream_stream(SEXP self__);
+SEXP savvy_HDecoderStream_stream__ffi(SEXP self__);
 
 // methods and associated functions for HFft
-SEXP HFft_fft(SEXP harray);
-SEXP HFft_fft_mut(SEXP harray);
-SEXP HFft_fft_real_mut(SEXP harray);
+SEXP savvy_HFft_fft__ffi(SEXP harray);
+SEXP savvy_HFft_fft_mut__ffi(SEXP harray);
+SEXP savvy_HFft_ifft__ffi(SEXP harray);
+SEXP savvy_HFft_ifft_mut__ffi(SEXP harray);
+SEXP savvy_HFft_rfft_mut__ffi(SEXP harray);
+SEXP savvy_HFft_irfft_mut__ffi(SEXP harray, SEXP length);
 
 // methods and associated functions for HFile
-SEXP HFile_decode(SEXP fpath, SEXP dtype);
-SEXP HFile_decode_stream(SEXP fpath, SEXP frames, SEXP dtype);
-SEXP HFile_metadata(SEXP fpath, SEXP metadata_type);
-SEXP HFile_params(SEXP fpath);
-SEXP HFile_verify(SEXP fpath);
+SEXP savvy_HFile_decode__ffi(SEXP fpath, SEXP dtype);
+SEXP savvy_HFile_decode_stream__ffi(SEXP fpath, SEXP frames, SEXP dtype);
+SEXP savvy_HFile_metadata__ffi(SEXP fpath, SEXP metadata_type);
+SEXP savvy_HFile_params__ffi(SEXP fpath);
+SEXP savvy_HFile_verify__ffi(SEXP fpath);
 
 // methods and associated functions for HInterpolationType
-SEXP HInterpolationType_print(SEXP self__);
-SEXP HInterpolationType_eq(SEXP self__, SEXP other);
-SEXP HInterpolationType_ne(SEXP self__, SEXP other);
+SEXP savvy_HInterpolationType_print__ffi(SEXP self__);
+SEXP savvy_HInterpolationType_eq__ffi(SEXP self__, SEXP other);
+SEXP savvy_HInterpolationType_ne__ffi(SEXP self__, SEXP other);
 
 // methods and associated functions for HMetadataType
-SEXP HMetadataType_print(SEXP self__);
-SEXP HMetadataType_eq(SEXP self__, SEXP other);
-SEXP HMetadataType_ne(SEXP self__, SEXP other);
+SEXP savvy_HMetadataType_print__ffi(SEXP self__);
+SEXP savvy_HMetadataType_eq__ffi(SEXP self__, SEXP other);
+SEXP savvy_HMetadataType_ne__ffi(SEXP self__, SEXP other);
 
 // methods and associated functions for HPolynomialDegree
-SEXP HPolynomialDegree_print(SEXP self__);
-SEXP HPolynomialDegree_eq(SEXP self__, SEXP other);
-SEXP HPolynomialDegree_ne(SEXP self__, SEXP other);
+SEXP savvy_HPolynomialDegree_print__ffi(SEXP self__);
+SEXP savvy_HPolynomialDegree_eq__ffi(SEXP self__, SEXP other);
+SEXP savvy_HPolynomialDegree_ne__ffi(SEXP self__, SEXP other);
 
 // methods and associated functions for HResampler
-SEXP HResampler_new_fft(SEXP sr_in, SEXP sr_out, SEXP chunk_size, SEXP sub_chunks, SEXP nchannels, SEXP res_type, SEXP dtype);
-SEXP HResampler_new_sinc(SEXP resample_ratio, SEXP max_resample_ratio_relative, SEXP parameters, SEXP chunk_size, SEXP nchannels, SEXP res_type, SEXP dtype);
-SEXP HResampler_new_fast(SEXP resample_ratio, SEXP max_resample_ratio_relative, SEXP pol_deg, SEXP chunk_size, SEXP nchannels, SEXP res_type, SEXP dtype);
-SEXP HResampler_process(SEXP self__, SEXP harray);
-SEXP HResampler_set_resample_ratio(SEXP self__, SEXP new_ratio, SEXP ramp);
-SEXP HResampler_set_resample_ratio_relative(SEXP self__, SEXP rel_ratio, SEXP ramp);
-SEXP HResampler_reset(SEXP self__);
-SEXP HResampler_res_type(SEXP self__);
-SEXP HResampler_dtype(SEXP self__);
-SEXP HResampler_print(SEXP self__);
+SEXP savvy_HResampler_new_fft__ffi(SEXP sr_in, SEXP sr_out, SEXP chunk_size, SEXP sub_chunks, SEXP nchannels, SEXP res_type, SEXP dtype);
+SEXP savvy_HResampler_new_sinc__ffi(SEXP resample_ratio, SEXP max_resample_ratio_relative, SEXP parameters, SEXP chunk_size, SEXP nchannels, SEXP res_type, SEXP dtype);
+SEXP savvy_HResampler_new_fast__ffi(SEXP resample_ratio, SEXP max_resample_ratio_relative, SEXP pol_deg, SEXP chunk_size, SEXP nchannels, SEXP res_type, SEXP dtype);
+SEXP savvy_HResampler_process__ffi(SEXP self__, SEXP harray);
+SEXP savvy_HResampler_set_resample_ratio__ffi(SEXP self__, SEXP new_ratio, SEXP ramp);
+SEXP savvy_HResampler_set_resample_ratio_relative__ffi(SEXP self__, SEXP rel_ratio, SEXP ramp);
+SEXP savvy_HResampler_reset__ffi(SEXP self__);
+SEXP savvy_HResampler_res_type__ffi(SEXP self__);
+SEXP savvy_HResampler_dtype__ffi(SEXP self__);
+SEXP savvy_HResampler_print__ffi(SEXP self__);
 
 // methods and associated functions for HResamplerType
-SEXP HResamplerType_print(SEXP self__);
-SEXP HResamplerType_eq(SEXP self__, SEXP other);
-SEXP HResamplerType_ne(SEXP self__, SEXP other);
+SEXP savvy_HResamplerType_print__ffi(SEXP self__);
+SEXP savvy_HResamplerType_eq__ffi(SEXP self__, SEXP other);
+SEXP savvy_HResamplerType_ne__ffi(SEXP self__, SEXP other);
 
 // methods and associated functions for HSincInterpolationParameters
-SEXP HSincInterpolationParameters_new(SEXP sinc_len, SEXP f_cutoff, SEXP oversampling_factor, SEXP interpolation, SEXP window);
-SEXP HSincInterpolationParameters_print(SEXP self__);
+SEXP savvy_HSincInterpolationParameters_new__ffi(SEXP sinc_len, SEXP f_cutoff, SEXP oversampling_factor, SEXP interpolation, SEXP window);
+SEXP savvy_HSincInterpolationParameters_print__ffi(SEXP self__);
 
 // methods and associated functions for HWindow
-SEXP HWindow_barthann(SEXP npoints, SEXP sym, SEXP dtype);
-SEXP HWindow_bartlett(SEXP npoints, SEXP sym, SEXP dtype);
-SEXP HWindow_blackman(SEXP npoints, SEXP sym, SEXP dtype);
-SEXP HWindow_blackmanharris(SEXP npoints, SEXP sym, SEXP dtype);
-SEXP HWindow_bohman(SEXP npoints, SEXP sym, SEXP dtype);
-SEXP HWindow_boxcar(SEXP npoints, SEXP dtype);
-SEXP HWindow_cosine(SEXP npoints, SEXP sym, SEXP dtype);
-SEXP HWindow_hann(SEXP npoints, SEXP sym, SEXP dtype);
+SEXP savvy_HWindow_barthann__ffi(SEXP npoints, SEXP sym, SEXP dtype);
+SEXP savvy_HWindow_bartlett__ffi(SEXP npoints, SEXP sym, SEXP dtype);
+SEXP savvy_HWindow_blackman__ffi(SEXP npoints, SEXP sym, SEXP dtype);
+SEXP savvy_HWindow_blackmanharris__ffi(SEXP npoints, SEXP sym, SEXP dtype);
+SEXP savvy_HWindow_bohman__ffi(SEXP npoints, SEXP sym, SEXP dtype);
+SEXP savvy_HWindow_boxcar__ffi(SEXP npoints, SEXP dtype);
+SEXP savvy_HWindow_cosine__ffi(SEXP npoints, SEXP sym, SEXP dtype);
+SEXP savvy_HWindow_hann__ffi(SEXP npoints, SEXP sym, SEXP dtype);
 
 // methods and associated functions for HWindowType
-SEXP HWindowType_print(SEXP self__);
-SEXP HWindowType_eq(SEXP self__, SEXP other);
-SEXP HWindowType_ne(SEXP self__, SEXP other);
+SEXP savvy_HWindowType_print__ffi(SEXP self__);
+SEXP savvy_HWindowType_eq__ffi(SEXP self__, SEXP other);
+SEXP savvy_HWindowType_ne__ffi(SEXP self__, SEXP other);

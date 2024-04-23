@@ -1,6 +1,6 @@
 use harmonium_core::{
+    audioop::{Audio, AudioOp},
     errors::{HError, HResult},
-    haudioop::{Audio, HAudioOp, HAudioOpDyn},
 };
 use ndarray::Array1;
 use num_traits::{Float, FloatConst, FromPrimitive};
@@ -33,23 +33,11 @@ impl HAudioSink {
     {
         match audio {
             Audio::D1(harray) => {
-                let nchannels = harray.nchannels();
-                let nframes = harray.nframes();
-
-                let mut ndarray = Array1::zeros(nchannels * nframes);
-
-                let ndarray_interleaved_t = harray.0.view().reversed_axes();
-
-                for (a, b) in ndarray.iter_mut().zip(ndarray_interleaved_t.iter()) {
-                    *a = b.to_f32().unwrap();
-                }
-
-                let source = SamplesBuffer::new(
-                    u16::try_from(nchannels).unwrap(),
-                    sr,
-                    ndarray.as_slice().unwrap(),
-                );
-
+                let ndarray = harray.0.mapv(|x| {
+                    x.to_f32()
+                        .expect("This should not panic since it is a conversion from f32 or f64.")
+                });
+                let source = SamplesBuffer::new(1, sr, ndarray.as_slice().unwrap());
                 self.sink.append(source);
             }
             Audio::D2(harray) => {
@@ -61,7 +49,9 @@ impl HAudioSink {
                 let ndarray_interleaved_t = harray.0.view().reversed_axes();
 
                 for (a, b) in ndarray.iter_mut().zip(ndarray_interleaved_t.iter()) {
-                    *a = b.to_f32().unwrap();
+                    *a = b
+                        .to_f32()
+                        .expect("This should not panic since it is a conversion from f32 or f64.");
                 }
 
                 let source = SamplesBuffer::new(
@@ -82,7 +72,9 @@ impl HAudioSink {
                 let ndarray_interleaved_t = harray.0.view().reversed_axes();
 
                 for (a, b) in ndarray.iter_mut().zip(ndarray_interleaved_t.iter()) {
-                    *a = b.to_f32().unwrap();
+                    *a = b
+                        .to_f32()
+                        .expect("This should not panic since it is a conversion from f32 or f64.");
                 }
 
                 let source = SamplesBuffer::new(
@@ -101,7 +93,6 @@ impl HAudioSink {
         let (harray, sr) = decode::<f32>(fpath)?;
         let audio = Audio::D2(&harray);
         self.append_from_harray(&audio, sr);
-
         Ok(())
     }
 
