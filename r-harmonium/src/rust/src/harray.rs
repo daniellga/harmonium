@@ -1,4 +1,7 @@
-use crate::{errors::HErrorR, harrayr::HArrayR, hdatatype::HDataType};
+use crate::{
+    conversions::try_from_usize_to_int_sexp, errors::HErrorR, harrayr::HArrayR,
+    hdatatype::HDataType,
+};
 use ndarray::{IxDyn, ShapeError, SliceInfo, SliceInfoElem};
 use num_complex::Complex;
 use savvy::{
@@ -114,12 +117,7 @@ impl HArray {
     /// _________
     ///
     fn len(&self) -> savvy::Result<Sexp> {
-        let len: i32 = self
-            .0
-            .len()
-            .try_into()
-            .map_err(|_| savvy::Error::new("Cannot convert usize to i32."))?;
-        let integer_sexp: OwnedIntegerSexp = len.try_into()?;
+        let integer_sexp: OwnedIntegerSexp = try_from_usize_to_int_sexp(self.0.len())?;
         integer_sexp.into()
     }
 
@@ -179,8 +177,7 @@ impl HArray {
     /// _________
     ///
     fn ndim(&self) -> savvy::Result<Sexp> {
-        let ndim = self.0.ndim() as i32;
-        let integer_sexp: OwnedIntegerSexp = ndim.try_into()?;
+        let integer_sexp: OwnedIntegerSexp = try_from_usize_to_int_sexp(self.0.ndim())?;
         integer_sexp.into()
     }
 

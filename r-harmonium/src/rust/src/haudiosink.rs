@@ -1,4 +1,9 @@
-use crate::{conversions::Conversions, errors::HErrorR, harray::HArray, hdatatype::HDataType};
+use crate::{
+    conversions::{try_from_usize_to_int_sexp, Conversions},
+    errors::HErrorR,
+    harray::HArray,
+    hdatatype::HDataType,
+};
 use harmonium_core::audioop::Audio;
 use harmonium_io::{decode::decode, play};
 use ndarray::IxDyn;
@@ -393,8 +398,7 @@ impl HAudioSink {
     /// _________
     ///
     fn len(&self) -> savvy::Result<Sexp> {
-        let len = self.0.len() as i32;
-        let integer_sexp: OwnedIntegerSexp = len.try_into()?;
+        let integer_sexp: OwnedIntegerSexp = try_from_usize_to_int_sexp(self.0.len())?;
         integer_sexp.into()
     }
 
