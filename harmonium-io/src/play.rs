@@ -34,8 +34,8 @@ impl HAudioSink {
         match audio {
             Audio::D1(harray) => {
                 let ndarray = harray.0.mapv(|x| {
-                    x.to_f32()
-                        .expect("This should not panic since it is a conversion from f32 or f64.")
+                    // This should not panic since it is a conversion from f32 or f64.
+                    unsafe { x.to_f32().unwrap_unchecked() }
                 });
                 let source = SamplesBuffer::new(1, sr, ndarray.as_slice().unwrap());
                 self.sink.append(source);
@@ -49,9 +49,10 @@ impl HAudioSink {
                 let ndarray_interleaved_t = harray.0.view().reversed_axes();
 
                 for (a, b) in ndarray.iter_mut().zip(ndarray_interleaved_t.iter()) {
-                    *a = b
-                        .to_f32()
-                        .expect("This should not panic since it is a conversion from f32 or f64.");
+                    // This should not panic since it is a conversion from f32 or f64.
+                    unsafe {
+                        *a = b.to_f32().unwrap_unchecked();
+                    }
                 }
 
                 let source = SamplesBuffer::new(
@@ -72,9 +73,10 @@ impl HAudioSink {
                 let ndarray_interleaved_t = harray.0.view().reversed_axes();
 
                 for (a, b) in ndarray.iter_mut().zip(ndarray_interleaved_t.iter()) {
-                    *a = b
-                        .to_f32()
-                        .expect("This should not panic since it is a conversion from f32 or f64.");
+                    // This should not panic since it is a conversion from f32 or f64.
+                    unsafe {
+                        *a = b.to_f32().unwrap_unchecked();
+                    }
                 }
 
                 let source = SamplesBuffer::new(

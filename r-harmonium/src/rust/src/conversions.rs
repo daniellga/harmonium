@@ -7,10 +7,13 @@ pub(crate) trait Conversions<T> {
 impl Conversions<&'static str> for Sexp {
     fn to_scalar(self) -> savvy::Result<&'static str> {
         match self.into_typed() {
-            TypedSexp::String(string_sexp) if string_sexp.len() == 1 => Ok(string_sexp
-                .iter()
-                .next()
-                .expect("Should never panic since the size was checked.")),
+            TypedSexp::String(string_sexp) if string_sexp.len() == 1 => unsafe {
+                Ok(string_sexp
+                    .iter()
+                    .next()
+                    // Should never panic since the size was checked.
+                    .unwrap_unchecked())
+            },
             _ => {
                 let err = format!("Argument must be a string of length 1.");
                 Err(err.into())

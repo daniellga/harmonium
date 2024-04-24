@@ -11,47 +11,63 @@ fn equal_harray(lhs: &dyn HArrayR, rhs: &dyn HArrayR) -> bool {
 
     match lhs.dtype() {
         HDataType::Float32 => {
-            let lhs = lhs
-                .as_any()
-                .downcast_ref::<harmonium_core::array::HArray<f32, IxDyn>>()
-                .expect("Should not panic since the type was checked.");
-            let rhs = rhs
-                .as_any()
-                .downcast_ref::<harmonium_core::array::HArray<f32, IxDyn>>()
-                .expect("Should not panic since the type was checked.");
+            let lhs = unsafe {
+                lhs.as_any()
+                    .downcast_ref::<harmonium_core::array::HArray<f32, IxDyn>>()
+                    // Should not panic since the type was checked.
+                    .unwrap_unchecked()
+            };
+            let rhs = unsafe {
+                rhs.as_any()
+                    .downcast_ref::<harmonium_core::array::HArray<f32, IxDyn>>()
+                    // Should not panic since the type was checked.
+                    .unwrap_unchecked()
+            };
             lhs.eq(rhs)
         }
         HDataType::Float64 => {
-            let lhs = lhs
-                .as_any()
-                .downcast_ref::<harmonium_core::array::HArray<f64, IxDyn>>()
-                .expect("Should not panic since the type was checked.");
-            let rhs = rhs
-                .as_any()
-                .downcast_ref::<harmonium_core::array::HArray<f64, IxDyn>>()
-                .expect("Should not panic since the type was checked.");
+            let lhs = unsafe {
+                lhs.as_any()
+                    .downcast_ref::<harmonium_core::array::HArray<f64, IxDyn>>()
+                    // Should not panic since the type was checked.
+                    .unwrap_unchecked()
+            };
+            let rhs = unsafe {
+                rhs.as_any()
+                    .downcast_ref::<harmonium_core::array::HArray<f64, IxDyn>>()
+                    // Should not panic since the type was checked.
+                    .unwrap_unchecked()
+            };
             lhs.eq(rhs)
         }
         HDataType::Complex32 => {
-            let lhs = lhs
-                .as_any()
-                .downcast_ref::<harmonium_core::array::HArray<Complex<f32>, IxDyn>>()
-                .expect("Should not panic since the type was checked.");
-            let rhs = rhs
-                .as_any()
-                .downcast_ref::<harmonium_core::array::HArray<Complex<f32>, IxDyn>>()
-                .expect("Should not panic since the type was checked.");
+            let lhs = unsafe {
+                lhs.as_any()
+                    .downcast_ref::<harmonium_core::array::HArray<Complex<f32>, IxDyn>>()
+                    // Should not panic since the type was checked.
+                    .unwrap_unchecked()
+            };
+            let rhs = unsafe {
+                rhs.as_any()
+                    .downcast_ref::<harmonium_core::array::HArray<Complex<f32>, IxDyn>>()
+                    // Should not panic since the type was checked.
+                    .unwrap_unchecked()
+            };
             lhs.eq(rhs)
         }
         HDataType::Complex64 => {
-            let lhs = lhs
-                .as_any()
-                .downcast_ref::<harmonium_core::array::HArray<Complex<f64>, IxDyn>>()
-                .expect("Should not panic since the type was checked.");
-            let rhs = rhs
-                .as_any()
-                .downcast_ref::<harmonium_core::array::HArray<Complex<f64>, IxDyn>>()
-                .expect("Should not panic since the type was checked.");
+            let lhs = unsafe {
+                lhs.as_any()
+                    .downcast_ref::<harmonium_core::array::HArray<Complex<f64>, IxDyn>>()
+                    // Should not panic since the type was checked.
+                    .unwrap_unchecked()
+            };
+            let rhs = unsafe {
+                rhs.as_any()
+                    .downcast_ref::<harmonium_core::array::HArray<Complex<f64>, IxDyn>>()
+                    // Should not panic since the type was checked.
+                    .unwrap_unchecked()
+            };
             lhs.eq(rhs)
         }
     }

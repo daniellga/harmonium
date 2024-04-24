@@ -74,21 +74,27 @@ impl HAudioSink {
 
         match harray.0.dtype() {
             HDataType::Float32 => {
-                let harray = harray
-                    .0
-                    .as_any()
-                    .downcast_ref::<harmonium_core::array::HArray<f32, IxDyn>>()
-                    .expect("Should not panic since the type was checked.");
+                let harray = unsafe {
+                    harray
+                        .0
+                        .as_any()
+                        .downcast_ref::<harmonium_core::array::HArray<f32, IxDyn>>()
+                        // Should not panic since the type was checked.
+                        .unwrap_unchecked()
+                };
                 let audio = Audio::Dyn(harray);
                 self.0.append_from_harray::<f32>(&audio, sr);
                 Ok(())
             }
             HDataType::Float64 => {
-                let harray = harray
-                    .0
-                    .as_any()
-                    .downcast_ref::<harmonium_core::array::HArray<f64, IxDyn>>()
-                    .expect("Should not panic since the type was checked.");
+                let harray = unsafe {
+                    harray
+                        .0
+                        .as_any()
+                        .downcast_ref::<harmonium_core::array::HArray<f64, IxDyn>>()
+                        // Should not panic since the type was checked.
+                        .unwrap_unchecked()
+                };
                 let audio = Audio::Dyn(harray);
                 self.0.append_from_harray::<f64>(&audio, sr);
                 Ok(())
