@@ -1,10 +1,10 @@
+name: CI test and lint
+
 on:
   push:
     branches: [ main, master ]
   pull_request:
     branches: [ main, master ]
-
-name: CI test and lint
 
 jobs:
   check_test:

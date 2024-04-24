@@ -1,4 +1,4 @@
-name: Create docs for github pages
+name: Build docs
 
 on:
   push:
@@ -11,8 +11,6 @@ on:
       - completed
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
-
-name: build docs 
 
 permissions: write-all
 
