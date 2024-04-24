@@ -1,10 +1,10 @@
 on:
   push:
-    branches: [ master ]
+    branches: [ main, master ]
     paths:
       - r-harmonium/**
   pull_request:
-    branches: [ master ]
+    branches: [ main, master ]
     paths:
       - r-harmonium/**
 

@@ -1,0 +1,187 @@
+---
+title: HPolynomialDegree
+---
+
+Degree of the polynomial used for interpolation. A higher degree gives a higher quality result, while taking longer to compute. \
+
+* `Septic` \
+Septic polynomial, fitted using 8 sample points. \
+
+* `Quintic`. \
+Quintic polynomial, fitted using 6 sample points. \
+
+* `Cubic`. \
+Cubic polynomial, fitted using 4 sample points. \
+
+* `Linear`. \
+Linear polynomial, fitted using 2 sample points. \
+
+* `Nearest`. \
+Nearest, uses the nearest sample point without any fitting. \
+
+# Methods
+
+## Septic
+
+`septic -> HPolynomialDegree` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hpolynomialdegree.rs#L55) </span> \
+
+Creates a `Septic` `HPolynomialDegree`. \
+
+#### Returns
+
+An `HPolynomialDegree`.
+
+#### Examples
+
+```r
+pol_deg = HPolynomialDegree$septic
+```
+
+_________
+
+## Quintic
+
+`quintic -> HPolynomialDegree` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hpolynomialdegree.rs#L78) </span> \
+
+Creates a `Quintic` `HPolynomialDegree`. \
+
+#### Returns
+
+An `HPolynomialDegree`.
+
+#### Examples
+
+```r
+pol_deg = HPolynomialDegree$quintic
+```
+
+_________
+
+## Cubic
+
+`cubic -> HPolynomialDegree` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hpolynomialdegree.rs#L101) </span> \
+
+Creates a `Cubic` `HPolynomialDegree`. \
+
+#### Returns
+
+An `HPolynomialDegree`.
+
+#### Examples
+
+```r
+pol_deg = HPolynomialDegree$cubic
+```
+
+_________
+
+## Linear
+
+`linear -> HPolynomialDegree` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hpolynomialdegree.rs#L124) </span> \
+
+Creates a `Linear` `HPolynomialDegree`. \
+
+#### Returns
+
+An `HPolynomialDegree`.
+
+#### Examples
+
+```r
+pol_deg = HPolynomialDegree$linear
+```
+
+_________
+
+## Nearest
+
+`nearest -> HPolynomialDegree` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hpolynomialdegree.rs#L147) </span> \
+
+Creates a `Nearest` `HPolynomialDegree`. \
+
+#### Returns
+
+An `HPolynomialDegree`.
+
+#### Examples
+
+```r
+pol_deg = HPolynomialDegree$nearest
+```
+
+_________
+
+## print
+
+`print()` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hpolynomialdegree.rs#L171) </span> \
+
+Prints the `HPolynomialDegree`. \
+Differently from R's behaviour, `print` doesn't return the value invisibly. \
+
+#### Examples
+
+```r
+pol_deg = HPolynomialDegree$complex64
+pol_deg$print()
+
+# or similarly:
+print(pol_deg)
+```
+
+_________
+
+## eq
+
+`eq(other: HPolynomialDegree) -> bool` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hpolynomialdegree.rs#L204) </span> \
+
+Equality with another `HPolynomialDegree`.
+
+#### Arguments
+
+* `other` \
+An `HPolynomialDegree`. \
+
+#### Returns
+
+A `bool`.
+
+#### Examples
+
+```r
+pol_deg1 = HPolynomialDegree$quintic
+pol_deg2 = HPolynomialDegree$quintic
+pol_deg1$eq(pol_deg2) # TRUE
+
+# or similarly:
+pol_deg1 == pol_deg2
+```
+
+_________
+
+## ne
+
+`ne(other: HPolynomialDegree) -> bool` <span style="float: right;"> [source](https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hpolynomialdegree.rs#L237) </span> \
+
+Difference with another `HPolynomialDegree`.
+
+#### Arguments
+
+* `other` \
+An `HPolynomialDegree`. \
+
+#### Returns
+
+A `bool`.
+
+#### Examples
+
+```r
+pol_deg1 = HPolynomialDegree$quintic
+pol_deg2 = HPolynomialDegree$nearest
+pol_deg1$ne(pol_deg2) # TRUE
+
+# or similarly:
+pol_deg1 != pol_deg2
+```
+
+_________
