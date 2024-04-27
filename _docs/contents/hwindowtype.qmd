@@ -9,7 +9,7 @@ Supports `Blackman`, `Blackman2`, `BlackmanHarris`, `BlackmanHarris2`, `Hann` an
 
 ## print
 
-`print()` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium//hwindowtype.rs#L43) </span> \
+`print()` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src//hwindowtype.rs#L43) </span> \
 
 Prints the `HWindowType`. \
 Differently from R's behaviour, `print` doesn't return the value invisibly. \
@@ -28,7 +28,7 @@ _________
 
 ## eq
 
-`eq(other: HWindowType) -> bool` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium//hwindowtype.rs#L77) </span> \
+`eq(other: HWindowType) -> bool` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src//hwindowtype.rs#L77) </span> \
 
 Equality with another `HWindowType`.
 
@@ -56,7 +56,7 @@ _________
 
 ## ne
 
-`ne(other: HWindowType) -> bool` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium//hwindowtype.rs#L112) </span> \
+`ne(other: HWindowType) -> bool` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src//hwindowtype.rs#L112) </span> \
 
 Difference with another `HWindowType`.
 

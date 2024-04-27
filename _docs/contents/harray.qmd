@@ -8,7 +8,7 @@ An array representation. \
 
 ## new_from_values
 
-`new_from_values(arr: array, dtype: HDataType) -> HArray` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium//harray.rs#L52) </span> \
+`new_from_values(arr: array, dtype: HDataType) -> HArray` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src//harray.rs#L52) </span> \
 
 Creates a new `HArray` from an R array. \
 
@@ -36,7 +36,7 @@ _________
 
 ## len
 
-`len() -> integer` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium//harray.rs#L119) </span> \
+`len() -> integer` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src//harray.rs#L119) </span> \
 
 Returns the number of elements of this `Harray`. \
 
@@ -57,7 +57,7 @@ _________
 
 ## shape
 
-`shape() -> integers` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium//harray.rs#L146) </span> \
+`shape() -> integers` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src//harray.rs#L146) </span> \
 
 Returns the shape of this `HArray`. \
 
@@ -78,7 +78,7 @@ _________
 
 ## ndim
 
-`ndim() -> integer` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium//harray.rs#L179) </span> \
+`ndim() -> integer` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src//harray.rs#L179) </span> \
 
 Returns the number of dimensions of this `HArray`. \
 
@@ -99,7 +99,7 @@ _________
 
 ## slice
 
-`slice(range: list[atomicvector]) -> HArray` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium//harray.rs#L216) </span> \
+`slice(range: list[atomicvector]) -> HArray` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src//harray.rs#L216) </span> \
 
 Slices the HArray. \
 This operation has a COW ([clone-on-write](https://doc.rust-lang.org/std/borrow/enum.Cow.html)) behaviour. The created slice shares the inner data with
@@ -130,7 +130,7 @@ _________
 
 ## print
 
-`print()` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium//harray.rs#L273) </span> \
+`print()` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src//harray.rs#L273) </span> \
 
 Prints the `HArray`. \
 Differently from R's normal behaviour, `print` doesn't return the value invisibly. \
@@ -151,7 +151,7 @@ _________
 
 ## eq
 
-`eq(other: HArray) -> bool` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium//harray.rs#L315) </span> \
+`eq(other: HArray) -> bool` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src//harray.rs#L315) </span> \
 
 Equality with another `HArray`. \
 The comparison only checks if the dtype and the values are the same. To compare if the
@@ -187,7 +187,7 @@ _________
 
 ## ne
 
-`ne(other: HArray) -> bool` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium//harray.rs#L358) </span> \
+`ne(other: HArray) -> bool` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src//harray.rs#L358) </span> \
 
 Difference with another `HArray`. \
 The comparison only checks if the dtype and the values are the same. To compare if the
@@ -223,7 +223,7 @@ _________
 
 ## clone
 
-`clone() -> HArray` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium//harray.rs#L387) </span> \
+`clone() -> HArray` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src//harray.rs#L387) </span> \
 
 Creates a new `HArray`, with the underlying data pointing to the same place in memory.
 
@@ -245,7 +245,7 @@ _________
 
 ## collect
 
-`collect() -> array` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium//harray.rs#L413) </span> \
+`collect() -> array` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src//harray.rs#L413) </span> \
 
 Creates an R array from an `HArray`. The type of the array created (`double` or `complex`) will depend on the `HArray`'s dtype.
 
@@ -266,7 +266,7 @@ _________
 
 ## dtype
 
-`dtype() -> HDataType` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium//harray.rs#L439) </span> \
+`dtype() -> HDataType` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src//harray.rs#L439) </span> \
 
 Gets the `HArray`'s dtype as an `HDataType`.
 
@@ -287,7 +287,7 @@ _________
 
 ## is_shared
 
-`is_shared() -> bool` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium//harray.rs#L470) </span> \
+`is_shared() -> bool` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src//harray.rs#L470) </span> \
 
 Checks if the object is shared. \
 Since `HArray` has a COW ([clone-on-write](https://doc.rust-lang.org/std/borrow/enum.Cow.html)) behaviour, this function is useful to check if a new
@@ -313,7 +313,7 @@ _________
 
 ## mem_adress
 
-`mem_adress() -> string` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium//harray.rs#L499) </span> \
+`mem_adress() -> string` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src//harray.rs#L499) </span> \
 
 The memory adress of the first element of the inner array. \
 This is useful to check if different objects share the same underlying data. \
@@ -335,7 +335,7 @@ _________
 
 ## invalidate
 
-`invalidate()` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium//harray.rs#L523) </span> \
+`invalidate()` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src//harray.rs#L523) </span> \
 
 Replaces the inner value of the external pointer, invalidating it. \
 This function is useful to remove one of the shared references of the inner pointer in rust. \

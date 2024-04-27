@@ -244,7 +244,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="fft" class="level2">
 <h2 class="anchored" data-anchor-id="fft">fft</h2>
-<p><code>fft() -&gt; HArray</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium//hfft.rs#L40">source</a> </span><br>
+<p><code>fft() -&gt; HArray</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src//hfft.rs#L40">source</a> </span><br>
 </p>
 <p>Computes the fast fourier transform of the <code>HArray</code>.<br>
 FFT (Fast Fourier Transform) refers to a way the discrete Fourier Transform (DFT) can be calculated efficiently, by using symmetries in the calculated terms. The symmetry is highest when n is a power of 2, and the transform is therefore most efficient for these sizes.<br>
@@ -269,7 +269,7 @@ FFT (Fast Fourier Transform) refers to a way the discrete Fourier Transform (DFT
 </section>
 <section id="fft_mut" class="level2">
 <h2 class="anchored" data-anchor-id="fft_mut">fft_mut</h2>
-<p><code>fft_mut()</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium//hfft.rs#L72">source</a> </span><br>
+<p><code>fft_mut()</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src//hfft.rs#L72">source</a> </span><br>
 </p>
 <p>Computes the fast fourier transform of the <code>HArray</code>.<br>
 The operation is done in-place.<br>
@@ -290,7 +290,7 @@ FFT (Fast Fourier Transform) refers to a way the discrete Fourier Transform (DFT
 </section>
 <section id="ifft" class="level2">
 <h2 class="anchored" data-anchor-id="ifft">ifft</h2>
-<p><code>ifft() -&gt; HArray</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium//hfft.rs#L107">source</a> </span><br>
+<p><code>ifft() -&gt; HArray</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src//hfft.rs#L107">source</a> </span><br>
 </p>
 <p>Computes the inverse fast fourier transform of a complex <code>HArray</code>.<br>
 FFT (Fast Fourier Transform) refers to a way the discrete Fourier Transform (DFT) can be calculated efficiently, by using symmetries in the calculated terms. The symmetry is highest when n is a power of 2, and the transform is therefore most efficient for these sizes.<br>
@@ -314,7 +314,7 @@ Will return an error if the <code>HArray</code> is of a float type.<br>
 </section>
 <section id="ifft_mut" class="level2">
 <h2 class="anchored" data-anchor-id="ifft_mut">ifft_mut</h2>
-<p><code>ifft_mut() -&gt; HArray</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium//hfft.rs#L141">source</a> </span><br>
+<p><code>ifft_mut() -&gt; HArray</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src//hfft.rs#L141">source</a> </span><br>
 </p>
 <p>Computes the inverse fast fourier transform of a complex <code>HArray</code>.<br>
 The operation is done in-place.<br>
@@ -338,7 +338,7 @@ FFT (Fast Fourier Transform) refers to a way the discrete Fourier Transform (DFT
 </section>
 <section id="rfft_mut" class="level2">
 <h2 class="anchored" data-anchor-id="rfft_mut">rfft_mut</h2>
-<p><code>rfft_mut()</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium//hfft.rs#L180">source</a> </span><br>
+<p><code>rfft_mut()</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src//hfft.rs#L180">source</a> </span><br>
 </p>
 <p>Computes the fast fourier transform of a float <code>HArray</code>. Transforms a real signal of length <code>N</code> to a complex-valued spectrum of length <code>N/2+1</code> (with <code>N/2</code> rounded down).<br>
 The operation is not done in-place, although the same external pointer is used to store the new HArray.<br>
@@ -365,7 +365,7 @@ FFT (Fast Fourier Transform) refers to a way the discrete Fourier Transform (DFT
 </section>
 <section id="irfft_mut" class="level2">
 <h2 class="anchored" data-anchor-id="irfft_mut">irfft_mut</h2>
-<p><code>irfft_mut(length: integer)</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium//hfft.rs#L225">source</a> </span><br>
+<p><code>irfft_mut(length: integer)</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src//hfft.rs#L225">source</a> </span><br>
 </p>
 <p>Computes the inverse fast fourier transform of a complex <code>HArray</code>. Transforms a complex spectrum of length <code>N/2+1</code> (with <code>N/2</code> rounded down) to a real-valued signal of length <code>N</code>.<br>
 The operation is not done in-place, although the same external pointer is used to store the new HArray.<br>
