@@ -143,63 +143,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
- <span class="menu-text">Classes</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../docs/harray.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">HArray</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../docs/haudiosink.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">HAudioSink</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../docs/hdatatype.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">HDataType</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../docs/hmetadatatype.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">HMetadataType</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../docs/hpolynomialdegree.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">HPolynomialDegree</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../docs/hresampler.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">HResampler</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../docs/hresamplertype.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">HResamplerType</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../docs/hwindow.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">HWindow</span></a>
-  </div>
-</li>
-      </ul>
+      <span class="sidebar-item-text sidebar-link text-start">
+ <span class="menu-text">Classes</span></span>
   </li>
     </ul>
     </div>
@@ -241,7 +186,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="harray" class="level2">
 <h2 class="anchored" data-anchor-id="harray">harray</h2>
-<p><code>harray() -&gt; HArray</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src//hfile.rs#L45">source</a> </span><br>
+<p><code>harray() -&gt; HArray</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L45">source</a> </span><br>
 </p>
 <p>Get the decoded HArray.</p>
 <section id="returns" class="level4">
@@ -260,7 +205,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="sr" class="level2">
 <h2 class="anchored" data-anchor-id="sr">sr</h2>
-<p><code>sr() -&gt; integer</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src//hfile.rs#L72">source</a> </span><br>
+<p><code>sr() -&gt; integer</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L72">source</a> </span><br>
 </p>
 <p>Get the sampling rate of the decoded audio.</p>
 <section id="returns-1" class="level4">
@@ -279,7 +224,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="invalidate" class="level2">
 <h2 class="anchored" data-anchor-id="invalidate">invalidate</h2>
-<p><code>invalidate()</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src//hfile.rs#L101">source</a> </span><br>
+<p><code>invalidate()</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L101">source</a> </span><br>
 </p>
 <p>Replaces the inner value of the external pointer, invalidating it.<br>
 This function is useful to remove one of the shared references of the inner pointer in rust.<br>

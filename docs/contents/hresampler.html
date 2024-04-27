@@ -143,63 +143,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
- <span class="menu-text">Classes</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../docs/harray.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">HArray</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../docs/haudiosink.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">HAudioSink</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../docs/hdatatype.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">HDataType</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../docs/hmetadatatype.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">HMetadataType</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../docs/hpolynomialdegree.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">HPolynomialDegree</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../docs/hresampler.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">HResampler</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../docs/hresamplertype.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">HResamplerType</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../docs/hwindow.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">HWindow</span></a>
-  </div>
-</li>
-      </ul>
+      <span class="sidebar-item-text sidebar-link text-start">
+ <span class="menu-text">Classes</span></span>
   </li>
     </ul>
     </div>
@@ -286,7 +231,7 @@ This type of resampler is considerably faster but doesn’t support changing the
 <h1>Methods</h1>
 <section id="new_fft" class="level2">
 <h2 class="anchored" data-anchor-id="new_fft">new_fft</h2>
-<p><code>new_fft(sr_in: integer, sr_out: integer, chunk_size: integer, sub_chunks: integer, nbr_channels: integer, res_type: HResamplerType, dtype: HDataType) -&gt; HResampler</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src//hresampler.rs#L118">source</a> </span><br>
+<p><code>new_fft(sr_in: integer, sr_out: integer, chunk_size: integer, sub_chunks: integer, nbr_channels: integer, res_type: HResamplerType, dtype: HDataType) -&gt; HResampler</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hresampler.rs#L118">source</a> </span><br>
 </p>
 <p>Creates a new FFT type HResampler.<br>
 Supports any of <code>[fft_fixed_in, fft_fixed_in_out, fft_fixed_out]</code> <code>HResamplerType</code>.<br>
@@ -354,7 +299,7 @@ Must be the same as the <code>HAudio</code>’s dtype that will be processed by 
 </section>
 <section id="new_sinc" class="level2">
 <h2 class="anchored" data-anchor-id="new_sinc">new_sinc</h2>
-<p><code>new_sinc(resample_ratio: double, max_resample_ratio_relative: double, parameters: HSincInterpolationParameters, chunk_size: integer, nchannels: integer, res_type: HResamplerType, dtype: HDataType) -&gt; HResampler</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src//hresampler.rs#L258">source</a> </span><br>
+<p><code>new_sinc(resample_ratio: double, max_resample_ratio_relative: double, parameters: HSincInterpolationParameters, chunk_size: integer, nchannels: integer, res_type: HResamplerType, dtype: HDataType) -&gt; HResampler</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hresampler.rs#L258">source</a> </span><br>
 </p>
 <p>Creates a new Sinc type HResampler.<br>
 Supports any of <code>[sinc_fixed_in, sinc_fixed_out]</code> <code>HResamplerType</code>.<br>
@@ -422,7 +367,7 @@ Must be the same as the <code>HAudio</code>’s dtype that will be processed by 
 </section>
 <section id="new_fast" class="level2">
 <h2 class="anchored" data-anchor-id="new_fast">new_fast</h2>
-<p><code>new_sinc(resample_ratio: double, max_resample_ratio_relative: double, pol_deg: HPolynomialDegree, chunk_size: integer, nchannels: integer, res_type: HResamplerType, dtype: HDataType) -&gt; HResampler</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src//hresampler.rs#L388">source</a> </span><br>
+<p><code>new_sinc(resample_ratio: double, max_resample_ratio_relative: double, pol_deg: HPolynomialDegree, chunk_size: integer, nchannels: integer, res_type: HResamplerType, dtype: HDataType) -&gt; HResampler</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hresampler.rs#L388">source</a> </span><br>
 </p>
 <p>Creates a new Fast type HResampler.<br>
 Supports any of <code>[fast_fixed_in, fast_fixed_out]</code> <code>HResamplerType</code>.<br>
@@ -491,7 +436,7 @@ Must be the same as the <code>HAudio</code>’s dtype that will be processed by 
 </section>
 <section id="process" class="level2">
 <h2 class="anchored" data-anchor-id="process">process</h2>
-<p><code>process(harray: HArray)</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src//hresampler.rs#L475">source</a> </span><br>
+<p><code>process(harray: HArray)</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hresampler.rs#L475">source</a> </span><br>
 </p>
 <p>Process the resampler, changing the <code>HArray</code>’s sampling rate.<br>
 </p>
@@ -515,7 +460,7 @@ An <code>HArray</code> that will have it’s sampling rate converted.<br>
 </section>
 <section id="set_resample_ratio" class="level2">
 <h2 class="anchored" data-anchor-id="set_resample_ratio">set_resample_ratio</h2>
-<p><code>set_resample_ratio(new_ratio: double, ramp: bool)</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src//hresampler.rs#L507">source</a> </span><br>
+<p><code>set_resample_ratio(new_ratio: double, ramp: bool)</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hresampler.rs#L507">source</a> </span><br>
 </p>
 <p>Update the resample ratio.<br>
 For asynchronous resamplers, the ratio must be within <code>original / maximum</code> to <code>original * maximum</code>, where <code>original</code> and <code>maximum</code> are the resampling ratios that were provided to the constructor. Trying to set the ratio outside these bounds will return an error.<br>
@@ -544,7 +489,7 @@ If <code>TRUE</code>, the ratio will be ramped from the old to the new value dur
 </section>
 <section id="set_resample_ratio_relative" class="level2">
 <h2 class="anchored" data-anchor-id="set_resample_ratio_relative">set_resample_ratio_relative</h2>
-<p><code>set_resample_ratio_relative(rel_ratio: double, ramp: bool)</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src//hresampler.rs#L542">source</a> </span><br>
+<p><code>set_resample_ratio_relative(rel_ratio: double, ramp: bool)</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hresampler.rs#L542">source</a> </span><br>
 </p>
 <p>Update the resample ratio as a factor relative to the original one.<br>
 For asynchronous resamplers, the relative ratio must be within <code>1 / maximum</code> to <code>maximum</code>, where <code>maximum</code> is the maximum resampling ratio that was provided to the constructor. Trying to set the ratio outside these bounds will return an error.<br>
@@ -574,7 +519,7 @@ If <code>TRUE</code>, the ratio will be ramped from the old to the new value dur
 </section>
 <section id="reset" class="level2">
 <h2 class="anchored" data-anchor-id="reset">reset</h2>
-<p><code>reset()</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src//hresampler.rs#L574">source</a> </span><br>
+<p><code>reset()</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hresampler.rs#L574">source</a> </span><br>
 </p>
 <p>Reset the resampler state and clear all internal buffers.<br>
 </p>
@@ -597,7 +542,7 @@ If <code>TRUE</code>, the ratio will be ramped from the old to the new value dur
 </section>
 <section id="res_type" class="level2">
 <h2 class="anchored" data-anchor-id="res_type">res_type</h2>
-<p><code>res_type() -&gt; HResamplerType</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src//hresampler.rs#L609">source</a> </span><br>
+<p><code>res_type() -&gt; HResamplerType</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hresampler.rs#L609">source</a> </span><br>
 </p>
 <p>Gets the <code>HResampler</code>’s type.<br>
 </p>
@@ -624,7 +569,7 @@ If <code>TRUE</code>, the ratio will be ramped from the old to the new value dur
 </section>
 <section id="dtype" class="level2">
 <h2 class="anchored" data-anchor-id="dtype">dtype</h2>
-<p><code>dtype() -&gt; HDataType</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src//hresampler.rs#L643">source</a> </span><br>
+<p><code>dtype() -&gt; HDataType</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hresampler.rs#L643">source</a> </span><br>
 </p>
 <p>Gets the <code>HResampler</code>’s dtype.</p>
 <section id="returns-4" class="level4">
@@ -650,7 +595,7 @@ If <code>TRUE</code>, the ratio will be ramped from the old to the new value dur
 </section>
 <section id="print" class="level2">
 <h2 class="anchored" data-anchor-id="print">print</h2>
-<p><code>print()</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src//hresampler.rs#L677">source</a> </span><br>
+<p><code>print()</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hresampler.rs#L677">source</a> </span><br>
 </p>
 <p>Print the <code>HResampler</code>.<br>
 Differently from R’s normal behaviour, <code>print</code> doesn’t return the value invisibly.<br>

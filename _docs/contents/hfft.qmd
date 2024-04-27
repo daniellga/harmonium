@@ -4,7 +4,7 @@ title: HFft
 
 ## fft
 
-`fft() -> HArray` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src//hfft.rs#L40) </span> \
+`fft() -> HArray` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L40) </span> \
 
 Computes the fast fourier transform of the `HArray`. \
 FFT (Fast Fourier Transform) refers to a way the discrete Fourier Transform (DFT) can be calculated efficiently,
@@ -34,7 +34,7 @@ _________
 
 ## fft_mut
 
-`fft_mut()` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src//hfft.rs#L72) </span> \
+`fft_mut()` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L72) </span> \
 
 Computes the fast fourier transform of the `HArray`. \
 The operation is done in-place. \
@@ -61,7 +61,7 @@ _________
 
 ## ifft
 
-`ifft() -> HArray` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src//hfft.rs#L107) </span> \
+`ifft() -> HArray` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L107) </span> \
 
 Computes the inverse fast fourier transform of a complex `HArray`. \
 FFT (Fast Fourier Transform) refers to a way the discrete Fourier Transform (DFT) can be calculated efficiently,
@@ -90,7 +90,7 @@ _________
 
 ## ifft_mut
 
-`ifft_mut() -> HArray` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src//hfft.rs#L141) </span> \
+`ifft_mut() -> HArray` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L141) </span> \
 
 Computes the inverse fast fourier transform of a complex `HArray`. \
 The operation is done in-place. \
@@ -119,7 +119,7 @@ _________
 
 ## rfft_mut
 
-`rfft_mut()` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src//hfft.rs#L180) </span> \
+`rfft_mut()` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L180) </span> \
 
 Computes the fast fourier transform of a float `HArray`. Transforms a real signal of length `N` to a complex-valued spectrum of length `N/2+1` (with `N/2` rounded down). \
 The operation is not done in-place, although the same external pointer is used to store the new HArray. \
@@ -152,7 +152,7 @@ _________
 
 ## irfft_mut
 
-`irfft_mut(length: integer)` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src//hfft.rs#L225) </span> \
+`irfft_mut(length: integer)` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L225) </span> \
 
 Computes the inverse fast fourier transform of a complex `HArray`. Transforms a complex spectrum of length `N/2+1` (with `N/2` rounded down) to a real-valued signal of length `N`. \
 The operation is not done in-place, although the same external pointer is used to store the new HArray. \
