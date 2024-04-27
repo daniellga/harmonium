@@ -51,6 +51,7 @@ jobs:
             
       - name: build documentation
         run: |
+          install.packages("remotes")
           remotes::install_github("daniellga/rdocs", subdir = "rdocs")
           rdocs::generate_docs(files = list.files("./r-harmonium/src/rust/src/" full.names = TRUE), folder_name = "docs", gh_url = "https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src", run_examples = FALSE)
         shell: Rscript --vanilla {0}
