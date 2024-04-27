@@ -13,7 +13,7 @@ website:
     style: "docked"
     contents:
       - section: "Classes"
-        contents: docs/* 
+        contents: contents/* 
 
 format:
   html:
