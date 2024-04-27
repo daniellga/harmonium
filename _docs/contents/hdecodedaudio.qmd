@@ -4,7 +4,7 @@ title: HDecodedAudio
 
 ## harray
 
-`harray() -> HArray` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L45) </span> \
+`harray() -> HArray` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium//hfile.rs#L45) </span> \
 
 Get the decoded HArray.
 
@@ -26,7 +26,7 @@ _________
 
 ## sr
 
-`sr() -> integer` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L72) </span> \
+`sr() -> integer` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium//hfile.rs#L72) </span> \
 
 Get the sampling rate of the decoded audio.
 
@@ -49,7 +49,7 @@ _________
 
 ## invalidate
 
-`invalidate()` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L101) </span> \
+`invalidate()` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium//hfile.rs#L101) </span> \
 
 Replaces the inner value of the external pointer, invalidating it. \
 This function is useful to remove one of the shared references of the inner pointer in rust. \

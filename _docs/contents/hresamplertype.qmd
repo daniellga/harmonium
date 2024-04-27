@@ -10,7 +10,7 @@ Supports `FftFixedIn`, `FftFixedInOut`, `FftFixedOut`, `SincFixedIn`, `SincFixed
 
 ## print
 
-`print()` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hresamplertype.rs#L45) </span> \
+`print()` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium//hresamplertype.rs#L45) </span> \
 
 Prints the `HResamplerType`. \
 Differently from R's behaviour, `print` doesn't return the value invisibly. \
@@ -29,7 +29,7 @@ _________
 
 ## eq
 
-`eq(other: HResamplerType) -> bool` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hresamplertype.rs#L79) </span> \
+`eq(other: HResamplerType) -> bool` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium//hresamplertype.rs#L79) </span> \
 
 Equality with another `HResamplerType`.
 
@@ -57,7 +57,7 @@ _________
 
 ## ne
 
-`ne(other: HResamplerType) -> bool` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hresamplertype.rs#L114) </span> \
+`ne(other: HResamplerType) -> bool` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium//hresamplertype.rs#L114) </span> \
 
 Difference with another `HResamplerType`.
 

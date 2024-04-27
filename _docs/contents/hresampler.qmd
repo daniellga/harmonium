@@ -33,7 +33,7 @@ This type of resampler is considerably faster but doesn’t support changing the
 
 ## new_fft
 
-`new_fft(sr_in: integer, sr_out: integer, chunk_size: integer, sub_chunks: integer, nbr_channels: integer, res_type: HResamplerType, dtype: HDataType) -> HResampler` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hresampler.rs#L118) </span> \
+`new_fft(sr_in: integer, sr_out: integer, chunk_size: integer, sub_chunks: integer, nbr_channels: integer, res_type: HResamplerType, dtype: HDataType) -> HResampler` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium//hresampler.rs#L118) </span> \
 
 Creates a new FFT type HResampler. \
 Supports any of  `[fft_fixed_in, fft_fixed_in_out, fft_fixed_out]` `HResamplerType`. \
@@ -91,7 +91,7 @@ _________
 
 ## new_sinc
 
-`new_sinc(resample_ratio: double, max_resample_ratio_relative: double, parameters: HSincInterpolationParameters, chunk_size: integer, nchannels: integer, res_type: HResamplerType, dtype: HDataType) -> HResampler` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hresampler.rs#L258) </span> \
+`new_sinc(resample_ratio: double, max_resample_ratio_relative: double, parameters: HSincInterpolationParameters, chunk_size: integer, nchannels: integer, res_type: HResamplerType, dtype: HDataType) -> HResampler` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium//hresampler.rs#L258) </span> \
 
 Creates a new Sinc type HResampler. \
 Supports any of  `[sinc_fixed_in, sinc_fixed_out]` `HResamplerType`. \
@@ -149,7 +149,7 @@ _________
 
 ## new_fast
 
-`new_sinc(resample_ratio: double, max_resample_ratio_relative: double, pol_deg: HPolynomialDegree, chunk_size: integer, nchannels: integer, res_type: HResamplerType, dtype: HDataType) -> HResampler` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hresampler.rs#L388) </span> \
+`new_sinc(resample_ratio: double, max_resample_ratio_relative: double, pol_deg: HPolynomialDegree, chunk_size: integer, nchannels: integer, res_type: HResamplerType, dtype: HDataType) -> HResampler` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium//hresampler.rs#L388) </span> \
 
 Creates a new Fast type HResampler. \
 Supports any of  `[fast_fixed_in, fast_fixed_out]` `HResamplerType`. \
@@ -208,7 +208,7 @@ _________
 
 ## process
 
-`process(harray: HArray)` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hresampler.rs#L475) </span> \
+`process(harray: HArray)` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium//hresampler.rs#L475) </span> \
 
 Process the resampler, changing the `HArray`'s sampling rate. \
 
@@ -231,7 +231,7 @@ _________
 
 ## set_resample_ratio
 
-`set_resample_ratio(new_ratio: double, ramp: bool)` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hresampler.rs#L507) </span> \
+`set_resample_ratio(new_ratio: double, ramp: bool)` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium//hresampler.rs#L507) </span> \
 
 Update the resample ratio. \
 For asynchronous resamplers, the ratio must be within `original / maximum` to `original * maximum`, where `original` and `maximum` are the resampling ratios that were provided to the constructor. Trying to set the ratio outside these bounds will return an error. \
@@ -258,7 +258,7 @@ _________
 
 ## set_resample_ratio_relative
 
-`set_resample_ratio_relative(rel_ratio: double, ramp: bool)` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hresampler.rs#L542) </span> \
+`set_resample_ratio_relative(rel_ratio: double, ramp: bool)` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium//hresampler.rs#L542) </span> \
 
 Update the resample ratio as a factor relative to the original one. \
 For asynchronous resamplers, the relative ratio must be within `1 / maximum` to `maximum`, where `maximum` is the maximum resampling ratio that was provided to the constructor. Trying to set the ratio outside these bounds will return an error. \
@@ -286,7 +286,7 @@ _________
 
 ## reset
 
-`reset()` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hresampler.rs#L574) </span> \
+`reset()` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium//hresampler.rs#L574) </span> \
 
 Reset the resampler state and clear all internal buffers. \
 
@@ -311,7 +311,7 @@ _________
 
 ## res_type
 
-`res_type() -> HResamplerType` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hresampler.rs#L609) </span> \
+`res_type() -> HResamplerType` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium//hresampler.rs#L609) </span> \
 
 Gets the `HResampler`'s type. \
 
@@ -340,7 +340,7 @@ _________
 
 ## dtype
 
-`dtype() -> HDataType` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hresampler.rs#L643) </span> \
+`dtype() -> HDataType` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium//hresampler.rs#L643) </span> \
 
 Gets the `HResampler`'s dtype.
 
@@ -369,7 +369,7 @@ _________
 
 ## print
 
-`print()` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hresampler.rs#L677) </span> \
+`print()` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium//hresampler.rs#L677) </span> \
 
 Print the `HResampler`. \
 Differently from R's normal behaviour, `print` doesn't return the value invisibly. \

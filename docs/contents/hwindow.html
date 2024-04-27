@@ -282,7 +282,7 @@ window.Quarto = {
 <h1>Methods</h1>
 <section id="barthann" class="level2">
 <h2 class="anchored" data-anchor-id="barthann">barthann</h2>
-<p><code>barthann(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hwindow.rs#L48">source</a> </span><br>
+<p><code>barthann(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium//hwindow.rs#L48">source</a> </span><br>
 </p>
 <p>Returns a modified Bartlett-Hann window.<br>
 </p>
@@ -317,7 +317,7 @@ Must be a float dtype.<br>
 </section>
 <section id="bartlett" class="level2">
 <h2 class="anchored" data-anchor-id="bartlett">bartlett</h2>
-<p><code>bartlett(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hwindow.rs#L111">source</a> </span><br>
+<p><code>bartlett(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium//hwindow.rs#L111">source</a> </span><br>
 </p>
 <p><span class="math inline">\(w(n) = \frac{2}{npoints-1} (\frac{npoints-1}{2} - |n - \frac{npoints-1}{2}|)\)</span></p>
 <p>The Bartlett window is very similar to a triangular window, except that the end points are at zero. It is often used in signal processing for tapering a signal, without generating too much ripple in the frequency domain.<br>
@@ -353,7 +353,7 @@ Must be a float dtype.<br>
 </section>
 <section id="blackman" class="level2">
 <h2 class="anchored" data-anchor-id="blackman">blackman</h2>
-<p><code>blackman(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hwindow.rs#L191">source</a> </span><br>
+<p><code>blackman(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium//hwindow.rs#L191">source</a> </span><br>
 </p>
 <p>Returns a Blackman window.<br>
 </p>
@@ -395,7 +395,7 @@ Must be a float dtype.<br>
 </section>
 <section id="blackmanharris" class="level2">
 <h2 class="anchored" data-anchor-id="blackmanharris">blackmanharris</h2>
-<p><code>blackmanharris(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hwindow.rs#L250">source</a> </span><br>
+<p><code>blackmanharris(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium//hwindow.rs#L250">source</a> </span><br>
 </p>
 <p>Return a minimum 4-term Blackman-Harris window.<br>
 </p>
@@ -430,7 +430,7 @@ Must be a float dtype.<br>
 </section>
 <section id="bohman" class="level2">
 <h2 class="anchored" data-anchor-id="bohman">bohman</h2>
-<p><code>bohman(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hwindow.rs#L309">source</a> </span><br>
+<p><code>bohman(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium//hwindow.rs#L309">source</a> </span><br>
 </p>
 <p>Returns a Bohman window.<br>
 </p>
@@ -465,7 +465,7 @@ Must be a float dtype.<br>
 </section>
 <section id="boxcar" class="level2">
 <h2 class="anchored" data-anchor-id="boxcar">boxcar</h2>
-<p><code>boxcar(npoints: integer, dtype: HDataType) -&gt; HArray</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hwindow.rs#L363">source</a> </span><br>
+<p><code>boxcar(npoints: integer, dtype: HDataType) -&gt; HArray</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium//hwindow.rs#L363">source</a> </span><br>
 </p>
 <p>Returns a boxcar or rectangular window.<br>
 </p>
@@ -495,7 +495,7 @@ Must be a float dtype.<br>
 </section>
 <section id="cosine" class="level2">
 <h2 class="anchored" data-anchor-id="cosine">cosine</h2>
-<p><code>cosine(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hwindow.rs#L414">source</a> </span><br>
+<p><code>cosine(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium//hwindow.rs#L414">source</a> </span><br>
 </p>
 <p>Returns a window with a simple cosine shape.<br>
 </p>
@@ -530,7 +530,7 @@ Must be a float dtype.<br>
 </section>
 <section id="hann" class="level2">
 <h2 class="anchored" data-anchor-id="hann">hann</h2>
-<p><code>hann(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hwindow.rs#L478">source</a> </span><br>
+<p><code>hann(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium//hwindow.rs#L478">source</a> </span><br>
 </p>
 <p>Returns a Hann window.<br>
 </p>

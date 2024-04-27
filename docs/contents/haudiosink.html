@@ -264,7 +264,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h1>Methods</h1>
 <section id="new" class="level2">
 <h2 class="anchored" data-anchor-id="new">new</h2>
-<p><code>new() -&gt; HAudioSink</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L42">source</a> </span><br>
+<p><code>new() -&gt; HAudioSink</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium//haudiosink.rs#L42">source</a> </span><br>
 </p>
 <p>Creates a new <code>HAudioSink</code> instance.<br>
 The sink is set on “play” mode from the start.<br>
@@ -282,7 +282,7 @@ The sink is set on “play” mode from the start.<br>
 </section>
 <section id="append_from_harray" class="level2">
 <h2 class="anchored" data-anchor-id="append_from_harray">append_from_harray</h2>
-<p><code>append_from_harray(harray: HArray)</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L69">source</a> </span><br>
+<p><code>append_from_harray(harray: HArray)</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium//haudiosink.rs#L69">source</a> </span><br>
 </p>
 <p>Appends a sound to the queue of sounds to play.<br>
 </p>
@@ -305,7 +305,7 @@ An <code>HArray</code>.<br>
 </section>
 <section id="append_from_file" class="level2">
 <h2 class="anchored" data-anchor-id="append_from_file">append_from_file</h2>
-<p><code>append_from_file(fpath: string)</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L127">source</a> </span><br>
+<p><code>append_from_file(fpath: string)</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium//haudiosink.rs#L127">source</a> </span><br>
 </p>
 <p>Appends a sound to the queue of sounds to play.<br>
 </p>
@@ -326,7 +326,7 @@ The file path as a <code>string</code>.<br>
 </section>
 <section id="play" class="level2">
 <h2 class="anchored" data-anchor-id="play">play</h2>
-<p><code>play()</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L157">source</a> </span><br>
+<p><code>play()</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium//haudiosink.rs#L157">source</a> </span><br>
 </p>
 <p>Resumes playback of a paused sink.<br>
 No effect if not paused.<br>
@@ -344,7 +344,7 @@ No effect if not paused.<br>
 </section>
 <section id="stop" class="level2">
 <h2 class="anchored" data-anchor-id="stop">stop</h2>
-<p><code>stop()</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L184">source</a> </span><br>
+<p><code>stop()</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium//haudiosink.rs#L184">source</a> </span><br>
 </p>
 <p>Stops the sink by emptying the queue.<br>
 The sink will keep its previous state (play or pause).<br>
@@ -363,7 +363,7 @@ The sink will keep its previous state (play or pause).<br>
 </section>
 <section id="pause" class="level2">
 <h2 class="anchored" data-anchor-id="pause">pause</h2>
-<p><code>pause()</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L210">source</a> </span><br>
+<p><code>pause()</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium//haudiosink.rs#L210">source</a> </span><br>
 </p>
 <p>Pauses playback of this sink.<br>
 No effect if already paused.<br>
@@ -381,7 +381,7 @@ A paused sink can be resumed with play().<br>
 </section>
 <section id="is_paused" class="level2">
 <h2 class="anchored" data-anchor-id="is_paused">is_paused</h2>
-<p><code>is_paused() -&gt; bool</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L239">source</a> </span><br>
+<p><code>is_paused() -&gt; bool</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium//haudiosink.rs#L239">source</a> </span><br>
 </p>
 <p>Gets if a sink is paused.<br>
 Sinks can be paused and resumed using pause() and play(). This returns true if the sink is paused.<br>
@@ -403,7 +403,7 @@ Sinks can be paused and resumed using pause() and play(). This returns true if t
 </section>
 <section id="volume" class="level2">
 <h2 class="anchored" data-anchor-id="volume">volume</h2>
-<p><code>volume() -&gt; double</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L267">source</a> </span><br>
+<p><code>volume() -&gt; double</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium//haudiosink.rs#L267">source</a> </span><br>
 </p>
 <p>Gets the volume of the sound.<br>
 The value 1.0 is the “normal” volume (unfiltered input). Any value other than 1.0 will multiply each sample by this value.<br>
@@ -423,7 +423,7 @@ The value 1.0 is the “normal” volume (unfiltered input). Any value other tha
 </section>
 <section id="set_volume" class="level2">
 <h2 class="anchored" data-anchor-id="set_volume">set_volume</h2>
-<p><code>set_volume(value: double)</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L297">source</a> </span><br>
+<p><code>set_volume(value: double)</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium//haudiosink.rs#L297">source</a> </span><br>
 </p>
 <p>Changes the volume of the sound.<br>
 The value 1.0 is the “normal” volume (unfiltered input). Any value other than 1.0 will multiply each sample by this value.<br>
@@ -447,7 +447,7 @@ A <code>double</code>.<br>
 </section>
 <section id="speed" class="level2">
 <h2 class="anchored" data-anchor-id="speed">speed</h2>
-<p><code>speed() -&gt; double</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L325">source</a> </span><br>
+<p><code>speed() -&gt; double</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium//haudiosink.rs#L325">source</a> </span><br>
 </p>
 <p>Gets the speed of the sound.<br>
 The value 1.0 is the “normal” speed (unfiltered input). Any value other than 1.0 will change the play speed of the sound.<br>
@@ -467,7 +467,7 @@ The value 1.0 is the “normal” speed (unfiltered input). Any value other than
 </section>
 <section id="set_speed" class="level2">
 <h2 class="anchored" data-anchor-id="set_speed">set_speed</h2>
-<p><code>set_speed(value: double)</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L355">source</a> </span><br>
+<p><code>set_speed(value: double)</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium//haudiosink.rs#L355">source</a> </span><br>
 </p>
 <p>Changes the speed of the sound.<br>
 The value 1.0 is the “normal” speed (unfiltered input). Any value other than 1.0 will change the play speed of the sound.<br>
@@ -491,7 +491,7 @@ A <code>double</code>.<br>
 </section>
 <section id="sleep_until_end" class="level2">
 <h2 class="anchored" data-anchor-id="sleep_until_end">sleep_until_end</h2>
-<p><code>sleep_until_end()</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L378">source</a> </span><br>
+<p><code>sleep_until_end()</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium//haudiosink.rs#L378">source</a> </span><br>
 </p>
 <p>Sleeps the current thread until the sound ends.<br>
 </p>
@@ -505,7 +505,7 @@ A <code>double</code>.<br>
 </section>
 <section id="len" class="level2">
 <h2 class="anchored" data-anchor-id="len">len</h2>
-<p><code>len() -&gt; integer</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L406">source</a> </span><br>
+<p><code>len() -&gt; integer</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium//haudiosink.rs#L406">source</a> </span><br>
 </p>
 <p>Returns the number of sounds currently in the queue.<br>
 </p>
@@ -526,7 +526,7 @@ A <code>double</code>.<br>
 </section>
 <section id="is_empty" class="level2">
 <h2 class="anchored" data-anchor-id="is_empty">is_empty</h2>
-<p><code>is_empty() -&gt; bool</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L431">source</a> </span><br>
+<p><code>is_empty() -&gt; bool</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium//haudiosink.rs#L431">source</a> </span><br>
 </p>
 <p>Returns true if this sink has no more sounds to play.<br>
 </p>
@@ -544,7 +544,7 @@ A <code>double</code>.<br>
 </section>
 <section id="clear" class="level2">
 <h2 class="anchored" data-anchor-id="clear">clear</h2>
-<p><code>clear()</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L456">source</a> </span><br>
+<p><code>clear()</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium//haudiosink.rs#L456">source</a> </span><br>
 </p>
 <p>Removes all currently loaded <code>Source</code>s from the <code>Sink</code> and pauses it.<br>
 </p>
@@ -560,7 +560,7 @@ A <code>double</code>.<br>
 </section>
 <section id="skip_one" class="level2">
 <h2 class="anchored" data-anchor-id="skip_one">skip_one</h2>
-<p><code>skip_one()</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L483">source</a> </span><br>
+<p><code>skip_one()</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium//haudiosink.rs#L483">source</a> </span><br>
 </p>
 <p>Skips to the next <code>Source</code> in the <code>Sink</code>.<br>
 If there are more <code>Source</code>s appended to the <code>Sink</code> at the time, it will play the next one. Otherwise, the <code>Sink</code> will finish as if it had finished playing a <code>Source</code> all the way through.<br>
@@ -578,7 +578,7 @@ If there are more <code>Source</code>s appended to the <code>Sink</code> at the 
 </section>
 <section id="audio_output_devices" class="level2">
 <h2 class="anchored" data-anchor-id="audio_output_devices">audio_output_devices</h2>
-<p><code>audio_output_devices() -&gt; atomicvector</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L507">source</a> </span><br>
+<p><code>audio_output_devices() -&gt; atomicvector</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium//haudiosink.rs#L507">source</a> </span><br>
 </p>
 <p>Provides a list of available audio output devices.<br>
 </p>
@@ -595,7 +595,7 @@ If there are more <code>Source</code>s appended to the <code>Sink</code> at the 
 </section>
 <section id="audio_default_device" class="level2">
 <h2 class="anchored" data-anchor-id="audio_default_device">audio_default_device</h2>
-<p><code>audio_default_device() -&gt; string</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L532">source</a> </span><br>
+<p><code>audio_default_device() -&gt; string</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium//haudiosink.rs#L532">source</a> </span><br>
 </p>
 <p>Informs the default audio output device.<br>
 </p>
@@ -612,7 +612,7 @@ If there are more <code>Source</code>s appended to the <code>Sink</code> at the 
 </section>
 <section id="audio_supported_configs" class="level2">
 <h2 class="anchored" data-anchor-id="audio_supported_configs">audio_supported_configs</h2>
-<p><code>audio_supported_configs() -&gt; atomicvector</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L563">source</a> </span><br>
+<p><code>audio_supported_configs() -&gt; atomicvector</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium//haudiosink.rs#L563">source</a> </span><br>
 </p>
 <p>Provides the supported configurations for the default audio output device.<br>
 The following informations are given:<br>

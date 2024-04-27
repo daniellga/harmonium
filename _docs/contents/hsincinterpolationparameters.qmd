@@ -8,7 +8,7 @@ Parameters to be used for sinc interpolation. \
 
 ## new
 
-`new(sinc_len: integer, f_cutoff: double, oversampling_factor: integer, interpolation: HInterpolationType, window: HWindowType) -> HSincInterpolationParameters` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hsincinterpolationparams.rs#L66) </span> \
+`new(sinc_len: integer, f_cutoff: double, oversampling_factor: integer, interpolation: HInterpolationType, window: HWindowType) -> HSincInterpolationParameters` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium//hsincinterpolationparams.rs#L66) </span> \
 
 Creates a new `HSincInterpolationParameters`. \
 
@@ -49,7 +49,7 @@ _________
 
 ## print
 
-`print()` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hsincinterpolationparams.rs#L114) </span> \
+`print()` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium//hsincinterpolationparams.rs#L114) </span> \
 
 Prints the `HSincInterpolationParameters`. \
 Differently from R's behaviour, `print` doesn't return the value invisibly. \
