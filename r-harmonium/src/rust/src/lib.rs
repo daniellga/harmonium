@@ -16,4 +16,3 @@ mod hsincinterpolationparams;
 mod hwindow;
 mod hwindowtype;
 mod partialeq;
-//mod r_docs;
