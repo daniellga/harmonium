@@ -1,0 +1,83 @@
+---
+title: HInterpolationType
+---
+
+A interpolation type representation. \
+Supports `Cubic`, `Linear`, `Quadratic` and `Nearest`. \
+
+# Methods
+
+## print
+
+`print()` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hinterpolationtype.rs#L41) </span> \
+
+Prints the `HInterpolationType`. \
+Differently from R's behaviour, `print` doesn't return the value invisibly. \
+
+#### Examples
+
+```r
+interpolationtype = HInterpolationType$Cubic
+interpolationtype$print()
+
+# or similarly:
+print(interpolationtype)
+```
+
+_________
+
+## eq
+
+`eq(other: HInterpolationType) -> bool` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hinterpolationtype.rs#L75) </span> \
+
+Equality with another `HInterpolationType`.
+
+#### Arguments
+
+* `other` \
+An `HInterpolationType`. \
+
+#### Returns
+
+A `bool`.
+
+#### Examples
+
+```r
+interpolationtype1 = HInterpolationType$Cubic
+interpolationtype2 = HInterpolationType$Cubic
+interpolationtype1$eq(interpolationtype2) # TRUE
+
+# or similarly:
+interpolationtype1 == interpolationtype2
+```
+
+_________
+
+## ne
+
+`ne(other: HInterpolationType) -> bool` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hinterpolationtype.rs#L110) </span> \
+
+Difference with another `HInterpolationType`.
+
+#### Arguments
+
+* `other` \
+An `HInterpolationType`. \
+
+#### Returns
+
+A `bool`.
+
+#### Examples
+
+```r
+interpolationtype1 = HInterpolationType$Cubic
+interpolationtype2 = HInterpolationType$Cubic
+interpolationtype1$ne(interpolationtype2) # FALSE
+
+# or similarly:
+interpolationtype1 != interpolationtype2
+```
+
+_________

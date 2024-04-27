@@ -1,0 +1,83 @@
+---
+title: HWindowType
+---
+
+A window type representation. \
+Supports `Blackman`, `Blackman2`, `BlackmanHarris`, `BlackmanHarris2`, `Hann` and `Hann2` types. \
+
+# Methods
+
+## print
+
+`print()` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hwindowtype.rs#L43) </span> \
+
+Prints the `HWindowType`. \
+Differently from R's behaviour, `print` doesn't return the value invisibly. \
+
+#### Examples
+
+```r
+windowtype = HWindowType$Blackman
+windowtype$print()
+
+# or similarly:
+print(windowtype)
+```
+
+_________
+
+## eq
+
+`eq(other: HWindowType) -> bool` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hwindowtype.rs#L77) </span> \
+
+Equality with another `HWindowType`.
+
+#### Arguments
+
+* `other` \
+An `HWindowType`. \
+
+#### Returns
+
+A `bool`.
+
+#### Examples
+
+```r
+windowtype1 = HWindowType$Blackman
+windowtype2 = HWindowType$Blackman
+windowtype1$eq(windowtype2) # TRUE
+
+# or similarly:
+windowtype1 == windowtype2
+```
+
+_________
+
+## ne
+
+`ne(other: HWindowType) -> bool` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hwindowtype.rs#L112) </span> \
+
+Difference with another `HWindowType`.
+
+#### Arguments
+
+* `other` \
+An `HWindowType`. \
+
+#### Returns
+
+A `bool`.
+
+#### Examples
+
+```r
+windowtype1 = HWindowType$Blackman
+windowtype2 = HWindowType$Blackman
+windowtype1$ne(windowtype2) # FALSE
+
+# or similarly:
+windowtype1 != windowtype2
+```
+
+_________

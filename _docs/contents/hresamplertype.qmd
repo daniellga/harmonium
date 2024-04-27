@@ -1,0 +1,84 @@
+---
+title: HResamplerType
+---
+
+A resampler type representation. \
+Supports `FftFixedIn`, `FftFixedInOut`, `FftFixedOut`, `SincFixedIn`, `SincFixedOut`,
+`FastFixedIn` and `FastFixedOut` types. \
+
+# Methods
+
+## print
+
+`print()` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hresamplertype.rs#L45) </span> \
+
+Prints the `HResamplerType`. \
+Differently from R's behaviour, `print` doesn't return the value invisibly. \
+
+#### Examples
+
+```r
+hresamplertype = HResamplerType$sinc_fixed_in
+hresamplertype$print()
+
+# or similarly:
+print(hresamplertype)
+```
+
+_________
+
+## eq
+
+`eq(other: HResamplerType) -> bool` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hresamplertype.rs#L79) </span> \
+
+Equality with another `HResamplerType`.
+
+#### Arguments
+
+* `other` \
+An `HResamplerType`. \
+
+#### Returns
+
+A `bool`.
+
+#### Examples
+
+```r
+hresamplertype1 = HResamplerType$sinc_fixed_in
+hresamplertype2 = HResamplerType$sinc_fixed_in
+hresamplertype1$eq(hresamplertype2) # TRUE
+
+# or similarly:
+hresamplertype1 == hresamplertype2
+```
+
+_________
+
+## ne
+
+`ne(other: HResamplerType) -> bool` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hresamplertype.rs#L114) </span> \
+
+Difference with another `HResamplerType`.
+
+#### Arguments
+
+* `other` \
+An `HResamplerType`. \
+
+#### Returns
+
+A `bool`.
+
+#### Examples
+
+```r
+hresamplertype1 = HResamplerType$sinc_fixed_in
+hresamplertype2 = HResamplerType$sinc_fixed_in
+hresamplertype1$ne(hresamplertype2) # FALSE
+
+# or similarly:
+hresamplertype1 != hresamplertype2
+```
+
+_________

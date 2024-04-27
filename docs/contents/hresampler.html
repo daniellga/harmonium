@@ -130,7 +130,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../docs/harray.html">Classes</a></li><li class="breadcrumb-item"><a href="../docs/hresampler.html">HResampler</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">HResampler</li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -183,7 +183,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../docs/hresampler.html" class="sidebar-item-text sidebar-link active">
+  <a href="../docs/hresampler.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">HResampler</span></a>
   </div>
 </li>
@@ -230,7 +230,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../docs/harray.html">Classes</a></li><li class="breadcrumb-item"><a href="../docs/hresampler.html">HResampler</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">HResampler</h1>
 </div>
@@ -286,7 +286,7 @@ This type of resampler is considerably faster but doesn’t support changing the
 <h1>Methods</h1>
 <section id="new_fft" class="level2">
 <h2 class="anchored" data-anchor-id="new_fft">new_fft</h2>
-<p><code>new_fft(sr_in: integer, sr_out: integer, chunk_size: integer, sub_chunks: integer, nbr_channels: integer, res_type: HResamplerType, dtype: HDataType) -&gt; HResampler</code><br>
+<p><code>new_fft(sr_in: integer, sr_out: integer, chunk_size: integer, sub_chunks: integer, nbr_channels: integer, res_type: HResamplerType, dtype: HDataType) -&gt; HResampler</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hresampler.rs#L118">source</a> </span><br>
 </p>
 <p>Creates a new FFT type HResampler.<br>
 Supports any of <code>[fft_fixed_in, fft_fixed_in_out, fft_fixed_out]</code> <code>HResamplerType</code>.<br>
@@ -354,7 +354,7 @@ Must be the same as the <code>HAudio</code>’s dtype that will be processed by 
 </section>
 <section id="new_sinc" class="level2">
 <h2 class="anchored" data-anchor-id="new_sinc">new_sinc</h2>
-<p><code>new_sinc(resample_ratio: double, max_resample_ratio_relative: double, parameters: HSincInterpolationParams, chunk_size: integer, nchannels: integer, res_type: HResamplerType, dtype: HDataType) -&gt; HResampler</code><br>
+<p><code>new_sinc(resample_ratio: double, max_resample_ratio_relative: double, parameters: HSincInterpolationParameters, chunk_size: integer, nchannels: integer, res_type: HResamplerType, dtype: HDataType) -&gt; HResampler</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hresampler.rs#L258">source</a> </span><br>
 </p>
 <p>Creates a new Sinc type HResampler.<br>
 Supports any of <code>[sinc_fixed_in, sinc_fixed_out]</code> <code>HResamplerType</code>.<br>
@@ -381,7 +381,7 @@ ratio is the reciprocal of the maximum. For example, with <code>max_resample_rat
 <code>resample_ratio * 10.0</code> and <code>resample_ratio / 10.0</code>.<br>
 </li>
 <li><code>parameters</code><br>
-An <code>HSincInterpolationParams</code>. Parameters for interpolation.<br>
+An <code>HSincInterpolationParameters</code>. Parameters for interpolation.<br>
 </li>
 <li><code>chunk_size</code><br>
 Chunks size of input or output data in frames.<br>
@@ -410,7 +410,7 @@ Must be the same as the <code>HAudio</code>’s dtype that will be processed by 
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>sr_out <span class="ot">=</span> <span class="dv">48000</span>L</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>resample_ratio <span class="ot">=</span> sr_out <span class="sc">/</span> sr_in</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>max_resample_ratio_relative <span class="ot">=</span> <span class="dv">2</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>hparams <span class="ot">=</span> HSincInterpolationParams<span class="sc">$</span><span class="fu">new</span>(<span class="dv">256</span>, <span class="fl">0.95</span>, <span class="dv">256</span>, <span class="st">"linear"</span>, <span class="st">"blackmanharris2"</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>hparams <span class="ot">=</span> HSincInterpolationParameters<span class="sc">$</span><span class="fu">new</span>(<span class="dv">256</span>, <span class="fl">0.95</span>, <span class="dv">256</span>, <span class="st">"linear"</span>, <span class="st">"blackmanharris2"</span>)</span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>chunk_size <span class="ot">=</span> <span class="dv">512</span>L</span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>nchannels <span class="ot">=</span> <span class="dv">2</span>L</span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>res_type <span class="ot">=</span> HResamplerType<span class="sc">$</span>sinc_fixed_out</span>
@@ -422,7 +422,7 @@ Must be the same as the <code>HAudio</code>’s dtype that will be processed by 
 </section>
 <section id="new_fast" class="level2">
 <h2 class="anchored" data-anchor-id="new_fast">new_fast</h2>
-<p><code>new_sinc(resample_ratio: double, max_resample_ratio_relative: double, pol_deg: HPolynomialDegree, chunk_size: integer, nchannels: integer, res_type: HResamplerType, dtype: HDataType) -&gt; HResampler</code><br>
+<p><code>new_sinc(resample_ratio: double, max_resample_ratio_relative: double, pol_deg: HPolynomialDegree, chunk_size: integer, nchannels: integer, res_type: HResamplerType, dtype: HDataType) -&gt; HResampler</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hresampler.rs#L388">source</a> </span><br>
 </p>
 <p>Creates a new Fast type HResampler.<br>
 Supports any of <code>[fast_fixed_in, fast_fixed_out]</code> <code>HResamplerType</code>.<br>
@@ -491,7 +491,7 @@ Must be the same as the <code>HAudio</code>’s dtype that will be processed by 
 </section>
 <section id="process" class="level2">
 <h2 class="anchored" data-anchor-id="process">process</h2>
-<p><code>process(harray: HArray)</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hresampler.rs#L469">source</a> </span><br>
+<p><code>process(harray: HArray)</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hresampler.rs#L475">source</a> </span><br>
 </p>
 <p>Process the resampler, changing the <code>HArray</code>’s sampling rate.<br>
 </p>
@@ -507,7 +507,7 @@ An <code>HArray</code> that will have it’s sampling rate converted.<br>
 <h4 class="anchored" data-anchor-id="examples-3">Examples</h4>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>arr <span class="ot">=</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">nrow =</span> <span class="dv">512</span>, <span class="at">ncol =</span> <span class="dv">2</span>)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>harray <span class="ot">=</span> HArray<span class="sc">$</span><span class="fu">new_from_values</span>(arr, <span class="at">dtype =</span> HDataType<span class="sc">$</span>float64)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>hparams <span class="ot">=</span> HSincInterpolationParams<span class="sc">$</span><span class="fu">new</span>(<span class="dv">256</span>L, <span class="fl">0.95</span>, <span class="dv">256</span>L, <span class="st">"linear"</span>, <span class="st">"blackmanharris2"</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>hparams <span class="ot">=</span> HSincInterpolationParameters<span class="sc">$</span><span class="fu">new</span>(<span class="dv">256</span>L, <span class="fl">0.95</span>, <span class="dv">256</span>L, <span class="st">"linear"</span>, <span class="st">"blackmanharris2"</span>)</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>res <span class="ot">=</span> HResampler<span class="sc">$</span><span class="fu">new_sinc</span>(<span class="dv">48000</span>L <span class="sc">/</span> <span class="dv">44100</span>L, <span class="dv">2</span>, hparams, <span class="dv">512</span>L, <span class="dv">2</span>L, HResamplerType<span class="sc">$</span>sinc_fixed_in, HDataType<span class="sc">$</span>float64)</span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>res<span class="sc">$</span><span class="fu">process</span>(harray)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
@@ -515,7 +515,7 @@ An <code>HArray</code> that will have it’s sampling rate converted.<br>
 </section>
 <section id="set_resample_ratio" class="level2">
 <h2 class="anchored" data-anchor-id="set_resample_ratio">set_resample_ratio</h2>
-<p><code>set_resample_ratio(new_ratio: double, ramp: bool)</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hresampler.rs#L501">source</a> </span><br>
+<p><code>set_resample_ratio(new_ratio: double, ramp: bool)</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hresampler.rs#L507">source</a> </span><br>
 </p>
 <p>Update the resample ratio.<br>
 For asynchronous resamplers, the ratio must be within <code>original / maximum</code> to <code>original * maximum</code>, where <code>original</code> and <code>maximum</code> are the resampling ratios that were provided to the constructor. Trying to set the ratio outside these bounds will return an error.<br>
@@ -536,7 +536,7 @@ If <code>TRUE</code>, the ratio will be ramped from the old to the new value dur
 <h4 class="anchored" data-anchor-id="examples-4">Examples</h4>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">=</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">nrow =</span> <span class="dv">512</span>, <span class="at">ncol =</span> <span class="dv">2</span>)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>haudio <span class="ot">=</span> HAudio<span class="sc">$</span><span class="fu">new_from_values</span>(data, <span class="dv">44100</span>, <span class="at">dtype =</span> HDataType<span class="sc">$</span>float64)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>hparams <span class="ot">=</span> HSincInterpolationParams<span class="sc">$</span><span class="fu">new</span>(<span class="dv">256</span>L, <span class="fl">0.95</span>, <span class="dv">256</span>L, <span class="st">"linear"</span>, <span class="st">"blackmanharris2"</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>hparams <span class="ot">=</span> HSincInterpolationParameters<span class="sc">$</span><span class="fu">new</span>(<span class="dv">256</span>L, <span class="fl">0.95</span>, <span class="dv">256</span>L, <span class="st">"linear"</span>, <span class="st">"blackmanharris2"</span>)</span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>res <span class="ot">=</span> HResampler<span class="sc">$</span><span class="fu">new_sinc</span>(<span class="dv">48000</span>L <span class="sc">/</span> <span class="dv">44100</span>L, <span class="dv">2</span>, hparams, <span class="dv">512</span>L, <span class="dv">2</span>L, HResamplerType<span class="sc">$</span>sinc_fixed_in, HDataType<span class="sc">$</span>float64)</span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>res<span class="sc">$</span><span class="fu">set_resample_ratio</span>(<span class="dv">1</span>, <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
@@ -544,7 +544,7 @@ If <code>TRUE</code>, the ratio will be ramped from the old to the new value dur
 </section>
 <section id="set_resample_ratio_relative" class="level2">
 <h2 class="anchored" data-anchor-id="set_resample_ratio_relative">set_resample_ratio_relative</h2>
-<p><code>set_resample_ratio_relative(rel_ratio: double, ramp: bool)</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hresampler.rs#L537">source</a> </span><br>
+<p><code>set_resample_ratio_relative(rel_ratio: double, ramp: bool)</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hresampler.rs#L542">source</a> </span><br>
 </p>
 <p>Update the resample ratio as a factor relative to the original one.<br>
 For asynchronous resamplers, the relative ratio must be within <code>1 / maximum</code> to <code>maximum</code>, where <code>maximum</code> is the maximum resampling ratio that was provided to the constructor. Trying to set the ratio outside these bounds will return an error.<br>
@@ -566,7 +566,7 @@ If <code>TRUE</code>, the ratio will be ramped from the old to the new value dur
 <h4 class="anchored" data-anchor-id="examples-5">Examples</h4>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">=</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">nrow =</span> <span class="dv">512</span>, <span class="at">ncol =</span> <span class="dv">2</span>)</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>haudio <span class="ot">=</span> HAudio<span class="sc">$</span><span class="fu">new_from_values</span>(data, <span class="dv">44100</span>, <span class="at">dtype =</span> HDataType<span class="sc">$</span>float64)</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>hparams <span class="ot">=</span> HSincInterpolationParams<span class="sc">$</span><span class="fu">new</span>(<span class="dv">256</span>L, <span class="fl">0.95</span>, <span class="dv">256</span>L, <span class="st">"linear"</span>, <span class="st">"blackmanharris2"</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>hparams <span class="ot">=</span> HSincInterpolationParameters<span class="sc">$</span><span class="fu">new</span>(<span class="dv">256</span>L, <span class="fl">0.95</span>, <span class="dv">256</span>L, <span class="st">"linear"</span>, <span class="st">"blackmanharris2"</span>)</span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>res <span class="ot">=</span> HResampler<span class="sc">$</span><span class="fu">new_sinc</span>(<span class="dv">48000</span>L <span class="sc">/</span> <span class="dv">44100</span>L, <span class="dv">2</span>, hparams, <span class="dv">512</span>L, <span class="dv">2</span>L, HResamplerType<span class="sc">$</span>sinc_fixed_in, HDataType<span class="sc">$</span>float64)</span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>res<span class="sc">$</span><span class="fu">set_resample_ratio_relative</span>(<span class="fl">0.5</span>, <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
@@ -574,7 +574,7 @@ If <code>TRUE</code>, the ratio will be ramped from the old to the new value dur
 </section>
 <section id="reset" class="level2">
 <h2 class="anchored" data-anchor-id="reset">reset</h2>
-<p><code>reset()</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hresampler.rs#L570">source</a> </span><br>
+<p><code>reset()</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hresampler.rs#L574">source</a> </span><br>
 </p>
 <p>Reset the resampler state and clear all internal buffers.<br>
 </p>
@@ -597,7 +597,7 @@ If <code>TRUE</code>, the ratio will be ramped from the old to the new value dur
 </section>
 <section id="res_type" class="level2">
 <h2 class="anchored" data-anchor-id="res_type">res_type</h2>
-<p><code>res_type() -&gt; HResamplerType</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hresampler.rs#L604">source</a> </span><br>
+<p><code>res_type() -&gt; HResamplerType</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hresampler.rs#L609">source</a> </span><br>
 </p>
 <p>Gets the <code>HResampler</code>’s type.<br>
 </p>
@@ -624,7 +624,7 @@ If <code>TRUE</code>, the ratio will be ramped from the old to the new value dur
 </section>
 <section id="dtype" class="level2">
 <h2 class="anchored" data-anchor-id="dtype">dtype</h2>
-<p><code>dtype() -&gt; HDataType</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hresampler.rs#L638">source</a> </span><br>
+<p><code>dtype() -&gt; HDataType</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hresampler.rs#L643">source</a> </span><br>
 </p>
 <p>Gets the <code>HResampler</code>’s dtype.</p>
 <section id="returns-4" class="level4">
@@ -650,7 +650,7 @@ If <code>TRUE</code>, the ratio will be ramped from the old to the new value dur
 </section>
 <section id="print" class="level2">
 <h2 class="anchored" data-anchor-id="print">print</h2>
-<p><code>print()</code> <span style="float: right;"> <a href="https://www.github.com/daniellga/harmonium/blob/master/r-harmonium/src/rust/src/./rust/src/hresampler.rs#L672">source</a> </span><br>
+<p><code>print()</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hresampler.rs#L677">source</a> </span><br>
 </p>
 <p>Print the <code>HResampler</code>.<br>
 Differently from R’s normal behaviour, <code>print</code> doesn’t return the value invisibly.<br>

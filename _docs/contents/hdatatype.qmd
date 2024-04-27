@@ -1,0 +1,83 @@
+---
+title: HDataType
+---
+
+A type representation. \
+Supports `Float32`, `Float64`, `Complex32` and `Complex64` types. \
+
+# Methods
+
+## print
+
+`print()` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hdatatype.rs#L41) </span> \
+
+Prints the `HDataType`. \
+Differently from R's behaviour, `print` doesn't return the value invisibly. \
+
+#### Examples
+
+```r
+dtype = HDataType$complex64
+dtype$print()
+
+# or similarly:
+print(dtype)
+```
+
+_________
+
+## eq
+
+`eq(other: HDataType) -> bool` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hdatatype.rs#L75) </span> \
+
+Equality with another `HDataType`. \
+
+#### Arguments
+
+* `other` \
+An `HDataType`. \
+
+#### Returns
+
+A `bool`.
+
+#### Examples
+
+```r
+hdatatype1 = HDataType$float32
+hdatatype2 = HDataType$float32
+hdatatype1$eq(hdatatype2) # TRUE
+
+# or similarly:
+hdatatype1 == hdatatype2
+```
+
+_________
+
+## ne
+
+`ne(other: HDataType) -> bool` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hdatatype.rs#L110) </span> \
+
+Difference with another `HDataType`. \
+
+#### Arguments
+
+* `other` \
+An `HDataType`. \
+
+#### Returns
+
+A `bool`. \
+
+#### Examples
+
+```r
+hdatatype1 = HDataType$float32
+hdatatype2 = HDataType$float64
+hdatatype1$ne(hdatatype2) # TRUE
+
+# or similarly:
+hdatatype1 != hdatatype2
+```
+
+_________

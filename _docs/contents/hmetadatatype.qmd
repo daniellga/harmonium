@@ -1,0 +1,83 @@
+---
+title: HMetadataType
+---
+
+A metadata type representation. \
+Supports `All`, `Text` and `Visual` types. \
+
+# Methods
+
+## print
+
+`print()` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hmetadatatype.rs#L41) </span> \
+
+Prints the `HMetadataType`. \
+Differently from R's behaviour, `print` doesn't return the value invisibly. \
+
+#### Examples
+
+```r
+metadatatype = HMetadataType$All
+metadatatype$print()
+
+# or similarly:
+print(metadatatype)
+```
+
+_________
+
+## eq
+
+`eq(other: HMetadataType) -> bool` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hmetadatatype.rs#L75) </span> \
+
+Equality with another `HMetadataType`.
+
+#### Arguments
+
+* `other` \
+An `HMetadataType`. \
+
+#### Returns
+
+A `bool`.
+
+#### Examples
+
+```r
+metadatatype1 = HMetadataType$all
+metadatatype2 = HMetadataType$all
+metadatatype1$eq(metadatatype2) # TRUE
+
+# or similarly:
+metadatatype1 == metadatatype2
+```
+
+_________
+
+## ne
+
+`ne(other: HMetadataType) -> bool` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hmetadatatype.rs#L110) </span> \
+
+Difference with another `HMetadataType`.
+
+#### Arguments
+
+* `other` \
+An `HMetadataType`. \
+
+#### Returns
+
+A `bool`.
+
+#### Examples
+
+```r
+metadatatype1 = HMetadataType$all
+metadatatype2 = HMetadataType$all
+metadatatype1$ne(metadatatype2) # FALSE
+
+# or similarly:
+metadatatype1 != metadatatype2
+```
+
+_________

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Harmonium - About</title>
+<title>Harmonium - HFile</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,27 +20,61 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -70,7 +104,7 @@ ul.task-list li input[type="checkbox"] {
 }</script>
 
 
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="../styles.css">
 </head>
 
 <body class="nav-sidebar docked nav-fixed">
@@ -80,7 +114,7 @@ ul.task-list li input[type="checkbox"] {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">Harmonium</span>
     </a>
   </div>
@@ -96,7 +130,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">About</li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">HFile</li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -119,49 +153,49 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./docs/harray.html" class="sidebar-item-text sidebar-link">
+  <a href="../docs/harray.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">HArray</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./docs/haudiosink.html" class="sidebar-item-text sidebar-link">
+  <a href="../docs/haudiosink.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">HAudioSink</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./docs/hdatatype.html" class="sidebar-item-text sidebar-link">
+  <a href="../docs/hdatatype.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">HDataType</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./docs/hmetadatatype.html" class="sidebar-item-text sidebar-link">
+  <a href="../docs/hmetadatatype.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">HMetadataType</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./docs/hpolynomialdegree.html" class="sidebar-item-text sidebar-link">
+  <a href="../docs/hpolynomialdegree.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">HPolynomialDegree</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./docs/hresampler.html" class="sidebar-item-text sidebar-link">
+  <a href="../docs/hresampler.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">HResampler</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./docs/hresamplertype.html" class="sidebar-item-text sidebar-link">
+  <a href="../docs/hresamplertype.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">HResamplerType</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./docs/hwindow.html" class="sidebar-item-text sidebar-link">
+  <a href="../docs/hwindow.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">HWindow</span></a>
   </div>
 </li>
@@ -173,14 +207,24 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#decode" id="toc-decode" class="nav-link active" data-scroll-target="#decode">decode</a></li>
+  <li><a href="#stream" id="toc-stream" class="nav-link" data-scroll-target="#stream">stream</a></li>
+  <li><a href="#metadata" id="toc-metadata" class="nav-link" data-scroll-target="#metadata">metadata</a></li>
+  <li><a href="#params" id="toc-params" class="nav-link" data-scroll-target="#params">params</a></li>
+  <li><a href="#verify" id="toc-verify" class="nav-link" data-scroll-target="#verify">verify</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">About</h1>
+<h1 class="title">HFile</h1>
 </div>
 
 
@@ -197,9 +241,215 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>About this site</p>
+<section id="decode" class="level2">
+<h2 class="anchored" data-anchor-id="decode">decode</h2>
+<p><code>decode(fpath: string, dtype: HDataType) -&gt; HDecodedAudio</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L139">source</a> </span><br>
+</p>
+<p>Decode an audio file, providing its decoded data and the sampling rate.<br>
+The samples are normalized to fit in the range of [-1.0, 1.0].</p>
+<section id="arguments" class="level4">
+<h4 class="anchored" data-anchor-id="arguments">Arguments</h4>
+<ul>
+<li><code>fpath</code><br>
+The file path as a string.<br>
+</li>
+<li><code>dtype</code><br>
+A float <code>HDataType</code>.<br>
+</li>
+</ul>
+</section>
+<section id="returns" class="level4">
+<h4 class="anchored" data-anchor-id="returns">Returns</h4>
+<p>An HDecodedAudio containing:<br>
+* The decoded audio as a float HArray.<br>
+* The sampling rate as an integer.<br>
+</p>
+</section>
+<section id="examples" class="level4">
+<h4 class="anchored" data-anchor-id="examples">Examples</h4>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>fpath <span class="ot">=</span> <span class="st">"testfiles/gs-16b-2c-44100hz.flac"</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>dtype <span class="ot">=</span> HDataType<span class="sc">$</span>float32</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>HFile<span class="sc">$</span><span class="fu">decode</span>(fpath, dtype)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+</section>
+</section>
+<section id="stream" class="level2">
+<h2 class="anchored" data-anchor-id="stream">stream</h2>
+<p><code>decode_stream(fpath: string, frames: integer, dtype: HDataType) -&gt; HDecoderStream</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L192">source</a> </span><br>
+</p>
+<p>Creates an <code>HDecoderStream</code>, used as an iterator to stream frames of decoded audio.<br>
+</p>
+<section id="arguments-1" class="level4">
+<h4 class="anchored" data-anchor-id="arguments-1">Arguments</h4>
+<ul>
+<li><code>fpath</code><br>
+The file path as a string.<br>
+</li>
+<li><code>frames</code><br>
+Number of frames to decode per iteration.<br>
+</li>
+<li><code>dtype</code><br>
+A float <code>HDataType</code>.<br>
+</li>
+</ul>
+</section>
+<section id="returns-1" class="level4">
+<h4 class="anchored" data-anchor-id="returns-1">Returns</h4>
+<p>An <code>HDecoderStream</code>.<br>
+</p>
+</section>
+<section id="examples-1" class="level4">
+<h4 class="anchored" data-anchor-id="examples-1">Examples</h4>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>fpath <span class="ot">=</span> <span class="st">"testfiles/gs-16b-2c-44100hz.flac"</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>dtype <span class="ot">=</span> HDataType<span class="sc">$</span>float32</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>frames <span class="ot">=</span> <span class="dv">1000</span>L</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>HFile<span class="sc">$</span><span class="fu">decode_stream</span>(fpath, frames, dtype)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+</section>
+</section>
+<section id="metadata" class="level2">
+<h2 class="anchored" data-anchor-id="metadata">metadata</h2>
+<p><code>metadata(fpath: string, metadata_type: HMetadataType) -&gt; list</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L297">source</a> </span><br>
+</p>
+<p>Extract text and visual metadata from a file.<br>
+Tags that are part of the container format are preferentially extracted. Additional tags that were found while probing will not be extracted.<br>
+The following metadata tagging formats are supported.<br>
+</p>
+<ul>
+<li>ID3v1<br>
+</li>
+<li>ID3v2<br>
+</li>
+<li>ISO/MP4<br>
+</li>
+<li>RIFF<br>
+</li>
+<li>Vorbis Comment (in OGG &amp; FLAC)<br>
+</li>
+</ul>
+<p>Each <code>TextMetadata</code> will be comprised of a <code>Tag</code>, which contains the following fields:<br>
+* tag_key<br>
+A key string indicating the type, meaning, or purpose of the Tags value. Note: The meaning of key is dependant on the underlying metadata format.<br>
+* tag_std_key<br>
+If the Tag’s key string is commonly associated with a typical type, meaning, or purpose, then if recognized a StandardTagKey will be assigned to this Tag. This is a best effort guess since not all metadata formats have a well defined or specified tag mapping. However, it is recommended that consumers prefer std_key over key, if provided.<br>
+Check [<code>StandardTagKey</code>] for all the variants.<br>
+* tag_value<br>
+The value of the Tag.<br>
+</p>
+<p>Each <code>VisualMetadata</code> will be comprised of the following fields:<br>
+* usage:<br>
+The usage and/or content of the Visual. A string version of <code>symphonia_core::meta::StandardVisualKey</code>, which is an enumeration providing standardized keys for common visual dispositions. A demuxer may assign a StandardVisualKey to a Visual if the disposition of the attached visual is known and can be mapped to a standard key. The visual types listed here are derived from, though do not entirely cover, the ID3v2 APIC frame specification.<br>
+* media_type<br>
+The Media Type (MIME Type) used to encode the Visual.<br>
+* dimensions<br>
+The dimensions (width and height) of the Visual, represented in pixels.<br>
+Note: This value may not be accurate as it comes from metadata, not the embedded graphic itself. Consider it only a hint.<br>
+* bits_per_pixel<br>
+The number of bits-per-pixel (aka bit-depth) of the unencoded image.<br>
+* color_mode<br>
+Indicates how the color of a pixel is encoded in a Visual. Variants:<br>
+<strong>Discrete<br>
+Each pixel in the Visual stores its own color information.<br>
+</strong>Indexed(NonZeroU32)<br>
+Each pixel in the Visual stores an index into a color palette containing the color information. The value stored by this variant indicates the number<br>
+of colors in the color palette.<br>
+* size<br>
+Size of the image in bytes.<br>
+* tag<br>
+<code>Tag</code> with the following fields:<br>
+** tag_key<br>
+A key string indicating the type, meaning, or purpose of the Tags value. Note: The meaning of key is dependant on the underlying metadata format.<br>
+** tag_std_key<br>
+If the Tag’s key string is commonly associated with a typical type, meaning, or purpose, then if recognized a StandardTagKey will be assigned to this Tag. This is a best effort guess since not all metadata formats have a well defined or specified tag mapping. However, it is recommended that consumers prefer std_key over key, if provided.<br>
+Check [<code>StandardTagKey</code>] for all the variants.<br>
+** tag_value<br>
+The value of the Tag.<br>
+</p>
+<section id="arguments-2" class="level4">
+<h4 class="anchored" data-anchor-id="arguments-2">Arguments</h4>
+<ul>
+<li><code>fpath</code><br>
+The file path as a string.<br>
+</li>
+<li><code>metadata_type</code><br>
+An <code>HMetadataType</code>.<br>
+</li>
+</ul>
+</section>
+<section id="returns-2" class="level4">
+<h4 class="anchored" data-anchor-id="returns-2">Returns</h4>
+<p>A list of metadata. An empty list will be returned if there is no metadata in the file.<br>
+</p>
+</section>
+<section id="examples-2" class="level4">
+<h4 class="anchored" data-anchor-id="examples-2">Examples</h4>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>fpath <span class="ot">=</span> <span class="st">"testfiles/gs-16b-2c-44100hz.mp3"</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>metadata_type <span class="ot">=</span> HMetadataType<span class="sc">$</span>text</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>HFile<span class="sc">$</span><span class="fu">decode</span>(fpath, metadata_type)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+</section>
+</section>
+<section id="params" class="level2">
+<h2 class="anchored" data-anchor-id="params">params</h2>
+<p><code>params(fpath: string) -&gt; atomicvector</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L368">source</a> </span><br>
+</p>
+<p>Get audio parameters from a file.<br>
+Note that this avoids loading the contents into memory, and is therefore useful for querying these parameters from long files.<br>
+</p>
+<section id="arguments-3" class="level4">
+<h4 class="anchored" data-anchor-id="arguments-3">Arguments</h4>
+<ul>
+<li><code>fpath</code><br>
+The file path as a string.<br>
+</li>
+</ul>
+</section>
+<section id="returns-3" class="level4">
+<h4 class="anchored" data-anchor-id="returns-3">Returns</h4>
+<p>A double atomic vector containing, in order:<br>
+* sampling rate in Hz.<br>
+* number of frames.<br>
+* number of channels.<br>
+* duration in seconds.<br>
+</p>
+</section>
+<section id="examples-3" class="level4">
+<h4 class="anchored" data-anchor-id="examples-3">Examples</h4>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>fpath <span class="ot">=</span> <span class="st">"testfiles/gs-16b-2c-44100hz.flac"</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>HFile<span class="sc">$</span><span class="fu">params</span>(fpath)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+</section>
+</section>
+<section id="verify" class="level2">
+<h2 class="anchored" data-anchor-id="verify">verify</h2>
+<p>`verify(fpath: string) -&gt; string <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L404">source</a> </span><br>
+</p>
+<p>Verify an audio file, if supported by the decoder.<br>
+The verification is done after the decoding process is finished.<br>
+</p>
+<section id="arguments-4" class="level4">
+<h4 class="anchored" data-anchor-id="arguments-4">Arguments</h4>
+<ul>
+<li><code>fpath</code><br>
+The file path as a string.<br>
+</li>
+</ul>
+</section>
+<section id="returns-4" class="level4">
+<h4 class="anchored" data-anchor-id="returns-4">Returns</h4>
+<p>A string.<br>
+One of [“passed”, “failed”, “not_supported”]<br>
+</p>
+</section>
+<section id="examples-4" class="level4">
+<h4 class="anchored" data-anchor-id="examples-4">Examples</h4>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>fpath <span class="ot">=</span> <span class="st">"testfiles/gs-16b-2c-44100hz.flac"</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>HFile<span class="sc">$</span><span class="fu">verify</span>(fpath)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
 
 
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
