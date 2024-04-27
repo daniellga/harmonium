@@ -12,7 +12,7 @@ mod hmetadatatype;
 mod hpolynomialdegree;
 mod hresampler;
 mod hresamplertype;
-mod hsincinterpolationparams;
+mod hsincinterpolationparameters;
 mod hwindow;
 mod hwindowtype;
 mod partialeq;

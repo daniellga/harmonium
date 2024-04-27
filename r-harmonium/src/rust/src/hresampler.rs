@@ -1,7 +1,7 @@
 use crate::{
     conversions::Conversions, errors::HErrorR, harray::HArray, hdatatype::HDataType,
     hpolynomialdegree::HPolynomialDegree, hresamplertype::HResamplerType,
-    hsincinterpolationparams::HSincInterpolationParameters,
+    hsincinterpolationparameters::HSincInterpolationParameters,
 };
 use harmonium_core::errors::HError;
 use harmonium_resample::resample::ProcessResampler;
