@@ -49,13 +49,6 @@ jobs:
         with:
           use-public-rspm: true
             
-      - name: Set up R dependencies
-        uses: r-lib/actions/setup-r-dependencies@v2
-        with:
-          working-directory: ./
-          extra-packages: any::rcmdcheck
-          needs: check
-
       - name: build documentation
         run: |
           remotes::install_github("daniellga/rdocs", subdir = "rdocs")
