@@ -49,9 +49,16 @@ jobs:
         with:
           use-public-rspm: true
             
+      - name: Set up R dependencies
+        uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          working-directory: ./
+          extra-packages: any::rcmdcheck
+          needs: check
+
       - name: build documentation
         run: |
-          R -e 'remotes::install_github("daniellga/rdocs", subdir = "rdocs")'
+          remotes::install_github("daniellga/rdocs", subdir = "rdocs")
           rdocs::generate_docs(files = list.files("./r-harmonium/src/rust/src/" full.names = TRUE), folder_name = "docs", gh_url = "https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src", run_examples = FALSE)
         shell: Rscript --vanilla {0}
 
