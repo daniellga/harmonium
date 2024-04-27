@@ -586,7 +586,7 @@ mod tests {
         assert!(compare_harray_complex(&lhs, &rhs));
 
         let mut harray = HArray::new_from_shape_vec(6, v.clone()).unwrap();
-        assert_eq!(harray.rfft().is_err(), true);
+        assert!(harray.rfft().is_err());
 
         // Test irfft with length and length + 1.
         let v = vec![1_f32, 2., 3., 4., 5., 6.];
@@ -605,12 +605,12 @@ mod tests {
         let lhs = spectrum.irfft(length).unwrap();
         let result = vec![
             3.000000000000007_f32,
-            12.49771954121893,
-            15.371269295763335,
-            22.199291616805617,
-            25.800708383194376,
-            32.62873070423666,
-            35.50228045878107,
+            12.497_72,
+            15.371_269,
+            22.199_291,
+            25.800_709,
+            32.628_73,
+            35.502_28,
         ];
         let rhs = HArray::new_from_shape_vec(length, result).unwrap();
         assert!(compare_harray(&lhs, &rhs));
@@ -675,26 +675,19 @@ mod tests {
         let mut harray = HArray::new_from_shape_vec(6, v.clone())
             .unwrap()
             .into_dynamic();
-        assert_eq!(harray.rfft().is_err(), true);
-
-        println!("1111111");
+        assert!(harray.rfft().is_err());
 
         // Test irfft with length and length + 1.
         let v = vec![1_f32, 2., 3., 4., 5., 6.];
         let mut harray = HArray::new_from_shape_vec(6, v).unwrap();
         let length = harray.len();
         let mut spectrum = harray.rfft().unwrap().into_dynamic();
-        println!("spectrum_len: {:?}", spectrum.len());
-        println!("{:?}", spectrum);
         let lhs = spectrum.irfft(length).unwrap().into_dynamic();
-        println!("lhs_len: {:?}", lhs.len());
         let result = vec![6_f32, 12., 18., 24., 30., 36.];
         let rhs = HArray::new_from_shape_vec(length, result)
             .unwrap()
             .into_dynamic();
         assert!(compare_harray(&lhs, &rhs));
-
-        println!("22222222");
 
         let v = vec![1_f32, 2., 3., 4., 5., 6.];
         let mut harray = HArray::new_from_shape_vec(6, v).unwrap().into_dynamic();
@@ -703,12 +696,12 @@ mod tests {
         let lhs = spectrum.irfft(length).unwrap().into_dynamic();
         let result = vec![
             3.000000000000007_f32,
-            12.49771954121893,
-            15.371269295763335,
-            22.199291616805617,
-            25.800708383194376,
-            32.62873070423666,
-            35.50228045878107,
+            12.497_72,
+            15.371_269,
+            22.199_291,
+            25.800_709,
+            32.628_73,
+            35.502_28,
         ];
         let rhs = HArray::new_from_shape_vec(length, result)
             .unwrap()
@@ -761,7 +754,7 @@ mod tests {
         assert_eq!(lhs, rhs);
 
         let mut harray = HArray::new_from_shape_vec((3, 2), v.clone()).unwrap();
-        assert_eq!(harray.rfft().is_err(), true);
+        assert!(harray.rfft().is_err());
 
         // Test irfft with length and length + 1.
         let v = vec![1_f32, 2., 3., 4., 5., 6.];
@@ -842,7 +835,7 @@ mod tests {
         let mut harray = HArray::new_from_shape_vec((3, 2), v.clone())
             .unwrap()
             .into_dynamic();
-        assert_eq!(harray.rfft().is_err(), true);
+        assert!(harray.rfft().is_err());
 
         // Test irfft with length and length + 1.
         let v = vec![1_f32, 2., 3., 4., 5., 6.];
@@ -899,10 +892,10 @@ mod tests {
         let rhs = HArray::new_from_shape_vec(4, result).unwrap();
         assert!(compare_harray_complex(&lhs, &rhs));
 
-        assert_eq!(harray.fft_mut().is_err(), true);
-        assert_eq!(harray.ifft().is_err(), true);
-        assert_eq!(harray.ifft_mut().is_err(), true);
-        assert_eq!(harray.irfft(1000).is_err(), true);
+        assert!(harray.fft_mut().is_err());
+        assert!(harray.ifft().is_err());
+        assert!(harray.ifft_mut().is_err());
+        assert!(harray.irfft(1000).is_err());
     }
 
     #[test]
@@ -938,10 +931,10 @@ mod tests {
             .into_dynamic();
         assert!(compare_harray_complex(&lhs, &rhs));
 
-        assert_eq!(harray.fft_mut().is_err(), true);
-        assert_eq!(harray.ifft().is_err(), true);
-        assert_eq!(harray.ifft_mut().is_err(), true);
-        assert_eq!(harray.irfft(1000).is_err(), true);
+        assert!(harray.fft_mut().is_err());
+        assert!(harray.ifft().is_err());
+        assert!(harray.ifft_mut().is_err());
+        assert!(harray.irfft(1000).is_err());
     }
 
     #[test]
@@ -984,10 +977,10 @@ mod tests {
         let rhs = HArray::new_from_shape_vec((3, 3), result).unwrap();
         assert!(compare_harray_complex(&lhs, &rhs));
 
-        assert_eq!(harray.fft_mut().is_err(), true);
-        assert_eq!(harray.ifft().is_err(), true);
-        assert_eq!(harray.ifft_mut().is_err(), true);
-        assert_eq!(harray.irfft(1000).is_err(), true);
+        assert!(harray.fft_mut().is_err());
+        assert!(harray.ifft().is_err());
+        assert!(harray.ifft_mut().is_err());
+        assert!(harray.irfft(1000).is_err());
     }
 
     #[test]
@@ -1038,9 +1031,9 @@ mod tests {
             .into_dynamic();
         assert!(compare_harray_complex(&lhs, &rhs));
 
-        assert_eq!(harray.fft_mut().is_err(), true);
-        assert_eq!(harray.ifft().is_err(), true);
-        assert_eq!(harray.ifft_mut().is_err(), true);
-        assert_eq!(harray.irfft(1000).is_err(), true);
+        assert!(harray.fft_mut().is_err());
+        assert!(harray.ifft().is_err());
+        assert!(harray.ifft_mut().is_err());
+        assert!(harray.irfft(1000).is_err());
     }
 }

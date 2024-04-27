@@ -48,7 +48,6 @@ impl HWindow {
     fn barthann(npoints: Sexp, sym: Sexp, dtype: &HDataType) -> savvy::Result<HArray> {
         let npoints: i32 = npoints.to_scalar()?;
         let npoints = npoints.try_into().unwrap();
-
         let sym: bool = sym.to_scalar()?;
 
         let window_type = if sym {
