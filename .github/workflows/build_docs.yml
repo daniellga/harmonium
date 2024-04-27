@@ -73,7 +73,7 @@ jobs:
 
           git add .
           git commit -m "Update docs"
-          git push origin main
+          git push origin master
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
