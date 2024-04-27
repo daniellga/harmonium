@@ -6,7 +6,8 @@ on:
     paths:
       - rdocs/**
   workflow_run:
-    workflows: ["R-CMD-check"]
+    # This should be R-CMD-check but monorepo invalidates it.
+    workflows: ["CI test and lint"]
     types:
       - completed
   # Allows you to run this workflow manually from the Actions tab
