@@ -1,0 +1,156 @@
+[
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site"
+  },
+  {
+    "objectID": "contents/harray.html",
+    "href": "contents/harray.html",
+    "title": "HArray",
+    "section": "",
+    "text": "An array representation."
+  },
+  {
+    "objectID": "contents/harray.html#new_from_values",
+    "href": "contents/harray.html#new_from_values",
+    "title": "HArray",
+    "section": "new_from_values",
+    "text": "new_from_values\nnew_from_values(arr: array, dtype: HDataType) -&gt; HArray  source \n\nCreates a new HArray from an R array.\n\n\nArguments\n\narr\nA double or complex array.\ndtype\nAn HDataType to indicate which type of HArray to be created.\nFor float dtypes, the atomic vector must be a double. For complex dtypes, a complex atomic vector.\n\n\n\nReturns\nAn HArray.\n\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float31\nHArray$new_from_values(arr, dtype)"
+  },
+  {
+    "objectID": "contents/harray.html#len",
+    "href": "contents/harray.html#len",
+    "title": "HArray",
+    "section": "len",
+    "text": "len\nlen() -&gt; integer  source \n\nReturns the number of elements of this Harray.\n\n\nReturns\nAn integer.\n\n\n\nExamples\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nharray$len()"
+  },
+  {
+    "objectID": "contents/harray.html#shape",
+    "href": "contents/harray.html#shape",
+    "title": "HArray",
+    "section": "shape",
+    "text": "shape\nshape() -&gt; integers  source \n\nReturns the shape of this HArray.\n\n\nReturns\nA vector of integers.\n\n\n\nExamples\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nharray$shape()"
+  },
+  {
+    "objectID": "contents/harray.html#ndim",
+    "href": "contents/harray.html#ndim",
+    "title": "HArray",
+    "section": "ndim",
+    "text": "ndim\nndim() -&gt; integer  source \n\nReturns the number of dimensions of this HArray.\n\n\nReturns\nAn integer.\n\n\n\nExamples\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nharray$ndim()"
+  },
+  {
+    "objectID": "contents/harray.html#slice",
+    "href": "contents/harray.html#slice",
+    "title": "HArray",
+    "section": "slice",
+    "text": "slice\nslice(range: list[atomicvector]) -&gt; HArray  source \n\nSlices the HArray.\nThis operation has a COW (clone-on-write) behaviour. The created slice shares the inner data with the original array until one of them is modified.\n\n\nArguments\n\nrange\nA list of vectors of integers. The number of vectors in the list must be equal to the number of dimensions in the original HArray as they represent the slice information for each axis.\nEach vector must be composed of 3 elements: [start, end, step]. All 3 values can be positive or negative, although step can’t be 0.\n\n\n\n\nReturns\nAn HArray.\n\n\n\nExamples\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nharray$slice(list(c(0L, 2L, 1L), c(1L, 3L, 1L)))"
+  },
+  {
+    "objectID": "contents/harray.html#print",
+    "href": "contents/harray.html#print",
+    "title": "HArray",
+    "section": "print",
+    "text": "print\nprint()  source \n\nPrints the HArray.\nDifferently from R’s normal behaviour, print doesn’t return the value invisibly.\n\n\nExamples\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nharray$print()\n\n# or similarly:\nprint(harray)"
+  },
+  {
+    "objectID": "contents/harray.html#eq",
+    "href": "contents/harray.html#eq",
+    "title": "HArray",
+    "section": "eq",
+    "text": "eq\neq(other: HArray) -&gt; bool  source \n\nEquality with another HArray.\nThe comparison only checks if the dtype and the values are the same. To compare if the underlying data is the same in memory, check mem_adress.\n\n\nArguments\n\nother\nAn HArray.\n\n\n\n\nReturns\nA bool.\n\n\n\nExamples\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray1 = HArray$new_from_values(arr, dtype)\n\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray2 = HArray$new_from_values(arr, dtype)\n\nharray1$eq(harray2) # TRUE\n\n# or similarly:\nharray1 == harray2"
+  },
+  {
+    "objectID": "contents/harray.html#ne",
+    "href": "contents/harray.html#ne",
+    "title": "HArray",
+    "section": "ne",
+    "text": "ne\nne(other: HArray) -&gt; bool  source \n\nDifference with another HArray.\nThe comparison only checks if the dtype and the values are the same. To compare if the underlying data is the same in memory, check mem_adress.\n\nArguments\n\nother\nAn HArray.\n\n\n\nReturns\nA bool.\n\n\nExamples\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray1 = HArray$new_from_values(arr, dtype)\n\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray2 = HArray$new_from_values(arr, dtype)\n\nharray1$ne(harray2) # FALSE\n\n# or similarly:\nharray1 != harray2"
+  },
+  {
+    "objectID": "contents/harray.html#clone",
+    "href": "contents/harray.html#clone",
+    "title": "HArray",
+    "section": "clone",
+    "text": "clone\nclone() -&gt; HArray  source \n\nCreates a new HArray, with the underlying data pointing to the same place in memory.\n\nReturns\nAn HArray.\n\n\nExamples\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray1 = HArray$new_from_values(arr, dtype)\nharray2 = harray1$clone()\nharray1 == harray2 # TRUE"
+  },
+  {
+    "objectID": "contents/harray.html#collect",
+    "href": "contents/harray.html#collect",
+    "title": "HArray",
+    "section": "collect",
+    "text": "collect\ncollect() -&gt; array  source \n\nCreates an R array from an HArray. The type of the array created (double or complex) will depend on the HArray’s dtype.\n\nReturns\nAn array of type double or complex.\n\n\nExamples\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nharray$collect()"
+  },
+  {
+    "objectID": "contents/harray.html#dtype",
+    "href": "contents/harray.html#dtype",
+    "title": "HArray",
+    "section": "dtype",
+    "text": "dtype\ndtype() -&gt; HDataType  source \n\nGets the HArray’s dtype as an HDataType.\n\nReturns\nAn HDataType.\n\n\nExamples\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nharray$dtype()"
+  },
+  {
+    "objectID": "contents/harray.html#is_shared",
+    "href": "contents/harray.html#is_shared",
+    "title": "HArray",
+    "section": "is_shared",
+    "text": "is_shared\nis_shared() -&gt; bool  source \n\nChecks if the object is shared.\nSince HArray has a COW (clone-on-write) behaviour, this function is useful to check if a new object will be created or if the change will be done in-place.\n\n\nReturns\nA bool.\n\n\n\nExamples\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray1 = HArray$new_from_values(arr, dtype)\nharray1$is_shared() # FALSE.\n\nharray2 = harray1$clone()\nharray$is_shared() # TRUE, HArray object shared with harray2."
+  },
+  {
+    "objectID": "contents/harray.html#mem_adress",
+    "href": "contents/harray.html#mem_adress",
+    "title": "HArray",
+    "section": "mem_adress",
+    "text": "mem_adress\nmem_adress() -&gt; string  source \n\nThe memory adress of the first element of the inner array.\nThis is useful to check if different objects share the same underlying data.\n\n\nReturns\nA string.\n\n\n\nExamples\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nharray$mem_adress()"
+  },
+  {
+    "objectID": "contents/harray.html#invalidate",
+    "href": "contents/harray.html#invalidate",
+    "title": "HArray",
+    "section": "invalidate",
+    "text": "invalidate\ninvalidate()  source \n\nReplaces the inner value of the external pointer, invalidating it.\nThis function is useful to remove one of the shared references of the inner pointer in rust.\n\n\nExamples\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nharray$invalidate()"
+  },
+  {
+    "objectID": "contents/haudioop.html",
+    "href": "contents/haudioop.html",
+    "title": "HAudioOp",
+    "section": "",
+    "text": "HAudioOp A collection of methods that can be applied to float 1D or 2D HArray which represents audio data."
+  },
+  {
+    "objectID": "contents/haudioop.html#nchannels",
+    "href": "contents/haudioop.html#nchannels",
+    "title": "HAudioOp",
+    "section": "nchannels",
+    "text": "nchannels\nnchannels() -&gt; integer  source \n\nReturns the number of channels.\nThis is the same as the number of rows of a 1D or 2D HArray.\n\n\nReturns\nAn integer.\n\n\n\nExamples\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nharray$nchannels()"
+  },
+  {
+    "objectID": "contents/haudioop.html#nframes",
+    "href": "contents/haudioop.html#nframes",
+    "title": "HAudioOp",
+    "section": "nframes",
+    "text": "nframes\nnframes() -&gt; integer  source \n\nReturns the number of frames.\nThis is the same as the number of cols of a 1D or 2D HArray.\nThe number of frames is equivalent to the number of samples divided by the number of channels.\n\n\nReturns\nAn integer.\n\n\n\nExamples\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nharray$nframes()"
+  },
+  {
+    "objectID": "contents/haudioop.html#db_to_amplitude",
+    "href": "contents/haudioop.html#db_to_amplitude",
+    "title": "HAudioOp",
+    "section": "db_to_amplitude",
+    "text": "db_to_amplitude\ndb_to_amplitude(harray: HArray, reference: double)  source \n\nConverts the HArray input from dB to amplitude.\n\\(db_to_amplitude(x) = reference * (10.0**(x * 0.1))**power\\)\nThe operation is done in-place.\n\n\nArguments\n\nharray\nA 1D or 2D float HArray.\n\nreference\nA double that scales the output.\n\npower\nA double. If 1.0, will compute DB to power. If 0.5, will compute DB to amplitude.\n\n\n\n\nExamples\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nHAudioOp$db_to_amplitude(harray, 2, 1)"
+  },
+  {
+    "objectID": "contents/haudioop.html#to_mono",
+    "href": "contents/haudioop.html#to_mono",
+    "title": "HAudioOp",
+    "section": "to_mono",
+    "text": "to_mono\nto_mono(harray: HArray)  source \n\nConvert to 1 channel by taking the average across channels.\nThe operation is done in-place. A new inner array is created.\n\n\nArguments\n\nharray\nA 2D float HArray.\n\n\n\nExamples\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nHAudioOp$to_mono(harray)"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "_docs",
+    "section": "",
+    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites."
+  }
+]

@@ -62,8 +62,8 @@ impl HMetadataType {
     /// #### Examples
     ///
     /// ```r
-    /// metadatatype1 = HMetadataType$all
-    /// metadatatype2 = HMetadataType$all
+    /// metadatatype1 = HMetadataType$All
+    /// metadatatype2 = HMetadataType$All
     /// metadatatype1$eq(metadatatype2) # TRUE
     ///
     /// # or similarly:
@@ -97,8 +97,8 @@ impl HMetadataType {
     /// #### Examples
     ///
     /// ```r
-    /// metadatatype1 = HMetadataType$all
-    /// metadatatype2 = HMetadataType$all
+    /// metadatatype1 = HMetadataType$All
+    /// metadatatype2 = HMetadataType$All
     /// metadatatype1$ne(metadatatype2) # FALSE
     ///
     /// # or similarly:

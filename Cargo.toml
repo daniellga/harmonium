@@ -15,7 +15,7 @@ realfft = "3.3"
 rubato = "0.15.0"
 comfy-table = "7.0"
 ndarray = "0.15.6"
-cached = "0.49"
+cached = "0.50"
 symphonia = { version = "0.5.4", default-features = false }
 rodio = { git = "https://github.com/RustAudio/rodio.git", rev = "9674ea5", default-features = false }
 bytemuck = { version = "1.13", features = ["extern_crate_alloc"] }

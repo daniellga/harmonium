@@ -33,7 +33,7 @@ impl HAudioOp {
     ///
     /// ```r
     /// arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
-    /// dtype = HDataType$float32
+    /// dtype = HDataType$Float32
     /// harray = HArray$new_from_values(arr, dtype)
     /// harray$nchannels()
     /// ```
@@ -63,7 +63,7 @@ impl HAudioOp {
     ///
     /// ```r
     /// arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
-    /// dtype = HDataType$float32
+    /// dtype = HDataType$Float32
     /// harray = HArray$new_from_values(arr, dtype)
     /// harray$nframes()
     /// ```
@@ -98,7 +98,7 @@ impl HAudioOp {
     ///
     /// ```r
     /// arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
-    /// dtype = HDataType$float32
+    /// dtype = HDataType$Float32
     /// harray = HArray$new_from_values(arr, dtype)
     /// HAudioOp$db_to_amplitude(harray, 2, 1)
     /// ```
@@ -129,7 +129,7 @@ impl HAudioOp {
     ///
     /// ```r
     /// arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
-    /// dtype = HDataType$float32
+    /// dtype = HDataType$Float32
     /// harray = HArray$new_from_values(arr, dtype)
     /// HAudioOp$to_mono(harray)
     /// ```

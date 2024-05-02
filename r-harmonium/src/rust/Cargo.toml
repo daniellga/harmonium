@@ -17,16 +17,16 @@ panic = "unwind" # otherwise savvy craches R when panic.
 # prevents package from thinking it's in the workspace.
 
 [dependencies]
-harmonium-core = { path = "../../../harmonium-core" }
-harmonium-io = { path = "../../../harmonium-io" }
-harmonium-resample = { path = "../../../harmonium-resample" }
-harmonium-fft = { path = "../../../harmonium-fft" }
-harmonium-window = { path = "../../../harmonium-window" }
-#harmonium-core = { git = "https://github.com/daniellga/harmonium.git" }
-#harmonium-io = { git = "https://github.com/daniellga/harmonium.git" }
-#harmonium-resample = { git = "https://github.com/daniellga/harmonium.git" }
-#harmonium-fft = { git = "https://github.com/daniellga/harmonium.git" }
-#harmonium-window = { git = "https://github.com/daniellga/harmonium.git" }
+#harmonium-core = { path = "../../../harmonium-core" }
+#harmonium-io = { path = "../../../harmonium-io" }
+#harmonium-resample = { path = "../../../harmonium-resample" }
+#harmonium-fft = { path = "../../../harmonium-fft" }
+#harmonium-window = { path = "../../../harmonium-window" }
+harmonium-core = { git = "https://github.com/daniellga/harmonium.git" }
+harmonium-io = { git = "https://github.com/daniellga/harmonium.git" }
+harmonium-resample = { git = "https://github.com/daniellga/harmonium.git" }
+harmonium-fft = { git = "https://github.com/daniellga/harmonium.git" }
+harmonium-window = { git = "https://github.com/daniellga/harmonium.git" }
 rubato = "0.15.0"
 ndarray = "0.15.6"
 num-complex = { version = "0.4", features = ["bytemuck"] }

@@ -59,7 +59,7 @@ impl HAudioSink {
     ///
     /// ```r
     /// haudiosink = HAudioSink$new()
-    /// l = HFile$decode(fpath = "../../../testfiles/gs-16b-2c-44100hz.wav", dtype = HDataType$float32)
+    /// l = HFile$decode(fpath = "../../../testfiles/gs-16b-2c-44100hz.wav", dtype = HDataType$Float32)
     /// harray = l[[1]]
     /// haudiosink$append_from_harray(harray)
     /// ```

@@ -29,7 +29,7 @@ impl HDataType {
     /// #### Examples
     ///
     /// ```r
-    /// dtype = HDataType$complex64
+    /// dtype = HDataType$Complex64
     /// dtype$print()
     ///
     /// # or similarly:
@@ -62,8 +62,8 @@ impl HDataType {
     /// #### Examples
     ///
     /// ```r
-    /// hdatatype1 = HDataType$float32
-    /// hdatatype2 = HDataType$float32
+    /// hdatatype1 = HDataType$Float32
+    /// hdatatype2 = HDataType$Float32
     /// hdatatype1$eq(hdatatype2) # TRUE
     ///
     /// # or similarly:
@@ -97,8 +97,8 @@ impl HDataType {
     /// #### Examples
     ///
     /// ```r
-    /// hdatatype1 = HDataType$float32
-    /// hdatatype2 = HDataType$float64
+    /// hdatatype1 = HDataType$Float32
+    /// hdatatype2 = HDataType$Float64
     /// hdatatype1$ne(hdatatype2) # TRUE
     ///
     /// # or similarly:

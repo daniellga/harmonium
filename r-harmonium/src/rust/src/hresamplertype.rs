@@ -33,7 +33,7 @@ impl HResamplerType {
     /// #### Examples
     ///
     /// ```r
-    /// hresamplertype = HResamplerType$sinc_fixed_in
+    /// hresamplertype = HResamplerType$SincFixedIn
     /// hresamplertype$print()
     ///
     /// # or similarly:
@@ -66,8 +66,8 @@ impl HResamplerType {
     /// #### Examples
     ///
     /// ```r
-    /// hresamplertype1 = HResamplerType$sinc_fixed_in
-    /// hresamplertype2 = HResamplerType$sinc_fixed_in
+    /// hresamplertype1 = HResamplerType$SincFixedIn
+    /// hresamplertype2 = HResamplerType$SincFixedIn
     /// hresamplertype1$eq(hresamplertype2) # TRUE
     ///
     /// # or similarly:
@@ -101,8 +101,8 @@ impl HResamplerType {
     /// #### Examples
     ///
     /// ```r
-    /// hresamplertype1 = HResamplerType$sinc_fixed_in
-    /// hresamplertype2 = HResamplerType$sinc_fixed_in
+    /// hresamplertype1 = HResamplerType$SincFixedIn
+    /// hresamplertype2 = HResamplerType$SincFixedIn
     /// hresamplertype1$ne(hresamplertype2) # FALSE
     ///
     /// # or similarly:

@@ -34,7 +34,7 @@ impl HDecodedAudio {
     ///
     /// ```r
     /// fpath = "testfiles/gs-16b-2c-44100hz.flac"
-    /// dtype = HDataType$float32
+    /// dtype = HDataType$Float32
     /// hdecodedaudio = HFile$decode(fpath, dtype)
     /// hdecodedaudio$harray()
     ///
@@ -61,7 +61,7 @@ impl HDecodedAudio {
     ///
     /// ```r
     /// fpath = "testfiles/gs-16b-2c-44100hz.flac"
-    /// dtype = HDataType$float32
+    /// dtype = HDataType$Float32
     /// hdecodedaudio = HFile$decode(fpath, dtype)
     /// hdecodedaudio$sr()
     ///
@@ -90,7 +90,7 @@ impl HDecodedAudio {
     ///
     /// ```r
     /// fpath = "testfiles/gs-16b-2c-44100hz.flac"
-    /// dtype = HDataType$float32
+    /// dtype = HDataType$Float32
     /// hdecodedaudio = HFile$decode(fpath, dtype)
     /// harray = hdecodedaudio$harray() # now the inner HArray struct has 2 references.
     /// hdecodedaudio$invalidate() # back to 1 reference.
@@ -130,7 +130,7 @@ impl HFile {
     ///
     /// ```r
     /// fpath = "testfiles/gs-16b-2c-44100hz.flac"
-    /// dtype = HDataType$float32
+    /// dtype = HDataType$Float32
     /// HFile$decode(fpath, dtype)
     /// ```
     ///
@@ -182,7 +182,7 @@ impl HFile {
     ///
     /// ```r
     /// fpath = "testfiles/gs-16b-2c-44100hz.flac"
-    /// dtype = HDataType$float32
+    /// dtype = HDataType$Float32
     /// frames = 1000L
     /// HFile$decode_stream(fpath, frames, dtype)
     /// ```
@@ -429,6 +429,8 @@ impl HDecoderStream {
     /// Returns an error if it's end of stream or if an error ocurred in
     /// the decoding process. \
     ///
+    /// #### Returns
+    ///
     /// The decoded audio as a float HArray. \
     /// The number of frames streamed is the one used as input in the creation of `HDecoderStream`. \
     ///
@@ -436,7 +438,7 @@ impl HDecoderStream {
     ///
     /// ```r
     /// fpath = "testfiles/gs-16b-2c-44100hz.flac"
-    /// dtype = HDataType$float32
+    /// dtype = HDataType$Float32
     /// frames = 1000L
     /// hdecoder_stream = HFile$decode_stream(fpath, frames, dtype)
     /// hdecoder_stream$stream()

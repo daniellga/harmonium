@@ -45,7 +45,7 @@ impl HPolynomialDegree {
     /// #### Examples
     ///
     /// ```r
-    /// pol_deg = HPolynomialDegree$complex64
+    /// pol_deg = HPolynomialDegree$Complex64
     /// pol_deg$print()
     ///
     /// # or similarly:

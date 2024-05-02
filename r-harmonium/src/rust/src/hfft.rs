@@ -30,7 +30,7 @@ impl HFft {
     ///
     /// ```r
     /// arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
-    /// dtype = HDataType$float32
+    /// dtype = HDataType$Float32
     /// HArray$new_from_values(arr, dtype)
     /// HFft$fft(harray)
     /// ```
@@ -170,7 +170,7 @@ impl HFft {
     ///
     /// ```r
     /// arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
-    /// dtype = HDataType$float32
+    /// dtype = HDataType$Float32
     /// harray = HArray$new_from_values(arr, dtype)
     /// HFft$rfft_mut(harray)
     /// ```
@@ -215,7 +215,7 @@ impl HFft {
     ///
     /// ```r
     /// arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
-    /// dtype = HDataType$float32
+    /// dtype = HDataType$Float32
     /// harray = HArray$new_from_values(arr, dtype)
     /// HFft$irfft_mut(harray)
     /// ```

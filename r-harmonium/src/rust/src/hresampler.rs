@@ -62,17 +62,17 @@ impl HResampler {
     /// `new_fft(sr_in: integer, sr_out: integer, chunk_size: integer, sub_chunks: integer, nbr_channels: integer, res_type: HResamplerType, dtype: HDataType) -> HResampler` \
     ///
     /// Creates a new FFT type HResampler. \
-    /// Supports any of  `[fft_fixed_in, fft_fixed_in_out, fft_fixed_out]` `HResamplerType`. \
+    /// Supports any of  `[FftFixedIn, FftFixedInOut, FftFixedOut]` `HResamplerType`. \
     /// The resampling is done by FFTing the input data. The spectrum is then extended or truncated as well as multiplied with an antialiasing \
     /// filter before it’s inverse transformed to get the resampled waveforms. \
     ///
-    /// * `fft_fixed_in` \
+    /// * `FftFixedIn` \
     /// A synchronous resampler that needs a fixed number of audio frames for input and returns a variable number of frames. \
     ///
-    /// * `fft_fixed_in_out` \
+    /// * `FftFixedInOut` \
     /// A synchronous resampler that accepts a fixed number of audio frames for input and returns a fixed number of frames. \
     ///
-    /// * `fft_fixed_out` \
+    /// * `FftFixedOut` \
     /// A synchronous resampler that needs a fixed number of audio frames for input and returns a variable number of frames. \
     ///
     /// #### Arguments
@@ -107,8 +107,8 @@ impl HResampler {
     /// chunk_size = 1024L
     /// sub_chunks = 2L
     /// nbr_channels = 2L
-    /// res_type = HResamplerType$fft_fixed_in
-    /// dtype = HDataType$float32
+    /// res_type = HResamplerType$FftFixedIn
+    /// dtype = HDataType$Float32
     ///
     /// hresampler = HResampler$new_fft(sr_in, sr_out, chunk_size, sub_chunks, nbr_channels, res_type, dtype)
     /// ```
@@ -202,14 +202,14 @@ impl HResampler {
     /// `new_sinc(resample_ratio: double, max_resample_ratio_relative: double, parameters: HSincInterpolationParameters, chunk_size: integer, nchannels: integer, res_type: HResamplerType, dtype: HDataType) -> HResampler` \
     ///
     /// Creates a new Sinc type HResampler. \
-    /// Supports any of  `[sinc_fixed_in, sinc_fixed_out]` `HResamplerType`. \
+    /// Supports any of  `[SincFixedIn, SincFixedOut]` `HResamplerType`. \
     /// The resampling is done by creating a number of intermediate points (defined by oversampling_factor) by sinc interpolation. \
     /// The new samples are then calculated by interpolating between these points. \
     ///
-    /// * `sinc_fixed_in` \
+    /// * `SincFixedIn` \
     /// An asynchronous resampler that accepts a fixed number of audio frames for input and returns a variable number of frames. \
     ///
-    /// * `sinc_fixed_out` \
+    /// * `SincFixedOut` \
     /// An asynchronous resampler that accepts a variable number of audio frames for input nad returns a fixed number of frames. \
     ///
     /// #### Arguments
@@ -247,8 +247,8 @@ impl HResampler {
     /// hparams = HSincInterpolationParameters$new(256, 0.95, 256, "linear", "blackmanharris2")
     /// chunk_size = 512L
     /// nchannels = 2L
-    /// res_type = HResamplerType$sinc_fixed_out
-    /// dtype = HDataType$float32
+    /// res_type = HResamplerType$SincFixedOut
+    /// dtype = HDataType$Float32
     ///
     /// res = HResampler$new_sinc(resample_ratio, max_resample_ratio_relative, hparams, chunk_size, nchannels, res_type, dtype)
     /// ```
@@ -331,15 +331,15 @@ impl HResampler {
     /// `new_sinc(resample_ratio: double, max_resample_ratio_relative: double, pol_deg: HPolynomialDegree, chunk_size: integer, nchannels: integer, res_type: HResamplerType, dtype: HDataType) -> HResampler` \
     ///
     /// Creates a new Fast type HResampler. \
-    /// Supports any of  `[fast_fixed_in, fast_fixed_out]` `HResamplerType`. \
+    /// Supports any of  `[FastFixedIn, FastFixedOut]` `HResamplerType`. \
     /// The resampling is done by interpolating between the input samples by fitting polynomials. \
     /// Note that no anti-aliasing filter is used. This makes it run considerably faster than the corresponding `SincFixedIn`, which performs anti-aliasing filtering. The price is that the resampling creates some artefacts \
     /// in the output, mainly at higher frequencies. Use `SincFixedIn` if this can not be tolerated. \
     ///
-    /// * `fast_fixed_in` \
+    /// * `FastFixedIn` \
     /// An asynchronous resampler that accepts a fixed number of audio frames for input and returns a variable number of frames. \
     ///
-    /// * `fast_fixed_out` \
+    /// * `FastFixedOut` \
     /// An asynchronous resampler that accepts a variable number of audio frames for input nad returns a fixed number of frames. \
     ///
     /// #### Arguments
@@ -377,8 +377,8 @@ impl HResampler {
     /// pol_deg = HPolynomialDegree$linear
     /// chunk_size = 512L
     /// nchannels = 2L
-    /// res_type = HResamplerType$fast_fixed_out
-    /// dtype = HDataType$float32
+    /// res_type = HResamplerType$FastFixedOut
+    /// dtype = HDataType$Float32
     ///
     /// res = HResampler$new_fast(resample_ratio, max_resample_ratio_relative, pol_deg, chunk_size, nchannels, res_type, dtype)
     /// ```
@@ -464,9 +464,9 @@ impl HResampler {
     ///
     /// ```r
     /// arr = matrix(0, nrow = 512, ncol = 2)
-    /// harray = HArray$new_from_values(arr, dtype = HDataType$float64)
+    /// harray = HArray$new_from_values(arr, dtype = HDataType$Float64)
     /// hparams = HSincInterpolationParameters$new(256L, 0.95, 256L, "linear", "blackmanharris2")
-    /// res = HResampler$new_sinc(48000L / 44100L, 2, hparams, 512L, 2L, HResamplerType$sinc_fixed_in, HDataType$float64)
+    /// res = HResampler$new_sinc(48000L / 44100L, 2, hparams, 512L, 2L, HResamplerType$SincFixedIn, HDataType$Float64)
     /// res$process(harray)
     /// ```
     ///
@@ -496,9 +496,9 @@ impl HResampler {
     ///
     /// ```r
     /// data = matrix(0, nrow = 512, ncol = 2)
-    /// haudio = HAudio$new_from_values(data, 44100, dtype = HDataType$float64)
+    /// haudio = HAudio$new_from_values(data, 44100, dtype = HDataType$Float64)
     /// hparams = HSincInterpolationParameters$new(256L, 0.95, 256L, "linear", "blackmanharris2")
-    /// res = HResampler$new_sinc(48000L / 44100L, 2, hparams, 512L, 2L, HResamplerType$sinc_fixed_in, HDataType$float64)
+    /// res = HResampler$new_sinc(48000L / 44100L, 2, hparams, 512L, 2L, HResamplerType$SincFixedIn, HDataType$Float64)
     /// res$set_resample_ratio(1, FALSE)
     /// ```
     ///
@@ -531,9 +531,9 @@ impl HResampler {
     ///
     /// ```r
     /// data = matrix(0, nrow = 512, ncol = 2)
-    /// haudio = HAudio$new_from_values(data, 44100, dtype = HDataType$float64)
+    /// haudio = HAudio$new_from_values(data, 44100, dtype = HDataType$Float64)
     /// hparams = HSincInterpolationParameters$new(256L, 0.95, 256L, "linear", "blackmanharris2")
-    /// res = HResampler$new_sinc(48000L / 44100L, 2, hparams, 512L, 2L, HResamplerType$sinc_fixed_in, HDataType$float64)
+    /// res = HResampler$new_sinc(48000L / 44100L, 2, hparams, 512L, 2L, HResamplerType$SincFixedIn, HDataType$Float64)
     /// res$set_resample_ratio_relative(0.5, FALSE)
     /// ```
     ///
@@ -562,8 +562,8 @@ impl HResampler {
     /// pol_deg = HPolynomialDegree$linear
     /// chunk_size = 512L
     /// nchannels = 2L
-    /// res_type = HResamplerType$fast_fixed_out
-    /// dtype = HDataType$float32
+    /// res_type = HResamplerType$FastFixedOut
+    /// dtype = HDataType$Float32
     ///
     /// res = HResampler$new_fast(resample_ratio, max_resample_ratio_relative, pol_deg, chunk_size, nchannels, res_type, dtype)
     /// res$reset()
@@ -597,8 +597,8 @@ impl HResampler {
     /// pol_deg = HPolynomialDegree$linear
     /// chunk_size = 512L
     /// nchannels = 2L
-    /// res_type = HResamplerType$fast_fixed_out
-    /// dtype = HDataType$float32
+    /// res_type = HResamplerType$FastFixedOut
+    /// dtype = HDataType$Float32
     ///
     /// res = HResampler$new_fast(resample_ratio, max_resample_ratio_relative, pol_deg, chunk_size, nchannels, res_type, dtype)
     /// res$res_type()
@@ -631,8 +631,8 @@ impl HResampler {
     /// pol_deg = HPolynomialDegree$linear
     /// chunk_size = 512L
     /// nchannels = 2L
-    /// res_type = HResamplerType$fast_fixed_out
-    /// dtype = HDataType$float32
+    /// res_type = HResamplerType$FastFixedOut
+    /// dtype = HDataType$Float32
     ///
     /// res = HResampler$new_fast(resample_ratio, max_resample_ratio_relative, pol_deg, chunk_size, nchannels, res_type, dtype)
     /// res$dtype()
@@ -662,8 +662,8 @@ impl HResampler {
     /// pol_deg = HPolynomialDegree$linear
     /// chunk_size = 512L
     /// nchannels = 2L
-    /// res_type = HResamplerType$fast_fixed_out
-    /// dtype = HDataType$float32
+    /// res_type = HResamplerType$FastFixedOut
+    /// dtype = HDataType$Float32
     ///
     /// res = HResampler$new_fast(resample_ratio, max_resample_ratio_relative, pol_deg, chunk_size, nchannels, res_type, dtype)
     /// res$print()

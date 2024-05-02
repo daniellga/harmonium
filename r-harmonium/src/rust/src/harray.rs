@@ -42,8 +42,9 @@ impl HArray {
     /// #### Examples
     ///
     /// ```r
+    /// library(harmonium)
     /// arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
-    /// dtype = HDataType$float32
+    /// dtype = HDataType$Float31
     /// HArray$new_from_values(arr, dtype)
     /// ```
     ///
@@ -109,7 +110,7 @@ impl HArray {
     ///
     /// ```r
     /// arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
-    /// dtype = HDataType$float32
+    /// dtype = HDataType$Float32
     /// harray = HArray$new_from_values(arr, dtype)
     /// harray$len()
     /// ```
@@ -136,7 +137,7 @@ impl HArray {
     ///
     /// ```r
     /// arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
-    /// dtype = HDataType$float32
+    /// dtype = HDataType$Float32
     /// harray = HArray$new_from_values(arr, dtype)
     /// harray$shape()
     /// ```
@@ -169,7 +170,7 @@ impl HArray {
     ///
     /// ```r
     /// arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
-    /// dtype = HDataType$float32
+    /// dtype = HDataType$Float32
     /// harray = HArray$new_from_values(arr, dtype)
     /// harray$ndim()
     /// ```
@@ -206,7 +207,7 @@ impl HArray {
     ///
     /// ```r
     /// arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
-    /// dtype = HDataType$float32
+    /// dtype = HDataType$Float32
     /// harray = HArray$new_from_values(arr, dtype)
     /// harray$slice(list(c(0L, 2L, 1L), c(1L, 3L, 1L)))
     /// ```
@@ -260,7 +261,7 @@ impl HArray {
     ///
     /// ```r
     /// arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
-    /// dtype = HDataType$float32
+    /// dtype = HDataType$Float32
     /// harray = HArray$new_from_values(arr, dtype)
     /// harray$print()
     ///
@@ -297,11 +298,11 @@ impl HArray {
     ///
     /// ```r
     /// arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
-    /// dtype = HDataType$float32
+    /// dtype = HDataType$Float32
     /// harray1 = HArray$new_from_values(arr, dtype)
     ///
     /// arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
-    /// dtype = HDataType$float32
+    /// dtype = HDataType$Float32
     /// harray2 = HArray$new_from_values(arr, dtype)
     ///
     /// harray1$eq(harray2) # TRUE
@@ -340,11 +341,11 @@ impl HArray {
     ///
     /// ```r
     /// arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
-    /// dtype = HDataType$float32
+    /// dtype = HDataType$Float32
     /// harray1 = HArray$new_from_values(arr, dtype)
     ///
     /// arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
-    /// dtype = HDataType$float32
+    /// dtype = HDataType$Float32
     /// harray2 = HArray$new_from_values(arr, dtype)
     ///
     /// harray1$ne(harray2) # FALSE
@@ -376,7 +377,7 @@ impl HArray {
     ///
     /// ```r
     /// arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
-    /// dtype = HDataType$float32
+    /// dtype = HDataType$Float32
     /// harray1 = HArray$new_from_values(arr, dtype)
     /// harray2 = harray1$clone()
     /// harray1 == harray2 # TRUE
@@ -403,7 +404,7 @@ impl HArray {
     ///
     /// ```r
     /// arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
-    /// dtype = HDataType$float32
+    /// dtype = HDataType$Float32
     /// harray = HArray$new_from_values(arr, dtype)
     /// harray$collect()
     /// ```
@@ -429,7 +430,7 @@ impl HArray {
     ///
     /// ```r
     /// arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
-    /// dtype = HDataType$float32
+    /// dtype = HDataType$Float32
     /// harray = HArray$new_from_values(arr, dtype)
     /// harray$dtype()
     /// ```
@@ -457,7 +458,7 @@ impl HArray {
     ///
     /// ```r
     /// arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
-    /// dtype = HDataType$float32
+    /// dtype = HDataType$Float32
     /// harray1 = HArray$new_from_values(arr, dtype)
     /// harray1$is_shared() # FALSE.
     ///
@@ -489,7 +490,7 @@ impl HArray {
     ///
     /// ```r
     /// arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
-    /// dtype = HDataType$float32
+    /// dtype = HDataType$Float32
     /// harray = HArray$new_from_values(arr, dtype)
     /// harray$mem_adress()
     /// ```
@@ -513,7 +514,7 @@ impl HArray {
     ///
     /// ```r
     /// arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
-    /// dtype = HDataType$float32
+    /// dtype = HDataType$Float32
     /// harray = HArray$new_from_values(arr, dtype)
     /// harray$invalidate()
     /// ```
