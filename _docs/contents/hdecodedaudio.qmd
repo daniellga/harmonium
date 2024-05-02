@@ -16,7 +16,7 @@ A float HArray. \
 
 ```r
 fpath = "testfiles/gs-16b-2c-44100hz.flac"
-dtype = HDataType$float32
+dtype = HDataType$Float32
 hdecodedaudio = HFile$decode(fpath, dtype)
 hdecodedaudio$harray()
 
@@ -39,7 +39,7 @@ An integer. \
 
 ```r
 fpath = "testfiles/gs-16b-2c-44100hz.flac"
-dtype = HDataType$float32
+dtype = HDataType$Float32
 hdecodedaudio = HFile$decode(fpath, dtype)
 hdecodedaudio$sr()
 
@@ -58,7 +58,7 @@ This function is useful to remove one of the shared references of the inner poin
 
 ```r
 fpath = "testfiles/gs-16b-2c-44100hz.flac"
-dtype = HDataType$float32
+dtype = HDataType$Float32
 hdecodedaudio = HFile$decode(fpath, dtype)
 harray = hdecodedaudio$harray() # now the inner HArray struct has 2 references.
 hdecodedaudio$invalidate() # back to 1 reference.

@@ -26,7 +26,7 @@ An HDecodedAudio containing: \
 
 ```r
 fpath = "testfiles/gs-16b-2c-44100hz.flac"
-dtype = HDataType$float32
+dtype = HDataType$Float32
 HFile$decode(fpath, dtype)
 ```
 
@@ -56,7 +56,7 @@ An `HDecoderStream`. \
 
 ```r
 fpath = "testfiles/gs-16b-2c-44100hz.flac"
-dtype = HDataType$float32
+dtype = HDataType$Float32
 frames = 1000L
 HFile$decode_stream(fpath, frames, dtype)
 ```
