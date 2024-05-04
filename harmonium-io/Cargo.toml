@@ -31,34 +31,42 @@ vorbis = ["symphonia/vorbis"]
 wav = ["symphonia/wav"]
 
 # MPEG audio codecs
-mpa = ["symphonia/mp1", "symphonia/mp2", "symphonia/mp3"]
+mpa = ["mp1", "mp2", "mp3"]
 
 # Enable all supported codecs
 all-codecs = [
-    "symphonia/aac",
-    "symphonia/adpcm",
-    "symphonia/alac",
-    "symphonia/flac",
-    "symphonia/mp1",
-    "symphonia/mp2",
-    "symphonia/mp3",
-    "symphonia/pcm",
-    "symphonia/vorbis",
+    "aac",
+    "adpcm",
+    "alac",
+    "flac",
+    "mp1",
+    "mp2",
+    "mp3",
+    "pcm",
+    "vorbis",
 ]
 
 # Enable all supported formats
 all-formats = [
-    "symphonia/isomp4",
-    "symphonia/mkv",
-    "symphonia/ogg",
-    "symphonia/wav"
+    "isomp4",
+    "mkv",
+    "ogg",
+    "wav"
 ]
 
 # Enable all supported codecs and formats
 all = ["all-codecs", "all-formats"]
 
 # Only royalty-free open standard codecs and formats are enabled by default.
-symphonia-default = ["adpcm", "flac", "mkv", "ogg", "pcm", "vorbis", "wav"]
+symphonia-default = [
+    "adpcm", 
+    "flac",
+    "mkv",
+    "ogg",
+    "pcm", 
+    "vorbis", 
+    "wav"
+]
 
 # SIMD support.
 opt-simd-sse = ["symphonia/opt-simd-sse"]
