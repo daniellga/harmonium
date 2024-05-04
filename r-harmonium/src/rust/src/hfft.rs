@@ -29,9 +29,10 @@ impl HFft {
     /// #### Examples
     ///
     /// ```r
+    /// library(harmonium)
     /// arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
     /// dtype = HDataType$Float32
-    /// HArray$new_from_values(arr, dtype)
+    /// harray = HArray$new_from_values(arr, dtype)
     /// HFft$fft(harray)
     /// ```
     ///
@@ -61,8 +62,11 @@ impl HFft {
     /// #### Examples
     ///
     /// ```r
-    /// arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
-    /// dtype = HDataType$Float32
+    /// library(harmonium)
+    /// r = as.double(sample(100, 30, replace = TRUE))
+    /// i = as.double(sample(100, 30, replace = TRUE))
+    /// arr = array(complex(real=r, imaginary=i), c(6,5))
+    /// dtype = HDataType$Complex32
     /// harray = HArray$new_from_values(arr, dtype)
     /// HFft$fft_mut(harray)
     /// ```
@@ -96,9 +100,10 @@ impl HFft {
     /// #### Examples
     ///
     /// ```r
+    /// library(harmonium)
     /// arr = array(c(1+1i,2+2i,3+3i,4+4i,5+5i,6+6i), c(3,2))
     /// dtype = HDataType$Complex32
-    /// HArray$new_from_values(arr, dtype)
+    /// harray = HArray$new_from_values(arr, dtype)
     /// HFft$ifft(harray)
     /// ```
     ///
@@ -130,9 +135,10 @@ impl HFft {
     /// #### Examples
     ///
     /// ```r
+    /// library(harmonium)
     /// arr = array(c(1+1i,2+2i,3+3i,4+4i,5+5i,6+6i), c(3,2))
     /// dtype = HDataType$Complex32
-    /// HArray$new_from_values(arr, dtype)
+    /// harray = HArray$new_from_values(arr, dtype)
     /// HFft$ifft_mut(harray)
     /// ```
     ///
@@ -169,6 +175,7 @@ impl HFft {
     /// #### Examples
     ///
     /// ```r
+    /// library(harmonium)
     /// arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
     /// dtype = HDataType$Float32
     /// harray = HArray$new_from_values(arr, dtype)
@@ -209,15 +216,18 @@ impl HFft {
     /// #### Arguments
     ///
     /// * `length` \
-    /// The output length of the signal. Since the spectrum is `N/2+1`, the length can be `N` and `N+1`, if `N` is even, or can be `N` and `N-1` if `N` is odd.  \
+    /// An integer. The output length of the signal. Since the spectrum is `N/2+1`, the length can be `N` and `N+1`, if `N` is even, or can be `N` and `N-1` if `N` is odd.  \
     ///
     /// #### Examples
     ///
     /// ```r
-    /// arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
-    /// dtype = HDataType$Float32
+    /// library(harmonium)
+    /// r = as.double(sample(100, 4, replace = TRUE))
+    /// i = as.double(sample(100, 3, replace = TRUE))
+    /// arr = array(complex(real=r, imaginary=c(0,i)), c(4,1))
+    /// dtype = HDataType$Complex32
     /// harray = HArray$new_from_values(arr, dtype)
-    /// HFft$irfft_mut(harray)
+    /// HFft$irfft_mut(harray, 7L)
     /// ```
     ///
     /// _________

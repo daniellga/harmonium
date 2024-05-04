@@ -11,7 +11,7 @@ name = 'harmonium'
 opt-level = 3
 lto = true
 codegen-units = 1
-panic = "unwind" # otherwise savvy craches R when panic.
+panic = "unwind" # otherwise savvy crashes R when panic.
 
 [workspace]
 # prevents package from thinking it's in the workspace.
@@ -29,7 +29,7 @@ harmonium-fft = { git = "https://github.com/daniellga/harmonium.git" }
 harmonium-window = { git = "https://github.com/daniellga/harmonium.git" }
 rubato = "0.15.0"
 ndarray = "0.15.6"
-num-complex = { version = "0.4", features = ["bytemuck"] }
+num-complex = { version = "0.4" }
 savvy = { version = "0.6.1", features = ["complex"] }
 
 [profile.dev]

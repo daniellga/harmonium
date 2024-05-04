@@ -32,10 +32,11 @@ impl HAudioOp {
     /// #### Examples
     ///
     /// ```r
+    /// library(harmonium)
     /// arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
     /// dtype = HDataType$Float32
     /// harray = HArray$new_from_values(arr, dtype)
-    /// harray$nchannels()
+    /// HAudioOp$nchannels(harray)
     /// ```
     ///
     /// _________
@@ -62,10 +63,11 @@ impl HAudioOp {
     /// #### Examples
     ///
     /// ```r
+    /// library(harmonium)
     /// arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
     /// dtype = HDataType$Float32
     /// harray = HArray$new_from_values(arr, dtype)
-    /// harray$nframes()
+    /// HAudioOp$nframes(harray)
     /// ```
     ///
     /// _________
@@ -97,6 +99,7 @@ impl HAudioOp {
     /// #### Examples
     ///
     /// ```r
+    /// library(harmonium)
     /// arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
     /// dtype = HDataType$Float32
     /// harray = HArray$new_from_values(arr, dtype)
@@ -128,6 +131,7 @@ impl HAudioOp {
     /// #### Examples
     ///
     /// ```r
+    /// library(harmonium)
     /// arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
     /// dtype = HDataType$Float32
     /// harray = HArray$new_from_values(arr, dtype)

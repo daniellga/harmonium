@@ -29,7 +29,7 @@ An `HArray`. \
 ```r
 library(harmonium)
 arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
-dtype = HDataType$Float31
+dtype = HDataType$Float32
 HArray$new_from_values(arr, dtype)
 ```
 
@@ -37,7 +37,7 @@ _________
 
 ## len
 
-`len() -> integer` <span style="float: right;"> [source](www.globo.com/harray.rs#L120) </span> \
+`len() -> integer` <span style="float: right;"> [source](www.globo.com/harray.rs#L121) </span> \
 
 Returns the number of elements of this `Harray`. \
 
@@ -48,6 +48,7 @@ An `integer`. \
 #### Examples
 
 ```r
+library(harmonium)
 arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
 dtype = HDataType$Float32
 harray = HArray$new_from_values(arr, dtype)
@@ -58,7 +59,7 @@ _________
 
 ## shape
 
-`shape() -> integers` <span style="float: right;"> [source](www.globo.com/harray.rs#L147) </span> \
+`shape() -> integers` <span style="float: right;"> [source](www.globo.com/harray.rs#L149) </span> \
 
 Returns the shape of this `HArray`. \
 
@@ -69,6 +70,7 @@ A vector of integers. \
 #### Examples
 
 ```r
+library(harmonium)
 arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
 dtype = HDataType$Float32
 harray = HArray$new_from_values(arr, dtype)
@@ -79,7 +81,7 @@ _________
 
 ## ndim
 
-`ndim() -> integer` <span style="float: right;"> [source](www.globo.com/harray.rs#L180) </span> \
+`ndim() -> integer` <span style="float: right;"> [source](www.globo.com/harray.rs#L183) </span> \
 
 Returns the number of dimensions of this `HArray`. \
 
@@ -90,6 +92,7 @@ An integer. \
 #### Examples
 
 ```r
+library(harmonium)
 arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
 dtype = HDataType$Float32
 harray = HArray$new_from_values(arr, dtype)
@@ -100,7 +103,7 @@ _________
 
 ## slice
 
-`slice(range: list[atomicvector]) -> HArray` <span style="float: right;"> [source](www.globo.com/harray.rs#L217) </span> \
+`slice(range: list[atomicvector]) -> HArray` <span style="float: right;"> [source](www.globo.com/harray.rs#L221) </span> \
 
 Slices the HArray. \
 This operation has a COW ([clone-on-write](https://doc.rust-lang.org/std/borrow/enum.Cow.html)) behaviour. The created slice shares the inner data with
@@ -121,6 +124,7 @@ An `HArray`. \
 #### Examples
 
 ```r
+library(harmonium)
 arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
 dtype = HDataType$Float32
 harray = HArray$new_from_values(arr, dtype)
@@ -131,7 +135,7 @@ _________
 
 ## print
 
-`print()` <span style="float: right;"> [source](www.globo.com/harray.rs#L274) </span> \
+`print()` <span style="float: right;"> [source](www.globo.com/harray.rs#L279) </span> \
 
 Prints the `HArray`. \
 Differently from R's normal behaviour, `print` doesn't return the value invisibly. \
@@ -139,6 +143,7 @@ Differently from R's normal behaviour, `print` doesn't return the value invisibl
 #### Examples
 
 ```r
+library(harmonium)
 arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
 dtype = HDataType$Float32
 harray = HArray$new_from_values(arr, dtype)
@@ -152,7 +157,7 @@ _________
 
 ## eq
 
-`eq(other: HArray) -> bool` <span style="float: right;"> [source](www.globo.com/harray.rs#L316) </span> \
+`eq(other: HArray) -> bool` <span style="float: right;"> [source](www.globo.com/harray.rs#L322) </span> \
 
 Equality with another `HArray`. \
 The comparison only checks if the dtype and the values are the same. To compare if the
@@ -170,6 +175,7 @@ A `bool`. \
 #### Examples
 
 ```r
+library(harmonium)
 arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
 dtype = HDataType$Float32
 harray1 = HArray$new_from_values(arr, dtype)
@@ -188,7 +194,7 @@ _________
 
 ## ne
 
-`ne(other: HArray) -> bool` <span style="float: right;"> [source](www.globo.com/harray.rs#L359) </span> \
+`ne(other: HArray) -> bool` <span style="float: right;"> [source](www.globo.com/harray.rs#L366) </span> \
 
 Difference with another `HArray`. \
 The comparison only checks if the dtype and the values are the same. To compare if the
@@ -206,6 +212,7 @@ A `bool`.
 #### Examples
 
 ```r
+library(harmonium)
 arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
 dtype = HDataType$Float32
 harray1 = HArray$new_from_values(arr, dtype)
@@ -224,7 +231,7 @@ _________
 
 ## clone
 
-`clone() -> HArray` <span style="float: right;"> [source](www.globo.com/harray.rs#L388) </span> \
+`clone() -> HArray` <span style="float: right;"> [source](www.globo.com/harray.rs#L396) </span> \
 
 Creates a new `HArray`, with the underlying data pointing to the same place in memory.
 
@@ -235,6 +242,7 @@ An `HArray`.
 #### Examples
 
 ```r
+library(harmonium)
 arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
 dtype = HDataType$Float32
 harray1 = HArray$new_from_values(arr, dtype)
@@ -246,7 +254,7 @@ _________
 
 ## collect
 
-`collect() -> array` <span style="float: right;"> [source](www.globo.com/harray.rs#L414) </span> \
+`collect() -> array` <span style="float: right;"> [source](www.globo.com/harray.rs#L423) </span> \
 
 Creates an R array from an `HArray`. The type of the array created (`double` or `complex`) will depend on the `HArray`'s dtype.
 
@@ -257,6 +265,7 @@ An array of type `double` or `complex`.
 #### Examples
 
 ```r
+library(harmonium)
 arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
 dtype = HDataType$Float32
 harray = HArray$new_from_values(arr, dtype)
@@ -267,7 +276,7 @@ _________
 
 ## dtype
 
-`dtype() -> HDataType` <span style="float: right;"> [source](www.globo.com/harray.rs#L440) </span> \
+`dtype() -> HDataType` <span style="float: right;"> [source](www.globo.com/harray.rs#L450) </span> \
 
 Gets the `HArray`'s dtype as an `HDataType`.
 
@@ -278,6 +287,7 @@ An `HDataType`.
 #### Examples
 
 ```r
+library(harmonium)
 arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
 dtype = HDataType$Float32
 harray = HArray$new_from_values(arr, dtype)
@@ -288,7 +298,7 @@ _________
 
 ## is_shared
 
-`is_shared() -> bool` <span style="float: right;"> [source](www.globo.com/harray.rs#L471) </span> \
+`is_shared() -> bool` <span style="float: right;"> [source](www.globo.com/harray.rs#L482) </span> \
 
 Checks if the object is shared. \
 Since `HArray` has a COW ([clone-on-write](https://doc.rust-lang.org/std/borrow/enum.Cow.html)) behaviour, this function is useful to check if a new
@@ -301,6 +311,7 @@ A `bool`. \
 #### Examples
 
 ```r
+library(harmonium)
 arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
 dtype = HDataType$Float32
 harray1 = HArray$new_from_values(arr, dtype)
@@ -314,7 +325,7 @@ _________
 
 ## mem_adress
 
-`mem_adress() -> string` <span style="float: right;"> [source](www.globo.com/harray.rs#L500) </span> \
+`mem_adress() -> string` <span style="float: right;"> [source](www.globo.com/harray.rs#L512) </span> \
 
 The memory adress of the first element of the inner array. \
 This is useful to check if different objects share the same underlying data. \
@@ -326,6 +337,7 @@ A `string`. \
 #### Examples
 
 ```r
+library(harmonium)
 arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
 dtype = HDataType$Float32
 harray = HArray$new_from_values(arr, dtype)
@@ -336,7 +348,7 @@ _________
 
 ## invalidate
 
-`invalidate()` <span style="float: right;"> [source](www.globo.com/harray.rs#L524) </span> \
+`invalidate()` <span style="float: right;"> [source](www.globo.com/harray.rs#L537) </span> \
 
 Replaces the inner value of the external pointer, invalidating it. \
 This function is useful to remove one of the shared references of the inner pointer in rust. \
@@ -344,6 +356,7 @@ This function is useful to remove one of the shared references of the inner poin
 #### Examples
 
 ```r
+library(harmonium)
 arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
 dtype = HDataType$Float32
 harray = HArray$new_from_values(arr, dtype)

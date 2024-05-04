@@ -34,6 +34,7 @@ impl HAudioSink {
     /// #### Examples
     ///
     /// ```r
+    /// library(harmonium)
     /// haudiosink = HAudioSink$new()
     /// ```
     ///
@@ -46,7 +47,7 @@ impl HAudioSink {
     /// HAudioSink
     /// ## append_from_harray
     ///
-    /// `append_from_harray(harray: HArray)` \
+    /// `append_from_harray(harray: HArray, sr: integer)` \
     ///
     /// Appends a sound to the queue of sounds to play. \
     ///
@@ -54,14 +55,18 @@ impl HAudioSink {
     ///
     /// * `harray` \
     /// An `HArray`. \
+    /// * `sr` \
+    /// An interger. The audio sampling rate. \
     ///
     /// #### Examples
     ///
     /// ```r
+    /// library(harmonium)
     /// haudiosink = HAudioSink$new()
-    /// l = HFile$decode(fpath = "../../../testfiles/gs-16b-2c-44100hz.wav", dtype = HDataType$Float32)
-    /// harray = l[[1]]
-    /// haudiosink$append_from_harray(harray)
+    /// hdecodedaudio = HFile$decode(fpath = "./r-harmonium/testfiles/gs-16b-2c-44100hz.wav", dtype = HDataType$Float32)
+    /// harray = hdecodedaudio$harray()
+    /// sr = hdecodedaudio$sr()
+    /// haudiosink$append_from_harray(harray, sr)
     /// ```
     ///
     /// _________
@@ -118,8 +123,9 @@ impl HAudioSink {
     /// #### Examples
     ///
     /// ```r
+    /// library(harmonium)
     /// haudiosink = HAudioSink$new()
-    /// haudiosink$append_from_file(fpath = "../../../testfiles/gs-16b-2c-44100hz.wav")
+    /// haudiosink$append_from_file(fpath = "./r-harmonium/testfiles/gs-16b-2c-44100hz.wav")
     /// ```
     ///
     /// _________
@@ -144,8 +150,9 @@ impl HAudioSink {
     /// #### Examples
     ///
     /// ```r
+    /// library(harmonium)
     /// haudiosink = HAudioSink$new()
-    /// haudiosink$append_from_file(fpath = "../../../testfiles/gs-16b-2c-44100hz.wav")
+    /// haudiosink$append_from_file(fpath = "./r-harmonium/testfiles/gs-16b-2c-44100hz.wav")
     /// haudiosink$pause()
     /// haudiosink$is_paused() # TRUE
     /// haudiosink$play()
@@ -170,9 +177,10 @@ impl HAudioSink {
     /// #### Examples
     ///
     /// ```r
+    /// library(harmonium)
     /// haudiosink = HAudioSink$new()
-    /// haudiosink$append_from_file(fpath = "../../../testfiles/gs-16b-2c-44100hz.wav")
-    /// haudiosink$append_from_file(fpath = "../../../testfiles/gs-16b-2c-44100hz.wav")
+    /// haudiosink$append_from_file(fpath = "./r-harmonium/testfiles/gs-16b-2c-44100hz.wav")
+    /// haudiosink$append_from_file(fpath = "./r-harmonium/testfiles/gs-16b-2c-44100hz.wav")
     /// haudiosink$len() == 2 # TRUE
     /// haudiosink$stop()
     /// haudiosink$len() == 0 # TRUE
@@ -198,8 +206,9 @@ impl HAudioSink {
     /// #### Examples
     ///
     /// ```r
+    /// library(harmonium)
     /// haudiosink = HAudioSink$new()
-    /// haudiosink$append_from_file(fpath = "../../../testfiles/gs-16b-2c-44100hz.wav")
+    /// haudiosink$append_from_file(fpath = "./r-harmonium/testfiles/gs-16b-2c-44100hz.wav")
     /// haudiosink$is_paused() # FALSE
     /// haudiosink$pause()
     /// haudiosink$is_paused() # TRUE
@@ -227,8 +236,9 @@ impl HAudioSink {
     /// #### Examples
     ///
     /// ```r
+    /// library(harmonium)
     /// haudiosink = HAudioSink$new()
-    /// haudiosink$append_from_file(fpath = "../../../testfiles/gs-16b-2c-44100hz.wav")
+    /// haudiosink$append_from_file(fpath = "./r-harmonium/testfiles/gs-16b-2c-44100hz.wav")
     /// haudiosink$is_paused() # FALSE
     /// haudiosink$pause()
     /// haudiosink$is_paused() # TRUE
@@ -257,8 +267,9 @@ impl HAudioSink {
     /// #### Examples
     ///
     /// ```r
+    /// library(harmonium)
     /// haudiosink = HAudioSink$new()
-    /// haudiosink$append_from_file(fpath = "../../../testfiles/gs-16b-2c-44100hz.wav")
+    /// haudiosink$append_from_file(fpath = "./r-harmonium/testfiles/gs-16b-2c-44100hz.wav")
     /// haudiosink$volume()
     /// ```
     ///
@@ -286,8 +297,9 @@ impl HAudioSink {
     /// #### Examples
     ///
     /// ```r
+    /// library(harmonium)
     /// haudiosink = HAudioSink$new()
-    /// haudiosink$append_from_file(fpath = "../../../testfiles/gs-16b-2c-44100hz.wav")
+    /// haudiosink$append_from_file(fpath = "./r-harmonium/testfiles/gs-16b-2c-44100hz.wav")
     /// haudiosink$set_volume(2)
     /// haudiosink$volume() == 2 # TRUE
     /// ```
@@ -315,8 +327,9 @@ impl HAudioSink {
     /// #### Examples
     ///
     /// ```r
+    /// library(harmonium)
     /// haudiosink = HAudioSink$new()
-    /// haudiosink$append_from_file(fpath = "../../../testfiles/gs-16b-2c-44100hz.wav")
+    /// haudiosink$append_from_file(fpath = "./r-harmonium/testfiles/gs-16b-2c-44100hz.wav")
     /// haudiosink$speed()
     /// ```
     ///
@@ -344,8 +357,9 @@ impl HAudioSink {
     /// #### Examples
     ///
     /// ```r
+    /// library(harmonium)
     /// haudiosink = HAudioSink$new()
-    /// haudiosink$append_from_file(fpath = "../../../testfiles/gs-16b-2c-44100hz.wav")
+    /// haudiosink$append_from_file(fpath = "./r-harmonium/testfiles/gs-16b-2c-44100hz.wav")
     /// haudiosink$set_speed(2)
     /// haudiosink$speed() == 2 # TRUE
     /// ```
@@ -368,8 +382,9 @@ impl HAudioSink {
     /// #### Examples
     ///
     /// ```r
+    /// library(harmonium)
     /// haudiosink = HAudioSink$new()
-    /// haudiosink$append_from_file(fpath = "../../../testfiles/gs-16b-2c-44100hz.wav")
+    /// haudiosink$append_from_file(fpath = "./r-harmonium/testfiles/gs-16b-2c-44100hz.wav")
     /// haudiosink$sleep_until_end()
     /// ```
     ///
@@ -394,10 +409,11 @@ impl HAudioSink {
     /// #### Examples
     ///
     /// ```r
+    /// library(harmonium)
     /// haudiosink = HAudioSink$new()
     /// haudiosink$len() == 0 # TRUE
-    /// haudiosink$append_from_file(fpath = "../../../testfiles/gs-16b-2c-44100hz.wav")
-    /// haudiosink$append_from_file(fpath = "../../../testfiles/gs-16b-2c-44100hz.wav")
+    /// haudiosink$append_from_file(fpath = "./r-harmonium/testfiles/gs-16b-2c-44100hz.wav")
+    /// haudiosink$append_from_file(fpath = "./r-harmonium/testfiles/gs-16b-2c-44100hz.wav")
     /// haudiosink$len() == 2 # TRUE
     /// ```
     ///
@@ -422,6 +438,7 @@ impl HAudioSink {
     /// #### Examples
     ///
     /// ```r
+    /// library(harmonium)
     /// haudiosink = HAudioSink$new()
     /// haudiosink$is_empty() # TRUE
     /// ```
@@ -444,8 +461,9 @@ impl HAudioSink {
     /// #### Examples
     ///
     /// ```r
+    /// library(harmonium)
     /// haudiosink = HAudioSink$new()
-    /// haudiosink$append_from_file(fpath = "../../../testfiles/gs-16b-2c-44100hz.wav")
+    /// haudiosink$append_from_file(fpath = "./r-harmonium/testfiles/gs-16b-2c-44100hz.wav")
     /// haudiosink$clear()
     /// haudiosink$is_empty() # TRUE
     /// haudiosink$is_paused() # TRUE
@@ -470,9 +488,10 @@ impl HAudioSink {
     /// #### Examples
     ///
     /// ```r
+    /// library(harmonium)
     /// haudiosink = HAudioSink$new()
-    /// haudiosink$append_from_file(fpath = "../../../testfiles/gs-16b-2c-44100hz.wav")
-    /// haudiosink$append_from_file(fpath = "../../../testfiles/gs-16b-2c-44100hz.wav")
+    /// haudiosink$append_from_file(fpath = "./r-harmonium/testfiles/gs-16b-2c-44100hz.wav")
+    /// haudiosink$append_from_file(fpath = "./r-harmonium/testfiles/gs-16b-2c-44100hz.wav")
     /// haudiosink$len() == 2 # TRUE
     /// haudiosink$skip_one()
     /// haudiosink$len() == 1 # TRUE
@@ -499,6 +518,7 @@ impl HAudioSink {
     /// #### Examples
     ///
     /// ```r
+    /// library(harmonium)
     /// HAudioSink$audio_output_devices()
     /// ```
     ///
@@ -524,6 +544,7 @@ impl HAudioSink {
     /// #### Examples
     ///
     /// ```r
+    /// library(harmonium)
     /// HAudioSink$audio_default_device()
     /// ```
     ///
@@ -555,6 +576,7 @@ impl HAudioSink {
     /// #### Examples
     ///
     /// ```r
+    /// library(harmonium)
     /// HAudioSink$audio_supported_configs()
     /// ```
     ///

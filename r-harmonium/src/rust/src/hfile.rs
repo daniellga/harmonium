@@ -33,7 +33,8 @@ impl HDecodedAudio {
     /// #### Examples
     ///
     /// ```r
-    /// fpath = "testfiles/gs-16b-2c-44100hz.flac"
+    /// library(harmonium)
+    /// fpath = "../../../testfiles/gs-16b-2c-44100hz.flac"
     /// dtype = HDataType$Float32
     /// hdecodedaudio = HFile$decode(fpath, dtype)
     /// hdecodedaudio$harray()
@@ -60,7 +61,8 @@ impl HDecodedAudio {
     /// #### Examples
     ///
     /// ```r
-    /// fpath = "testfiles/gs-16b-2c-44100hz.flac"
+    /// library(harmonium)
+    /// fpath = "../../../testfiles/gs-16b-2c-44100hz.flac"
     /// dtype = HDataType$Float32
     /// hdecodedaudio = HFile$decode(fpath, dtype)
     /// hdecodedaudio$sr()
@@ -89,7 +91,8 @@ impl HDecodedAudio {
     /// #### Examples
     ///
     /// ```r
-    /// fpath = "testfiles/gs-16b-2c-44100hz.flac"
+    /// library(harmonium)
+    /// fpath = "../../../testfiles/gs-16b-2c-44100hz.flac"
     /// dtype = HDataType$Float32
     /// hdecodedaudio = HFile$decode(fpath, dtype)
     /// harray = hdecodedaudio$harray() # now the inner HArray struct has 2 references.
@@ -129,7 +132,8 @@ impl HFile {
     /// #### Examples
     ///
     /// ```r
-    /// fpath = "testfiles/gs-16b-2c-44100hz.flac"
+    /// library(harmonium)
+    /// fpath = "../../../testfiles/gs-16b-2c-44100hz.flac"
     /// dtype = HDataType$Float32
     /// HFile$decode(fpath, dtype)
     /// ```
@@ -181,7 +185,8 @@ impl HFile {
     /// #### Examples
     ///
     /// ```r
-    /// fpath = "testfiles/gs-16b-2c-44100hz.flac"
+    /// library(harmonium)
+    /// fpath = "../../../testfiles/gs-16b-2c-44100hz.flac"
     /// dtype = HDataType$Float32
     /// frames = 1000L
     /// HFile$decode_stream(fpath, frames, dtype)
@@ -287,9 +292,10 @@ impl HFile {
     /// #### Examples
     ///
     /// ```r
-    /// fpath = "testfiles/gs-16b-2c-44100hz.mp3"
-    /// metadata_type = HMetadataType$text
-    /// HFile$decode(fpath, metadata_type)
+    /// library(harmonium)
+    /// fpath = "../../../testfiles/gs-16b-2c-44100hz.mp3"
+    /// metadata_type = HMetadataType$Text
+    /// HFile$metadata(fpath, metadata_type)
     /// ```
     ///
     /// _________
@@ -359,7 +365,8 @@ impl HFile {
     /// #### Examples
     ///
     /// ```r
-    /// fpath = "testfiles/gs-16b-2c-44100hz.flac"
+    /// library(harmonium)
+    /// fpath = "../../../testfiles/gs-16b-2c-44100hz.flac"
     /// HFile$params(fpath)
     /// ```
     ///
@@ -395,7 +402,8 @@ impl HFile {
     /// #### Examples
     ///
     /// ```r
-    /// fpath = "testfiles/gs-16b-2c-44100hz.flac"
+    /// library(harmonium)
+    /// fpath = "../../../testfiles/gs-16b-2c-44100hz.flac"
     /// HFile$verify(fpath)
     /// ```
     ///
@@ -437,7 +445,8 @@ impl HDecoderStream {
     /// #### Examples
     ///
     /// ```r
-    /// fpath = "testfiles/gs-16b-2c-44100hz.flac"
+    /// library(harmonium)
+    /// fpath = "../../../testfiles/gs-16b-2c-44100hz.flac"
     /// dtype = HDataType$Float32
     /// frames = 1000L
     /// hdecoder_stream = HFile$decode_stream(fpath, frames, dtype)

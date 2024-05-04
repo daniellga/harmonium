@@ -12,7 +12,7 @@ A collection of methods that can be applied to float 1D or 2D HArray which repre
 
 ## nchannels
 
-`nchannels() -> integer` <span style="float: right;"> [source](www.globo.com/haudioop.rs#L43) </span> \
+`nchannels() -> integer` <span style="float: right;"> [source](www.globo.com/haudioop.rs#L44) </span> \
 
 Returns the number of channels. \
 This is the same as the number of rows of a 1D or 2D HArray. \
@@ -24,17 +24,18 @@ An `integer`. \
 #### Examples
 
 ```r
+library(harmonium)
 arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
 dtype = HDataType$Float32
 harray = HArray$new_from_values(arr, dtype)
-harray$nchannels()
+HAudioOp$nchannels(harray)
 ```
 
 _________
 
 ## nframes
 
-`nframes() -> integer` <span style="float: right;"> [source](www.globo.com/haudioop.rs#L73) </span> \
+`nframes() -> integer` <span style="float: right;"> [source](www.globo.com/haudioop.rs#L75) </span> \
 
 Returns the number of frames. \
 This is the same as the number of cols of a 1D or 2D HArray. \
@@ -47,17 +48,18 @@ An `integer`. \
 #### Examples
 
 ```r
+library(harmonium)
 arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
 dtype = HDataType$Float32
 harray = HArray$new_from_values(arr, dtype)
-harray$nframes()
+HAudioOp$nframes(harray)
 ```
 
 _________
 
 ## db_to_amplitude
 
-`db_to_amplitude(harray: HArray, reference: double)` <span style="float: right;"> [source](www.globo.com/haudioop.rs#L108) </span> \
+`db_to_amplitude(harray: HArray, reference: double)` <span style="float: right;"> [source](www.globo.com/haudioop.rs#L111) </span> \
 
 Converts the `HArray` input from dB to amplitude. \
 $db_to_amplitude(x) = reference * (10.0**(x * 0.1))**power$ \
@@ -75,6 +77,7 @@ A double. If 1.0, will compute DB to power. If 0.5, will compute DB to amplitude
 #### Examples
 
 ```r
+library(harmonium)
 arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
 dtype = HDataType$Float32
 harray = HArray$new_from_values(arr, dtype)
@@ -85,7 +88,7 @@ _________
 
 ## to_mono
 
-`to_mono(harray: HArray)` <span style="float: right;"> [source](www.globo.com/haudioop.rs#L139) </span> \
+`to_mono(harray: HArray)` <span style="float: right;"> [source](www.globo.com/haudioop.rs#L143) </span> \
 
 Convert to 1 channel by taking the average across channels. \
 The operation is done in-place. A new inner array is created. \
@@ -98,6 +101,7 @@ A 2D float `HArray`.
 #### Examples
 
 ```r
+library(harmonium)
 arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
 dtype = HDataType$Float32
 harray = HArray$new_from_values(arr, dtype)

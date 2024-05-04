@@ -29,6 +29,7 @@ impl HDataType {
     /// #### Examples
     ///
     /// ```r
+    /// library(harmonium)
     /// dtype = HDataType$Complex64
     /// dtype$print()
     ///
@@ -62,6 +63,7 @@ impl HDataType {
     /// #### Examples
     ///
     /// ```r
+    /// library(harmonium)
     /// hdatatype1 = HDataType$Float32
     /// hdatatype2 = HDataType$Float32
     /// hdatatype1$eq(hdatatype2) # TRUE
@@ -97,6 +99,7 @@ impl HDataType {
     /// #### Examples
     ///
     /// ```r
+    /// library(harmonium)
     /// hdatatype1 = HDataType$Float32
     /// hdatatype2 = HDataType$Float64
     /// hdatatype1$ne(hdatatype2) # TRUE

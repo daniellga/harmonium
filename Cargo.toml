@@ -13,13 +13,11 @@ num-traits = "0.2"
 rustfft = "6.1"
 realfft = "3.3"
 rubato = "0.15.0"
-comfy-table = "7.0"
 ndarray = "0.15.6"
 cached = "0.50"
-symphonia = { version = "0.5.4", default-features = false }
+symphonia = { version = "0.5.4", features = ["all", "opt-simd"], default-features = false }
 rodio = { git = "https://github.com/RustAudio/rodio.git", rev = "9674ea5", default-features = false }
-bytemuck = { version = "1.13", features = ["extern_crate_alloc"] }
-num-complex = { version = "0.4", features = ["bytemuck"] }
+num-complex = { version = "0.4" }
 
 # https://rust-lang.github.io/packed_simd/perf-guide/target-feature/rustflags.html
 # Using native as the CPU model will cause Rust to generate and optimize code for the CPU running the compiler. It is useful when building programs which you plan to only use locally. This should never be used when the generated programs are meant to be run on other computers, such as when packaging for distribution or cross-compiling.

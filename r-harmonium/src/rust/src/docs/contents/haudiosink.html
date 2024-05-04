@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.340">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>_docs - HAudioSink</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">_docs</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html" rel="" target="">
+ <span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../about.html" rel="" target="">
+ <span class="menu-text">About</span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools ms-auto">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#methods" id="toc-methods" class="nav-link active" data-scroll-target="#methods">Methods</a>
+  <ul class="collapse">
+  <li><a href="#new" id="toc-new" class="nav-link" data-scroll-target="#new">new</a></li>
+  <li><a href="#append_from_harray" id="toc-append_from_harray" class="nav-link" data-scroll-target="#append_from_harray">append_from_harray</a></li>
+  <li><a href="#append_from_file" id="toc-append_from_file" class="nav-link" data-scroll-target="#append_from_file">append_from_file</a></li>
+  <li><a href="#play" id="toc-play" class="nav-link" data-scroll-target="#play">play</a></li>
+  <li><a href="#stop" id="toc-stop" class="nav-link" data-scroll-target="#stop">stop</a></li>
+  <li><a href="#pause" id="toc-pause" class="nav-link" data-scroll-target="#pause">pause</a></li>
+  <li><a href="#is_paused" id="toc-is_paused" class="nav-link" data-scroll-target="#is_paused">is_paused</a></li>
+  <li><a href="#volume" id="toc-volume" class="nav-link" data-scroll-target="#volume">volume</a></li>
+  <li><a href="#set_volume" id="toc-set_volume" class="nav-link" data-scroll-target="#set_volume">set_volume</a></li>
+  <li><a href="#speed" id="toc-speed" class="nav-link" data-scroll-target="#speed">speed</a></li>
+  <li><a href="#set_speed" id="toc-set_speed" class="nav-link" data-scroll-target="#set_speed">set_speed</a></li>
+  <li><a href="#sleep_until_end" id="toc-sleep_until_end" class="nav-link" data-scroll-target="#sleep_until_end">sleep_until_end</a></li>
+  <li><a href="#len" id="toc-len" class="nav-link" data-scroll-target="#len">len</a></li>
+  <li><a href="#is_empty" id="toc-is_empty" class="nav-link" data-scroll-target="#is_empty">is_empty</a></li>
+  <li><a href="#clear" id="toc-clear" class="nav-link" data-scroll-target="#clear">clear</a></li>
+  <li><a href="#skip_one" id="toc-skip_one" class="nav-link" data-scroll-target="#skip_one">skip_one</a></li>
+  <li><a href="#audio_output_devices" id="toc-audio_output_devices" class="nav-link" data-scroll-target="#audio_output_devices">audio_output_devices</a></li>
+  <li><a href="#audio_default_device" id="toc-audio_default_device" class="nav-link" data-scroll-target="#audio_default_device">audio_default_device</a></li>
+  <li><a href="#audio_supported_configs" id="toc-audio_supported_configs" class="nav-link" data-scroll-target="#audio_supported_configs">audio_supported_configs</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">HAudioSink</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<p>Handle to a device that outputs sounds.<br>
+</p>
+<section id="methods" class="level1">
+<h1>Methods</h1>
+<section id="new" class="level2">
+<h2 class="anchored" data-anchor-id="new">new</h2>
+<p><code>new() -&gt; HAudioSink</code> <span style="float: right;"> <a href="www.globo.com/haudiosink.rs#L43">source</a> </span><br>
+</p>
+<p>Creates a new <code>HAudioSink</code> instance.<br>
+The sink is set on “play” mode from the start.<br>
+</p>
+<section id="returns" class="level4">
+<h4 class="anchored" data-anchor-id="returns">Returns</h4>
+<p>An <code>HAudioSink</code>.<br>
+</p>
+</section>
+<section id="examples" class="level4">
+<h4 class="anchored" data-anchor-id="examples">Examples</h4>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>haudiosink <span class="ot">=</span> HAudioSink<span class="sc">$</span><span class="fu">new</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+</section>
+</section>
+<section id="append_from_harray" class="level2">
+<h2 class="anchored" data-anchor-id="append_from_harray">append_from_harray</h2>
+<p><code>append_from_harray(harray: HArray, sr: integer)</code> <span style="float: right;"> <a href="www.globo.com/haudiosink.rs#L74">source</a> </span><br>
+</p>
+<p>Appends a sound to the queue of sounds to play.<br>
+</p>
+<section id="arguments" class="level4">
+<h4 class="anchored" data-anchor-id="arguments">Arguments</h4>
+<ul>
+<li><code>harray</code><br>
+An <code>HArray</code>.<br>
+</li>
+<li><code>sr</code><br>
+An interger. The audio sampling rate.<br>
+</li>
+</ul>
+</section>
+<section id="examples-1" class="level4">
+<h4 class="anchored" data-anchor-id="examples-1">Examples</h4>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>haudiosink <span class="ot">=</span> HAudioSink<span class="sc">$</span><span class="fu">new</span>()</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>hdecodedaudio <span class="ot">=</span> HFile<span class="sc">$</span><span class="fu">decode</span>(<span class="at">fpath =</span> <span class="st">"../../../testfiles/gs-16b-2c-44100hz.wav"</span>, <span class="at">dtype =</span> HDataType<span class="sc">$</span>Float32)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>harray <span class="ot">=</span> hdecodedaudio<span class="sc">$</span><span class="fu">harray</span>()</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>sr <span class="ot">=</span> hdecodedaudio<span class="sc">$</span><span class="fu">sr</span>()</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">append_from_harray</span>(harray, sr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+</section>
+</section>
+<section id="append_from_file" class="level2">
+<h2 class="anchored" data-anchor-id="append_from_file">append_from_file</h2>
+<p><code>append_from_file(fpath: string)</code> <span style="float: right;"> <a href="www.globo.com/haudiosink.rs#L133">source</a> </span><br>
+</p>
+<p>Appends a sound to the queue of sounds to play.<br>
+</p>
+<section id="arguments-1" class="level4">
+<h4 class="anchored" data-anchor-id="arguments-1">Arguments</h4>
+<ul>
+<li><code>fpath</code><br>
+The file path as a <code>string</code>.<br>
+</li>
+</ul>
+</section>
+<section id="examples-2" class="level4">
+<h4 class="anchored" data-anchor-id="examples-2">Examples</h4>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>haudiosink <span class="ot">=</span> HAudioSink<span class="sc">$</span><span class="fu">new</span>()</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">append_from_file</span>(<span class="at">fpath =</span> <span class="st">"../../../testfiles/gs-16b-2c-44100hz.wav"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+</section>
+</section>
+<section id="play" class="level2">
+<h2 class="anchored" data-anchor-id="play">play</h2>
+<p><code>play()</code> <span style="float: right;"> <a href="www.globo.com/haudiosink.rs#L164">source</a> </span><br>
+</p>
+<p>Resumes playback of a paused sink.<br>
+No effect if not paused.<br>
+</p>
+<section id="examples-3" class="level4">
+<h4 class="anchored" data-anchor-id="examples-3">Examples</h4>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>haudiosink <span class="ot">=</span> HAudioSink<span class="sc">$</span><span class="fu">new</span>()</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">append_from_file</span>(<span class="at">fpath =</span> <span class="st">"../../../testfiles/gs-16b-2c-44100hz.wav"</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">pause</span>()</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">is_paused</span>() <span class="co"># TRUE</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">play</span>()</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">is_paused</span>() <span class="co"># FALSE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+</section>
+</section>
+<section id="stop" class="level2">
+<h2 class="anchored" data-anchor-id="stop">stop</h2>
+<p><code>stop()</code> <span style="float: right;"> <a href="www.globo.com/haudiosink.rs#L192">source</a> </span><br>
+</p>
+<p>Stops the sink by emptying the queue.<br>
+The sink will keep its previous state (play or pause).<br>
+</p>
+<section id="examples-4" class="level4">
+<h4 class="anchored" data-anchor-id="examples-4">Examples</h4>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>haudiosink <span class="ot">=</span> HAudioSink<span class="sc">$</span><span class="fu">new</span>()</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">append_from_file</span>(<span class="at">fpath =</span> <span class="st">"../../../testfiles/gs-16b-2c-44100hz.wav"</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">append_from_file</span>(<span class="at">fpath =</span> <span class="st">"../../../testfiles/gs-16b-2c-44100hz.wav"</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">len</span>() <span class="sc">==</span> <span class="dv">2</span> <span class="co"># TRUE</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">stop</span>()</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">len</span>() <span class="sc">==</span> <span class="dv">0</span> <span class="co"># TRUE</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">is_paused</span>() <span class="co"># FALSE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+</section>
+</section>
+<section id="pause" class="level2">
+<h2 class="anchored" data-anchor-id="pause">pause</h2>
+<p><code>pause()</code> <span style="float: right;"> <a href="www.globo.com/haudiosink.rs#L219">source</a> </span><br>
+</p>
+<p>Pauses playback of this sink.<br>
+No effect if already paused.<br>
+A paused sink can be resumed with play().<br>
+</p>
+<section id="examples-5" class="level4">
+<h4 class="anchored" data-anchor-id="examples-5">Examples</h4>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>haudiosink <span class="ot">=</span> HAudioSink<span class="sc">$</span><span class="fu">new</span>()</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">append_from_file</span>(<span class="at">fpath =</span> <span class="st">"../../../testfiles/gs-16b-2c-44100hz.wav"</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">is_paused</span>() <span class="co"># FALSE</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">pause</span>()</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">is_paused</span>() <span class="co"># TRUE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+</section>
+</section>
+<section id="is_paused" class="level2">
+<h2 class="anchored" data-anchor-id="is_paused">is_paused</h2>
+<p><code>is_paused() -&gt; bool</code> <span style="float: right;"> <a href="www.globo.com/haudiosink.rs#L249">source</a> </span><br>
+</p>
+<p>Gets if a sink is paused.<br>
+Sinks can be paused and resumed using pause() and play(). This returns true if the sink is paused.<br>
+</p>
+<section id="returns-1" class="level4">
+<h4 class="anchored" data-anchor-id="returns-1">Returns</h4>
+<p>A <code>bool</code>.<br>
+</p>
+</section>
+<section id="examples-6" class="level4">
+<h4 class="anchored" data-anchor-id="examples-6">Examples</h4>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>haudiosink <span class="ot">=</span> HAudioSink<span class="sc">$</span><span class="fu">new</span>()</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">append_from_file</span>(<span class="at">fpath =</span> <span class="st">"../../../testfiles/gs-16b-2c-44100hz.wav"</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">is_paused</span>() <span class="co"># FALSE</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">pause</span>()</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">is_paused</span>() <span class="co"># TRUE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+</section>
+</section>
+<section id="volume" class="level2">
+<h2 class="anchored" data-anchor-id="volume">volume</h2>
+<p><code>volume() -&gt; double</code> <span style="float: right;"> <a href="www.globo.com/haudiosink.rs#L278">source</a> </span><br>
+</p>
+<p>Gets the volume of the sound.<br>
+The value 1.0 is the “normal” volume (unfiltered input). Any value other than 1.0 will multiply each sample by this value.<br>
+</p>
+<section id="returns-2" class="level4">
+<h4 class="anchored" data-anchor-id="returns-2">Returns</h4>
+<p>A <code>double</code>.<br>
+</p>
+</section>
+<section id="examples-7" class="level4">
+<h4 class="anchored" data-anchor-id="examples-7">Examples</h4>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>haudiosink <span class="ot">=</span> HAudioSink<span class="sc">$</span><span class="fu">new</span>()</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">append_from_file</span>(<span class="at">fpath =</span> <span class="st">"../../../testfiles/gs-16b-2c-44100hz.wav"</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">volume</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+</section>
+</section>
+<section id="set_volume" class="level2">
+<h2 class="anchored" data-anchor-id="set_volume">set_volume</h2>
+<p><code>set_volume(value: double)</code> <span style="float: right;"> <a href="www.globo.com/haudiosink.rs#L309">source</a> </span><br>
+</p>
+<p>Changes the volume of the sound.<br>
+The value 1.0 is the “normal” volume (unfiltered input). Any value other than 1.0 will multiply each sample by this value.<br>
+</p>
+<section id="arguments-2" class="level4">
+<h4 class="anchored" data-anchor-id="arguments-2">Arguments</h4>
+<ul>
+<li><code>value</code><br>
+A <code>double</code>.<br>
+</li>
+</ul>
+</section>
+<section id="examples-8" class="level4">
+<h4 class="anchored" data-anchor-id="examples-8">Examples</h4>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>haudiosink <span class="ot">=</span> HAudioSink<span class="sc">$</span><span class="fu">new</span>()</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">append_from_file</span>(<span class="at">fpath =</span> <span class="st">"../../../testfiles/gs-16b-2c-44100hz.wav"</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">set_volume</span>(<span class="dv">2</span>)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">volume</span>() <span class="sc">==</span> <span class="dv">2</span> <span class="co"># TRUE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+</section>
+</section>
+<section id="speed" class="level2">
+<h2 class="anchored" data-anchor-id="speed">speed</h2>
+<p><code>speed() -&gt; double</code> <span style="float: right;"> <a href="www.globo.com/haudiosink.rs#L338">source</a> </span><br>
+</p>
+<p>Gets the speed of the sound.<br>
+The value 1.0 is the “normal” speed (unfiltered input). Any value other than 1.0 will change the play speed of the sound.<br>
+</p>
+<section id="returns-3" class="level4">
+<h4 class="anchored" data-anchor-id="returns-3">Returns</h4>
+<p>A <code>double</code>.<br>
+</p>
+</section>
+<section id="examples-9" class="level4">
+<h4 class="anchored" data-anchor-id="examples-9">Examples</h4>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>haudiosink <span class="ot">=</span> HAudioSink<span class="sc">$</span><span class="fu">new</span>()</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">append_from_file</span>(<span class="at">fpath =</span> <span class="st">"../../../testfiles/gs-16b-2c-44100hz.wav"</span>)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">speed</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+</section>
+</section>
+<section id="set_speed" class="level2">
+<h2 class="anchored" data-anchor-id="set_speed">set_speed</h2>
+<p><code>set_speed(value: double)</code> <span style="float: right;"> <a href="www.globo.com/haudiosink.rs#L369">source</a> </span><br>
+</p>
+<p>Changes the speed of the sound.<br>
+The value 1.0 is the “normal” speed (unfiltered input). Any value other than 1.0 will change the play speed of the sound.<br>
+</p>
+<section id="arguments-3" class="level4">
+<h4 class="anchored" data-anchor-id="arguments-3">Arguments</h4>
+<ul>
+<li><code>value</code><br>
+A <code>double</code>.<br>
+</li>
+</ul>
+</section>
+<section id="examples-10" class="level4">
+<h4 class="anchored" data-anchor-id="examples-10">Examples</h4>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>haudiosink <span class="ot">=</span> HAudioSink<span class="sc">$</span><span class="fu">new</span>()</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">append_from_file</span>(<span class="at">fpath =</span> <span class="st">"../../../testfiles/gs-16b-2c-44100hz.wav"</span>)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">set_speed</span>(<span class="dv">2</span>)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">speed</span>() <span class="sc">==</span> <span class="dv">2</span> <span class="co"># TRUE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+</section>
+</section>
+<section id="sleep_until_end" class="level2">
+<h2 class="anchored" data-anchor-id="sleep_until_end">sleep_until_end</h2>
+<p><code>sleep_until_end()</code> <span style="float: right;"> <a href="www.globo.com/haudiosink.rs#L393">source</a> </span><br>
+</p>
+<p>Sleeps the current thread until the sound ends.<br>
+</p>
+<section id="examples-11" class="level4">
+<h4 class="anchored" data-anchor-id="examples-11">Examples</h4>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>haudiosink <span class="ot">=</span> HAudioSink<span class="sc">$</span><span class="fu">new</span>()</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">append_from_file</span>(<span class="at">fpath =</span> <span class="st">"../../../testfiles/gs-16b-2c-44100hz.wav"</span>)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">sleep_until_end</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+</section>
+</section>
+<section id="len" class="level2">
+<h2 class="anchored" data-anchor-id="len">len</h2>
+<p><code>len() -&gt; integer</code> <span style="float: right;"> <a href="www.globo.com/haudiosink.rs#L422">source</a> </span><br>
+</p>
+<p>Returns the number of sounds currently in the queue.<br>
+</p>
+<section id="returns-4" class="level4">
+<h4 class="anchored" data-anchor-id="returns-4">Returns</h4>
+<p>An <code>integer</code>.<br>
+</p>
+</section>
+<section id="examples-12" class="level4">
+<h4 class="anchored" data-anchor-id="examples-12">Examples</h4>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>haudiosink <span class="ot">=</span> HAudioSink<span class="sc">$</span><span class="fu">new</span>()</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">len</span>() <span class="sc">==</span> <span class="dv">0</span> <span class="co"># TRUE</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">append_from_file</span>(<span class="at">fpath =</span> <span class="st">"../../../testfiles/gs-16b-2c-44100hz.wav"</span>)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">append_from_file</span>(<span class="at">fpath =</span> <span class="st">"../../../testfiles/gs-16b-2c-44100hz.wav"</span>)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">len</span>() <span class="sc">==</span> <span class="dv">2</span> <span class="co"># TRUE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+</section>
+</section>
+<section id="is_empty" class="level2">
+<h2 class="anchored" data-anchor-id="is_empty">is_empty</h2>
+<p><code>is_empty() -&gt; bool</code> <span style="float: right;"> <a href="www.globo.com/haudiosink.rs#L448">source</a> </span><br>
+</p>
+<p>Returns true if this sink has no more sounds to play.<br>
+</p>
+<section id="returns-5" class="level4">
+<h4 class="anchored" data-anchor-id="returns-5">Returns</h4>
+<p>A <code>bool</code>.<br>
+</p>
+</section>
+<section id="examples-13" class="level4">
+<h4 class="anchored" data-anchor-id="examples-13">Examples</h4>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>haudiosink <span class="ot">=</span> HAudioSink<span class="sc">$</span><span class="fu">new</span>()</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">is_empty</span>() <span class="co"># TRUE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+</section>
+</section>
+<section id="clear" class="level2">
+<h2 class="anchored" data-anchor-id="clear">clear</h2>
+<p><code>clear()</code> <span style="float: right;"> <a href="www.globo.com/haudiosink.rs#L474">source</a> </span><br>
+</p>
+<p>Removes all currently loaded <code>Source</code>s from the <code>Sink</code> and pauses it.<br>
+</p>
+<section id="examples-14" class="level4">
+<h4 class="anchored" data-anchor-id="examples-14">Examples</h4>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>haudiosink <span class="ot">=</span> HAudioSink<span class="sc">$</span><span class="fu">new</span>()</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">append_from_file</span>(<span class="at">fpath =</span> <span class="st">"../../../testfiles/gs-16b-2c-44100hz.wav"</span>)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">clear</span>()</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">is_empty</span>() <span class="co"># TRUE</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">is_paused</span>() <span class="co"># TRUE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+</section>
+</section>
+<section id="skip_one" class="level2">
+<h2 class="anchored" data-anchor-id="skip_one">skip_one</h2>
+<p><code>skip_one()</code> <span style="float: right;"> <a href="www.globo.com/haudiosink.rs#L502">source</a> </span><br>
+</p>
+<p>Skips to the next <code>Source</code> in the <code>Sink</code>.<br>
+If there are more <code>Source</code>s appended to the <code>Sink</code> at the time, it will play the next one. Otherwise, the <code>Sink</code> will finish as if it had finished playing a <code>Source</code> all the way through.<br>
+</p>
+<section id="examples-15" class="level4">
+<h4 class="anchored" data-anchor-id="examples-15">Examples</h4>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>haudiosink <span class="ot">=</span> HAudioSink<span class="sc">$</span><span class="fu">new</span>()</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">append_from_file</span>(<span class="at">fpath =</span> <span class="st">"../../../testfiles/gs-16b-2c-44100hz.wav"</span>)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">append_from_file</span>(<span class="at">fpath =</span> <span class="st">"../../../testfiles/gs-16b-2c-44100hz.wav"</span>)</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">len</span>() <span class="sc">==</span> <span class="dv">2</span> <span class="co"># TRUE</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">skip_one</span>()</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">len</span>() <span class="sc">==</span> <span class="dv">1</span> <span class="co"># TRUE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+</section>
+</section>
+<section id="audio_output_devices" class="level2">
+<h2 class="anchored" data-anchor-id="audio_output_devices">audio_output_devices</h2>
+<p><code>audio_output_devices() -&gt; atomicvector</code> <span style="float: right;"> <a href="www.globo.com/haudiosink.rs#L527">source</a> </span><br>
+</p>
+<p>Provides a list of available audio output devices.<br>
+</p>
+<section id="returns-6" class="level4">
+<h4 class="anchored" data-anchor-id="returns-6">Returns</h4>
+<p>A character atomic vector.<br>
+</p>
+</section>
+<section id="examples-16" class="level4">
+<h4 class="anchored" data-anchor-id="examples-16">Examples</h4>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>HAudioSink<span class="sc">$</span><span class="fu">audio_output_devices</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+</section>
+</section>
+<section id="audio_default_device" class="level2">
+<h2 class="anchored" data-anchor-id="audio_default_device">audio_default_device</h2>
+<p><code>audio_default_device() -&gt; string</code> <span style="float: right;"> <a href="www.globo.com/haudiosink.rs#L553">source</a> </span><br>
+</p>
+<p>Informs the default audio output device.<br>
+</p>
+<section id="returns-7" class="level4">
+<h4 class="anchored" data-anchor-id="returns-7">Returns</h4>
+<p>A <code>string</code>.<br>
+</p>
+</section>
+<section id="examples-17" class="level4">
+<h4 class="anchored" data-anchor-id="examples-17">Examples</h4>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>HAudioSink<span class="sc">$</span><span class="fu">audio_default_device</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+</section>
+</section>
+<section id="audio_supported_configs" class="level2">
+<h2 class="anchored" data-anchor-id="audio_supported_configs">audio_supported_configs</h2>
+<p><code>audio_supported_configs() -&gt; atomicvector</code> <span style="float: right;"> <a href="www.globo.com/haudiosink.rs#L585">source</a> </span><br>
+</p>
+<p>Provides the supported configurations for the default audio output device.<br>
+The following informations are given:<br>
+</p>
+<ul>
+<li>Number of channels.<br>
+</li>
+<li>Minimum and maximum value for the sampling rate.<br>
+</li>
+<li>Minimum and maximum value for the buffer size.<br>
+</li>
+<li>Type of data expected by the device.<br>
+</li>
+</ul>
+<section id="returns-8" class="level4">
+<h4 class="anchored" data-anchor-id="returns-8">Returns</h4>
+<p>A character atomic vector.<br>
+</p>
+</section>
+<section id="examples-18" class="level4">
+<h4 class="anchored" data-anchor-id="examples-18">Examples</h4>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>HAudioSink<span class="sc">$</span><span class="fu">audio_supported_configs</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+
+
+</section>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
