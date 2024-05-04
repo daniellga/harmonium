@@ -19,6 +19,12 @@ symphonia = { version = "0.5.4", default-features = false }
 rodio = { version = "0.17.3", default-features = false }
 num-complex = { version = "0.4" }
 
+harmonium-core = { path = "harmonium-core", default-features = false }
+harmonium-io = { path = "harmonium-io", default-features = false }
+harmonium-fft = { path = "harmonium-fft", default-features = false }
+harmonium-resample = { path = "harmonium-resample", default-features = false }
+harmonium-window = { path = "harmonium-window", default-features = false }
+
 [profile.release]
 opt-level = 3
 lto = true
