@@ -294,7 +294,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h1>Methods</h1>
 <section id="stream" class="level2">
 <h2 class="anchored" data-anchor-id="stream">stream</h2>
-<p><code>stream() -&gt; HArray</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L449">source</a> </span><br>
+<p><code>stream() -&gt; HArray</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L458">source</a> </span><br>
 </p>
 <p>Gets the next wave of frames as an <code>HArray</code>.<br>
 Returns an error if it’s end of stream or if an error ocurred in the decoding process.<br>
@@ -307,11 +307,12 @@ The number of frames streamed is the one used as input in the creation of <code>
 </section>
 <section id="examples" class="level4">
 <h4 class="anchored" data-anchor-id="examples">Examples</h4>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>fpath <span class="ot">=</span> <span class="st">"testfiles/gs-16b-2c-44100hz.flac"</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>dtype <span class="ot">=</span> HDataType<span class="sc">$</span>Float32</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>frames <span class="ot">=</span> <span class="dv">1000</span>L</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>hdecoder_stream <span class="ot">=</span> HFile<span class="sc">$</span><span class="fu">decode_stream</span>(fpath, frames, dtype)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>hdecoder_stream<span class="sc">$</span><span class="fu">stream</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>fpath <span class="ot">=</span> <span class="st">"../../../testfiles/gs-16b-2c-44100hz.flac"</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>dtype <span class="ot">=</span> HDataType<span class="sc">$</span>Float32</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>frames <span class="ot">=</span> <span class="dv">1000</span>L</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>hdecoder_stream <span class="ot">=</span> HFile<span class="sc">$</span><span class="fu">decode_stream</span>(fpath, frames, dtype)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>hdecoder_stream<span class="sc">$</span><span class="fu">stream</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 
 

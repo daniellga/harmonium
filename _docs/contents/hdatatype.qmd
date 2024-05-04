@@ -9,7 +9,7 @@ Supports `Float32`, `Float64`, `Complex32` and `Complex64` types. \
 
 ## print
 
-`print()` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hdatatype.rs#L41) </span> \
+`print()` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hdatatype.rs#L42) </span> \
 
 Prints the `HDataType`. \
 Differently from R's behaviour, `print` doesn't return the value invisibly. \
@@ -17,6 +17,7 @@ Differently from R's behaviour, `print` doesn't return the value invisibly. \
 #### Examples
 
 ```r
+library(harmonium)
 dtype = HDataType$Complex64
 dtype$print()
 
@@ -28,7 +29,7 @@ _________
 
 ## eq
 
-`eq(other: HDataType) -> bool` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hdatatype.rs#L75) </span> \
+`eq(other: HDataType) -> bool` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hdatatype.rs#L77) </span> \
 
 Equality with another `HDataType`. \
 
@@ -44,6 +45,7 @@ A `bool`.
 #### Examples
 
 ```r
+library(harmonium)
 hdatatype1 = HDataType$Float32
 hdatatype2 = HDataType$Float32
 hdatatype1$eq(hdatatype2) # TRUE
@@ -56,7 +58,7 @@ _________
 
 ## ne
 
-`ne(other: HDataType) -> bool` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hdatatype.rs#L110) </span> \
+`ne(other: HDataType) -> bool` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hdatatype.rs#L113) </span> \
 
 Difference with another `HDataType`. \
 
@@ -72,6 +74,7 @@ A `bool`. \
 #### Examples
 
 ```r
+library(harmonium)
 hdatatype1 = HDataType$Float32
 hdatatype2 = HDataType$Float64
 hdatatype1$ne(hdatatype2) # TRUE

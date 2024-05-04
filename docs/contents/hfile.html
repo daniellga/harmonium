@@ -291,7 +291,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="decode" class="level2">
 <h2 class="anchored" data-anchor-id="decode">decode</h2>
-<p><code>decode(fpath: string, dtype: HDataType) -&gt; HDecodedAudio</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L139">source</a> </span><br>
+<p><code>decode(fpath: string, dtype: HDataType) -&gt; HDecodedAudio</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L143">source</a> </span><br>
 </p>
 <p>Decode an audio file, providing its decoded data and the sampling rate.<br>
 The samples are normalized to fit in the range of [-1.0, 1.0].</p>
@@ -315,15 +315,16 @@ A float <code>HDataType</code>.<br>
 </section>
 <section id="examples" class="level4">
 <h4 class="anchored" data-anchor-id="examples">Examples</h4>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>fpath <span class="ot">=</span> <span class="st">"testfiles/gs-16b-2c-44100hz.flac"</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>dtype <span class="ot">=</span> HDataType<span class="sc">$</span>Float32</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>HFile<span class="sc">$</span><span class="fu">decode</span>(fpath, dtype)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>fpath <span class="ot">=</span> <span class="st">"../../../testfiles/gs-16b-2c-44100hz.flac"</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>dtype <span class="ot">=</span> HDataType<span class="sc">$</span>Float32</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>HFile<span class="sc">$</span><span class="fu">decode</span>(fpath, dtype)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 </section>
 </section>
 <section id="stream" class="level2">
 <h2 class="anchored" data-anchor-id="stream">stream</h2>
-<p><code>decode_stream(fpath: string, frames: integer, dtype: HDataType) -&gt; HDecoderStream</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L192">source</a> </span><br>
+<p><code>decode_stream(fpath: string, frames: integer, dtype: HDataType) -&gt; HDecoderStream</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L197">source</a> </span><br>
 </p>
 <p>Creates an <code>HDecoderStream</code>, used as an iterator to stream frames of decoded audio.<br>
 </p>
@@ -348,16 +349,17 @@ A float <code>HDataType</code>.<br>
 </section>
 <section id="examples-1" class="level4">
 <h4 class="anchored" data-anchor-id="examples-1">Examples</h4>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>fpath <span class="ot">=</span> <span class="st">"testfiles/gs-16b-2c-44100hz.flac"</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>dtype <span class="ot">=</span> HDataType<span class="sc">$</span>Float32</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>frames <span class="ot">=</span> <span class="dv">1000</span>L</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>HFile<span class="sc">$</span><span class="fu">decode_stream</span>(fpath, frames, dtype)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>fpath <span class="ot">=</span> <span class="st">"../../../testfiles/gs-16b-2c-44100hz.flac"</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>dtype <span class="ot">=</span> HDataType<span class="sc">$</span>Float32</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>frames <span class="ot">=</span> <span class="dv">1000</span>L</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>HFile<span class="sc">$</span><span class="fu">decode_stream</span>(fpath, frames, dtype)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 </section>
 </section>
 <section id="metadata" class="level2">
 <h2 class="anchored" data-anchor-id="metadata">metadata</h2>
-<p><code>metadata(fpath: string, metadata_type: HMetadataType) -&gt; list</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L297">source</a> </span><br>
+<p><code>metadata(fpath: string, metadata_type: HMetadataType) -&gt; list</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L303">source</a> </span><br>
 </p>
 <p>Extract text and visual metadata from a file.<br>
 Tags that are part of the container format are preferentially extracted. Additional tags that were found while probing will not be extracted.<br>
@@ -431,15 +433,16 @@ An <code>HMetadataType</code>.<br>
 </section>
 <section id="examples-2" class="level4">
 <h4 class="anchored" data-anchor-id="examples-2">Examples</h4>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>fpath <span class="ot">=</span> <span class="st">"testfiles/gs-16b-2c-44100hz.mp3"</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>metadata_type <span class="ot">=</span> HMetadataType<span class="sc">$</span>text</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>HFile<span class="sc">$</span><span class="fu">decode</span>(fpath, metadata_type)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>fpath <span class="ot">=</span> <span class="st">"../../../testfiles/gs-16b-2c-44100hz.mp3"</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>metadata_type <span class="ot">=</span> HMetadataType<span class="sc">$</span>Text</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>HFile<span class="sc">$</span><span class="fu">metadata</span>(fpath, metadata_type)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 </section>
 </section>
 <section id="params" class="level2">
 <h2 class="anchored" data-anchor-id="params">params</h2>
-<p><code>params(fpath: string) -&gt; atomicvector</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L368">source</a> </span><br>
+<p><code>params(fpath: string) -&gt; atomicvector</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L375">source</a> </span><br>
 </p>
 <p>Get audio parameters from a file.<br>
 Note that this avoids loading the contents into memory, and is therefore useful for querying these parameters from long files.<br>
@@ -463,14 +466,15 @@ The file path as a string.<br>
 </section>
 <section id="examples-3" class="level4">
 <h4 class="anchored" data-anchor-id="examples-3">Examples</h4>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>fpath <span class="ot">=</span> <span class="st">"testfiles/gs-16b-2c-44100hz.flac"</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>HFile<span class="sc">$</span><span class="fu">params</span>(fpath)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>fpath <span class="ot">=</span> <span class="st">"../../../testfiles/gs-16b-2c-44100hz.flac"</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>HFile<span class="sc">$</span><span class="fu">params</span>(fpath)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 </section>
 </section>
 <section id="verify" class="level2">
 <h2 class="anchored" data-anchor-id="verify">verify</h2>
-<p>`verify(fpath: string) -&gt; string <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L404">source</a> </span><br>
+<p>`verify(fpath: string) -&gt; string <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L412">source</a> </span><br>
 </p>
 <p>Verify an audio file, if supported by the decoder.<br>
 The verification is done after the decoding process is finished.<br>
@@ -491,8 +495,9 @@ One of [“passed”, “failed”, “not_supported”]<br>
 </section>
 <section id="examples-4" class="level4">
 <h4 class="anchored" data-anchor-id="examples-4">Examples</h4>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>fpath <span class="ot">=</span> <span class="st">"testfiles/gs-16b-2c-44100hz.flac"</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>HFile<span class="sc">$</span><span class="fu">verify</span>(fpath)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>fpath <span class="ot">=</span> <span class="st">"../../../testfiles/gs-16b-2c-44100hz.flac"</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>HFile<span class="sc">$</span><span class="fu">verify</span>(fpath)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 
 

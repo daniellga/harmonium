@@ -8,7 +8,7 @@ An iterator that decodes audio in streams. \
 
 ## stream
 
-`stream() -> HArray` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L449) </span> \
+`stream() -> HArray` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L458) </span> \
 
 Gets the next wave of frames as an `HArray`. \
 Returns an error if it's end of stream or if an error ocurred in
@@ -22,7 +22,8 @@ The number of frames streamed is the one used as input in the creation of `HDeco
 #### Examples
 
 ```r
-fpath = "testfiles/gs-16b-2c-44100hz.flac"
+library(harmonium)
+fpath = "../../../testfiles/gs-16b-2c-44100hz.flac"
 dtype = HDataType$Float32
 frames = 1000L
 hdecoder_stream = HFile$decode_stream(fpath, frames, dtype)

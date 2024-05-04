@@ -4,7 +4,7 @@ title: HDecodedAudio
 
 ## harray
 
-`harray() -> HArray` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L45) </span> \
+`harray() -> HArray` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L46) </span> \
 
 Get the decoded HArray.
 
@@ -15,7 +15,8 @@ A float HArray. \
 #### Examples
 
 ```r
-fpath = "testfiles/gs-16b-2c-44100hz.flac"
+library(harmonium)
+fpath = "../../../testfiles/gs-16b-2c-44100hz.flac"
 dtype = HDataType$Float32
 hdecodedaudio = HFile$decode(fpath, dtype)
 hdecodedaudio$harray()
@@ -26,7 +27,7 @@ _________
 
 ## sr
 
-`sr() -> integer` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L72) </span> \
+`sr() -> integer` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L74) </span> \
 
 Get the sampling rate of the decoded audio.
 
@@ -38,7 +39,8 @@ An integer. \
 #### Examples
 
 ```r
-fpath = "testfiles/gs-16b-2c-44100hz.flac"
+library(harmonium)
+fpath = "../../../testfiles/gs-16b-2c-44100hz.flac"
 dtype = HDataType$Float32
 hdecodedaudio = HFile$decode(fpath, dtype)
 hdecodedaudio$sr()
@@ -49,7 +51,7 @@ _________
 
 ## invalidate
 
-`invalidate()` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L101) </span> \
+`invalidate()` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L104) </span> \
 
 Replaces the inner value of the external pointer, invalidating it. \
 This function is useful to remove one of the shared references of the inner pointer in rust. \
@@ -57,7 +59,8 @@ This function is useful to remove one of the shared references of the inner poin
 #### Examples
 
 ```r
-fpath = "testfiles/gs-16b-2c-44100hz.flac"
+library(harmonium)
+fpath = "../../../testfiles/gs-16b-2c-44100hz.flac"
 dtype = HDataType$Float32
 hdecodedaudio = HFile$decode(fpath, dtype)
 harray = hdecodedaudio$harray() # now the inner HArray struct has 2 references.

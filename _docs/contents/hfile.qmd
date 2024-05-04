@@ -4,7 +4,7 @@ title: HFile
 
 ## decode
 
-`decode(fpath: string, dtype: HDataType) -> HDecodedAudio` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L139) </span> \
+`decode(fpath: string, dtype: HDataType) -> HDecodedAudio` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L143) </span> \
 
 Decode an audio file, providing its decoded data and the sampling rate. \
 The samples are normalized to fit in the range of \[-1.0, 1.0\].
@@ -25,7 +25,8 @@ An HDecodedAudio containing: \
 #### Examples
 
 ```r
-fpath = "testfiles/gs-16b-2c-44100hz.flac"
+library(harmonium)
+fpath = "../../../testfiles/gs-16b-2c-44100hz.flac"
 dtype = HDataType$Float32
 HFile$decode(fpath, dtype)
 ```
@@ -34,7 +35,7 @@ _________
 
 ## stream
 
-`decode_stream(fpath: string, frames: integer, dtype: HDataType) -> HDecoderStream` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L192) </span> \
+`decode_stream(fpath: string, frames: integer, dtype: HDataType) -> HDecoderStream` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L197) </span> \
 
 Creates an `HDecoderStream`, used as an iterator to stream frames of decoded audio. \
 
@@ -55,7 +56,8 @@ An `HDecoderStream`. \
 #### Examples
 
 ```r
-fpath = "testfiles/gs-16b-2c-44100hz.flac"
+library(harmonium)
+fpath = "../../../testfiles/gs-16b-2c-44100hz.flac"
 dtype = HDataType$Float32
 frames = 1000L
 HFile$decode_stream(fpath, frames, dtype)
@@ -65,7 +67,7 @@ _________
 
 ## metadata
 
-`metadata(fpath: string, metadata_type: HMetadataType) -> list` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L297) </span> \
+`metadata(fpath: string, metadata_type: HMetadataType) -> list` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L303) </span> \
 
 Extract text and visual metadata from a file. \
 Tags that are part of the container format are preferentially extracted. Additional tags that were found while probing will not be extracted. \
@@ -136,16 +138,17 @@ A list of metadata. An empty list will be returned if there is no metadata in th
 #### Examples
 
 ```r
-fpath = "testfiles/gs-16b-2c-44100hz.mp3"
-metadata_type = HMetadataType$text
-HFile$decode(fpath, metadata_type)
+library(harmonium)
+fpath = "../../../testfiles/gs-16b-2c-44100hz.mp3"
+metadata_type = HMetadataType$Text
+HFile$metadata(fpath, metadata_type)
 ```
 
 _________
 
 ## params
 
-`params(fpath: string) -> atomicvector` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L368) </span> \
+`params(fpath: string) -> atomicvector` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L375) </span> \
 
 Get audio parameters from a file. \
 Note that this avoids loading the contents into memory, and is therefore useful for querying these parameters from long files. \
@@ -166,7 +169,8 @@ A double atomic vector containing, in order: \
 #### Examples
 
 ```r
-fpath = "testfiles/gs-16b-2c-44100hz.flac"
+library(harmonium)
+fpath = "../../../testfiles/gs-16b-2c-44100hz.flac"
 HFile$params(fpath)
 ```
 
@@ -174,7 +178,7 @@ _________
 
 ## verify
 
-`verify(fpath: string) -> string <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L404) </span> \
+`verify(fpath: string) -> string <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L412) </span> \
 
 Verify an audio file, if supported by the decoder. \
 The verification is done after the decoding process is finished. \
@@ -192,7 +196,8 @@ One of \["passed", "failed", "not_supported"\] \
 #### Examples
 
 ```r
-fpath = "testfiles/gs-16b-2c-44100hz.flac"
+library(harmonium)
+fpath = "../../../testfiles/gs-16b-2c-44100hz.flac"
 HFile$verify(fpath)
 ```
 
