@@ -448,6 +448,34 @@
     "text": "verify\n`verify(fpath: string) -&gt; string  source \n\nVerify an audio file, if supported by the decoder.\nThe verification is done after the decoding process is finished.\n\n\nArguments\n\nfpath\nThe file path as a string.\n\n\n\n\nReturns\nA string.\nOne of [“passed”, “failed”, “not_supported”]\n\n\n\nExamples\nlibrary(harmonium)\nfpath = \"../../../testfiles/gs-16b-2c-44100hz.flac\"\nHFile$verify(fpath)"
   },
   {
+    "objectID": "contents/hinterpolationtype.html",
+    "href": "contents/hinterpolationtype.html",
+    "title": "HInterpolationType",
+    "section": "",
+    "text": "A interpolation type representation.\nSupports Cubic, Linear, Quadratic and Nearest."
+  },
+  {
+    "objectID": "contents/hinterpolationtype.html#print",
+    "href": "contents/hinterpolationtype.html#print",
+    "title": "HInterpolationType",
+    "section": "print",
+    "text": "print\nprint()  source \n\nPrints the HInterpolationType.\nDifferently from R’s behaviour, print doesn’t return the value invisibly.\n\n\nExamples\nlibrary(harmonium)\ninterpolationtype = HInterpolationType$Cubic\ninterpolationtype$print()\n\n# or similarly:\nprint(interpolationtype)"
+  },
+  {
+    "objectID": "contents/hinterpolationtype.html#eq",
+    "href": "contents/hinterpolationtype.html#eq",
+    "title": "HInterpolationType",
+    "section": "eq",
+    "text": "eq\neq(other: HInterpolationType) -&gt; bool  source \n\nEquality with another HInterpolationType.\n\nArguments\n\nother\nAn HInterpolationType.\n\n\n\n\nReturns\nA bool.\n\n\nExamples\nlibrary(harmonium)\ninterpolationtype1 = HInterpolationType$Cubic\ninterpolationtype2 = HInterpolationType$Cubic\ninterpolationtype1$eq(interpolationtype2) # TRUE\n\n# or similarly:\ninterpolationtype1 == interpolationtype2"
+  },
+  {
+    "objectID": "contents/hinterpolationtype.html#ne",
+    "href": "contents/hinterpolationtype.html#ne",
+    "title": "HInterpolationType",
+    "section": "ne",
+    "text": "ne\nne(other: HInterpolationType) -&gt; bool  source \n\nDifference with another HInterpolationType.\n\nArguments\n\nother\nAn HInterpolationType.\n\n\n\n\nReturns\nA bool.\n\n\nExamples\nlibrary(harmonium)\ninterpolationtype1 = HInterpolationType$Cubic\ninterpolationtype2 = HInterpolationType$Cubic\ninterpolationtype1$ne(interpolationtype2) # FALSE\n\n# or similarly:\ninterpolationtype1 != interpolationtype2"
+  },
+  {
     "objectID": "index.html",
     "href": "index.html",
     "title": "_docs",

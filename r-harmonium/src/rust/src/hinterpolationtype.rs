@@ -29,6 +29,7 @@ impl HInterpolationType {
     /// #### Examples
     ///
     /// ```r
+    /// library(harmonium)
     /// interpolationtype = HInterpolationType$Cubic
     /// interpolationtype$print()
     ///
@@ -62,6 +63,7 @@ impl HInterpolationType {
     /// #### Examples
     ///
     /// ```r
+    /// library(harmonium)
     /// interpolationtype1 = HInterpolationType$Cubic
     /// interpolationtype2 = HInterpolationType$Cubic
     /// interpolationtype1$eq(interpolationtype2) # TRUE
@@ -97,6 +99,7 @@ impl HInterpolationType {
     /// #### Examples
     ///
     /// ```r
+    /// library(harmonium)
     /// interpolationtype1 = HInterpolationType$Cubic
     /// interpolationtype2 = HInterpolationType$Cubic
     /// interpolationtype1$ne(interpolationtype2) # FALSE

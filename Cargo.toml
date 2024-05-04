@@ -15,9 +15,21 @@ realfft = "3.3"
 rubato = "0.15.0"
 ndarray = "0.15.6"
 cached = "0.50"
-symphonia = { version = "0.5.4", features = ["all", "opt-simd"], default-features = false }
-rodio = { git = "https://github.com/RustAudio/rodio.git", rev = "9674ea5", default-features = false }
+symphonia = { version = "0.5.4", default-features = false }
+rodio = { version = "0.17.3", default-features = false }
 num-complex = { version = "0.4" }
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+
+[profile.dev]
+debug = 1 # less precise locations. Reduce size of target dir.
+
+[profile.dev.package."*"]
+debug = false # no debug symbols for deps. Reduce size of target dir.
+opt-level = 2 # makes their code smaller too. Reduce size of target dir.
 
 # https://rust-lang.github.io/packed_simd/perf-guide/target-feature/rustflags.html
 # Using native as the CPU model will cause Rust to generate and optimize code for the CPU running the compiler. It is useful when building programs which you plan to only use locally. This should never be used when the generated programs are meant to be run on other computers, such as when packaging for distribution or cross-compiling.

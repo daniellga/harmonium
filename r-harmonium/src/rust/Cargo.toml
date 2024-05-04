@@ -23,7 +23,7 @@ panic = "unwind" # otherwise savvy crashes R when panic.
 #harmonium-fft = { path = "../../../harmonium-fft" }
 #harmonium-window = { path = "../../../harmonium-window" }
 harmonium-core = { git = "https://github.com/daniellga/harmonium.git" }
-harmonium-io = { git = "https://github.com/daniellga/harmonium.git" }
+harmonium-io = { git = "https://github.com/daniellga/harmonium.git", features = ["all", "opt-simd"] }
 harmonium-resample = { git = "https://github.com/daniellga/harmonium.git" }
 harmonium-fft = { git = "https://github.com/daniellga/harmonium.git" }
 harmonium-window = { git = "https://github.com/daniellga/harmonium.git" }
