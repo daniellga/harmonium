@@ -9,7 +9,7 @@ Supports `Cubic`, `Linear`, `Quadratic` and `Nearest`. \
 
 ## print
 
-`print()` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hinterpolationtype.rs#L41) </span> \
+`print()` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hinterpolationtype.rs#L42) </span> \
 
 Prints the `HInterpolationType`. \
 Differently from R's behaviour, `print` doesn't return the value invisibly. \
@@ -17,6 +17,7 @@ Differently from R's behaviour, `print` doesn't return the value invisibly. \
 #### Examples
 
 ```r
+library(harmonium)
 interpolationtype = HInterpolationType$Cubic
 interpolationtype$print()
 
@@ -28,7 +29,7 @@ _________
 
 ## eq
 
-`eq(other: HInterpolationType) -> bool` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hinterpolationtype.rs#L75) </span> \
+`eq(other: HInterpolationType) -> bool` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hinterpolationtype.rs#L77) </span> \
 
 Equality with another `HInterpolationType`.
 
@@ -44,6 +45,7 @@ A `bool`.
 #### Examples
 
 ```r
+library(harmonium)
 interpolationtype1 = HInterpolationType$Cubic
 interpolationtype2 = HInterpolationType$Cubic
 interpolationtype1$eq(interpolationtype2) # TRUE
@@ -56,7 +58,7 @@ _________
 
 ## ne
 
-`ne(other: HInterpolationType) -> bool` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hinterpolationtype.rs#L110) </span> \
+`ne(other: HInterpolationType) -> bool` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hinterpolationtype.rs#L113) </span> \
 
 Difference with another `HInterpolationType`.
 
@@ -72,6 +74,7 @@ A `bool`.
 #### Examples
 
 ```r
+library(harmonium)
 interpolationtype1 = HInterpolationType$Cubic
 interpolationtype2 = HInterpolationType$Cubic
 interpolationtype1$ne(interpolationtype2) # FALSE

@@ -678,7 +678,7 @@
     "href": "contents/hinterpolationtype.html#print",
     "title": "HInterpolationType",
     "section": "print",
-    "text": "print\nprint()  source \n\nPrints the HInterpolationType.\nDifferently from R’s behaviour, print doesn’t return the value invisibly.\n\n\nExamples\ninterpolationtype = HInterpolationType$Cubic\ninterpolationtype$print()\n\n# or similarly:\nprint(interpolationtype)",
+    "text": "print\nprint()  source \n\nPrints the HInterpolationType.\nDifferently from R’s behaviour, print doesn’t return the value invisibly.\n\n\nExamples\nlibrary(harmonium)\ninterpolationtype = HInterpolationType$Cubic\ninterpolationtype$print()\n\n# or similarly:\nprint(interpolationtype)",
     "crumbs": [
       "Classes",
       "HInterpolationType"
@@ -689,7 +689,7 @@
     "href": "contents/hinterpolationtype.html#eq",
     "title": "HInterpolationType",
     "section": "eq",
-    "text": "eq\neq(other: HInterpolationType) -&gt; bool  source \n\nEquality with another HInterpolationType.\n\nArguments\n\nother\nAn HInterpolationType.\n\n\n\n\nReturns\nA bool.\n\n\nExamples\ninterpolationtype1 = HInterpolationType$Cubic\ninterpolationtype2 = HInterpolationType$Cubic\ninterpolationtype1$eq(interpolationtype2) # TRUE\n\n# or similarly:\ninterpolationtype1 == interpolationtype2",
+    "text": "eq\neq(other: HInterpolationType) -&gt; bool  source \n\nEquality with another HInterpolationType.\n\nArguments\n\nother\nAn HInterpolationType.\n\n\n\n\nReturns\nA bool.\n\n\nExamples\nlibrary(harmonium)\ninterpolationtype1 = HInterpolationType$Cubic\ninterpolationtype2 = HInterpolationType$Cubic\ninterpolationtype1$eq(interpolationtype2) # TRUE\n\n# or similarly:\ninterpolationtype1 == interpolationtype2",
     "crumbs": [
       "Classes",
       "HInterpolationType"
@@ -700,7 +700,7 @@
     "href": "contents/hinterpolationtype.html#ne",
     "title": "HInterpolationType",
     "section": "ne",
-    "text": "ne\nne(other: HInterpolationType) -&gt; bool  source \n\nDifference with another HInterpolationType.\n\nArguments\n\nother\nAn HInterpolationType.\n\n\n\n\nReturns\nA bool.\n\n\nExamples\ninterpolationtype1 = HInterpolationType$Cubic\ninterpolationtype2 = HInterpolationType$Cubic\ninterpolationtype1$ne(interpolationtype2) # FALSE\n\n# or similarly:\ninterpolationtype1 != interpolationtype2",
+    "text": "ne\nne(other: HInterpolationType) -&gt; bool  source \n\nDifference with another HInterpolationType.\n\nArguments\n\nother\nAn HInterpolationType.\n\n\n\n\nReturns\nA bool.\n\n\nExamples\nlibrary(harmonium)\ninterpolationtype1 = HInterpolationType$Cubic\ninterpolationtype2 = HInterpolationType$Cubic\ninterpolationtype1$ne(interpolationtype2) # FALSE\n\n# or similarly:\ninterpolationtype1 != interpolationtype2",
     "crumbs": [
       "Classes",
       "HInterpolationType"
