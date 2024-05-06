@@ -16,7 +16,7 @@ rubato = "0.15.0"
 ndarray = "0.15.6"
 cached = "0.50"
 symphonia = { version = "0.5.4", default-features = false }
-rodio = { version = "0.17.3", default-features = false }
+rodio = { version = "0.18.0", default-features = false }
 num-complex = { version = "0.4" }
 
 harmonium-core = { path = "harmonium-core", default-features = false }
