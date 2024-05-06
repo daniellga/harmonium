@@ -14,7 +14,7 @@ rustfft = "6.1"
 realfft = "3.3"
 rubato = "0.15.0"
 ndarray = "0.15.6"
-cached = "0.50"
+cached = "0.51"
 symphonia = { version = "0.5.4", default-features = false }
 rodio = { version = "0.17.3", default-features = false }
 num-complex = { version = "0.4" }
