@@ -1,3 +1,5 @@
+use std::time::Duration;
+
 use harmonium_core::{
     audioop::{Audio, AudioOp},
     errors::{HError, HResult},
@@ -98,16 +100,30 @@ impl HAudioSink {
         Ok(())
     }
 
-    /// Resumes playback of a paused sink.
-    /// No effect if not paused.
-    pub fn play(&self) {
-        self.sink.play();
+    /// Removes all currently loaded `Source`s from the `Sink` and pauses it.
+    pub fn clear(&self) {
+        self.sink.clear()
     }
 
-    /// Stops the sink by emptying the queue.
-    /// The sink will keep its previous state (play or pause).
-    pub fn stop(&self) {
-        self.sink.stop();
+    /// Destroys the sink without stopping the sounds that are still playing.
+    pub fn detach(self) {
+        self.sink.detach();
+    }
+
+    /// Returns true if this sink has no more sounds to play.
+    pub fn is_empty(&self) -> bool {
+        self.sink.empty()
+    }
+
+    /// Gets if a sink is paused.
+    /// Sinks can be paused and resumed using pause() and play(). This returns true if the sink is paused.
+    pub fn is_paused(&self) -> bool {
+        self.sink.is_paused()
+    }
+
+    /// Returns the number of sounds currently in the queue.
+    pub fn len(&self) -> usize {
+        self.sink.len()
     }
 
     /// Pauses playback of this sink.
@@ -117,28 +133,10 @@ impl HAudioSink {
         self.sink.pause();
     }
 
-    /// Gets if a sink is paused.
-    /// Sinks can be paused and resumed using pause() and play(). This returns true if the sink is paused.
-    pub fn is_paused(&self) -> bool {
-        self.sink.is_paused()
-    }
-
-    /// Gets the volume of the sound.
-    /// The value 1.0 is the “normal” volume (unfiltered input). Any value other than 1.0 will multiply each sample by this value.
-    pub fn volume(&self) -> f32 {
-        self.sink.volume()
-    }
-
-    /// Changes the volume of the sound.
-    /// The value 1.0 is the “normal” volume (unfiltered input). Any value other than 1.0 will multiply each sample by this value.
-    pub fn set_volume(&self, value: f32) {
-        self.sink.set_volume(value);
-    }
-
-    /// Gets the speed of the sound.
-    /// The value 1.0 is the “normal” speed (unfiltered input). Any value other than 1.0 will change the play speed of the sound.
-    pub fn speed(&self) -> f32 {
-        self.sink.speed()
+    /// Resumes playback of a paused sink.
+    /// No effect if not paused.
+    pub fn play(&self) {
+        self.sink.play();
     }
 
     /// Changes the speed of the sound.
@@ -147,29 +145,10 @@ impl HAudioSink {
         self.sink.set_speed(value);
     }
 
-    /// Destroys the sink without stopping the sounds that are still playing.
-    pub fn detach(self) {
-        self.sink.detach();
-    }
-
-    /// Sleeps the current thread until the sound ends.
-    pub fn sleep_until_end(&self) {
-        self.sink.sleep_until_end();
-    }
-
-    /// Returns the number of sounds currently in the queue.
-    pub fn len(&self) -> usize {
-        self.sink.len()
-    }
-
-    /// Returns true if this sink has no more sounds to play.
-    pub fn is_empty(&self) -> bool {
-        self.sink.empty()
-    }
-
-    /// Removes all currently loaded `Source`s from the `Sink` and pauses it.
-    pub fn clear(&self) {
-        self.sink.clear()
+    /// Changes the volume of the sound.
+    /// The value 1.0 is the “normal” volume (unfiltered input). Any value other than 1.0 will multiply each sample by this value.
+    pub fn set_volume(&self, value: f32) {
+        self.sink.set_volume(value);
     }
 
     /// Skips to the next `Source` in the `Sink`.
@@ -177,6 +156,42 @@ impl HAudioSink {
     /// as if it had finished playing a `Source` all the way through.
     pub fn skip_one(&self) {
         self.sink.skip_one()
+    }
+
+    /// Sleeps the current thread until the sound ends.
+    pub fn sleep_until_end(&self) {
+        self.sink.sleep_until_end();
+    }
+
+    /// Gets the speed of the sound.
+    /// The value 1.0 is the “normal” speed (unfiltered input). Any value other than 1.0 will change the play speed of the sound.
+    pub fn speed(&self) -> f32 {
+        self.sink.speed()
+    }
+
+    /// Stops the sink by emptying the queue.
+    /// The sink will keep its previous state (play or pause).
+    pub fn stop(&self) {
+        self.sink.stop();
+    }
+
+    /// Attempts to seek to a given position in the current source.
+    /// This blocks between 0 and ~5 milliseconds.
+    /// As long as the duration of the source is known, seek is guaranteed to saturate at the end of the source. For example given a
+    /// source that reports a total duration of 42 seconds calling `try_seek()` with 60 seconds as argument will seek to 42 seconds.
+    ///
+    /// This function will return an error if:
+    /// - one of the underlying sources does not support seeking.
+    /// - an implementation ran into one during the seek.
+    /// - when seeking beyond the end of a source when the duration of the source is not known.
+    pub fn try_seek(&self, pos: Duration) -> HResult<()> {
+        self.sink.try_seek(pos).map_err(HError::from)
+    }
+
+    /// Gets the volume of the sound.
+    /// The value 1.0 is the “normal” volume (unfiltered input). Any value other than 1.0 will multiply each sample by this value.
+    pub fn volume(&self) -> f32 {
+        self.sink.volume()
     }
 }
 

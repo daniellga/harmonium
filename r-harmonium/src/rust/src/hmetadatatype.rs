@@ -29,6 +29,7 @@ impl HMetadataType {
     /// #### Examples
     ///
     /// ```r
+    /// library(harmonium)
     /// metadatatype = HMetadataType$All
     /// metadatatype$print()
     ///
@@ -62,6 +63,7 @@ impl HMetadataType {
     /// #### Examples
     ///
     /// ```r
+    /// library(harmonium)
     /// metadatatype1 = HMetadataType$All
     /// metadatatype2 = HMetadataType$All
     /// metadatatype1$eq(metadatatype2) # TRUE
@@ -97,6 +99,7 @@ impl HMetadataType {
     /// #### Examples
     ///
     /// ```r
+    /// library(harmonium)
     /// metadatatype1 = HMetadataType$All
     /// metadatatype2 = HMetadataType$All
     /// metadatatype1$ne(metadatatype2) # FALSE

@@ -140,68 +140,8 @@ SEXP savvy_HAudioSink_append_from_file__impl(SEXP self__, SEXP fpath) {
     return handle_result(res);
 }
 
-SEXP savvy_HAudioSink_play__impl(SEXP self__) {
-    SEXP res = savvy_HAudioSink_play__ffi(self__);
-    return handle_result(res);
-}
-
-SEXP savvy_HAudioSink_stop__impl(SEXP self__) {
-    SEXP res = savvy_HAudioSink_stop__ffi(self__);
-    return handle_result(res);
-}
-
-SEXP savvy_HAudioSink_pause__impl(SEXP self__) {
-    SEXP res = savvy_HAudioSink_pause__ffi(self__);
-    return handle_result(res);
-}
-
-SEXP savvy_HAudioSink_is_paused__impl(SEXP self__) {
-    SEXP res = savvy_HAudioSink_is_paused__ffi(self__);
-    return handle_result(res);
-}
-
-SEXP savvy_HAudioSink_volume__impl(SEXP self__) {
-    SEXP res = savvy_HAudioSink_volume__ffi(self__);
-    return handle_result(res);
-}
-
-SEXP savvy_HAudioSink_set_volume__impl(SEXP self__, SEXP value) {
-    SEXP res = savvy_HAudioSink_set_volume__ffi(self__, value);
-    return handle_result(res);
-}
-
-SEXP savvy_HAudioSink_speed__impl(SEXP self__) {
-    SEXP res = savvy_HAudioSink_speed__ffi(self__);
-    return handle_result(res);
-}
-
-SEXP savvy_HAudioSink_set_speed__impl(SEXP self__, SEXP value) {
-    SEXP res = savvy_HAudioSink_set_speed__ffi(self__, value);
-    return handle_result(res);
-}
-
-SEXP savvy_HAudioSink_sleep_until_end__impl(SEXP self__) {
-    SEXP res = savvy_HAudioSink_sleep_until_end__ffi(self__);
-    return handle_result(res);
-}
-
-SEXP savvy_HAudioSink_len__impl(SEXP self__) {
-    SEXP res = savvy_HAudioSink_len__ffi(self__);
-    return handle_result(res);
-}
-
-SEXP savvy_HAudioSink_is_empty__impl(SEXP self__) {
-    SEXP res = savvy_HAudioSink_is_empty__ffi(self__);
-    return handle_result(res);
-}
-
-SEXP savvy_HAudioSink_clear__impl(SEXP self__) {
-    SEXP res = savvy_HAudioSink_clear__ffi(self__);
-    return handle_result(res);
-}
-
-SEXP savvy_HAudioSink_skip_one__impl(SEXP self__) {
-    SEXP res = savvy_HAudioSink_skip_one__ffi(self__);
+SEXP savvy_HAudioSink_audio_default_device__impl(void) {
+    SEXP res = savvy_HAudioSink_audio_default_device__ffi();
     return handle_result(res);
 }
 
@@ -210,13 +150,78 @@ SEXP savvy_HAudioSink_audio_output_devices__impl(void) {
     return handle_result(res);
 }
 
-SEXP savvy_HAudioSink_audio_default_device__impl(void) {
-    SEXP res = savvy_HAudioSink_audio_default_device__ffi();
+SEXP savvy_HAudioSink_audio_supported_configs__impl(void) {
+    SEXP res = savvy_HAudioSink_audio_supported_configs__ffi();
     return handle_result(res);
 }
 
-SEXP savvy_HAudioSink_audio_supported_configs__impl(void) {
-    SEXP res = savvy_HAudioSink_audio_supported_configs__ffi();
+SEXP savvy_HAudioSink_clear__impl(SEXP self__) {
+    SEXP res = savvy_HAudioSink_clear__ffi(self__);
+    return handle_result(res);
+}
+
+SEXP savvy_HAudioSink_is_empty__impl(SEXP self__) {
+    SEXP res = savvy_HAudioSink_is_empty__ffi(self__);
+    return handle_result(res);
+}
+
+SEXP savvy_HAudioSink_is_paused__impl(SEXP self__) {
+    SEXP res = savvy_HAudioSink_is_paused__ffi(self__);
+    return handle_result(res);
+}
+
+SEXP savvy_HAudioSink_len__impl(SEXP self__) {
+    SEXP res = savvy_HAudioSink_len__ffi(self__);
+    return handle_result(res);
+}
+
+SEXP savvy_HAudioSink_pause__impl(SEXP self__) {
+    SEXP res = savvy_HAudioSink_pause__ffi(self__);
+    return handle_result(res);
+}
+
+SEXP savvy_HAudioSink_play__impl(SEXP self__) {
+    SEXP res = savvy_HAudioSink_play__ffi(self__);
+    return handle_result(res);
+}
+
+SEXP savvy_HAudioSink_set_speed__impl(SEXP self__, SEXP value) {
+    SEXP res = savvy_HAudioSink_set_speed__ffi(self__, value);
+    return handle_result(res);
+}
+
+SEXP savvy_HAudioSink_set_volume__impl(SEXP self__, SEXP value) {
+    SEXP res = savvy_HAudioSink_set_volume__ffi(self__, value);
+    return handle_result(res);
+}
+
+SEXP savvy_HAudioSink_skip_one__impl(SEXP self__) {
+    SEXP res = savvy_HAudioSink_skip_one__ffi(self__);
+    return handle_result(res);
+}
+
+SEXP savvy_HAudioSink_sleep_until_end__impl(SEXP self__) {
+    SEXP res = savvy_HAudioSink_sleep_until_end__ffi(self__);
+    return handle_result(res);
+}
+
+SEXP savvy_HAudioSink_speed__impl(SEXP self__) {
+    SEXP res = savvy_HAudioSink_speed__ffi(self__);
+    return handle_result(res);
+}
+
+SEXP savvy_HAudioSink_stop__impl(SEXP self__) {
+    SEXP res = savvy_HAudioSink_stop__ffi(self__);
+    return handle_result(res);
+}
+
+SEXP savvy_HAudioSink_try_seek__impl(SEXP self__, SEXP pos) {
+    SEXP res = savvy_HAudioSink_try_seek__ffi(self__, pos);
+    return handle_result(res);
+}
+
+SEXP savvy_HAudioSink_volume__impl(SEXP self__) {
+    SEXP res = savvy_HAudioSink_volume__ffi(self__);
     return handle_result(res);
 }
 
@@ -509,22 +514,23 @@ static const R_CallMethodDef CallEntries[] = {
     {"savvy_HAudioSink_new__impl", (DL_FUNC) &savvy_HAudioSink_new__impl, 0},
     {"savvy_HAudioSink_append_from_harray__impl", (DL_FUNC) &savvy_HAudioSink_append_from_harray__impl, 3},
     {"savvy_HAudioSink_append_from_file__impl", (DL_FUNC) &savvy_HAudioSink_append_from_file__impl, 2},
-    {"savvy_HAudioSink_play__impl", (DL_FUNC) &savvy_HAudioSink_play__impl, 1},
-    {"savvy_HAudioSink_stop__impl", (DL_FUNC) &savvy_HAudioSink_stop__impl, 1},
-    {"savvy_HAudioSink_pause__impl", (DL_FUNC) &savvy_HAudioSink_pause__impl, 1},
-    {"savvy_HAudioSink_is_paused__impl", (DL_FUNC) &savvy_HAudioSink_is_paused__impl, 1},
-    {"savvy_HAudioSink_volume__impl", (DL_FUNC) &savvy_HAudioSink_volume__impl, 1},
-    {"savvy_HAudioSink_set_volume__impl", (DL_FUNC) &savvy_HAudioSink_set_volume__impl, 2},
-    {"savvy_HAudioSink_speed__impl", (DL_FUNC) &savvy_HAudioSink_speed__impl, 1},
-    {"savvy_HAudioSink_set_speed__impl", (DL_FUNC) &savvy_HAudioSink_set_speed__impl, 2},
-    {"savvy_HAudioSink_sleep_until_end__impl", (DL_FUNC) &savvy_HAudioSink_sleep_until_end__impl, 1},
-    {"savvy_HAudioSink_len__impl", (DL_FUNC) &savvy_HAudioSink_len__impl, 1},
-    {"savvy_HAudioSink_is_empty__impl", (DL_FUNC) &savvy_HAudioSink_is_empty__impl, 1},
-    {"savvy_HAudioSink_clear__impl", (DL_FUNC) &savvy_HAudioSink_clear__impl, 1},
-    {"savvy_HAudioSink_skip_one__impl", (DL_FUNC) &savvy_HAudioSink_skip_one__impl, 1},
-    {"savvy_HAudioSink_audio_output_devices__impl", (DL_FUNC) &savvy_HAudioSink_audio_output_devices__impl, 0},
     {"savvy_HAudioSink_audio_default_device__impl", (DL_FUNC) &savvy_HAudioSink_audio_default_device__impl, 0},
+    {"savvy_HAudioSink_audio_output_devices__impl", (DL_FUNC) &savvy_HAudioSink_audio_output_devices__impl, 0},
     {"savvy_HAudioSink_audio_supported_configs__impl", (DL_FUNC) &savvy_HAudioSink_audio_supported_configs__impl, 0},
+    {"savvy_HAudioSink_clear__impl", (DL_FUNC) &savvy_HAudioSink_clear__impl, 1},
+    {"savvy_HAudioSink_is_empty__impl", (DL_FUNC) &savvy_HAudioSink_is_empty__impl, 1},
+    {"savvy_HAudioSink_is_paused__impl", (DL_FUNC) &savvy_HAudioSink_is_paused__impl, 1},
+    {"savvy_HAudioSink_len__impl", (DL_FUNC) &savvy_HAudioSink_len__impl, 1},
+    {"savvy_HAudioSink_pause__impl", (DL_FUNC) &savvy_HAudioSink_pause__impl, 1},
+    {"savvy_HAudioSink_play__impl", (DL_FUNC) &savvy_HAudioSink_play__impl, 1},
+    {"savvy_HAudioSink_set_speed__impl", (DL_FUNC) &savvy_HAudioSink_set_speed__impl, 2},
+    {"savvy_HAudioSink_set_volume__impl", (DL_FUNC) &savvy_HAudioSink_set_volume__impl, 2},
+    {"savvy_HAudioSink_skip_one__impl", (DL_FUNC) &savvy_HAudioSink_skip_one__impl, 1},
+    {"savvy_HAudioSink_sleep_until_end__impl", (DL_FUNC) &savvy_HAudioSink_sleep_until_end__impl, 1},
+    {"savvy_HAudioSink_speed__impl", (DL_FUNC) &savvy_HAudioSink_speed__impl, 1},
+    {"savvy_HAudioSink_stop__impl", (DL_FUNC) &savvy_HAudioSink_stop__impl, 1},
+    {"savvy_HAudioSink_try_seek__impl", (DL_FUNC) &savvy_HAudioSink_try_seek__impl, 2},
+    {"savvy_HAudioSink_volume__impl", (DL_FUNC) &savvy_HAudioSink_volume__impl, 1},
     {"savvy_HDataType_print__impl", (DL_FUNC) &savvy_HDataType_print__impl, 1},
     {"savvy_HDataType_eq__impl", (DL_FUNC) &savvy_HDataType_eq__impl, 2},
     {"savvy_HDataType_ne__impl", (DL_FUNC) &savvy_HDataType_ne__impl, 2},
@@ -582,6 +588,9 @@ static const R_CallMethodDef CallEntries[] = {
 };
 
 void R_init_harmonium(DllInfo *dll) {
-  R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
-  R_useDynamicSymbols(dll, FALSE);
+    R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
+    R_useDynamicSymbols(dll, FALSE);
+
+    // Functions for initialzation, if any.
+
 }

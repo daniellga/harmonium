@@ -93,6 +93,12 @@ impl From<rodio::DevicesError> for HError {
     }
 }
 
+impl From<rodio::source::SeekError> for HError {
+    fn from(err: rodio::source::SeekError) -> Self {
+        HError::PlayError(err.to_string())
+    }
+}
+
 impl From<rodio::cpal::DeviceNameError> for HError {
     fn from(err: rodio::cpal::DeviceNameError) -> Self {
         HError::PlayError(err.to_string())

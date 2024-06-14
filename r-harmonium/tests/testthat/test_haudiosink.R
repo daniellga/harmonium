@@ -16,11 +16,12 @@ test_that(
     expect_true(haudiosink$is_empty())
     expect_equal(haudiosink$len(), 0)
     haudiosink$append_from_file(filepath)
+    expect_no_error(haudiosink$try_seek(4))
     expect_false(haudiosink$is_empty())
     haudiosink$append_from_file(filepath)
     expect_equal(haudiosink$len(), 2)
     haudiosink$skip_one()
-    haudiosink$len() == 1
+    expect_equal(haudiosink$len(), 1)
     haudiosink$set_speed(2)
     haudiosink$set_volume(2)
     expect_equal(haudiosink$speed(), 2)

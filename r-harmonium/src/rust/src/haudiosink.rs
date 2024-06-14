@@ -140,12 +140,95 @@ impl HAudioSink {
     }
 
     /// HAudioSink
-    /// ## play
+    /// ## audio_default_device
     ///
-    /// `play()` \
+    /// `audio_default_device() -> string` \
     ///
-    /// Resumes playback of a paused sink. \
-    /// No effect if not paused. \
+    /// Informs the default audio output device. \
+    ///
+    /// #### Returns
+    ///
+    /// A `string`. \
+    ///
+    /// #### Examples
+    ///
+    /// ```r
+    /// library(harmonium)
+    /// HAudioSink$audio_default_device()
+    /// ```
+    ///
+    /// _________
+    ///
+    fn audio_default_device() -> savvy::Result<Sexp> {
+        let default_device = play::audio_default_device().map_err(HErrorR::from)?;
+        let string_sexp = OwnedStringSexp::try_from(default_device)?;
+        string_sexp.into()
+    }
+
+    /// HAudioSink
+    /// ## audio_output_devices
+    ///
+    /// `audio_output_devices() -> atomicvector` \
+    ///
+    /// Provides a list of available audio output devices. \
+    ///
+    /// #### Returns
+    ///
+    /// A character atomic vector. \
+    ///
+    /// #### Examples
+    ///
+    /// ```r
+    /// library(harmonium)
+    /// HAudioSink$audio_output_devices()
+    /// ```
+    ///
+    /// _________
+    ///
+    fn audio_output_devices() -> savvy::Result<Sexp> {
+        let output_devices = play::audio_output_devices().map_err(HErrorR::from)?;
+        let string_sexp = OwnedStringSexp::try_from(output_devices)?;
+        string_sexp.into()
+    }
+
+    /// HAudioSink
+    /// ## audio_supported_configs
+    ///
+    /// `audio_supported_configs() -> atomicvector` \
+    ///
+    /// Provides the supported configurations for the default audio output device. \
+    /// The following informations are given: \
+    ///
+    /// * Number of channels. \
+    /// * Minimum and maximum value for the sampling rate. \
+    /// * Minimum and maximum value for the buffer size. \
+    /// * Type of data expected by the device. \
+    ///
+    /// #### Returns
+    ///
+    /// A character atomic vector. \
+    ///
+    /// #### Examples
+    ///
+    /// ```r
+    /// library(harmonium)
+    /// HAudioSink$audio_supported_configs()
+    /// ```
+    ///
+    /// _________
+    ///
+    fn audio_supported_configs() -> savvy::Result<Sexp> {
+        let supported_configs = play::audio_supported_configs().map_err(HErrorR::from)?;
+        let string_sexp = OwnedStringSexp::try_from(supported_configs)?;
+        string_sexp.into()
+    }
+
+    /// HAudioSink
+    /// ## clear
+    ///
+    /// `clear()` \
+    ///
+    /// Removes all currently loaded `Source`s from the `Sink` and pauses it. \
     ///
     /// #### Examples
     ///
@@ -153,72 +236,43 @@ impl HAudioSink {
     /// library(harmonium)
     /// haudiosink = HAudioSink$new()
     /// haudiosink$append_from_file(fpath = "./r-harmonium/testfiles/gs-16b-2c-44100hz.wav")
-    /// haudiosink$pause()
+    /// haudiosink$clear()
+    /// haudiosink$is_empty() # TRUE
     /// haudiosink$is_paused() # TRUE
-    /// haudiosink$play()
-    /// haudiosink$is_paused() # FALSE
     /// ```
     ///
     /// _________
     ///
-    fn play(&self) -> savvy::Result<()> {
-        self.0.play();
+    fn clear(&self) -> savvy::Result<()> {
+        self.0.clear();
         Ok(())
     }
 
     /// HAudioSink
-    /// ## stop
+    /// ## is_empty
     ///
-    /// `stop()` \
+    /// `is_empty() -> bool` \
     ///
-    /// Stops the sink by emptying the queue. \
-    /// The sink will keep its previous state (play or pause). \
+    /// Returns true if this sink has no more sounds to play. \
     ///
-    /// #### Examples
+    /// #### Returns
     ///
-    /// ```r
-    /// library(harmonium)
-    /// haudiosink = HAudioSink$new()
-    /// haudiosink$append_from_file(fpath = "./r-harmonium/testfiles/gs-16b-2c-44100hz.wav")
-    /// haudiosink$append_from_file(fpath = "./r-harmonium/testfiles/gs-16b-2c-44100hz.wav")
-    /// haudiosink$len() == 2 # TRUE
-    /// haudiosink$stop()
-    /// haudiosink$len() == 0 # TRUE
-    /// haudiosink$is_paused() # FALSE
-    /// ```
-    ///
-    /// _________
-    ///
-    fn stop(&self) -> savvy::Result<()> {
-        self.0.stop();
-        Ok(())
-    }
-
-    /// HAudioSink
-    /// ## pause
-    ///
-    /// `pause()` \
-    ///
-    /// Pauses playback of this sink. \
-    /// No effect if already paused. \
-    /// A paused sink can be resumed with play(). \
+    /// A `bool`. \
     ///
     /// #### Examples
     ///
     /// ```r
     /// library(harmonium)
     /// haudiosink = HAudioSink$new()
-    /// haudiosink$append_from_file(fpath = "./r-harmonium/testfiles/gs-16b-2c-44100hz.wav")
-    /// haudiosink$is_paused() # FALSE
-    /// haudiosink$pause()
-    /// haudiosink$is_paused() # TRUE
+    /// haudiosink$is_empty() # TRUE
     /// ```
     ///
     /// _________
     ///
-    fn pause(&self) -> savvy::Result<()> {
-        self.0.pause();
-        Ok(())
+    fn is_empty(&self) -> savvy::Result<Sexp> {
+        let is_empty = self.0.is_empty();
+        let logical_sexp: OwnedLogicalSexp = is_empty.try_into()?;
+        logical_sexp.into()
     }
 
     /// HAudioSink
@@ -253,46 +307,42 @@ impl HAudioSink {
     }
 
     /// HAudioSink
-    /// ## volume
+    /// ## len
     ///
-    /// `volume() -> double` \
+    /// `len() -> integer` \
     ///
-    /// Gets the volume of the sound. \
-    /// The value 1.0 is the “normal” volume (unfiltered input). Any value other than 1.0 will multiply each sample by this value. \
+    /// Returns the number of sounds currently in the queue. \
     ///
     /// #### Returns
     ///
-    /// A `double`. \
+    /// An `integer`. \
     ///
     /// #### Examples
     ///
     /// ```r
     /// library(harmonium)
     /// haudiosink = HAudioSink$new()
+    /// haudiosink$len() == 0 # TRUE
     /// haudiosink$append_from_file(fpath = "./r-harmonium/testfiles/gs-16b-2c-44100hz.wav")
-    /// haudiosink$volume()
+    /// haudiosink$append_from_file(fpath = "./r-harmonium/testfiles/gs-16b-2c-44100hz.wav")
+    /// haudiosink$len() == 2 # TRUE
     /// ```
     ///
     /// _________
     ///
-    fn volume(&self) -> savvy::Result<Sexp> {
-        let volume = self.0.volume() as f64;
-        let real_sexp: OwnedRealSexp = volume.try_into()?;
-        real_sexp.into()
+    fn len(&self) -> savvy::Result<Sexp> {
+        let integer_sexp: OwnedIntegerSexp = try_from_usize_to_int_sexp(self.0.len())?;
+        integer_sexp.into()
     }
 
     /// HAudioSink
-    /// ## set_volume
+    /// ## pause
     ///
-    /// `set_volume(value: double)` \
+    /// `pause()` \
     ///
-    /// Changes the volume of the sound. \
-    /// The value 1.0 is the “normal” volume (unfiltered input). Any value other than 1.0 will multiply each sample by this value. \
-    ///
-    /// #### Arguments
-    ///
-    /// * `value` \
-    /// A `double`. \
+    /// Pauses playback of this sink. \
+    /// No effect if already paused. \
+    /// A paused sink can be resumed with play(). \
     ///
     /// #### Examples
     ///
@@ -300,29 +350,25 @@ impl HAudioSink {
     /// library(harmonium)
     /// haudiosink = HAudioSink$new()
     /// haudiosink$append_from_file(fpath = "./r-harmonium/testfiles/gs-16b-2c-44100hz.wav")
-    /// haudiosink$set_volume(2)
-    /// haudiosink$volume() == 2 # TRUE
+    /// haudiosink$is_paused() # FALSE
+    /// haudiosink$pause()
+    /// haudiosink$is_paused() # TRUE
     /// ```
     ///
     /// _________
     ///
-    fn set_volume(&self, value: Sexp) -> savvy::Result<()> {
-        let value: f64 = value.to_scalar()?;
-        self.0.set_volume(value as f32);
+    fn pause(&self) -> savvy::Result<()> {
+        self.0.pause();
         Ok(())
     }
 
     /// HAudioSink
-    /// ## speed
+    /// ## play
     ///
-    /// `speed() -> double` \
+    /// `play()` \
     ///
-    /// Gets the speed of the sound. \
-    /// The value 1.0 is the “normal” speed (unfiltered input). Any value other than 1.0 will change the play speed of the sound. \
-    ///
-    /// #### Returns
-    ///
-    /// A `double`. \
+    /// Resumes playback of a paused sink. \
+    /// No effect if not paused. \
     ///
     /// #### Examples
     ///
@@ -330,15 +376,17 @@ impl HAudioSink {
     /// library(harmonium)
     /// haudiosink = HAudioSink$new()
     /// haudiosink$append_from_file(fpath = "./r-harmonium/testfiles/gs-16b-2c-44100hz.wav")
-    /// haudiosink$speed()
+    /// haudiosink$pause()
+    /// haudiosink$is_paused() # TRUE
+    /// haudiosink$play()
+    /// haudiosink$is_paused() # FALSE
     /// ```
     ///
     /// _________
     ///
-    fn speed(&self) -> savvy::Result<Sexp> {
-        let speed = self.0.speed() as f64;
-        let real_sexp: OwnedRealSexp = speed.try_into()?;
-        real_sexp.into()
+    fn play(&self) -> savvy::Result<()> {
+        self.0.play();
+        Ok(())
     }
 
     /// HAudioSink
@@ -373,90 +421,17 @@ impl HAudioSink {
     }
 
     /// HAudioSink
-    /// ## sleep_until_end
+    /// ## set_volume
     ///
-    /// `sleep_until_end()` \
+    /// `set_volume(value: double)` \
     ///
-    /// Sleeps the current thread until the sound ends. \
+    /// Changes the volume of the sound. \
+    /// The value 1.0 is the “normal” volume (unfiltered input). Any value other than 1.0 will multiply each sample by this value. \
     ///
-    /// #### Examples
+    /// #### Arguments
     ///
-    /// ```r
-    /// library(harmonium)
-    /// haudiosink = HAudioSink$new()
-    /// haudiosink$append_from_file(fpath = "./r-harmonium/testfiles/gs-16b-2c-44100hz.wav")
-    /// haudiosink$sleep_until_end()
-    /// ```
-    ///
-    /// _________
-    ///
-    fn sleep_until_end(&self) -> savvy::Result<()> {
-        self.0.sleep_until_end();
-        Ok(())
-    }
-
-    /// HAudioSink
-    /// ## len
-    ///
-    /// `len() -> integer` \
-    ///
-    /// Returns the number of sounds currently in the queue. \
-    ///
-    /// #### Returns
-    ///
-    /// An `integer`. \
-    ///
-    /// #### Examples
-    ///
-    /// ```r
-    /// library(harmonium)
-    /// haudiosink = HAudioSink$new()
-    /// haudiosink$len() == 0 # TRUE
-    /// haudiosink$append_from_file(fpath = "./r-harmonium/testfiles/gs-16b-2c-44100hz.wav")
-    /// haudiosink$append_from_file(fpath = "./r-harmonium/testfiles/gs-16b-2c-44100hz.wav")
-    /// haudiosink$len() == 2 # TRUE
-    /// ```
-    ///
-    /// _________
-    ///
-    fn len(&self) -> savvy::Result<Sexp> {
-        let integer_sexp: OwnedIntegerSexp = try_from_usize_to_int_sexp(self.0.len())?;
-        integer_sexp.into()
-    }
-
-    /// HAudioSink
-    /// ## is_empty
-    ///
-    /// `is_empty() -> bool` \
-    ///
-    /// Returns true if this sink has no more sounds to play. \
-    ///
-    /// #### Returns
-    ///
-    /// A `bool`. \
-    ///
-    /// #### Examples
-    ///
-    /// ```r
-    /// library(harmonium)
-    /// haudiosink = HAudioSink$new()
-    /// haudiosink$is_empty() # TRUE
-    /// ```
-    ///
-    /// _________
-    ///
-    fn is_empty(&self) -> savvy::Result<Sexp> {
-        let is_empty = self.0.is_empty();
-        let logical_sexp: OwnedLogicalSexp = is_empty.try_into()?;
-        logical_sexp.into()
-    }
-
-    /// HAudioSink
-    /// ## clear
-    ///
-    /// `clear()` \
-    ///
-    /// Removes all currently loaded `Source`s from the `Sink` and pauses it. \
+    /// * `value` \
+    /// A `double`. \
     ///
     /// #### Examples
     ///
@@ -464,15 +439,15 @@ impl HAudioSink {
     /// library(harmonium)
     /// haudiosink = HAudioSink$new()
     /// haudiosink$append_from_file(fpath = "./r-harmonium/testfiles/gs-16b-2c-44100hz.wav")
-    /// haudiosink$clear()
-    /// haudiosink$is_empty() # TRUE
-    /// haudiosink$is_paused() # TRUE
+    /// haudiosink$set_volume(2)
+    /// haudiosink$volume() == 2 # TRUE
     /// ```
     ///
     /// _________
     ///
-    fn clear(&self) -> savvy::Result<()> {
-        self.0.clear();
+    fn set_volume(&self, value: Sexp) -> savvy::Result<()> {
+        let value: f64 = value.to_scalar()?;
+        self.0.set_volume(value as f32);
         Ok(())
     }
 
@@ -505,86 +480,149 @@ impl HAudioSink {
     }
 
     /// HAudioSink
-    /// ## audio_output_devices
+    /// ## sleep_until_end
     ///
-    /// `audio_output_devices() -> atomicvector` \
+    /// `sleep_until_end()` \
     ///
-    /// Provides a list of available audio output devices. \
-    ///
-    /// #### Returns
-    ///
-    /// A character atomic vector. \
+    /// Sleeps the current thread until the sound ends. \
     ///
     /// #### Examples
     ///
     /// ```r
     /// library(harmonium)
-    /// HAudioSink$audio_output_devices()
+    /// haudiosink = HAudioSink$new()
+    /// haudiosink$append_from_file(fpath = "./r-harmonium/testfiles/gs-16b-2c-44100hz.wav")
+    /// haudiosink$sleep_until_end()
     /// ```
     ///
     /// _________
     ///
-    fn audio_output_devices() -> savvy::Result<Sexp> {
-        let output_devices = play::audio_output_devices().map_err(HErrorR::from)?;
-        let string_sexp = OwnedStringSexp::try_from(output_devices)?;
-        string_sexp.into()
+    fn sleep_until_end(&self) -> savvy::Result<()> {
+        self.0.sleep_until_end();
+        Ok(())
     }
 
     /// HAudioSink
-    /// ## audio_default_device
+    /// ## speed
     ///
-    /// `audio_default_device() -> string` \
+    /// `speed() -> double` \
     ///
-    /// Informs the default audio output device. \
+    /// Gets the speed of the sound. \
+    /// The value 1.0 is the “normal” speed (unfiltered input). Any value other than 1.0 will change the play speed of the sound. \
     ///
     /// #### Returns
     ///
-    /// A `string`. \
+    /// A `double`. \
     ///
     /// #### Examples
     ///
     /// ```r
     /// library(harmonium)
-    /// HAudioSink$audio_default_device()
+    /// haudiosink = HAudioSink$new()
+    /// haudiosink$append_from_file(fpath = "./r-harmonium/testfiles/gs-16b-2c-44100hz.wav")
+    /// haudiosink$speed()
     /// ```
     ///
     /// _________
     ///
-    fn audio_default_device() -> savvy::Result<Sexp> {
-        let default_device = play::audio_default_device().map_err(HErrorR::from)?;
-        let string_sexp = OwnedStringSexp::try_from(default_device)?;
-        string_sexp.into()
+    fn speed(&self) -> savvy::Result<Sexp> {
+        let speed = self.0.speed() as f64;
+        let real_sexp: OwnedRealSexp = speed.try_into()?;
+        real_sexp.into()
     }
 
     /// HAudioSink
-    /// ## audio_supported_configs
+    /// ## stop
     ///
-    /// `audio_supported_configs() -> atomicvector` \
+    /// `stop()` \
     ///
-    /// Provides the supported configurations for the default audio output device. \
-    /// The following informations are given: \
-    ///
-    /// * Number of channels. \
-    /// * Minimum and maximum value for the sampling rate. \
-    /// * Minimum and maximum value for the buffer size. \
-    /// * Type of data expected by the device. \
-    ///
-    /// #### Returns
-    ///
-    /// A character atomic vector. \
+    /// Stops the sink by emptying the queue. \
+    /// The sink will keep its previous state (play or pause). \
     ///
     /// #### Examples
     ///
     /// ```r
     /// library(harmonium)
-    /// HAudioSink$audio_supported_configs()
+    /// haudiosink = HAudioSink$new()
+    /// haudiosink$append_from_file(fpath = "./r-harmonium/testfiles/gs-16b-2c-44100hz.wav")
+    /// haudiosink$append_from_file(fpath = "./r-harmonium/testfiles/gs-16b-2c-44100hz.wav")
+    /// haudiosink$len() == 2 # TRUE
+    /// haudiosink$stop()
+    /// haudiosink$len() == 0 # TRUE
+    /// haudiosink$is_paused() # FALSE
     /// ```
     ///
     /// _________
     ///
-    fn audio_supported_configs() -> savvy::Result<Sexp> {
-        let supported_configs = play::audio_supported_configs().map_err(HErrorR::from)?;
-        let string_sexp = OwnedStringSexp::try_from(supported_configs)?;
-        string_sexp.into()
+    fn stop(&self) -> savvy::Result<()> {
+        self.0.stop();
+        Ok(())
+    }
+
+    /// HAudioSink
+    /// ## try_seek
+    ///
+    /// `try_seek(pos: f64)` \
+    ///
+    /// Attempts to seek to a given position in the current source. \
+    /// This blocks between 0 and ~5 milliseconds. \
+    /// As long as the duration of the source is known, seek is guaranteed to saturate at the end of the source. For example given a
+    /// source that reports a total duration of 42 seconds calling `try_seek()` with 60 seconds as argument will seek to 42 seconds. \
+    ///
+    /// This function will return an error if:
+    /// - one of the underlying sources does not support seeking.
+    /// - an implementation ran into one during the seek.
+    /// - when seeking beyond the end of a source when the duration of the source is not known.
+    ///
+    /// #### Arguments
+    ///
+    /// * `pos` \
+    /// A `double`. The time to seek to in seconds. \
+    ///
+    /// #### Examples
+    ///
+    /// ```r
+    /// library(harmonium)
+    /// haudiosink = HAudioSink$new()
+    /// haudiosink$append_from_file(fpath = "./r-harmonium/testfiles/gs-16b-2c-44100hz.wav")
+    /// haudiosink$try_seek(2)
+    /// ```
+    ///
+    /// _________
+    ///
+    fn try_seek(&self, pos: Sexp) -> savvy::Result<()> {
+        let pos: f64 = pos.to_scalar()?;
+        let pos = std::time::Duration::from_secs_f64(pos);
+        self.0.try_seek(pos).map_err(HErrorR::from)?;
+        Ok(())
+    }
+
+    /// HAudioSink
+    /// ## volume
+    ///
+    /// `volume() -> double` \
+    ///
+    /// Gets the volume of the sound. \
+    /// The value 1.0 is the “normal” volume (unfiltered input). Any value other than 1.0 will multiply each sample by this value. \
+    ///
+    /// #### Returns
+    ///
+    /// A `double`. \
+    ///
+    /// #### Examples
+    ///
+    /// ```r
+    /// library(harmonium)
+    /// haudiosink = HAudioSink$new()
+    /// haudiosink$append_from_file(fpath = "./r-harmonium/testfiles/gs-16b-2c-44100hz.wav")
+    /// haudiosink$volume()
+    /// ```
+    ///
+    /// _________
+    ///
+    fn volume(&self) -> savvy::Result<Sexp> {
+        let volume = self.0.volume() as f64;
+        let real_sexp: OwnedRealSexp = volume.try_into()?;
+        real_sexp.into()
     }
 }

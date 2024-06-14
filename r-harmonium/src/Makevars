@@ -3,7 +3,6 @@ TARGET =
 TARGET_DIR = $(CURDIR)/rust/target
 LIBDIR = $(TARGET_DIR)/$(TARGET)/release
 STATLIB = $(LIBDIR)/libharmonium.a
-PKG_LIBS = -L$(LIBDIR) -lharmonium
 # Set library flags based on OS
 PKG_LIBS = `os=\`uname -s\`; if [ "$$os" = "Linux" ]; then echo "-L${LIBDIR} -lharmonium -lasound"; elif [ "$$os" = "Darwin" ]; then echo "-L${LIBDIR} -lharmonium -framework CoreAudio"; else echo "Unsupported OS"; fi`
 

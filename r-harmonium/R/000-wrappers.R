@@ -11,6 +11,10 @@ NULL
 
 # Check class and extract the external pointer embedded in the environment
 .savvy_extract_ptr <- function(e, class) {
+  if(is.null(e)) {
+    return(NULL)
+  }
+
   if(inherits(e, class)) {
     e$.ptr
   } else {
@@ -193,63 +197,9 @@ HAudioSink_append_from_file <- function(self) {
   }
 }
 
-HAudioSink_play <- function(self) {
+HAudioSink_clear <- function(self) {
   function() {
-  invisible(.Call(savvy_HAudioSink_play__impl, self))
-  }
-}
-
-HAudioSink_stop <- function(self) {
-  function() {
-  invisible(.Call(savvy_HAudioSink_stop__impl, self))
-  }
-}
-
-HAudioSink_pause <- function(self) {
-  function() {
-  invisible(.Call(savvy_HAudioSink_pause__impl, self))
-  }
-}
-
-HAudioSink_is_paused <- function(self) {
-  function() {
-  .Call(savvy_HAudioSink_is_paused__impl, self)
-  }
-}
-
-HAudioSink_volume <- function(self) {
-  function() {
-  .Call(savvy_HAudioSink_volume__impl, self)
-  }
-}
-
-HAudioSink_set_volume <- function(self) {
-  function(value) {
-  invisible(.Call(savvy_HAudioSink_set_volume__impl, self, value))
-  }
-}
-
-HAudioSink_speed <- function(self) {
-  function() {
-  .Call(savvy_HAudioSink_speed__impl, self)
-  }
-}
-
-HAudioSink_set_speed <- function(self) {
-  function(value) {
-  invisible(.Call(savvy_HAudioSink_set_speed__impl, self, value))
-  }
-}
-
-HAudioSink_sleep_until_end <- function(self) {
-  function() {
-  invisible(.Call(savvy_HAudioSink_sleep_until_end__impl, self))
-  }
-}
-
-HAudioSink_len <- function(self) {
-  function() {
-  .Call(savvy_HAudioSink_len__impl, self)
+  invisible(.Call(savvy_HAudioSink_clear__impl, self))
   }
 }
 
@@ -259,9 +209,39 @@ HAudioSink_is_empty <- function(self) {
   }
 }
 
-HAudioSink_clear <- function(self) {
+HAudioSink_is_paused <- function(self) {
   function() {
-  invisible(.Call(savvy_HAudioSink_clear__impl, self))
+  .Call(savvy_HAudioSink_is_paused__impl, self)
+  }
+}
+
+HAudioSink_len <- function(self) {
+  function() {
+  .Call(savvy_HAudioSink_len__impl, self)
+  }
+}
+
+HAudioSink_pause <- function(self) {
+  function() {
+  invisible(.Call(savvy_HAudioSink_pause__impl, self))
+  }
+}
+
+HAudioSink_play <- function(self) {
+  function() {
+  invisible(.Call(savvy_HAudioSink_play__impl, self))
+  }
+}
+
+HAudioSink_set_speed <- function(self) {
+  function(value) {
+  invisible(.Call(savvy_HAudioSink_set_speed__impl, self, value))
+  }
+}
+
+HAudioSink_set_volume <- function(self) {
+  function(value) {
+  invisible(.Call(savvy_HAudioSink_set_volume__impl, self, value))
   }
 }
 
@@ -271,24 +251,55 @@ HAudioSink_skip_one <- function(self) {
   }
 }
 
+HAudioSink_sleep_until_end <- function(self) {
+  function() {
+  invisible(.Call(savvy_HAudioSink_sleep_until_end__impl, self))
+  }
+}
+
+HAudioSink_speed <- function(self) {
+  function() {
+  .Call(savvy_HAudioSink_speed__impl, self)
+  }
+}
+
+HAudioSink_stop <- function(self) {
+  function() {
+  invisible(.Call(savvy_HAudioSink_stop__impl, self))
+  }
+}
+
+HAudioSink_try_seek <- function(self) {
+  function(pos) {
+  invisible(.Call(savvy_HAudioSink_try_seek__impl, self, pos))
+  }
+}
+
+HAudioSink_volume <- function(self) {
+  function() {
+  .Call(savvy_HAudioSink_volume__impl, self)
+  }
+}
+
 .savvy_wrap_HAudioSink <- function(ptr) {
   e <- new.env(parent = emptyenv())
   e$.ptr <- ptr
     e$append_from_harray <- HAudioSink_append_from_harray(ptr)
   e$append_from_file <- HAudioSink_append_from_file(ptr)
-  e$play <- HAudioSink_play(ptr)
-  e$stop <- HAudioSink_stop(ptr)
-  e$pause <- HAudioSink_pause(ptr)
-  e$is_paused <- HAudioSink_is_paused(ptr)
-  e$volume <- HAudioSink_volume(ptr)
-  e$set_volume <- HAudioSink_set_volume(ptr)
-  e$speed <- HAudioSink_speed(ptr)
-  e$set_speed <- HAudioSink_set_speed(ptr)
-  e$sleep_until_end <- HAudioSink_sleep_until_end(ptr)
-  e$len <- HAudioSink_len(ptr)
-  e$is_empty <- HAudioSink_is_empty(ptr)
   e$clear <- HAudioSink_clear(ptr)
+  e$is_empty <- HAudioSink_is_empty(ptr)
+  e$is_paused <- HAudioSink_is_paused(ptr)
+  e$len <- HAudioSink_len(ptr)
+  e$pause <- HAudioSink_pause(ptr)
+  e$play <- HAudioSink_play(ptr)
+  e$set_speed <- HAudioSink_set_speed(ptr)
+  e$set_volume <- HAudioSink_set_volume(ptr)
   e$skip_one <- HAudioSink_skip_one(ptr)
+  e$sleep_until_end <- HAudioSink_sleep_until_end(ptr)
+  e$speed <- HAudioSink_speed(ptr)
+  e$stop <- HAudioSink_stop(ptr)
+  e$try_seek <- HAudioSink_try_seek(ptr)
+  e$volume <- HAudioSink_volume(ptr)
   
   class(e) <- "HAudioSink"
   e
@@ -308,12 +319,12 @@ HAudioSink$new <- function() {
   .savvy_wrap_HAudioSink(.Call(savvy_HAudioSink_new__impl))
 }
 
-HAudioSink$audio_output_devices <- function() {
-.Call(savvy_HAudioSink_audio_output_devices__impl)
-}
-
 HAudioSink$audio_default_device <- function() {
 .Call(savvy_HAudioSink_audio_default_device__impl)
+}
+
+HAudioSink$audio_output_devices <- function() {
+.Call(savvy_HAudioSink_audio_output_devices__impl)
 }
 
 HAudioSink$audio_supported_configs <- function() {
