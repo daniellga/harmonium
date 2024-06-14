@@ -9,7 +9,7 @@ Supports `All`, `Text` and `Visual` types. \
 
 ## print
 
-`print()` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hmetadatatype.rs#L41) </span> \
+`print()` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hmetadatatype.rs#L42) </span> \
 
 Prints the `HMetadataType`. \
 Differently from R's behaviour, `print` doesn't return the value invisibly. \
@@ -17,6 +17,7 @@ Differently from R's behaviour, `print` doesn't return the value invisibly. \
 #### Examples
 
 ```r
+library(harmonium)
 metadatatype = HMetadataType$All
 metadatatype$print()
 
@@ -28,7 +29,7 @@ _________
 
 ## eq
 
-`eq(other: HMetadataType) -> bool` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hmetadatatype.rs#L75) </span> \
+`eq(other: HMetadataType) -> bool` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hmetadatatype.rs#L77) </span> \
 
 Equality with another `HMetadataType`.
 
@@ -44,6 +45,7 @@ A `bool`.
 #### Examples
 
 ```r
+library(harmonium)
 metadatatype1 = HMetadataType$All
 metadatatype2 = HMetadataType$All
 metadatatype1$eq(metadatatype2) # TRUE
@@ -56,7 +58,7 @@ _________
 
 ## ne
 
-`ne(other: HMetadataType) -> bool` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hmetadatatype.rs#L110) </span> \
+`ne(other: HMetadataType) -> bool` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hmetadatatype.rs#L113) </span> \
 
 Difference with another `HMetadataType`.
 
@@ -72,6 +74,7 @@ A `bool`.
 #### Examples
 
 ```r
+library(harmonium)
 metadatatype1 = HMetadataType$All
 metadatatype2 = HMetadataType$All
 metadatatype1$ne(metadatatype2) # FALSE

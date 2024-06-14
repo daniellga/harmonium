@@ -1,756 +1,5 @@
 [
   {
-    "objectID": "contents/hdecodedaudio.html",
-    "href": "contents/hdecodedaudio.html",
-    "title": "HDecodedAudio",
-    "section": "",
-    "text": "harray() -&gt; HArray  source \n\nGet the decoded HArray.\n\n\nA float HArray.\n\n\n\n\nlibrary(harmonium)\nfpath = \"../../../testfiles/gs-16b-2c-44100hz.flac\"\ndtype = HDataType$Float32\nhdecodedaudio = HFile$decode(fpath, dtype)\nhdecodedaudio$harray()",
-    "crumbs": [
-      "Classes",
-      "HDecodedAudio"
-    ]
-  },
-  {
-    "objectID": "contents/hdecodedaudio.html#harray",
-    "href": "contents/hdecodedaudio.html#harray",
-    "title": "HDecodedAudio",
-    "section": "",
-    "text": "harray() -&gt; HArray  source \n\nGet the decoded HArray.\n\n\nA float HArray.\n\n\n\n\nlibrary(harmonium)\nfpath = \"../../../testfiles/gs-16b-2c-44100hz.flac\"\ndtype = HDataType$Float32\nhdecodedaudio = HFile$decode(fpath, dtype)\nhdecodedaudio$harray()",
-    "crumbs": [
-      "Classes",
-      "HDecodedAudio"
-    ]
-  },
-  {
-    "objectID": "contents/hdecodedaudio.html#sr",
-    "href": "contents/hdecodedaudio.html#sr",
-    "title": "HDecodedAudio",
-    "section": "sr",
-    "text": "sr\nsr() -&gt; integer  source \n\nGet the sampling rate of the decoded audio.\n\nReturns\nAn integer.\n\n\n\nExamples\nlibrary(harmonium)\nfpath = \"../../../testfiles/gs-16b-2c-44100hz.flac\"\ndtype = HDataType$Float32\nhdecodedaudio = HFile$decode(fpath, dtype)\nhdecodedaudio$sr()",
-    "crumbs": [
-      "Classes",
-      "HDecodedAudio"
-    ]
-  },
-  {
-    "objectID": "contents/hdecodedaudio.html#invalidate",
-    "href": "contents/hdecodedaudio.html#invalidate",
-    "title": "HDecodedAudio",
-    "section": "invalidate",
-    "text": "invalidate\ninvalidate()  source \n\nReplaces the inner value of the external pointer, invalidating it.\nThis function is useful to remove one of the shared references of the inner pointer in rust.\n\n\nExamples\nlibrary(harmonium)\nfpath = \"../../../testfiles/gs-16b-2c-44100hz.flac\"\ndtype = HDataType$Float32\nhdecodedaudio = HFile$decode(fpath, dtype)\nharray = hdecodedaudio$harray() # now the inner HArray struct has 2 references.\nhdecodedaudio$invalidate() # back to 1 reference.",
-    "crumbs": [
-      "Classes",
-      "HDecodedAudio"
-    ]
-  },
-  {
-    "objectID": "contents/haudiosink.html",
-    "href": "contents/haudiosink.html",
-    "title": "HAudioSink",
-    "section": "",
-    "text": "Handle to a device that outputs sounds.",
-    "crumbs": [
-      "Classes",
-      "HAudioSink"
-    ]
-  },
-  {
-    "objectID": "contents/haudiosink.html#new",
-    "href": "contents/haudiosink.html#new",
-    "title": "HAudioSink",
-    "section": "new",
-    "text": "new\nnew() -&gt; HAudioSink  source \n\nCreates a new HAudioSink instance.\nThe sink is set on “play” mode from the start.\n\n\nReturns\nAn HAudioSink.\n\n\n\nExamples\nlibrary(harmonium)\nhaudiosink = HAudioSink$new()",
-    "crumbs": [
-      "Classes",
-      "HAudioSink"
-    ]
-  },
-  {
-    "objectID": "contents/haudiosink.html#append_from_harray",
-    "href": "contents/haudiosink.html#append_from_harray",
-    "title": "HAudioSink",
-    "section": "append_from_harray",
-    "text": "append_from_harray\nappend_from_harray(harray: HArray, sr: integer)  source \n\nAppends a sound to the queue of sounds to play.\n\n\nArguments\n\nharray\nAn HArray.\n\nsr\nAn interger. The audio sampling rate.\n\n\n\n\nExamples\nlibrary(harmonium)\nhaudiosink = HAudioSink$new()\nhdecodedaudio = HFile$decode(fpath = \"./r-harmonium/testfiles/gs-16b-2c-44100hz.wav\", dtype = HDataType$Float32)\nharray = hdecodedaudio$harray()\nsr = hdecodedaudio$sr()\nhaudiosink$append_from_harray(harray, sr)",
-    "crumbs": [
-      "Classes",
-      "HAudioSink"
-    ]
-  },
-  {
-    "objectID": "contents/haudiosink.html#append_from_file",
-    "href": "contents/haudiosink.html#append_from_file",
-    "title": "HAudioSink",
-    "section": "append_from_file",
-    "text": "append_from_file\nappend_from_file(fpath: string)  source \n\nAppends a sound to the queue of sounds to play.\n\n\nArguments\n\nfpath\nThe file path as a string.\n\n\n\n\nExamples\nlibrary(harmonium)\nhaudiosink = HAudioSink$new()\nhaudiosink$append_from_file(fpath = \"./r-harmonium/testfiles/gs-16b-2c-44100hz.wav\")",
-    "crumbs": [
-      "Classes",
-      "HAudioSink"
-    ]
-  },
-  {
-    "objectID": "contents/haudiosink.html#play",
-    "href": "contents/haudiosink.html#play",
-    "title": "HAudioSink",
-    "section": "play",
-    "text": "play\nplay()  source \n\nResumes playback of a paused sink.\nNo effect if not paused.\n\n\nExamples\nlibrary(harmonium)\nhaudiosink = HAudioSink$new()\nhaudiosink$append_from_file(fpath = \"./r-harmonium/testfiles/gs-16b-2c-44100hz.wav\")\nhaudiosink$pause()\nhaudiosink$is_paused() # TRUE\nhaudiosink$play()\nhaudiosink$is_paused() # FALSE",
-    "crumbs": [
-      "Classes",
-      "HAudioSink"
-    ]
-  },
-  {
-    "objectID": "contents/haudiosink.html#stop",
-    "href": "contents/haudiosink.html#stop",
-    "title": "HAudioSink",
-    "section": "stop",
-    "text": "stop\nstop()  source \n\nStops the sink by emptying the queue.\nThe sink will keep its previous state (play or pause).\n\n\nExamples\nlibrary(harmonium)\nhaudiosink = HAudioSink$new()\nhaudiosink$append_from_file(fpath = \"./r-harmonium/testfiles/gs-16b-2c-44100hz.wav\")\nhaudiosink$append_from_file(fpath = \"./r-harmonium/testfiles/gs-16b-2c-44100hz.wav\")\nhaudiosink$len() == 2 # TRUE\nhaudiosink$stop()\nhaudiosink$len() == 0 # TRUE\nhaudiosink$is_paused() # FALSE",
-    "crumbs": [
-      "Classes",
-      "HAudioSink"
-    ]
-  },
-  {
-    "objectID": "contents/haudiosink.html#pause",
-    "href": "contents/haudiosink.html#pause",
-    "title": "HAudioSink",
-    "section": "pause",
-    "text": "pause\npause()  source \n\nPauses playback of this sink.\nNo effect if already paused.\nA paused sink can be resumed with play().\n\n\nExamples\nlibrary(harmonium)\nhaudiosink = HAudioSink$new()\nhaudiosink$append_from_file(fpath = \"./r-harmonium/testfiles/gs-16b-2c-44100hz.wav\")\nhaudiosink$is_paused() # FALSE\nhaudiosink$pause()\nhaudiosink$is_paused() # TRUE",
-    "crumbs": [
-      "Classes",
-      "HAudioSink"
-    ]
-  },
-  {
-    "objectID": "contents/haudiosink.html#is_paused",
-    "href": "contents/haudiosink.html#is_paused",
-    "title": "HAudioSink",
-    "section": "is_paused",
-    "text": "is_paused\nis_paused() -&gt; bool  source \n\nGets if a sink is paused.\nSinks can be paused and resumed using pause() and play(). This returns true if the sink is paused.\n\n\nReturns\nA bool.\n\n\n\nExamples\nlibrary(harmonium)\nhaudiosink = HAudioSink$new()\nhaudiosink$append_from_file(fpath = \"./r-harmonium/testfiles/gs-16b-2c-44100hz.wav\")\nhaudiosink$is_paused() # FALSE\nhaudiosink$pause()\nhaudiosink$is_paused() # TRUE",
-    "crumbs": [
-      "Classes",
-      "HAudioSink"
-    ]
-  },
-  {
-    "objectID": "contents/haudiosink.html#volume",
-    "href": "contents/haudiosink.html#volume",
-    "title": "HAudioSink",
-    "section": "volume",
-    "text": "volume\nvolume() -&gt; double  source \n\nGets the volume of the sound.\nThe value 1.0 is the “normal” volume (unfiltered input). Any value other than 1.0 will multiply each sample by this value.\n\n\nReturns\nA double.\n\n\n\nExamples\nlibrary(harmonium)\nhaudiosink = HAudioSink$new()\nhaudiosink$append_from_file(fpath = \"./r-harmonium/testfiles/gs-16b-2c-44100hz.wav\")\nhaudiosink$volume()",
-    "crumbs": [
-      "Classes",
-      "HAudioSink"
-    ]
-  },
-  {
-    "objectID": "contents/haudiosink.html#set_volume",
-    "href": "contents/haudiosink.html#set_volume",
-    "title": "HAudioSink",
-    "section": "set_volume",
-    "text": "set_volume\nset_volume(value: double)  source \n\nChanges the volume of the sound.\nThe value 1.0 is the “normal” volume (unfiltered input). Any value other than 1.0 will multiply each sample by this value.\n\n\nArguments\n\nvalue\nA double.\n\n\n\n\nExamples\nlibrary(harmonium)\nhaudiosink = HAudioSink$new()\nhaudiosink$append_from_file(fpath = \"./r-harmonium/testfiles/gs-16b-2c-44100hz.wav\")\nhaudiosink$set_volume(2)\nhaudiosink$volume() == 2 # TRUE",
-    "crumbs": [
-      "Classes",
-      "HAudioSink"
-    ]
-  },
-  {
-    "objectID": "contents/haudiosink.html#speed",
-    "href": "contents/haudiosink.html#speed",
-    "title": "HAudioSink",
-    "section": "speed",
-    "text": "speed\nspeed() -&gt; double  source \n\nGets the speed of the sound.\nThe value 1.0 is the “normal” speed (unfiltered input). Any value other than 1.0 will change the play speed of the sound.\n\n\nReturns\nA double.\n\n\n\nExamples\nlibrary(harmonium)\nhaudiosink = HAudioSink$new()\nhaudiosink$append_from_file(fpath = \"./r-harmonium/testfiles/gs-16b-2c-44100hz.wav\")\nhaudiosink$speed()",
-    "crumbs": [
-      "Classes",
-      "HAudioSink"
-    ]
-  },
-  {
-    "objectID": "contents/haudiosink.html#set_speed",
-    "href": "contents/haudiosink.html#set_speed",
-    "title": "HAudioSink",
-    "section": "set_speed",
-    "text": "set_speed\nset_speed(value: double)  source \n\nChanges the speed of the sound.\nThe value 1.0 is the “normal” speed (unfiltered input). Any value other than 1.0 will change the play speed of the sound.\n\n\nArguments\n\nvalue\nA double.\n\n\n\n\nExamples\nlibrary(harmonium)\nhaudiosink = HAudioSink$new()\nhaudiosink$append_from_file(fpath = \"./r-harmonium/testfiles/gs-16b-2c-44100hz.wav\")\nhaudiosink$set_speed(2)\nhaudiosink$speed() == 2 # TRUE",
-    "crumbs": [
-      "Classes",
-      "HAudioSink"
-    ]
-  },
-  {
-    "objectID": "contents/haudiosink.html#sleep_until_end",
-    "href": "contents/haudiosink.html#sleep_until_end",
-    "title": "HAudioSink",
-    "section": "sleep_until_end",
-    "text": "sleep_until_end\nsleep_until_end()  source \n\nSleeps the current thread until the sound ends.\n\n\nExamples\nlibrary(harmonium)\nhaudiosink = HAudioSink$new()\nhaudiosink$append_from_file(fpath = \"./r-harmonium/testfiles/gs-16b-2c-44100hz.wav\")\nhaudiosink$sleep_until_end()",
-    "crumbs": [
-      "Classes",
-      "HAudioSink"
-    ]
-  },
-  {
-    "objectID": "contents/haudiosink.html#len",
-    "href": "contents/haudiosink.html#len",
-    "title": "HAudioSink",
-    "section": "len",
-    "text": "len\nlen() -&gt; integer  source \n\nReturns the number of sounds currently in the queue.\n\n\nReturns\nAn integer.\n\n\n\nExamples\nlibrary(harmonium)\nhaudiosink = HAudioSink$new()\nhaudiosink$len() == 0 # TRUE\nhaudiosink$append_from_file(fpath = \"./r-harmonium/testfiles/gs-16b-2c-44100hz.wav\")\nhaudiosink$append_from_file(fpath = \"./r-harmonium/testfiles/gs-16b-2c-44100hz.wav\")\nhaudiosink$len() == 2 # TRUE",
-    "crumbs": [
-      "Classes",
-      "HAudioSink"
-    ]
-  },
-  {
-    "objectID": "contents/haudiosink.html#is_empty",
-    "href": "contents/haudiosink.html#is_empty",
-    "title": "HAudioSink",
-    "section": "is_empty",
-    "text": "is_empty\nis_empty() -&gt; bool  source \n\nReturns true if this sink has no more sounds to play.\n\n\nReturns\nA bool.\n\n\n\nExamples\nlibrary(harmonium)\nhaudiosink = HAudioSink$new()\nhaudiosink$is_empty() # TRUE",
-    "crumbs": [
-      "Classes",
-      "HAudioSink"
-    ]
-  },
-  {
-    "objectID": "contents/haudiosink.html#clear",
-    "href": "contents/haudiosink.html#clear",
-    "title": "HAudioSink",
-    "section": "clear",
-    "text": "clear\nclear()  source \n\nRemoves all currently loaded Sources from the Sink and pauses it.\n\n\nExamples\nlibrary(harmonium)\nhaudiosink = HAudioSink$new()\nhaudiosink$append_from_file(fpath = \"./r-harmonium/testfiles/gs-16b-2c-44100hz.wav\")\nhaudiosink$clear()\nhaudiosink$is_empty() # TRUE\nhaudiosink$is_paused() # TRUE",
-    "crumbs": [
-      "Classes",
-      "HAudioSink"
-    ]
-  },
-  {
-    "objectID": "contents/haudiosink.html#skip_one",
-    "href": "contents/haudiosink.html#skip_one",
-    "title": "HAudioSink",
-    "section": "skip_one",
-    "text": "skip_one\nskip_one()  source \n\nSkips to the next Source in the Sink.\nIf there are more Sources appended to the Sink at the time, it will play the next one. Otherwise, the Sink will finish as if it had finished playing a Source all the way through.\n\n\nExamples\nlibrary(harmonium)\nhaudiosink = HAudioSink$new()\nhaudiosink$append_from_file(fpath = \"./r-harmonium/testfiles/gs-16b-2c-44100hz.wav\")\nhaudiosink$append_from_file(fpath = \"./r-harmonium/testfiles/gs-16b-2c-44100hz.wav\")\nhaudiosink$len() == 2 # TRUE\nhaudiosink$skip_one()\nhaudiosink$len() == 1 # TRUE",
-    "crumbs": [
-      "Classes",
-      "HAudioSink"
-    ]
-  },
-  {
-    "objectID": "contents/haudiosink.html#audio_output_devices",
-    "href": "contents/haudiosink.html#audio_output_devices",
-    "title": "HAudioSink",
-    "section": "audio_output_devices",
-    "text": "audio_output_devices\naudio_output_devices() -&gt; atomicvector  source \n\nProvides a list of available audio output devices.\n\n\nReturns\nA character atomic vector.\n\n\n\nExamples\nlibrary(harmonium)\nHAudioSink$audio_output_devices()",
-    "crumbs": [
-      "Classes",
-      "HAudioSink"
-    ]
-  },
-  {
-    "objectID": "contents/haudiosink.html#audio_default_device",
-    "href": "contents/haudiosink.html#audio_default_device",
-    "title": "HAudioSink",
-    "section": "audio_default_device",
-    "text": "audio_default_device\naudio_default_device() -&gt; string  source \n\nInforms the default audio output device.\n\n\nReturns\nA string.\n\n\n\nExamples\nlibrary(harmonium)\nHAudioSink$audio_default_device()",
-    "crumbs": [
-      "Classes",
-      "HAudioSink"
-    ]
-  },
-  {
-    "objectID": "contents/haudiosink.html#audio_supported_configs",
-    "href": "contents/haudiosink.html#audio_supported_configs",
-    "title": "HAudioSink",
-    "section": "audio_supported_configs",
-    "text": "audio_supported_configs\naudio_supported_configs() -&gt; atomicvector  source \n\nProvides the supported configurations for the default audio output device.\nThe following informations are given:\n\n\nNumber of channels.\n\nMinimum and maximum value for the sampling rate.\n\nMinimum and maximum value for the buffer size.\n\nType of data expected by the device.\n\n\n\nReturns\nA character atomic vector.\n\n\n\nExamples\nlibrary(harmonium)\nHAudioSink$audio_supported_configs()",
-    "crumbs": [
-      "Classes",
-      "HAudioSink"
-    ]
-  },
-  {
-    "objectID": "contents/hsincinterpolationparameters.html",
-    "href": "contents/hsincinterpolationparameters.html",
-    "title": "HSincInterpolationParameters",
-    "section": "",
-    "text": "Parameters to be used for sinc interpolation.",
-    "crumbs": [
-      "Classes",
-      "HSincInterpolationParameters"
-    ]
-  },
-  {
-    "objectID": "contents/hsincinterpolationparameters.html#new",
-    "href": "contents/hsincinterpolationparameters.html#new",
-    "title": "HSincInterpolationParameters",
-    "section": "new",
-    "text": "new\nnew(sinc_len: integer, f_cutoff: double, oversampling_factor: integer, interpolation: HInterpolationType, window: HWindowType) -&gt; HSincInterpolationParameters  source \n\nCreates a new HSincInterpolationParameters.\n\n\nArguments\n\nsinc_len\nAn integer. Length of the windowed sinc interpolation filter. Higher values can allow a higher cut-off frequency leading to less high frequency roll-off at the expense of higher cpu usage. A good starting point should be 256. The value will be rounded up to the nearest multiple of 8.\n\nf_cutoff\nA double. Relative cutoff frequency of the sinc interpolation filter (relative to the lowest one of fs_in/2 or fs_out/2). Start at 0.95, and increase if needed.\n\noversampling_factor\nAn integer. The number of intermediate points to use for interpolation. Higher values use more memory for storing the sinc filters. Only the points actually needed are calculated during processing so a larger number does not directly lead to higher cpu usage. A lower value helps in keeping the sincs in the cpu cache. A good starting point should be 128.\n\ninterpolation\nAn HInterpolationType. The interpolation type.\n\nwindow\nAn HWindowType. The window function to use.\n\n\n\n\nReturns\nAn HSincInterpolationParameters.\n\n\n\nExamples\nsinc_len = 256L\nf_cutoff = 0.95\noversampling_factor = 128L\ninterpolation = HInterpolationType$Linear\nwindow = HWindowType$Blackman\n\nhsincinterpolationparameters = HSincInterpolationParameters$new(sinc_len, f_cutoff, oversampling_factor, interpolation, window)",
-    "crumbs": [
-      "Classes",
-      "HSincInterpolationParameters"
-    ]
-  },
-  {
-    "objectID": "contents/hsincinterpolationparameters.html#print",
-    "href": "contents/hsincinterpolationparameters.html#print",
-    "title": "HSincInterpolationParameters",
-    "section": "print",
-    "text": "print\nprint()  source \n\nPrints the HSincInterpolationParameters.\nDifferently from R’s behaviour, print doesn’t return the value invisibly.\n\n\nExamples\nsinc_len = 256L\nf_cutoff = 0.95\noversampling_factor = 128L\ninterpolation = HInterpolationType$Linear\nwindow = HWindowType$Blackman\n\nhsincinterpolationparameters = HSincInterpolationParameters$new(sinc_len, f_cutoff, oversampling_factor, interpolation, window)\nhsincinterpolationparameters$print()\n\n# or similarly:\nprint(hsincinterpolationparameters)",
-    "crumbs": [
-      "Classes",
-      "HSincInterpolationParameters"
-    ]
-  },
-  {
-    "objectID": "contents/hfft.html",
-    "href": "contents/hfft.html",
-    "title": "HFft",
-    "section": "",
-    "text": "fft() -&gt; HArray  source \n\nComputes the fast fourier transform of the HArray.\nFFT (Fast Fourier Transform) refers to a way the discrete Fourier Transform (DFT) can be calculated efficiently, by using symmetries in the calculated terms. The symmetry is highest when n is a power of 2, and the transform is therefore most efficient for these sizes.\n\nThe function does not normalize outputs. Callers must manually normalize the results by scaling each element by 1/sqrt(n). Multiple normalization steps can be merged into one via pairwise multiplication, so when doing a forward FFT followed by an inverse callers can normalize once by scaling each element by 1/n.\n\nElements in the output are ordered by ascending frequency, with the first element corresponding to frequency 0.\n\n\n\nAn HArray.\n\n\n\n\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nHFft$fft(harray)",
-    "crumbs": [
-      "Classes",
-      "HFft"
-    ]
-  },
-  {
-    "objectID": "contents/hfft.html#fft",
-    "href": "contents/hfft.html#fft",
-    "title": "HFft",
-    "section": "",
-    "text": "fft() -&gt; HArray  source \n\nComputes the fast fourier transform of the HArray.\nFFT (Fast Fourier Transform) refers to a way the discrete Fourier Transform (DFT) can be calculated efficiently, by using symmetries in the calculated terms. The symmetry is highest when n is a power of 2, and the transform is therefore most efficient for these sizes.\n\nThe function does not normalize outputs. Callers must manually normalize the results by scaling each element by 1/sqrt(n). Multiple normalization steps can be merged into one via pairwise multiplication, so when doing a forward FFT followed by an inverse callers can normalize once by scaling each element by 1/n.\n\nElements in the output are ordered by ascending frequency, with the first element corresponding to frequency 0.\n\n\n\nAn HArray.\n\n\n\n\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nHFft$fft(harray)",
-    "crumbs": [
-      "Classes",
-      "HFft"
-    ]
-  },
-  {
-    "objectID": "contents/hfft.html#fft_mut",
-    "href": "contents/hfft.html#fft_mut",
-    "title": "HFft",
-    "section": "fft_mut",
-    "text": "fft_mut\nfft_mut()  source \n\nComputes the fast fourier transform of the HArray.\nThe operation is done in-place.\nFFT (Fast Fourier Transform) refers to a way the discrete Fourier Transform (DFT) can be calculated efficiently, by using symmetries in the calculated terms. The symmetry is highest when n is a power of 2, and the transform is therefore most efficient for these sizes.\n\nThe function does not normalize outputs. Callers must manually normalize the results by scaling each element by 1/sqrt(n). Multiple normalization steps can be merged into one via pairwise multiplication, so when doing a forward FFT followed by an inverse callers can normalize once by scaling each element by 1/n.\n\nElements in the output are ordered by ascending frequency, with the first element corresponding to frequency 0.\n\n\nExamples\nlibrary(harmonium)\nr = as.double(sample(100, 30, replace = TRUE))\ni = as.double(sample(100, 30, replace = TRUE))\narr = array(complex(real=r, imaginary=i), c(6,5))\ndtype = HDataType$Complex32\nharray = HArray$new_from_values(arr, dtype)\nHFft$fft_mut(harray)",
-    "crumbs": [
-      "Classes",
-      "HFft"
-    ]
-  },
-  {
-    "objectID": "contents/hfft.html#ifft",
-    "href": "contents/hfft.html#ifft",
-    "title": "HFft",
-    "section": "ifft",
-    "text": "ifft\nifft() -&gt; HArray  source \n\nComputes the inverse fast fourier transform of a complex HArray.\nFFT (Fast Fourier Transform) refers to a way the discrete Fourier Transform (DFT) can be calculated efficiently, by using symmetries in the calculated terms. The symmetry is highest when n is a power of 2, and the transform is therefore most efficient for these sizes.\n\nThe function does not normalize outputs. Callers must manually normalize the results by scaling each element by 1/sqrt(n). Multiple normalization steps can be merged into one via pairwise multiplication, so when doing a forward FFT followed by an inverse callers can normalize once by scaling each element by 1/n.\n\n\nReturns\nAn HArray.\nWill return an error if the HArray is of a float type.\n\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1+1i,2+2i,3+3i,4+4i,5+5i,6+6i), c(3,2))\ndtype = HDataType$Complex32\nharray = HArray$new_from_values(arr, dtype)\nHFft$ifft(harray)",
-    "crumbs": [
-      "Classes",
-      "HFft"
-    ]
-  },
-  {
-    "objectID": "contents/hfft.html#ifft_mut",
-    "href": "contents/hfft.html#ifft_mut",
-    "title": "HFft",
-    "section": "ifft_mut",
-    "text": "ifft_mut\nifft_mut() -&gt; HArray  source \n\nComputes the inverse fast fourier transform of a complex HArray.\nThe operation is done in-place.\nFFT (Fast Fourier Transform) refers to a way the discrete Fourier Transform (DFT) can be calculated efficiently, by using symmetries in the calculated terms. The symmetry is highest when n is a power of 2, and the transform is therefore most efficient for these sizes.\n\nThe function does not normalize outputs. Callers must manually normalize the results by scaling each element by 1/sqrt(n). Multiple normalization steps can be merged into one via pairwise multiplication, so when doing a forward FFT followed by an inverse callers can normalize once by scaling each element by 1/n.\n\n\nReturns\nWill return an error if the HArray is not of complex type.\n\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1+1i,2+2i,3+3i,4+4i,5+5i,6+6i), c(3,2))\ndtype = HDataType$Complex32\nharray = HArray$new_from_values(arr, dtype)\nHFft$ifft_mut(harray)",
-    "crumbs": [
-      "Classes",
-      "HFft"
-    ]
-  },
-  {
-    "objectID": "contents/hfft.html#rfft_mut",
-    "href": "contents/hfft.html#rfft_mut",
-    "title": "HFft",
-    "section": "rfft_mut",
-    "text": "rfft_mut\nrfft_mut()  source \n\nComputes the fast fourier transform of a float HArray. Transforms a real signal of length N to a complex-valued spectrum of length N/2+1 (with N/2 rounded down).\nThe operation is not done in-place, although the same external pointer is used to store the new HArray.\nThe FFT of a real signal is Hermitian-symmetric, X[i] = conj(X[-i]) so the output contains only the positive frequencies below the Nyquist frequency.\nFFT (Fast Fourier Transform) refers to a way the discrete Fourier Transform (DFT) can be calculated efficiently, by using symmetries in the calculated terms. The symmetry is highest when n is a power of 2, and the transform is therefore most efficient for these sizes.\n\nThe function does not normalize outputs. Callers must manually normalize the results by scaling each element by 1/sqrt(n). Multiple normalization steps can be merged into one via pairwise multiplication, so when doing a forward FFT followed by an inverse callers can normalize once by scaling each element by 1/n.\n\nElements in the output are ordered by ascending frequency, with the first element corresponding to frequency 0.\n\n\nReturns\nWill return an error if the HArray is not of float type.\n\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nHFft$rfft_mut(harray)",
-    "crumbs": [
-      "Classes",
-      "HFft"
-    ]
-  },
-  {
-    "objectID": "contents/hfft.html#irfft_mut",
-    "href": "contents/hfft.html#irfft_mut",
-    "title": "HFft",
-    "section": "irfft_mut",
-    "text": "irfft_mut\nirfft_mut(length: integer)  source \n\nComputes the inverse fast fourier transform of a complex HArray. Transforms a complex spectrum of length N/2+1 (with N/2 rounded down) to a real-valued signal of length N.\nThe operation is not done in-place, although the same external pointer is used to store the new HArray.\nThe FFT of a real signal is Hermitian-symmetric, X[i] = conj(X[-i]) so the output contains only the positive frequencies below the Nyquist frequency.\nFFT (Fast Fourier Transform) refers to a way the discrete Fourier Transform (DFT) can be calculated efficiently, by using symmetries in the calculated terms. The symmetry is highest when n is a power of 2, and the transform is therefore most efficient for these sizes.\n\nThe function does not normalize outputs. Callers must manually normalize the results by scaling each element by 1/sqrt(n). Multiple normalization steps can be merged into one via pairwise multiplication, so when doing a forward FFT followed by an inverse callers can normalize once by scaling each element by 1/n.\n\n\nReturns\nWill return an error if:\n* The HArray is not of float type.\n* The length argument is not compatible with the spectrum length.\n\n\n\nArguments\n\nlength\nAn integer. The output length of the signal. Since the spectrum is N/2+1, the length can be N and N+1, if N is even, or can be N and N-1 if N is odd.\n\n\n\n\nExamples\nlibrary(harmonium)\nr = as.double(sample(100, 4, replace = TRUE))\ni = as.double(sample(100, 3, replace = TRUE))\narr = array(complex(real=r, imaginary=c(0,i)), c(4,1))\ndtype = HDataType$Complex32\nharray = HArray$new_from_values(arr, dtype)\nHFft$irfft_mut(harray, 7L)",
-    "crumbs": [
-      "Classes",
-      "HFft"
-    ]
-  },
-  {
-    "objectID": "contents/hdecoderstream.html",
-    "href": "contents/hdecoderstream.html",
-    "title": "HDecoderStream",
-    "section": "",
-    "text": "An iterator that decodes audio in streams.",
-    "crumbs": [
-      "Classes",
-      "HDecoderStream"
-    ]
-  },
-  {
-    "objectID": "contents/hdecoderstream.html#stream",
-    "href": "contents/hdecoderstream.html#stream",
-    "title": "HDecoderStream",
-    "section": "stream",
-    "text": "stream\nstream() -&gt; HArray  source \n\nGets the next wave of frames as an HArray.\nReturns an error if it’s end of stream or if an error ocurred in the decoding process.\n\n\nReturns\nThe decoded audio as a float HArray.\nThe number of frames streamed is the one used as input in the creation of HDecoderStream.\n\n\n\nExamples\nlibrary(harmonium)\nfpath = \"../../../testfiles/gs-16b-2c-44100hz.flac\"\ndtype = HDataType$Float32\nframes = 1000L\nhdecoder_stream = HFile$decode_stream(fpath, frames, dtype)\nhdecoder_stream$stream()",
-    "crumbs": [
-      "Classes",
-      "HDecoderStream"
-    ]
-  },
-  {
-    "objectID": "contents/hwindow.html",
-    "href": "contents/hwindow.html",
-    "title": "HWindow",
-    "section": "",
-    "text": "A collection of window functions.",
-    "crumbs": [
-      "Classes",
-      "HWindow"
-    ]
-  },
-  {
-    "objectID": "contents/hwindow.html#barthann",
-    "href": "contents/hwindow.html#barthann",
-    "title": "HWindow",
-    "section": "barthann",
-    "text": "barthann\nbarthann(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray  source \n\nReturns a modified Bartlett-Hann window.\n\nThe maximum value is normalized to 1 (though the value 1 does not appear if npoints is even and window_type is symmetric).\n\n\nArguments\n\nnpoints\nAn integer. Number of points in the output window.\n\nsym\nA bool.\nWhen TRUE, generates a symmetric window, for use in filter design.\nWhen FALSE, generates a periodic window, for use in spectral analysis.\n\ndtype\nAn HDataType to indicate which type of HArray to be created.\nMust be a float dtype.\n\n\n\n\nReturns\nAn HArray.\n\n\n\nExamples\nHWindow$barthann(npoints = 10L, sym = TRUE, dtype = HDataType$Float64)",
-    "crumbs": [
-      "Classes",
-      "HWindow"
-    ]
-  },
-  {
-    "objectID": "contents/hwindow.html#bartlett",
-    "href": "contents/hwindow.html#bartlett",
-    "title": "HWindow",
-    "section": "bartlett",
-    "text": "bartlett\nbartlett(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray  source \n\n\\(w(n) = \\frac{2}{npoints-1} (\\frac{npoints-1}{2} - |n - \\frac{npoints-1}{2}|)\\)\nThe Bartlett window is very similar to a triangular window, except that the end points are at zero. It is often used in signal processing for tapering a signal, without generating too much ripple in the frequency domain.\n\nThe maximum value is normalized to 1 (though the value 1 does not appear if npoints is even and window_type is symmetric.\n\n\nArguments\n\nnpoints\nAn integer. Number of points in the output window.\n\nsym\nA bool.\nWhen TRUE, generates a symmetric window, for use in filter design.\nWhen FALSE, generates a periodic window, for use in spectral analysis.\n\ndtype\nAn HDataType to indicate which type of HArray to be created.\nMust be a float dtype.\n\n\n\n\nReturns\nAn HArray.\n\n\n\nExamples\nHWindow$bartlett(npoints = 10L, sym = TRUE, dtype = HDataType$Float64)",
-    "crumbs": [
-      "Classes",
-      "HWindow"
-    ]
-  },
-  {
-    "objectID": "contents/hwindow.html#blackman",
-    "href": "contents/hwindow.html#blackman",
-    "title": "HWindow",
-    "section": "blackman",
-    "text": "blackman\nblackman(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray  source \n\nReturns a Blackman window.\n\n\\(w(n) = 0.42 - 0.5 \\cos(2\\pi n/npoints) + 0.08 \\cos(4\\pi n/npoints)\\)\nThe Blackman window is a taper formed by using the first three terms of a summation of cosines. It was designed to have close to the minimal leakage possible. It is close to optimal, only slightly worse than a Kaiser window.\n\nThe maximum value is normalized to 1 (though the value 1 does not appear if npoints is even and sym is TRUE).\n\nThe “exact Blackman” window was designed to null out the third and fourth sidelobes, but has discontinuities at the boundaries, resulting in a 6 dB/oct fall-off. This window is an approximation of the “exact” window, which does not null the sidelobes as well, but is smooth at the edges, improving the fall-off rate to 18 dB/oct.\n\nMost references to the Blackman window come from the signal processing literature, where it is used as one of many windowing functions for smoothing values. It is also known as an apodization (which means “removing the foot”, i.e. smoothing discontinuities at the beginning and end of the sampled signal) or tapering function. It is known as a “near optimal” tapering function, almost as good (by some measures) as the Kaiser window.\n\n\nArguments\n\nnpoints\nAn integer. Number of points in the output window.\n\nsym\nA bool.\nWhen TRUE, generates a symmetric window, for use in filter design.\nWhen FALSE, generates a periodic window, for use in spectral analysis.\n\ndtype\nAn HDataType to indicate which type of HArray to be created.\nMust be a float dtype.\n\n\n\n\nReturns\nAn HArray.\n\n\n\nExamples\nHWindow$blackman(npoints = 10L, sym = TRUE, dtype = HDataType$Float64)",
-    "crumbs": [
-      "Classes",
-      "HWindow"
-    ]
-  },
-  {
-    "objectID": "contents/hwindow.html#blackmanharris",
-    "href": "contents/hwindow.html#blackmanharris",
-    "title": "HWindow",
-    "section": "blackmanharris",
-    "text": "blackmanharris\nblackmanharris(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray  source \n\nReturn a minimum 4-term Blackman-Harris window.\n\nThe maximum value is normalized to 1 (though the value 1 does not appear if npoints is even and window_type is symmetric.\n\n\nArguments\n\nnpoints\nAn integer. Number of points in the output window.\n\nsym\nA bool.\nWhen TRUE, generates a symmetric window, for use in filter design.\nWhen FALSE, generates a periodic window, for use in spectral analysis.\n\ndtype\nAn HDataType to indicate which type of HArray to be created.\nMust be a float dtype.\n\n\n\n\nReturns\nAn HArray.\n\n\n\nExamples\nHWindow$blackmanharris(npoints = 10L, sym = TRUE, dtype = HDataType$Float64)",
-    "crumbs": [
-      "Classes",
-      "HWindow"
-    ]
-  },
-  {
-    "objectID": "contents/hwindow.html#bohman",
-    "href": "contents/hwindow.html#bohman",
-    "title": "HWindow",
-    "section": "bohman",
-    "text": "bohman\nbohman(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray  source \n\nReturns a Bohman window.\n\nThe maximum value is normalized to 1 (though the value 1 does not appear if npoints is even and window_type is symmetric).\n\n\nArguments\n\nnpoints\nAn integer. Number of points in the output window.\n\nsym\nA bool.\nWhen TRUE, generates a symmetric window, for use in filter design.\nWhen FALSE, generates a periodic window, for use in spectral analysis.\n\ndtype\nAn HDataType to indicate which type of HArray to be created.\nMust be a float dtype.\n\n\n\n\nReturns\nAn HArray.\n\n\n\nExamples\nHWindow$bohman(npoints = 10L, sym = TRUE, dtype = HDataType$Float64)",
-    "crumbs": [
-      "Classes",
-      "HWindow"
-    ]
-  },
-  {
-    "objectID": "contents/hwindow.html#boxcar",
-    "href": "contents/hwindow.html#boxcar",
-    "title": "HWindow",
-    "section": "boxcar",
-    "text": "boxcar\nboxcar(npoints: integer, dtype: HDataType) -&gt; HArray  source \n\nReturns a boxcar or rectangular window.\n\nAlso known as a rectangular window or Dirichlet window, this is equivalent to no window at all.\n\n\nArguments\n\nnpoints\nAn integer. Number of points in the output window.\n\ndtype\nAn HDataType to indicate which type of HArray to be created.\nMust be a float dtype.\n\n\n\n\nReturns\nAn HArray.\n\n\n\nExamples\nHWindow$boxcar(npoints = 10L, dtype = HDataType$Float64)",
-    "crumbs": [
-      "Classes",
-      "HWindow"
-    ]
-  },
-  {
-    "objectID": "contents/hwindow.html#cosine",
-    "href": "contents/hwindow.html#cosine",
-    "title": "HWindow",
-    "section": "cosine",
-    "text": "cosine\ncosine(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray  source \n\nReturns a window with a simple cosine shape.\n\nThe maximum value is normalized to 1 (though the value 1 does not appear if npoints is even and window_type is symmetric).\n\n\nArguments\n\nnpoints\nAn integer. Number of points in the output window.\n\nsym\nA bool.\nWhen TRUE, generates a symmetric window, for use in filter design.\nWhen FALSE, generates a periodic window, for use in spectral analysis.\n\ndtype\nAn HDataType to indicate which type of HArray to be created.\nMust be a float dtype.\n\n\n\n\nReturns\nAn HArray.\n\n\n\nExamples\nHWindow$cosine(npoints = 10L, sym = TRUE, dtype = HDataType$Float64)",
-    "crumbs": [
-      "Classes",
-      "HWindow"
-    ]
-  },
-  {
-    "objectID": "contents/hwindow.html#hann",
-    "href": "contents/hwindow.html#hann",
-    "title": "HWindow",
-    "section": "hann",
-    "text": "hann\nhann(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray  source \n\nReturns a Hann window.\n\n\\(w(n) = 0.5 - 0.5 \\cos\\left(\\frac{2\\pi{n}}{npoints-1}\\right) \\qquad 0 \\leq n \\leq npoints-1\\)\nThe maximum value is normalized to 1 (though the value 1 does not appear if npoints is even and window_type is symmetric.\n\nThe Hann window is a taper formed by using a raised cosine or sine-squared with ends that touch zero.\n\n\nArguments\n\nnpoints\nAn integer. Number of points in the output window.\n\nsym\nA bool.\nWhen TRUE, generates a symmetric window, for use in filter design.\nWhen FALSE, generates a periodic window, for use in spectral analysis.\n\ndtype\nAn HDataType to indicate which type of HArray to be created.\nMust be a float dtype.\n\n\n\n\nReturns\nAn HArray.\n\n\n\nExamples\nHWindow$hann(npoints = 10L, sym = TRUE, dtype = HDataType$Float64)",
-    "crumbs": [
-      "Classes",
-      "HWindow"
-    ]
-  },
-  {
-    "objectID": "contents/hdatatype.html",
-    "href": "contents/hdatatype.html",
-    "title": "HDataType",
-    "section": "",
-    "text": "A type representation.\nSupports Float32, Float64, Complex32 and Complex64 types.",
-    "crumbs": [
-      "Classes",
-      "HDataType"
-    ]
-  },
-  {
-    "objectID": "contents/hdatatype.html#print",
-    "href": "contents/hdatatype.html#print",
-    "title": "HDataType",
-    "section": "print",
-    "text": "print\nprint()  source \n\nPrints the HDataType.\nDifferently from R’s behaviour, print doesn’t return the value invisibly.\n\n\nExamples\nlibrary(harmonium)\ndtype = HDataType$Complex64\ndtype$print()\n\n# or similarly:\nprint(dtype)",
-    "crumbs": [
-      "Classes",
-      "HDataType"
-    ]
-  },
-  {
-    "objectID": "contents/hdatatype.html#eq",
-    "href": "contents/hdatatype.html#eq",
-    "title": "HDataType",
-    "section": "eq",
-    "text": "eq\neq(other: HDataType) -&gt; bool  source \n\nEquality with another HDataType.\n\n\nArguments\n\nother\nAn HDataType.\n\n\n\n\nReturns\nA bool.\n\n\nExamples\nlibrary(harmonium)\nhdatatype1 = HDataType$Float32\nhdatatype2 = HDataType$Float32\nhdatatype1$eq(hdatatype2) # TRUE\n\n# or similarly:\nhdatatype1 == hdatatype2",
-    "crumbs": [
-      "Classes",
-      "HDataType"
-    ]
-  },
-  {
-    "objectID": "contents/hdatatype.html#ne",
-    "href": "contents/hdatatype.html#ne",
-    "title": "HDataType",
-    "section": "ne",
-    "text": "ne\nne(other: HDataType) -&gt; bool  source \n\nDifference with another HDataType.\n\n\nArguments\n\nother\nAn HDataType.\n\n\n\n\nReturns\nA bool.\n\n\n\nExamples\nlibrary(harmonium)\nhdatatype1 = HDataType$Float32\nhdatatype2 = HDataType$Float64\nhdatatype1$ne(hdatatype2) # TRUE\n\n# or similarly:\nhdatatype1 != hdatatype2",
-    "crumbs": [
-      "Classes",
-      "HDataType"
-    ]
-  },
-  {
-    "objectID": "contents/hpolynomialdegree.html",
-    "href": "contents/hpolynomialdegree.html",
-    "title": "HPolynomialDegree",
-    "section": "",
-    "text": "Degree of the polynomial used for interpolation. A higher degree gives a higher quality result, while taking longer to compute.",
-    "crumbs": [
-      "Classes",
-      "HPolynomialDegree"
-    ]
-  },
-  {
-    "objectID": "contents/hpolynomialdegree.html#print",
-    "href": "contents/hpolynomialdegree.html#print",
-    "title": "HPolynomialDegree",
-    "section": "print",
-    "text": "print\nprint()  source \n\nPrints the HPolynomialDegree.\nDifferently from R’s behaviour, print doesn’t return the value invisibly.\n\n\nExamples\npol_deg = HPolynomialDegree$Complex64\npol_deg$print()\n\n# or similarly:\nprint(pol_deg)",
-    "crumbs": [
-      "Classes",
-      "HPolynomialDegree"
-    ]
-  },
-  {
-    "objectID": "contents/hpolynomialdegree.html#eq",
-    "href": "contents/hpolynomialdegree.html#eq",
-    "title": "HPolynomialDegree",
-    "section": "eq",
-    "text": "eq\neq(other: HPolynomialDegree) -&gt; bool  source \n\nEquality with another HPolynomialDegree.\n\nArguments\n\nother\nAn HPolynomialDegree.\n\n\n\n\nReturns\nA bool.\n\n\nExamples\npol_deg1 = HPolynomialDegree$quintic\npol_deg2 = HPolynomialDegree$quintic\npol_deg1$eq(pol_deg2) # TRUE\n\n# or similarly:\npol_deg1 == pol_deg2",
-    "crumbs": [
-      "Classes",
-      "HPolynomialDegree"
-    ]
-  },
-  {
-    "objectID": "contents/hpolynomialdegree.html#ne",
-    "href": "contents/hpolynomialdegree.html#ne",
-    "title": "HPolynomialDegree",
-    "section": "ne",
-    "text": "ne\nne(other: HPolynomialDegree) -&gt; bool  source \n\nDifference with another HPolynomialDegree.\n\nArguments\n\nother\nAn HPolynomialDegree.\n\n\n\n\nReturns\nA bool.\n\n\nExamples\npol_deg1 = HPolynomialDegree$quintic\npol_deg2 = HPolynomialDegree$nearest\npol_deg1$ne(pol_deg2) # TRUE\n\n# or similarly:\npol_deg1 != pol_deg2",
-    "crumbs": [
-      "Classes",
-      "HPolynomialDegree"
-    ]
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Harmonium",
-    "section": "",
-    "text": "Harmonium is an audio interface inspired by Python’s librosa.\n\n\nBasic usage\nLoad the library\nlibrary(harmonium)\nCreate an HArray from an existing array\narr = matrix(c(1,2,3,4,5,6,7,8,9,10,11,12), ncol = 2)\ndtype = HDataType$float64\nharray = HArray$new_from_values(arr, dtype = dtype)\nprint(harray)\nOr decode from an existing audio file\nl = HFile$decode(\"file.wav\", dtype)\nharray = l[[0]]\nsr = l[[1]] # sampling rate\nprint(harray)\nVerify the dimensions\nharray$len()\nHAudioOp$nchannels(harray)\nHAudioOp$nframes(harray)\nVerify the data type\nharray$dtype()\nConvert to an R array\nharray$collect()\nConvert to mono\nHAudioOp$to_mono(harray)\nResample the haudio\nsr_in = 48000L\nsr_out = 22050L\nnbr_channels = HAudioOp$nchannels(harray)\ndtype = HDataType$float64\nres_type = HResamplerType$fft_fixed_in\nresampler = HResampler$new_fft(sr_in, sr_out, nbr_channels, res_type)\nhresampler$process(harray)\nPlay the haudio\nhaudiosink = HAudioSink$new()\nhaudiosink$append_from_harray(harray)\nOr play directly from the file\nhaudiosink$append_from_file(\"file.wav\")\nGet the number of audios to be played\nhaudiosink$len()\nDouble the audio volume and the playback speed\nhaudiosink$set_volume(2)\nhaudiosink$set_speed(2)\nPause the playback and confirms it is paused\nhaudiosink$pause()\nhaudiosink$is_paused()\nIt is also possible to get metadata from an audio file\nmetatadatype = HMetadataType$text\nHFile$metadata(\"file.wav\", metatadatype)\nAnd to get some audio parameters directly from a file\nparams = HFile$params(\"file.wav\")\nsr = params[[1]]\nnframes = params[[2]]\nnchannels = params[[3]]\nduration = params[[4]]"
-  },
-  {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
-    "section": "",
-    "text": "About this site"
-  },
-  {
-    "objectID": "contents/hfile.html",
-    "href": "contents/hfile.html",
-    "title": "HFile",
-    "section": "",
-    "text": "decode(fpath: string, dtype: HDataType) -&gt; HDecodedAudio  source \n\nDecode an audio file, providing its decoded data and the sampling rate.\nThe samples are normalized to fit in the range of [-1.0, 1.0].\n\n\n\nfpath\nThe file path as a string.\n\ndtype\nA float HDataType.\n\n\n\n\n\nAn HDecodedAudio containing:\n* The decoded audio as a float HArray.\n* The sampling rate as an integer.\n\n\n\n\nlibrary(harmonium)\nfpath = \"../../../testfiles/gs-16b-2c-44100hz.flac\"\ndtype = HDataType$Float32\nHFile$decode(fpath, dtype)",
-    "crumbs": [
-      "Classes",
-      "HFile"
-    ]
-  },
-  {
-    "objectID": "contents/hfile.html#decode",
-    "href": "contents/hfile.html#decode",
-    "title": "HFile",
-    "section": "",
-    "text": "decode(fpath: string, dtype: HDataType) -&gt; HDecodedAudio  source \n\nDecode an audio file, providing its decoded data and the sampling rate.\nThe samples are normalized to fit in the range of [-1.0, 1.0].\n\n\n\nfpath\nThe file path as a string.\n\ndtype\nA float HDataType.\n\n\n\n\n\nAn HDecodedAudio containing:\n* The decoded audio as a float HArray.\n* The sampling rate as an integer.\n\n\n\n\nlibrary(harmonium)\nfpath = \"../../../testfiles/gs-16b-2c-44100hz.flac\"\ndtype = HDataType$Float32\nHFile$decode(fpath, dtype)",
-    "crumbs": [
-      "Classes",
-      "HFile"
-    ]
-  },
-  {
-    "objectID": "contents/hfile.html#stream",
-    "href": "contents/hfile.html#stream",
-    "title": "HFile",
-    "section": "stream",
-    "text": "stream\ndecode_stream(fpath: string, frames: integer, dtype: HDataType) -&gt; HDecoderStream  source \n\nCreates an HDecoderStream, used as an iterator to stream frames of decoded audio.\n\n\nArguments\n\nfpath\nThe file path as a string.\n\nframes\nNumber of frames to decode per iteration.\n\ndtype\nA float HDataType.\n\n\n\n\nReturns\nAn HDecoderStream.\n\n\n\nExamples\nlibrary(harmonium)\nfpath = \"../../../testfiles/gs-16b-2c-44100hz.flac\"\ndtype = HDataType$Float32\nframes = 1000L\nHFile$decode_stream(fpath, frames, dtype)",
-    "crumbs": [
-      "Classes",
-      "HFile"
-    ]
-  },
-  {
-    "objectID": "contents/hfile.html#metadata",
-    "href": "contents/hfile.html#metadata",
-    "title": "HFile",
-    "section": "metadata",
-    "text": "metadata\nmetadata(fpath: string, metadata_type: HMetadataType) -&gt; list  source \n\nExtract text and visual metadata from a file.\nTags that are part of the container format are preferentially extracted. Additional tags that were found while probing will not be extracted.\nThe following metadata tagging formats are supported.\n\n\nID3v1\n\nID3v2\n\nISO/MP4\n\nRIFF\n\nVorbis Comment (in OGG & FLAC)\n\n\nEach TextMetadata will be comprised of a Tag, which contains the following fields:\n* tag_key\nA key string indicating the type, meaning, or purpose of the Tags value. Note: The meaning of key is dependant on the underlying metadata format.\n* tag_std_key\nIf the Tag’s key string is commonly associated with a typical type, meaning, or purpose, then if recognized a StandardTagKey will be assigned to this Tag. This is a best effort guess since not all metadata formats have a well defined or specified tag mapping. However, it is recommended that consumers prefer std_key over key, if provided.\nCheck [StandardTagKey] for all the variants.\n* tag_value\nThe value of the Tag.\n\nEach VisualMetadata will be comprised of the following fields:\n* usage:\nThe usage and/or content of the Visual. A string version of symphonia_core::meta::StandardVisualKey, which is an enumeration providing standardized keys for common visual dispositions. A demuxer may assign a StandardVisualKey to a Visual if the disposition of the attached visual is known and can be mapped to a standard key. The visual types listed here are derived from, though do not entirely cover, the ID3v2 APIC frame specification.\n* media_type\nThe Media Type (MIME Type) used to encode the Visual.\n* dimensions\nThe dimensions (width and height) of the Visual, represented in pixels.\nNote: This value may not be accurate as it comes from metadata, not the embedded graphic itself. Consider it only a hint.\n* bits_per_pixel\nThe number of bits-per-pixel (aka bit-depth) of the unencoded image.\n* color_mode\nIndicates how the color of a pixel is encoded in a Visual. Variants:\nDiscrete\nEach pixel in the Visual stores its own color information.\nIndexed(NonZeroU32)\nEach pixel in the Visual stores an index into a color palette containing the color information. The value stored by this variant indicates the number\nof colors in the color palette.\n* size\nSize of the image in bytes.\n* tag\nTag with the following fields:\n** tag_key\nA key string indicating the type, meaning, or purpose of the Tags value. Note: The meaning of key is dependant on the underlying metadata format.\n** tag_std_key\nIf the Tag’s key string is commonly associated with a typical type, meaning, or purpose, then if recognized a StandardTagKey will be assigned to this Tag. This is a best effort guess since not all metadata formats have a well defined or specified tag mapping. However, it is recommended that consumers prefer std_key over key, if provided.\nCheck [StandardTagKey] for all the variants.\n** tag_value\nThe value of the Tag.\n\n\nArguments\n\nfpath\nThe file path as a string.\n\nmetadata_type\nAn HMetadataType.\n\n\n\n\nReturns\nA list of metadata. An empty list will be returned if there is no metadata in the file.\n\n\n\nExamples\nlibrary(harmonium)\nfpath = \"../../../testfiles/gs-16b-2c-44100hz.mp3\"\nmetadata_type = HMetadataType$Text\nHFile$metadata(fpath, metadata_type)",
-    "crumbs": [
-      "Classes",
-      "HFile"
-    ]
-  },
-  {
-    "objectID": "contents/hfile.html#params",
-    "href": "contents/hfile.html#params",
-    "title": "HFile",
-    "section": "params",
-    "text": "params\nparams(fpath: string) -&gt; atomicvector  source \n\nGet audio parameters from a file.\nNote that this avoids loading the contents into memory, and is therefore useful for querying these parameters from long files.\n\n\nArguments\n\nfpath\nThe file path as a string.\n\n\n\n\nReturns\nA double atomic vector containing, in order:\n* sampling rate in Hz.\n* number of frames.\n* number of channels.\n* duration in seconds.\n\n\n\nExamples\nlibrary(harmonium)\nfpath = \"../../../testfiles/gs-16b-2c-44100hz.flac\"\nHFile$params(fpath)",
-    "crumbs": [
-      "Classes",
-      "HFile"
-    ]
-  },
-  {
-    "objectID": "contents/hfile.html#verify",
-    "href": "contents/hfile.html#verify",
-    "title": "HFile",
-    "section": "verify",
-    "text": "verify\n`verify(fpath: string) -&gt; string  source \n\nVerify an audio file, if supported by the decoder.\nThe verification is done after the decoding process is finished.\n\n\nArguments\n\nfpath\nThe file path as a string.\n\n\n\n\nReturns\nA string.\nOne of [“passed”, “failed”, “not_supported”]\n\n\n\nExamples\nlibrary(harmonium)\nfpath = \"../../../testfiles/gs-16b-2c-44100hz.flac\"\nHFile$verify(fpath)",
-    "crumbs": [
-      "Classes",
-      "HFile"
-    ]
-  },
-  {
-    "objectID": "contents/hinterpolationtype.html",
-    "href": "contents/hinterpolationtype.html",
-    "title": "HInterpolationType",
-    "section": "",
-    "text": "A interpolation type representation.\nSupports Cubic, Linear, Quadratic and Nearest.",
-    "crumbs": [
-      "Classes",
-      "HInterpolationType"
-    ]
-  },
-  {
-    "objectID": "contents/hinterpolationtype.html#print",
-    "href": "contents/hinterpolationtype.html#print",
-    "title": "HInterpolationType",
-    "section": "print",
-    "text": "print\nprint()  source \n\nPrints the HInterpolationType.\nDifferently from R’s behaviour, print doesn’t return the value invisibly.\n\n\nExamples\nlibrary(harmonium)\ninterpolationtype = HInterpolationType$Cubic\ninterpolationtype$print()\n\n# or similarly:\nprint(interpolationtype)",
-    "crumbs": [
-      "Classes",
-      "HInterpolationType"
-    ]
-  },
-  {
-    "objectID": "contents/hinterpolationtype.html#eq",
-    "href": "contents/hinterpolationtype.html#eq",
-    "title": "HInterpolationType",
-    "section": "eq",
-    "text": "eq\neq(other: HInterpolationType) -&gt; bool  source \n\nEquality with another HInterpolationType.\n\nArguments\n\nother\nAn HInterpolationType.\n\n\n\n\nReturns\nA bool.\n\n\nExamples\nlibrary(harmonium)\ninterpolationtype1 = HInterpolationType$Cubic\ninterpolationtype2 = HInterpolationType$Cubic\ninterpolationtype1$eq(interpolationtype2) # TRUE\n\n# or similarly:\ninterpolationtype1 == interpolationtype2",
-    "crumbs": [
-      "Classes",
-      "HInterpolationType"
-    ]
-  },
-  {
-    "objectID": "contents/hinterpolationtype.html#ne",
-    "href": "contents/hinterpolationtype.html#ne",
-    "title": "HInterpolationType",
-    "section": "ne",
-    "text": "ne\nne(other: HInterpolationType) -&gt; bool  source \n\nDifference with another HInterpolationType.\n\nArguments\n\nother\nAn HInterpolationType.\n\n\n\n\nReturns\nA bool.\n\n\nExamples\nlibrary(harmonium)\ninterpolationtype1 = HInterpolationType$Cubic\ninterpolationtype2 = HInterpolationType$Cubic\ninterpolationtype1$ne(interpolationtype2) # FALSE\n\n# or similarly:\ninterpolationtype1 != interpolationtype2",
-    "crumbs": [
-      "Classes",
-      "HInterpolationType"
-    ]
-  },
-  {
-    "objectID": "contents/hresamplertype.html",
-    "href": "contents/hresamplertype.html",
-    "title": "HResamplerType",
-    "section": "",
-    "text": "A resampler type representation.\nSupports FftFixedIn, FftFixedInOut, FftFixedOut, SincFixedIn, SincFixedOut, FastFixedIn and FastFixedOut types.",
-    "crumbs": [
-      "Classes",
-      "HResamplerType"
-    ]
-  },
-  {
-    "objectID": "contents/hresamplertype.html#print",
-    "href": "contents/hresamplertype.html#print",
-    "title": "HResamplerType",
-    "section": "print",
-    "text": "print\nprint()  source \n\nPrints the HResamplerType.\nDifferently from R’s behaviour, print doesn’t return the value invisibly.\n\n\nExamples\nhresamplertype = HResamplerType$SincFixedIn\nhresamplertype$print()\n\n# or similarly:\nprint(hresamplertype)",
-    "crumbs": [
-      "Classes",
-      "HResamplerType"
-    ]
-  },
-  {
-    "objectID": "contents/hresamplertype.html#eq",
-    "href": "contents/hresamplertype.html#eq",
-    "title": "HResamplerType",
-    "section": "eq",
-    "text": "eq\neq(other: HResamplerType) -&gt; bool  source \n\nEquality with another HResamplerType.\n\nArguments\n\nother\nAn HResamplerType.\n\n\n\n\nReturns\nA bool.\n\n\nExamples\nhresamplertype1 = HResamplerType$SincFixedIn\nhresamplertype2 = HResamplerType$SincFixedIn\nhresamplertype1$eq(hresamplertype2) # TRUE\n\n# or similarly:\nhresamplertype1 == hresamplertype2",
-    "crumbs": [
-      "Classes",
-      "HResamplerType"
-    ]
-  },
-  {
-    "objectID": "contents/hresamplertype.html#ne",
-    "href": "contents/hresamplertype.html#ne",
-    "title": "HResamplerType",
-    "section": "ne",
-    "text": "ne\nne(other: HResamplerType) -&gt; bool  source \n\nDifference with another HResamplerType.\n\nArguments\n\nother\nAn HResamplerType.\n\n\n\n\nReturns\nA bool.\n\n\nExamples\nhresamplertype1 = HResamplerType$SincFixedIn\nhresamplertype2 = HResamplerType$SincFixedIn\nhresamplertype1$ne(hresamplertype2) # FALSE\n\n# or similarly:\nhresamplertype1 != hresamplertype2",
-    "crumbs": [
-      "Classes",
-      "HResamplerType"
-    ]
-  },
-  {
     "objectID": "contents/hresampler.html",
     "href": "contents/hresampler.html",
     "title": "HResampler",
@@ -872,6 +121,548 @@
     ]
   },
   {
+    "objectID": "contents/hresamplertype.html",
+    "href": "contents/hresamplertype.html",
+    "title": "HResamplerType",
+    "section": "",
+    "text": "A resampler type representation.\nSupports FftFixedIn, FftFixedInOut, FftFixedOut, SincFixedIn, SincFixedOut, FastFixedIn and FastFixedOut types.",
+    "crumbs": [
+      "Classes",
+      "HResamplerType"
+    ]
+  },
+  {
+    "objectID": "contents/hresamplertype.html#print",
+    "href": "contents/hresamplertype.html#print",
+    "title": "HResamplerType",
+    "section": "print",
+    "text": "print\nprint()  source \n\nPrints the HResamplerType.\nDifferently from R’s behaviour, print doesn’t return the value invisibly.\n\n\nExamples\nhresamplertype = HResamplerType$SincFixedIn\nhresamplertype$print()\n\n# or similarly:\nprint(hresamplertype)",
+    "crumbs": [
+      "Classes",
+      "HResamplerType"
+    ]
+  },
+  {
+    "objectID": "contents/hresamplertype.html#eq",
+    "href": "contents/hresamplertype.html#eq",
+    "title": "HResamplerType",
+    "section": "eq",
+    "text": "eq\neq(other: HResamplerType) -&gt; bool  source \n\nEquality with another HResamplerType.\n\nArguments\n\nother\nAn HResamplerType.\n\n\n\n\nReturns\nA bool.\n\n\nExamples\nhresamplertype1 = HResamplerType$SincFixedIn\nhresamplertype2 = HResamplerType$SincFixedIn\nhresamplertype1$eq(hresamplertype2) # TRUE\n\n# or similarly:\nhresamplertype1 == hresamplertype2",
+    "crumbs": [
+      "Classes",
+      "HResamplerType"
+    ]
+  },
+  {
+    "objectID": "contents/hresamplertype.html#ne",
+    "href": "contents/hresamplertype.html#ne",
+    "title": "HResamplerType",
+    "section": "ne",
+    "text": "ne\nne(other: HResamplerType) -&gt; bool  source \n\nDifference with another HResamplerType.\n\nArguments\n\nother\nAn HResamplerType.\n\n\n\n\nReturns\nA bool.\n\n\nExamples\nhresamplertype1 = HResamplerType$SincFixedIn\nhresamplertype2 = HResamplerType$SincFixedIn\nhresamplertype1$ne(hresamplertype2) # FALSE\n\n# or similarly:\nhresamplertype1 != hresamplertype2",
+    "crumbs": [
+      "Classes",
+      "HResamplerType"
+    ]
+  },
+  {
+    "objectID": "contents/hinterpolationtype.html",
+    "href": "contents/hinterpolationtype.html",
+    "title": "HInterpolationType",
+    "section": "",
+    "text": "A interpolation type representation.\nSupports Cubic, Linear, Quadratic and Nearest.",
+    "crumbs": [
+      "Classes",
+      "HInterpolationType"
+    ]
+  },
+  {
+    "objectID": "contents/hinterpolationtype.html#print",
+    "href": "contents/hinterpolationtype.html#print",
+    "title": "HInterpolationType",
+    "section": "print",
+    "text": "print\nprint()  source \n\nPrints the HInterpolationType.\nDifferently from R’s behaviour, print doesn’t return the value invisibly.\n\n\nExamples\nlibrary(harmonium)\ninterpolationtype = HInterpolationType$Cubic\ninterpolationtype$print()\n\n# or similarly:\nprint(interpolationtype)",
+    "crumbs": [
+      "Classes",
+      "HInterpolationType"
+    ]
+  },
+  {
+    "objectID": "contents/hinterpolationtype.html#eq",
+    "href": "contents/hinterpolationtype.html#eq",
+    "title": "HInterpolationType",
+    "section": "eq",
+    "text": "eq\neq(other: HInterpolationType) -&gt; bool  source \n\nEquality with another HInterpolationType.\n\nArguments\n\nother\nAn HInterpolationType.\n\n\n\n\nReturns\nA bool.\n\n\nExamples\nlibrary(harmonium)\ninterpolationtype1 = HInterpolationType$Cubic\ninterpolationtype2 = HInterpolationType$Cubic\ninterpolationtype1$eq(interpolationtype2) # TRUE\n\n# or similarly:\ninterpolationtype1 == interpolationtype2",
+    "crumbs": [
+      "Classes",
+      "HInterpolationType"
+    ]
+  },
+  {
+    "objectID": "contents/hinterpolationtype.html#ne",
+    "href": "contents/hinterpolationtype.html#ne",
+    "title": "HInterpolationType",
+    "section": "ne",
+    "text": "ne\nne(other: HInterpolationType) -&gt; bool  source \n\nDifference with another HInterpolationType.\n\nArguments\n\nother\nAn HInterpolationType.\n\n\n\n\nReturns\nA bool.\n\n\nExamples\nlibrary(harmonium)\ninterpolationtype1 = HInterpolationType$Cubic\ninterpolationtype2 = HInterpolationType$Cubic\ninterpolationtype1$ne(interpolationtype2) # FALSE\n\n# or similarly:\ninterpolationtype1 != interpolationtype2",
+    "crumbs": [
+      "Classes",
+      "HInterpolationType"
+    ]
+  },
+  {
+    "objectID": "contents/hpolynomialdegree.html",
+    "href": "contents/hpolynomialdegree.html",
+    "title": "HPolynomialDegree",
+    "section": "",
+    "text": "Degree of the polynomial used for interpolation. A higher degree gives a higher quality result, while taking longer to compute.",
+    "crumbs": [
+      "Classes",
+      "HPolynomialDegree"
+    ]
+  },
+  {
+    "objectID": "contents/hpolynomialdegree.html#print",
+    "href": "contents/hpolynomialdegree.html#print",
+    "title": "HPolynomialDegree",
+    "section": "print",
+    "text": "print\nprint()  source \n\nPrints the HPolynomialDegree.\nDifferently from R’s behaviour, print doesn’t return the value invisibly.\n\n\nExamples\npol_deg = HPolynomialDegree$Complex64\npol_deg$print()\n\n# or similarly:\nprint(pol_deg)",
+    "crumbs": [
+      "Classes",
+      "HPolynomialDegree"
+    ]
+  },
+  {
+    "objectID": "contents/hpolynomialdegree.html#eq",
+    "href": "contents/hpolynomialdegree.html#eq",
+    "title": "HPolynomialDegree",
+    "section": "eq",
+    "text": "eq\neq(other: HPolynomialDegree) -&gt; bool  source \n\nEquality with another HPolynomialDegree.\n\nArguments\n\nother\nAn HPolynomialDegree.\n\n\n\n\nReturns\nA bool.\n\n\nExamples\npol_deg1 = HPolynomialDegree$quintic\npol_deg2 = HPolynomialDegree$quintic\npol_deg1$eq(pol_deg2) # TRUE\n\n# or similarly:\npol_deg1 == pol_deg2",
+    "crumbs": [
+      "Classes",
+      "HPolynomialDegree"
+    ]
+  },
+  {
+    "objectID": "contents/hpolynomialdegree.html#ne",
+    "href": "contents/hpolynomialdegree.html#ne",
+    "title": "HPolynomialDegree",
+    "section": "ne",
+    "text": "ne\nne(other: HPolynomialDegree) -&gt; bool  source \n\nDifference with another HPolynomialDegree.\n\nArguments\n\nother\nAn HPolynomialDegree.\n\n\n\n\nReturns\nA bool.\n\n\nExamples\npol_deg1 = HPolynomialDegree$quintic\npol_deg2 = HPolynomialDegree$nearest\npol_deg1$ne(pol_deg2) # TRUE\n\n# or similarly:\npol_deg1 != pol_deg2",
+    "crumbs": [
+      "Classes",
+      "HPolynomialDegree"
+    ]
+  },
+  {
+    "objectID": "contents/hwindow.html",
+    "href": "contents/hwindow.html",
+    "title": "HWindow",
+    "section": "",
+    "text": "A collection of window functions.",
+    "crumbs": [
+      "Classes",
+      "HWindow"
+    ]
+  },
+  {
+    "objectID": "contents/hwindow.html#barthann",
+    "href": "contents/hwindow.html#barthann",
+    "title": "HWindow",
+    "section": "barthann",
+    "text": "barthann\nbarthann(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray  source \n\nReturns a modified Bartlett-Hann window.\n\nThe maximum value is normalized to 1 (though the value 1 does not appear if npoints is even and window_type is symmetric).\n\n\nArguments\n\nnpoints\nAn integer. Number of points in the output window.\n\nsym\nA bool.\nWhen TRUE, generates a symmetric window, for use in filter design.\nWhen FALSE, generates a periodic window, for use in spectral analysis.\n\ndtype\nAn HDataType to indicate which type of HArray to be created.\nMust be a float dtype.\n\n\n\n\nReturns\nAn HArray.\n\n\n\nExamples\nHWindow$barthann(npoints = 10L, sym = TRUE, dtype = HDataType$Float64)",
+    "crumbs": [
+      "Classes",
+      "HWindow"
+    ]
+  },
+  {
+    "objectID": "contents/hwindow.html#bartlett",
+    "href": "contents/hwindow.html#bartlett",
+    "title": "HWindow",
+    "section": "bartlett",
+    "text": "bartlett\nbartlett(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray  source \n\n\\(w(n) = \\frac{2}{npoints-1} (\\frac{npoints-1}{2} - |n - \\frac{npoints-1}{2}|)\\)\nThe Bartlett window is very similar to a triangular window, except that the end points are at zero. It is often used in signal processing for tapering a signal, without generating too much ripple in the frequency domain.\n\nThe maximum value is normalized to 1 (though the value 1 does not appear if npoints is even and window_type is symmetric.\n\n\nArguments\n\nnpoints\nAn integer. Number of points in the output window.\n\nsym\nA bool.\nWhen TRUE, generates a symmetric window, for use in filter design.\nWhen FALSE, generates a periodic window, for use in spectral analysis.\n\ndtype\nAn HDataType to indicate which type of HArray to be created.\nMust be a float dtype.\n\n\n\n\nReturns\nAn HArray.\n\n\n\nExamples\nHWindow$bartlett(npoints = 10L, sym = TRUE, dtype = HDataType$Float64)",
+    "crumbs": [
+      "Classes",
+      "HWindow"
+    ]
+  },
+  {
+    "objectID": "contents/hwindow.html#blackman",
+    "href": "contents/hwindow.html#blackman",
+    "title": "HWindow",
+    "section": "blackman",
+    "text": "blackman\nblackman(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray  source \n\nReturns a Blackman window.\n\n\\(w(n) = 0.42 - 0.5 \\cos(2\\pi n/npoints) + 0.08 \\cos(4\\pi n/npoints)\\)\nThe Blackman window is a taper formed by using the first three terms of a summation of cosines. It was designed to have close to the minimal leakage possible. It is close to optimal, only slightly worse than a Kaiser window.\n\nThe maximum value is normalized to 1 (though the value 1 does not appear if npoints is even and sym is TRUE).\n\nThe “exact Blackman” window was designed to null out the third and fourth sidelobes, but has discontinuities at the boundaries, resulting in a 6 dB/oct fall-off. This window is an approximation of the “exact” window, which does not null the sidelobes as well, but is smooth at the edges, improving the fall-off rate to 18 dB/oct.\n\nMost references to the Blackman window come from the signal processing literature, where it is used as one of many windowing functions for smoothing values. It is also known as an apodization (which means “removing the foot”, i.e. smoothing discontinuities at the beginning and end of the sampled signal) or tapering function. It is known as a “near optimal” tapering function, almost as good (by some measures) as the Kaiser window.\n\n\nArguments\n\nnpoints\nAn integer. Number of points in the output window.\n\nsym\nA bool.\nWhen TRUE, generates a symmetric window, for use in filter design.\nWhen FALSE, generates a periodic window, for use in spectral analysis.\n\ndtype\nAn HDataType to indicate which type of HArray to be created.\nMust be a float dtype.\n\n\n\n\nReturns\nAn HArray.\n\n\n\nExamples\nHWindow$blackman(npoints = 10L, sym = TRUE, dtype = HDataType$Float64)",
+    "crumbs": [
+      "Classes",
+      "HWindow"
+    ]
+  },
+  {
+    "objectID": "contents/hwindow.html#blackmanharris",
+    "href": "contents/hwindow.html#blackmanharris",
+    "title": "HWindow",
+    "section": "blackmanharris",
+    "text": "blackmanharris\nblackmanharris(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray  source \n\nReturn a minimum 4-term Blackman-Harris window.\n\nThe maximum value is normalized to 1 (though the value 1 does not appear if npoints is even and window_type is symmetric.\n\n\nArguments\n\nnpoints\nAn integer. Number of points in the output window.\n\nsym\nA bool.\nWhen TRUE, generates a symmetric window, for use in filter design.\nWhen FALSE, generates a periodic window, for use in spectral analysis.\n\ndtype\nAn HDataType to indicate which type of HArray to be created.\nMust be a float dtype.\n\n\n\n\nReturns\nAn HArray.\n\n\n\nExamples\nHWindow$blackmanharris(npoints = 10L, sym = TRUE, dtype = HDataType$Float64)",
+    "crumbs": [
+      "Classes",
+      "HWindow"
+    ]
+  },
+  {
+    "objectID": "contents/hwindow.html#bohman",
+    "href": "contents/hwindow.html#bohman",
+    "title": "HWindow",
+    "section": "bohman",
+    "text": "bohman\nbohman(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray  source \n\nReturns a Bohman window.\n\nThe maximum value is normalized to 1 (though the value 1 does not appear if npoints is even and window_type is symmetric).\n\n\nArguments\n\nnpoints\nAn integer. Number of points in the output window.\n\nsym\nA bool.\nWhen TRUE, generates a symmetric window, for use in filter design.\nWhen FALSE, generates a periodic window, for use in spectral analysis.\n\ndtype\nAn HDataType to indicate which type of HArray to be created.\nMust be a float dtype.\n\n\n\n\nReturns\nAn HArray.\n\n\n\nExamples\nHWindow$bohman(npoints = 10L, sym = TRUE, dtype = HDataType$Float64)",
+    "crumbs": [
+      "Classes",
+      "HWindow"
+    ]
+  },
+  {
+    "objectID": "contents/hwindow.html#boxcar",
+    "href": "contents/hwindow.html#boxcar",
+    "title": "HWindow",
+    "section": "boxcar",
+    "text": "boxcar\nboxcar(npoints: integer, dtype: HDataType) -&gt; HArray  source \n\nReturns a boxcar or rectangular window.\n\nAlso known as a rectangular window or Dirichlet window, this is equivalent to no window at all.\n\n\nArguments\n\nnpoints\nAn integer. Number of points in the output window.\n\ndtype\nAn HDataType to indicate which type of HArray to be created.\nMust be a float dtype.\n\n\n\n\nReturns\nAn HArray.\n\n\n\nExamples\nHWindow$boxcar(npoints = 10L, dtype = HDataType$Float64)",
+    "crumbs": [
+      "Classes",
+      "HWindow"
+    ]
+  },
+  {
+    "objectID": "contents/hwindow.html#cosine",
+    "href": "contents/hwindow.html#cosine",
+    "title": "HWindow",
+    "section": "cosine",
+    "text": "cosine\ncosine(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray  source \n\nReturns a window with a simple cosine shape.\n\nThe maximum value is normalized to 1 (though the value 1 does not appear if npoints is even and window_type is symmetric).\n\n\nArguments\n\nnpoints\nAn integer. Number of points in the output window.\n\nsym\nA bool.\nWhen TRUE, generates a symmetric window, for use in filter design.\nWhen FALSE, generates a periodic window, for use in spectral analysis.\n\ndtype\nAn HDataType to indicate which type of HArray to be created.\nMust be a float dtype.\n\n\n\n\nReturns\nAn HArray.\n\n\n\nExamples\nHWindow$cosine(npoints = 10L, sym = TRUE, dtype = HDataType$Float64)",
+    "crumbs": [
+      "Classes",
+      "HWindow"
+    ]
+  },
+  {
+    "objectID": "contents/hwindow.html#hann",
+    "href": "contents/hwindow.html#hann",
+    "title": "HWindow",
+    "section": "hann",
+    "text": "hann\nhann(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray  source \n\nReturns a Hann window.\n\n\\(w(n) = 0.5 - 0.5 \\cos\\left(\\frac{2\\pi{n}}{npoints-1}\\right) \\qquad 0 \\leq n \\leq npoints-1\\)\nThe maximum value is normalized to 1 (though the value 1 does not appear if npoints is even and window_type is symmetric.\n\nThe Hann window is a taper formed by using a raised cosine or sine-squared with ends that touch zero.\n\n\nArguments\n\nnpoints\nAn integer. Number of points in the output window.\n\nsym\nA bool.\nWhen TRUE, generates a symmetric window, for use in filter design.\nWhen FALSE, generates a periodic window, for use in spectral analysis.\n\ndtype\nAn HDataType to indicate which type of HArray to be created.\nMust be a float dtype.\n\n\n\n\nReturns\nAn HArray.\n\n\n\nExamples\nHWindow$hann(npoints = 10L, sym = TRUE, dtype = HDataType$Float64)",
+    "crumbs": [
+      "Classes",
+      "HWindow"
+    ]
+  },
+  {
+    "objectID": "contents/hdecodedaudio.html",
+    "href": "contents/hdecodedaudio.html",
+    "title": "HDecodedAudio",
+    "section": "",
+    "text": "harray() -&gt; HArray  source \n\nGet the decoded HArray.\n\n\nA float HArray.\n\n\n\n\nlibrary(harmonium)\nfpath = \"../../../testfiles/gs-16b-2c-44100hz.flac\"\ndtype = HDataType$Float32\nhdecodedaudio = HFile$decode(fpath, dtype)\nhdecodedaudio$harray()",
+    "crumbs": [
+      "Classes",
+      "HDecodedAudio"
+    ]
+  },
+  {
+    "objectID": "contents/hdecodedaudio.html#harray",
+    "href": "contents/hdecodedaudio.html#harray",
+    "title": "HDecodedAudio",
+    "section": "",
+    "text": "harray() -&gt; HArray  source \n\nGet the decoded HArray.\n\n\nA float HArray.\n\n\n\n\nlibrary(harmonium)\nfpath = \"../../../testfiles/gs-16b-2c-44100hz.flac\"\ndtype = HDataType$Float32\nhdecodedaudio = HFile$decode(fpath, dtype)\nhdecodedaudio$harray()",
+    "crumbs": [
+      "Classes",
+      "HDecodedAudio"
+    ]
+  },
+  {
+    "objectID": "contents/hdecodedaudio.html#sr",
+    "href": "contents/hdecodedaudio.html#sr",
+    "title": "HDecodedAudio",
+    "section": "sr",
+    "text": "sr\nsr() -&gt; integer  source \n\nGet the sampling rate of the decoded audio.\n\nReturns\nAn integer.\n\n\n\nExamples\nlibrary(harmonium)\nfpath = \"../../../testfiles/gs-16b-2c-44100hz.flac\"\ndtype = HDataType$Float32\nhdecodedaudio = HFile$decode(fpath, dtype)\nhdecodedaudio$sr()",
+    "crumbs": [
+      "Classes",
+      "HDecodedAudio"
+    ]
+  },
+  {
+    "objectID": "contents/hdecodedaudio.html#invalidate",
+    "href": "contents/hdecodedaudio.html#invalidate",
+    "title": "HDecodedAudio",
+    "section": "invalidate",
+    "text": "invalidate\ninvalidate()  source \n\nReplaces the inner value of the external pointer, invalidating it.\nThis function is useful to remove one of the shared references of the inner pointer in rust.\n\n\nExamples\nlibrary(harmonium)\nfpath = \"../../../testfiles/gs-16b-2c-44100hz.flac\"\ndtype = HDataType$Float32\nhdecodedaudio = HFile$decode(fpath, dtype)\nharray = hdecodedaudio$harray() # now the inner HArray struct has 2 references.\nhdecodedaudio$invalidate() # back to 1 reference.",
+    "crumbs": [
+      "Classes",
+      "HDecodedAudio"
+    ]
+  },
+  {
+    "objectID": "contents/hdecoderstream.html",
+    "href": "contents/hdecoderstream.html",
+    "title": "HDecoderStream",
+    "section": "",
+    "text": "An iterator that decodes audio in streams.",
+    "crumbs": [
+      "Classes",
+      "HDecoderStream"
+    ]
+  },
+  {
+    "objectID": "contents/hdecoderstream.html#stream",
+    "href": "contents/hdecoderstream.html#stream",
+    "title": "HDecoderStream",
+    "section": "stream",
+    "text": "stream\nstream() -&gt; HArray  source \n\nGets the next wave of frames as an HArray.\nReturns an error if it’s end of stream or if an error ocurred in the decoding process.\n\n\nReturns\nThe decoded audio as a float HArray.\nThe number of frames streamed is the one used as input in the creation of HDecoderStream.\n\n\n\nExamples\nlibrary(harmonium)\nfpath = \"../../../testfiles/gs-16b-2c-44100hz.flac\"\ndtype = HDataType$Float32\nframes = 1000L\nhdecoder_stream = HFile$decode_stream(fpath, frames, dtype)\nhdecoder_stream$stream()",
+    "crumbs": [
+      "Classes",
+      "HDecoderStream"
+    ]
+  },
+  {
+    "objectID": "contents/haudiosink.html",
+    "href": "contents/haudiosink.html",
+    "title": "HAudioSink",
+    "section": "",
+    "text": "Handle to a device that outputs sounds.",
+    "crumbs": [
+      "Classes",
+      "HAudioSink"
+    ]
+  },
+  {
+    "objectID": "contents/haudiosink.html#new",
+    "href": "contents/haudiosink.html#new",
+    "title": "HAudioSink",
+    "section": "new",
+    "text": "new\nnew() -&gt; HAudioSink  source \n\nCreates a new HAudioSink instance.\nThe sink is set on “play” mode from the start.\n\n\nReturns\nAn HAudioSink.\n\n\n\nExamples\nlibrary(harmonium)\nhaudiosink = HAudioSink$new()",
+    "crumbs": [
+      "Classes",
+      "HAudioSink"
+    ]
+  },
+  {
+    "objectID": "contents/haudiosink.html#append_from_harray",
+    "href": "contents/haudiosink.html#append_from_harray",
+    "title": "HAudioSink",
+    "section": "append_from_harray",
+    "text": "append_from_harray\nappend_from_harray(harray: HArray, sr: integer)  source \n\nAppends a sound to the queue of sounds to play.\n\n\nArguments\n\nharray\nAn HArray.\n\nsr\nAn interger. The audio sampling rate.\n\n\n\n\nExamples\nlibrary(harmonium)\nhaudiosink = HAudioSink$new()\nhdecodedaudio = HFile$decode(fpath = \"./r-harmonium/testfiles/gs-16b-2c-44100hz.wav\", dtype = HDataType$Float32)\nharray = hdecodedaudio$harray()\nsr = hdecodedaudio$sr()\nhaudiosink$append_from_harray(harray, sr)",
+    "crumbs": [
+      "Classes",
+      "HAudioSink"
+    ]
+  },
+  {
+    "objectID": "contents/haudiosink.html#append_from_file",
+    "href": "contents/haudiosink.html#append_from_file",
+    "title": "HAudioSink",
+    "section": "append_from_file",
+    "text": "append_from_file\nappend_from_file(fpath: string)  source \n\nAppends a sound to the queue of sounds to play.\n\n\nArguments\n\nfpath\nThe file path as a string.\n\n\n\n\nExamples\nlibrary(harmonium)\nhaudiosink = HAudioSink$new()\nhaudiosink$append_from_file(fpath = \"./r-harmonium/testfiles/gs-16b-2c-44100hz.wav\")",
+    "crumbs": [
+      "Classes",
+      "HAudioSink"
+    ]
+  },
+  {
+    "objectID": "contents/haudiosink.html#audio_default_device",
+    "href": "contents/haudiosink.html#audio_default_device",
+    "title": "HAudioSink",
+    "section": "audio_default_device",
+    "text": "audio_default_device\naudio_default_device() -&gt; string  source \n\nInforms the default audio output device.\n\n\nReturns\nA string.\n\n\n\nExamples\nlibrary(harmonium)\nHAudioSink$audio_default_device()",
+    "crumbs": [
+      "Classes",
+      "HAudioSink"
+    ]
+  },
+  {
+    "objectID": "contents/haudiosink.html#audio_output_devices",
+    "href": "contents/haudiosink.html#audio_output_devices",
+    "title": "HAudioSink",
+    "section": "audio_output_devices",
+    "text": "audio_output_devices\naudio_output_devices() -&gt; atomicvector  source \n\nProvides a list of available audio output devices.\n\n\nReturns\nA character atomic vector.\n\n\n\nExamples\nlibrary(harmonium)\nHAudioSink$audio_output_devices()",
+    "crumbs": [
+      "Classes",
+      "HAudioSink"
+    ]
+  },
+  {
+    "objectID": "contents/haudiosink.html#audio_supported_configs",
+    "href": "contents/haudiosink.html#audio_supported_configs",
+    "title": "HAudioSink",
+    "section": "audio_supported_configs",
+    "text": "audio_supported_configs\naudio_supported_configs() -&gt; atomicvector  source \n\nProvides the supported configurations for the default audio output device.\nThe following informations are given:\n\n\nNumber of channels.\n\nMinimum and maximum value for the sampling rate.\n\nMinimum and maximum value for the buffer size.\n\nType of data expected by the device.\n\n\n\nReturns\nA character atomic vector.\n\n\n\nExamples\nlibrary(harmonium)\nHAudioSink$audio_supported_configs()",
+    "crumbs": [
+      "Classes",
+      "HAudioSink"
+    ]
+  },
+  {
+    "objectID": "contents/haudiosink.html#clear",
+    "href": "contents/haudiosink.html#clear",
+    "title": "HAudioSink",
+    "section": "clear",
+    "text": "clear\nclear()  source \n\nRemoves all currently loaded Sources from the Sink and pauses it.\n\n\nExamples\nlibrary(harmonium)\nhaudiosink = HAudioSink$new()\nhaudiosink$append_from_file(fpath = \"./r-harmonium/testfiles/gs-16b-2c-44100hz.wav\")\nhaudiosink$clear()\nhaudiosink$is_empty() # TRUE\nhaudiosink$is_paused() # TRUE",
+    "crumbs": [
+      "Classes",
+      "HAudioSink"
+    ]
+  },
+  {
+    "objectID": "contents/haudiosink.html#is_empty",
+    "href": "contents/haudiosink.html#is_empty",
+    "title": "HAudioSink",
+    "section": "is_empty",
+    "text": "is_empty\nis_empty() -&gt; bool  source \n\nReturns true if this sink has no more sounds to play.\n\n\nReturns\nA bool.\n\n\n\nExamples\nlibrary(harmonium)\nhaudiosink = HAudioSink$new()\nhaudiosink$is_empty() # TRUE",
+    "crumbs": [
+      "Classes",
+      "HAudioSink"
+    ]
+  },
+  {
+    "objectID": "contents/haudiosink.html#is_paused",
+    "href": "contents/haudiosink.html#is_paused",
+    "title": "HAudioSink",
+    "section": "is_paused",
+    "text": "is_paused\nis_paused() -&gt; bool  source \n\nGets if a sink is paused.\nSinks can be paused and resumed using pause() and play(). This returns true if the sink is paused.\n\n\nReturns\nA bool.\n\n\n\nExamples\nlibrary(harmonium)\nhaudiosink = HAudioSink$new()\nhaudiosink$append_from_file(fpath = \"./r-harmonium/testfiles/gs-16b-2c-44100hz.wav\")\nhaudiosink$is_paused() # FALSE\nhaudiosink$pause()\nhaudiosink$is_paused() # TRUE",
+    "crumbs": [
+      "Classes",
+      "HAudioSink"
+    ]
+  },
+  {
+    "objectID": "contents/haudiosink.html#len",
+    "href": "contents/haudiosink.html#len",
+    "title": "HAudioSink",
+    "section": "len",
+    "text": "len\nlen() -&gt; integer  source \n\nReturns the number of sounds currently in the queue.\n\n\nReturns\nAn integer.\n\n\n\nExamples\nlibrary(harmonium)\nhaudiosink = HAudioSink$new()\nhaudiosink$len() == 0 # TRUE\nhaudiosink$append_from_file(fpath = \"./r-harmonium/testfiles/gs-16b-2c-44100hz.wav\")\nhaudiosink$append_from_file(fpath = \"./r-harmonium/testfiles/gs-16b-2c-44100hz.wav\")\nhaudiosink$len() == 2 # TRUE",
+    "crumbs": [
+      "Classes",
+      "HAudioSink"
+    ]
+  },
+  {
+    "objectID": "contents/haudiosink.html#pause",
+    "href": "contents/haudiosink.html#pause",
+    "title": "HAudioSink",
+    "section": "pause",
+    "text": "pause\npause()  source \n\nPauses playback of this sink.\nNo effect if already paused.\nA paused sink can be resumed with play().\n\n\nExamples\nlibrary(harmonium)\nhaudiosink = HAudioSink$new()\nhaudiosink$append_from_file(fpath = \"./r-harmonium/testfiles/gs-16b-2c-44100hz.wav\")\nhaudiosink$is_paused() # FALSE\nhaudiosink$pause()\nhaudiosink$is_paused() # TRUE",
+    "crumbs": [
+      "Classes",
+      "HAudioSink"
+    ]
+  },
+  {
+    "objectID": "contents/haudiosink.html#play",
+    "href": "contents/haudiosink.html#play",
+    "title": "HAudioSink",
+    "section": "play",
+    "text": "play\nplay()  source \n\nResumes playback of a paused sink.\nNo effect if not paused.\n\n\nExamples\nlibrary(harmonium)\nhaudiosink = HAudioSink$new()\nhaudiosink$append_from_file(fpath = \"./r-harmonium/testfiles/gs-16b-2c-44100hz.wav\")\nhaudiosink$pause()\nhaudiosink$is_paused() # TRUE\nhaudiosink$play()\nhaudiosink$is_paused() # FALSE",
+    "crumbs": [
+      "Classes",
+      "HAudioSink"
+    ]
+  },
+  {
+    "objectID": "contents/haudiosink.html#set_speed",
+    "href": "contents/haudiosink.html#set_speed",
+    "title": "HAudioSink",
+    "section": "set_speed",
+    "text": "set_speed\nset_speed(value: double)  source \n\nChanges the speed of the sound.\nThe value 1.0 is the “normal” speed (unfiltered input). Any value other than 1.0 will change the play speed of the sound.\n\n\nArguments\n\nvalue\nA double.\n\n\n\n\nExamples\nlibrary(harmonium)\nhaudiosink = HAudioSink$new()\nhaudiosink$append_from_file(fpath = \"./r-harmonium/testfiles/gs-16b-2c-44100hz.wav\")\nhaudiosink$set_speed(2)\nhaudiosink$speed() == 2 # TRUE",
+    "crumbs": [
+      "Classes",
+      "HAudioSink"
+    ]
+  },
+  {
+    "objectID": "contents/haudiosink.html#set_volume",
+    "href": "contents/haudiosink.html#set_volume",
+    "title": "HAudioSink",
+    "section": "set_volume",
+    "text": "set_volume\nset_volume(value: double)  source \n\nChanges the volume of the sound.\nThe value 1.0 is the “normal” volume (unfiltered input). Any value other than 1.0 will multiply each sample by this value.\n\n\nArguments\n\nvalue\nA double.\n\n\n\n\nExamples\nlibrary(harmonium)\nhaudiosink = HAudioSink$new()\nhaudiosink$append_from_file(fpath = \"./r-harmonium/testfiles/gs-16b-2c-44100hz.wav\")\nhaudiosink$set_volume(2)\nhaudiosink$volume() == 2 # TRUE",
+    "crumbs": [
+      "Classes",
+      "HAudioSink"
+    ]
+  },
+  {
+    "objectID": "contents/haudiosink.html#skip_one",
+    "href": "contents/haudiosink.html#skip_one",
+    "title": "HAudioSink",
+    "section": "skip_one",
+    "text": "skip_one\nskip_one()  source \n\nSkips to the next Source in the Sink.\nIf there are more Sources appended to the Sink at the time, it will play the next one. Otherwise, the Sink will finish as if it had finished playing a Source all the way through.\n\n\nExamples\nlibrary(harmonium)\nhaudiosink = HAudioSink$new()\nhaudiosink$append_from_file(fpath = \"./r-harmonium/testfiles/gs-16b-2c-44100hz.wav\")\nhaudiosink$append_from_file(fpath = \"./r-harmonium/testfiles/gs-16b-2c-44100hz.wav\")\nhaudiosink$len() == 2 # TRUE\nhaudiosink$skip_one()\nhaudiosink$len() == 1 # TRUE",
+    "crumbs": [
+      "Classes",
+      "HAudioSink"
+    ]
+  },
+  {
+    "objectID": "contents/haudiosink.html#sleep_until_end",
+    "href": "contents/haudiosink.html#sleep_until_end",
+    "title": "HAudioSink",
+    "section": "sleep_until_end",
+    "text": "sleep_until_end\nsleep_until_end()  source \n\nSleeps the current thread until the sound ends.\n\n\nExamples\nlibrary(harmonium)\nhaudiosink = HAudioSink$new()\nhaudiosink$append_from_file(fpath = \"./r-harmonium/testfiles/gs-16b-2c-44100hz.wav\")\nhaudiosink$sleep_until_end()",
+    "crumbs": [
+      "Classes",
+      "HAudioSink"
+    ]
+  },
+  {
+    "objectID": "contents/haudiosink.html#speed",
+    "href": "contents/haudiosink.html#speed",
+    "title": "HAudioSink",
+    "section": "speed",
+    "text": "speed\nspeed() -&gt; double  source \n\nGets the speed of the sound.\nThe value 1.0 is the “normal” speed (unfiltered input). Any value other than 1.0 will change the play speed of the sound.\n\n\nReturns\nA double.\n\n\n\nExamples\nlibrary(harmonium)\nhaudiosink = HAudioSink$new()\nhaudiosink$append_from_file(fpath = \"./r-harmonium/testfiles/gs-16b-2c-44100hz.wav\")\nhaudiosink$speed()",
+    "crumbs": [
+      "Classes",
+      "HAudioSink"
+    ]
+  },
+  {
+    "objectID": "contents/haudiosink.html#stop",
+    "href": "contents/haudiosink.html#stop",
+    "title": "HAudioSink",
+    "section": "stop",
+    "text": "stop\nstop()  source \n\nStops the sink by emptying the queue.\nThe sink will keep its previous state (play or pause).\n\n\nExamples\nlibrary(harmonium)\nhaudiosink = HAudioSink$new()\nhaudiosink$append_from_file(fpath = \"./r-harmonium/testfiles/gs-16b-2c-44100hz.wav\")\nhaudiosink$append_from_file(fpath = \"./r-harmonium/testfiles/gs-16b-2c-44100hz.wav\")\nhaudiosink$len() == 2 # TRUE\nhaudiosink$stop()\nhaudiosink$len() == 0 # TRUE\nhaudiosink$is_paused() # FALSE",
+    "crumbs": [
+      "Classes",
+      "HAudioSink"
+    ]
+  },
+  {
+    "objectID": "contents/haudiosink.html#try_seek",
+    "href": "contents/haudiosink.html#try_seek",
+    "title": "HAudioSink",
+    "section": "try_seek",
+    "text": "try_seek\ntry_seek(pos: f64)  source \n\nAttempts to seek to a given position in the current source.\nThis blocks between 0 and ~5 milliseconds.\nAs long as the duration of the source is known, seek is guaranteed to saturate at the end of the source. For example given a source that reports a total duration of 42 seconds calling try_seek() with 60 seconds as argument will seek to 42 seconds.\n\nThis function will return an error if: - one of the underlying sources does not support seeking. - an implementation ran into one during the seek. - when seeking beyond the end of a source when the duration of the source is not known.\n\nArguments\n\npos\nA double. The time to seek to in seconds.\n\n\n\n\nExamples\nlibrary(harmonium)\nhaudiosink = HAudioSink$new()\nhaudiosink$append_from_file(fpath = \"./r-harmonium/testfiles/gs-16b-2c-44100hz.wav\")\nhaudiosink$try_seek(2)",
+    "crumbs": [
+      "Classes",
+      "HAudioSink"
+    ]
+  },
+  {
+    "objectID": "contents/haudiosink.html#volume",
+    "href": "contents/haudiosink.html#volume",
+    "title": "HAudioSink",
+    "section": "volume",
+    "text": "volume\nvolume() -&gt; double  source \n\nGets the volume of the sound.\nThe value 1.0 is the “normal” volume (unfiltered input). Any value other than 1.0 will multiply each sample by this value.\n\n\nReturns\nA double.\n\n\n\nExamples\nlibrary(harmonium)\nhaudiosink = HAudioSink$new()\nhaudiosink$append_from_file(fpath = \"./r-harmonium/testfiles/gs-16b-2c-44100hz.wav\")\nhaudiosink$volume()",
+    "crumbs": [
+      "Classes",
+      "HAudioSink"
+    ]
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Harmonium",
+    "section": "",
+    "text": "Harmonium is an audio interface inspired by Python’s librosa.\n\n\nBasic usage\nLoad the library\nlibrary(harmonium)\nCreate an HArray from an existing array\narr = matrix(c(1,2,3,4,5,6,7,8,9,10,11,12), ncol = 2)\ndtype = HDataType$float64\nharray = HArray$new_from_values(arr, dtype = dtype)\nprint(harray)\nOr decode from an existing audio file\nl = HFile$decode(\"file.wav\", dtype)\nharray = l[[0]]\nsr = l[[1]] # sampling rate\nprint(harray)\nVerify the dimensions\nharray$len()\nHAudioOp$nchannels(harray)\nHAudioOp$nframes(harray)\nVerify the data type\nharray$dtype()\nConvert to an R array\nharray$collect()\nConvert to mono\nHAudioOp$to_mono(harray)\nResample the haudio\nsr_in = 48000L\nsr_out = 22050L\nnbr_channels = HAudioOp$nchannels(harray)\ndtype = HDataType$float64\nres_type = HResamplerType$fft_fixed_in\nresampler = HResampler$new_fft(sr_in, sr_out, nbr_channels, res_type)\nhresampler$process(harray)\nPlay the haudio\nhaudiosink = HAudioSink$new()\nhaudiosink$append_from_harray(harray)\nOr play directly from the file\nhaudiosink$append_from_file(\"file.wav\")\nGet the number of audios to be played\nhaudiosink$len()\nDouble the audio volume and the playback speed\nhaudiosink$set_volume(2)\nhaudiosink$set_speed(2)\nPause the playback and confirms it is paused\nhaudiosink$pause()\nhaudiosink$is_paused()\nIt is also possible to get metadata from an audio file\nmetatadatype = HMetadataType$text\nHFile$metadata(\"file.wav\", metatadatype)\nAnd to get some audio parameters directly from a file\nparams = HFile$params(\"file.wav\")\nsr = params[[1]]\nnframes = params[[2]]\nnchannels = params[[3]]\nduration = params[[4]]"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site"
+  },
+  {
     "objectID": "contents/hwindowtype.html",
     "href": "contents/hwindowtype.html",
     "title": "HWindowType",
@@ -931,7 +722,7 @@
     "href": "contents/hmetadatatype.html#print",
     "title": "HMetadataType",
     "section": "print",
-    "text": "print\nprint()  source \n\nPrints the HMetadataType.\nDifferently from R’s behaviour, print doesn’t return the value invisibly.\n\n\nExamples\nmetadatatype = HMetadataType$All\nmetadatatype$print()\n\n# or similarly:\nprint(metadatatype)",
+    "text": "print\nprint()  source \n\nPrints the HMetadataType.\nDifferently from R’s behaviour, print doesn’t return the value invisibly.\n\n\nExamples\nlibrary(harmonium)\nmetadatatype = HMetadataType$All\nmetadatatype$print()\n\n# or similarly:\nprint(metadatatype)",
     "crumbs": [
       "Classes",
       "HMetadataType"
@@ -942,7 +733,7 @@
     "href": "contents/hmetadatatype.html#eq",
     "title": "HMetadataType",
     "section": "eq",
-    "text": "eq\neq(other: HMetadataType) -&gt; bool  source \n\nEquality with another HMetadataType.\n\nArguments\n\nother\nAn HMetadataType.\n\n\n\n\nReturns\nA bool.\n\n\nExamples\nmetadatatype1 = HMetadataType$All\nmetadatatype2 = HMetadataType$All\nmetadatatype1$eq(metadatatype2) # TRUE\n\n# or similarly:\nmetadatatype1 == metadatatype2",
+    "text": "eq\neq(other: HMetadataType) -&gt; bool  source \n\nEquality with another HMetadataType.\n\nArguments\n\nother\nAn HMetadataType.\n\n\n\n\nReturns\nA bool.\n\n\nExamples\nlibrary(harmonium)\nmetadatatype1 = HMetadataType$All\nmetadatatype2 = HMetadataType$All\nmetadatatype1$eq(metadatatype2) # TRUE\n\n# or similarly:\nmetadatatype1 == metadatatype2",
     "crumbs": [
       "Classes",
       "HMetadataType"
@@ -953,65 +744,120 @@
     "href": "contents/hmetadatatype.html#ne",
     "title": "HMetadataType",
     "section": "ne",
-    "text": "ne\nne(other: HMetadataType) -&gt; bool  source \n\nDifference with another HMetadataType.\n\nArguments\n\nother\nAn HMetadataType.\n\n\n\n\nReturns\nA bool.\n\n\nExamples\nmetadatatype1 = HMetadataType$All\nmetadatatype2 = HMetadataType$All\nmetadatatype1$ne(metadatatype2) # FALSE\n\n# or similarly:\nmetadatatype1 != metadatatype2",
+    "text": "ne\nne(other: HMetadataType) -&gt; bool  source \n\nDifference with another HMetadataType.\n\nArguments\n\nother\nAn HMetadataType.\n\n\n\n\nReturns\nA bool.\n\n\nExamples\nlibrary(harmonium)\nmetadatatype1 = HMetadataType$All\nmetadatatype2 = HMetadataType$All\nmetadatatype1$ne(metadatatype2) # FALSE\n\n# or similarly:\nmetadatatype1 != metadatatype2",
     "crumbs": [
       "Classes",
       "HMetadataType"
     ]
   },
   {
-    "objectID": "contents/haudioop.html",
-    "href": "contents/haudioop.html",
-    "title": "HAudioOp",
+    "objectID": "contents/hfft.html",
+    "href": "contents/hfft.html",
+    "title": "HFft",
     "section": "",
-    "text": "HAudioOp A collection of methods that can be applied to float 1D or 2D HArray which represents audio data.",
+    "text": "fft() -&gt; HArray  source \n\nComputes the fast fourier transform of the HArray.\nFFT (Fast Fourier Transform) refers to a way the discrete Fourier Transform (DFT) can be calculated efficiently, by using symmetries in the calculated terms. The symmetry is highest when n is a power of 2, and the transform is therefore most efficient for these sizes.\n\nThe function does not normalize outputs. Callers must manually normalize the results by scaling each element by 1/sqrt(n). Multiple normalization steps can be merged into one via pairwise multiplication, so when doing a forward FFT followed by an inverse callers can normalize once by scaling each element by 1/n.\n\nElements in the output are ordered by ascending frequency, with the first element corresponding to frequency 0.\n\n\n\nAn HArray.\n\n\n\n\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nHFft$fft(harray)",
     "crumbs": [
       "Classes",
-      "HAudioOp"
+      "HFft"
     ]
   },
   {
-    "objectID": "contents/haudioop.html#nchannels",
-    "href": "contents/haudioop.html#nchannels",
-    "title": "HAudioOp",
-    "section": "nchannels",
-    "text": "nchannels\nnchannels() -&gt; integer  source \n\nReturns the number of channels.\nThis is the same as the number of rows of a 1D or 2D HArray.\n\n\nReturns\nAn integer.\n\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nHAudioOp$nchannels(harray)",
+    "objectID": "contents/hfft.html#fft",
+    "href": "contents/hfft.html#fft",
+    "title": "HFft",
+    "section": "",
+    "text": "fft() -&gt; HArray  source \n\nComputes the fast fourier transform of the HArray.\nFFT (Fast Fourier Transform) refers to a way the discrete Fourier Transform (DFT) can be calculated efficiently, by using symmetries in the calculated terms. The symmetry is highest when n is a power of 2, and the transform is therefore most efficient for these sizes.\n\nThe function does not normalize outputs. Callers must manually normalize the results by scaling each element by 1/sqrt(n). Multiple normalization steps can be merged into one via pairwise multiplication, so when doing a forward FFT followed by an inverse callers can normalize once by scaling each element by 1/n.\n\nElements in the output are ordered by ascending frequency, with the first element corresponding to frequency 0.\n\n\n\nAn HArray.\n\n\n\n\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nHFft$fft(harray)",
     "crumbs": [
       "Classes",
-      "HAudioOp"
+      "HFft"
     ]
   },
   {
-    "objectID": "contents/haudioop.html#nframes",
-    "href": "contents/haudioop.html#nframes",
-    "title": "HAudioOp",
-    "section": "nframes",
-    "text": "nframes\nnframes() -&gt; integer  source \n\nReturns the number of frames.\nThis is the same as the number of cols of a 1D or 2D HArray.\nThe number of frames is equivalent to the number of samples divided by the number of channels.\n\n\nReturns\nAn integer.\n\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nHAudioOp$nframes(harray)",
+    "objectID": "contents/hfft.html#fft_mut",
+    "href": "contents/hfft.html#fft_mut",
+    "title": "HFft",
+    "section": "fft_mut",
+    "text": "fft_mut\nfft_mut()  source \n\nComputes the fast fourier transform of the HArray.\nThe operation is done in-place.\nFFT (Fast Fourier Transform) refers to a way the discrete Fourier Transform (DFT) can be calculated efficiently, by using symmetries in the calculated terms. The symmetry is highest when n is a power of 2, and the transform is therefore most efficient for these sizes.\n\nThe function does not normalize outputs. Callers must manually normalize the results by scaling each element by 1/sqrt(n). Multiple normalization steps can be merged into one via pairwise multiplication, so when doing a forward FFT followed by an inverse callers can normalize once by scaling each element by 1/n.\n\nElements in the output are ordered by ascending frequency, with the first element corresponding to frequency 0.\n\n\nExamples\nlibrary(harmonium)\nr = as.double(sample(100, 30, replace = TRUE))\ni = as.double(sample(100, 30, replace = TRUE))\narr = array(complex(real=r, imaginary=i), c(6,5))\ndtype = HDataType$Complex32\nharray = HArray$new_from_values(arr, dtype)\nHFft$fft_mut(harray)",
     "crumbs": [
       "Classes",
-      "HAudioOp"
+      "HFft"
     ]
   },
   {
-    "objectID": "contents/haudioop.html#db_to_amplitude",
-    "href": "contents/haudioop.html#db_to_amplitude",
-    "title": "HAudioOp",
-    "section": "db_to_amplitude",
-    "text": "db_to_amplitude\ndb_to_amplitude(harray: HArray, reference: double)  source \n\nConverts the HArray input from dB to amplitude.\n\\(db_to_amplitude(x) = reference * (10.0**(x * 0.1))**power\\)\nThe operation is done in-place.\n\n\nArguments\n\nharray\nA 1D or 2D float HArray.\n\nreference\nA double that scales the output.\n\npower\nA double. If 1.0, will compute DB to power. If 0.5, will compute DB to amplitude.\n\n\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nHAudioOp$db_to_amplitude(harray, 2, 1)",
+    "objectID": "contents/hfft.html#ifft",
+    "href": "contents/hfft.html#ifft",
+    "title": "HFft",
+    "section": "ifft",
+    "text": "ifft\nifft() -&gt; HArray  source \n\nComputes the inverse fast fourier transform of a complex HArray.\nFFT (Fast Fourier Transform) refers to a way the discrete Fourier Transform (DFT) can be calculated efficiently, by using symmetries in the calculated terms. The symmetry is highest when n is a power of 2, and the transform is therefore most efficient for these sizes.\n\nThe function does not normalize outputs. Callers must manually normalize the results by scaling each element by 1/sqrt(n). Multiple normalization steps can be merged into one via pairwise multiplication, so when doing a forward FFT followed by an inverse callers can normalize once by scaling each element by 1/n.\n\n\nReturns\nAn HArray.\nWill return an error if the HArray is of a float type.\n\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1+1i,2+2i,3+3i,4+4i,5+5i,6+6i), c(3,2))\ndtype = HDataType$Complex32\nharray = HArray$new_from_values(arr, dtype)\nHFft$ifft(harray)",
     "crumbs": [
       "Classes",
-      "HAudioOp"
+      "HFft"
     ]
   },
   {
-    "objectID": "contents/haudioop.html#to_mono",
-    "href": "contents/haudioop.html#to_mono",
-    "title": "HAudioOp",
-    "section": "to_mono",
-    "text": "to_mono\nto_mono(harray: HArray)  source \n\nConvert to 1 channel by taking the average across channels.\nThe operation is done in-place. A new inner array is created.\n\n\nArguments\n\nharray\nA 2D float HArray.\n\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nHAudioOp$to_mono(harray)",
+    "objectID": "contents/hfft.html#ifft_mut",
+    "href": "contents/hfft.html#ifft_mut",
+    "title": "HFft",
+    "section": "ifft_mut",
+    "text": "ifft_mut\nifft_mut() -&gt; HArray  source \n\nComputes the inverse fast fourier transform of a complex HArray.\nThe operation is done in-place.\nFFT (Fast Fourier Transform) refers to a way the discrete Fourier Transform (DFT) can be calculated efficiently, by using symmetries in the calculated terms. The symmetry is highest when n is a power of 2, and the transform is therefore most efficient for these sizes.\n\nThe function does not normalize outputs. Callers must manually normalize the results by scaling each element by 1/sqrt(n). Multiple normalization steps can be merged into one via pairwise multiplication, so when doing a forward FFT followed by an inverse callers can normalize once by scaling each element by 1/n.\n\n\nReturns\nWill return an error if the HArray is not of complex type.\n\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1+1i,2+2i,3+3i,4+4i,5+5i,6+6i), c(3,2))\ndtype = HDataType$Complex32\nharray = HArray$new_from_values(arr, dtype)\nHFft$ifft_mut(harray)",
     "crumbs": [
       "Classes",
-      "HAudioOp"
+      "HFft"
+    ]
+  },
+  {
+    "objectID": "contents/hfft.html#rfft_mut",
+    "href": "contents/hfft.html#rfft_mut",
+    "title": "HFft",
+    "section": "rfft_mut",
+    "text": "rfft_mut\nrfft_mut()  source \n\nComputes the fast fourier transform of a float HArray. Transforms a real signal of length N to a complex-valued spectrum of length N/2+1 (with N/2 rounded down).\nThe operation is not done in-place, although the same external pointer is used to store the new HArray.\nThe FFT of a real signal is Hermitian-symmetric, X[i] = conj(X[-i]) so the output contains only the positive frequencies below the Nyquist frequency.\nFFT (Fast Fourier Transform) refers to a way the discrete Fourier Transform (DFT) can be calculated efficiently, by using symmetries in the calculated terms. The symmetry is highest when n is a power of 2, and the transform is therefore most efficient for these sizes.\n\nThe function does not normalize outputs. Callers must manually normalize the results by scaling each element by 1/sqrt(n). Multiple normalization steps can be merged into one via pairwise multiplication, so when doing a forward FFT followed by an inverse callers can normalize once by scaling each element by 1/n.\n\nElements in the output are ordered by ascending frequency, with the first element corresponding to frequency 0.\n\n\nReturns\nWill return an error if the HArray is not of float type.\n\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nHFft$rfft_mut(harray)",
+    "crumbs": [
+      "Classes",
+      "HFft"
+    ]
+  },
+  {
+    "objectID": "contents/hfft.html#irfft_mut",
+    "href": "contents/hfft.html#irfft_mut",
+    "title": "HFft",
+    "section": "irfft_mut",
+    "text": "irfft_mut\nirfft_mut(length: integer)  source \n\nComputes the inverse fast fourier transform of a complex HArray. Transforms a complex spectrum of length N/2+1 (with N/2 rounded down) to a real-valued signal of length N.\nThe operation is not done in-place, although the same external pointer is used to store the new HArray.\nThe FFT of a real signal is Hermitian-symmetric, X[i] = conj(X[-i]) so the output contains only the positive frequencies below the Nyquist frequency.\nFFT (Fast Fourier Transform) refers to a way the discrete Fourier Transform (DFT) can be calculated efficiently, by using symmetries in the calculated terms. The symmetry is highest when n is a power of 2, and the transform is therefore most efficient for these sizes.\n\nThe function does not normalize outputs. Callers must manually normalize the results by scaling each element by 1/sqrt(n). Multiple normalization steps can be merged into one via pairwise multiplication, so when doing a forward FFT followed by an inverse callers can normalize once by scaling each element by 1/n.\n\n\nReturns\nWill return an error if:\n* The HArray is not of float type.\n* The length argument is not compatible with the spectrum length.\n\n\n\nArguments\n\nlength\nAn integer. The output length of the signal. Since the spectrum is N/2+1, the length can be N and N+1, if N is even, or can be N and N-1 if N is odd.\n\n\n\n\nExamples\nlibrary(harmonium)\nr = as.double(sample(100, 4, replace = TRUE))\ni = as.double(sample(100, 3, replace = TRUE))\narr = array(complex(real=r, imaginary=c(0,i)), c(4,1))\ndtype = HDataType$Complex32\nharray = HArray$new_from_values(arr, dtype)\nHFft$irfft_mut(harray, 7L)",
+    "crumbs": [
+      "Classes",
+      "HFft"
+    ]
+  },
+  {
+    "objectID": "contents/hsincinterpolationparameters.html",
+    "href": "contents/hsincinterpolationparameters.html",
+    "title": "HSincInterpolationParameters",
+    "section": "",
+    "text": "Parameters to be used for sinc interpolation.",
+    "crumbs": [
+      "Classes",
+      "HSincInterpolationParameters"
+    ]
+  },
+  {
+    "objectID": "contents/hsincinterpolationparameters.html#new",
+    "href": "contents/hsincinterpolationparameters.html#new",
+    "title": "HSincInterpolationParameters",
+    "section": "new",
+    "text": "new\nnew(sinc_len: integer, f_cutoff: double, oversampling_factor: integer, interpolation: HInterpolationType, window: HWindowType) -&gt; HSincInterpolationParameters  source \n\nCreates a new HSincInterpolationParameters.\n\n\nArguments\n\nsinc_len\nAn integer. Length of the windowed sinc interpolation filter. Higher values can allow a higher cut-off frequency leading to less high frequency roll-off at the expense of higher cpu usage. A good starting point should be 256. The value will be rounded up to the nearest multiple of 8.\n\nf_cutoff\nA double. Relative cutoff frequency of the sinc interpolation filter (relative to the lowest one of fs_in/2 or fs_out/2). Start at 0.95, and increase if needed.\n\noversampling_factor\nAn integer. The number of intermediate points to use for interpolation. Higher values use more memory for storing the sinc filters. Only the points actually needed are calculated during processing so a larger number does not directly lead to higher cpu usage. A lower value helps in keeping the sincs in the cpu cache. A good starting point should be 128.\n\ninterpolation\nAn HInterpolationType. The interpolation type.\n\nwindow\nAn HWindowType. The window function to use.\n\n\n\n\nReturns\nAn HSincInterpolationParameters.\n\n\n\nExamples\nsinc_len = 256L\nf_cutoff = 0.95\noversampling_factor = 128L\ninterpolation = HInterpolationType$Linear\nwindow = HWindowType$Blackman\n\nhsincinterpolationparameters = HSincInterpolationParameters$new(sinc_len, f_cutoff, oversampling_factor, interpolation, window)",
+    "crumbs": [
+      "Classes",
+      "HSincInterpolationParameters"
+    ]
+  },
+  {
+    "objectID": "contents/hsincinterpolationparameters.html#print",
+    "href": "contents/hsincinterpolationparameters.html#print",
+    "title": "HSincInterpolationParameters",
+    "section": "print",
+    "text": "print\nprint()  source \n\nPrints the HSincInterpolationParameters.\nDifferently from R’s behaviour, print doesn’t return the value invisibly.\n\n\nExamples\nsinc_len = 256L\nf_cutoff = 0.95\noversampling_factor = 128L\ninterpolation = HInterpolationType$Linear\nwindow = HWindowType$Blackman\n\nhsincinterpolationparameters = HSincInterpolationParameters$new(sinc_len, f_cutoff, oversampling_factor, interpolation, window)\nhsincinterpolationparameters$print()\n\n# or similarly:\nprint(hsincinterpolationparameters)",
+    "crumbs": [
+      "Classes",
+      "HSincInterpolationParameters"
     ]
   },
   {
@@ -1177,6 +1023,171 @@
     "crumbs": [
       "Classes",
       "HArray"
+    ]
+  },
+  {
+    "objectID": "contents/hdatatype.html",
+    "href": "contents/hdatatype.html",
+    "title": "HDataType",
+    "section": "",
+    "text": "A type representation.\nSupports Float32, Float64, Complex32 and Complex64 types.",
+    "crumbs": [
+      "Classes",
+      "HDataType"
+    ]
+  },
+  {
+    "objectID": "contents/hdatatype.html#print",
+    "href": "contents/hdatatype.html#print",
+    "title": "HDataType",
+    "section": "print",
+    "text": "print\nprint()  source \n\nPrints the HDataType.\nDifferently from R’s behaviour, print doesn’t return the value invisibly.\n\n\nExamples\nlibrary(harmonium)\ndtype = HDataType$Complex64\ndtype$print()\n\n# or similarly:\nprint(dtype)",
+    "crumbs": [
+      "Classes",
+      "HDataType"
+    ]
+  },
+  {
+    "objectID": "contents/hdatatype.html#eq",
+    "href": "contents/hdatatype.html#eq",
+    "title": "HDataType",
+    "section": "eq",
+    "text": "eq\neq(other: HDataType) -&gt; bool  source \n\nEquality with another HDataType.\n\n\nArguments\n\nother\nAn HDataType.\n\n\n\n\nReturns\nA bool.\n\n\nExamples\nlibrary(harmonium)\nhdatatype1 = HDataType$Float32\nhdatatype2 = HDataType$Float32\nhdatatype1$eq(hdatatype2) # TRUE\n\n# or similarly:\nhdatatype1 == hdatatype2",
+    "crumbs": [
+      "Classes",
+      "HDataType"
+    ]
+  },
+  {
+    "objectID": "contents/hdatatype.html#ne",
+    "href": "contents/hdatatype.html#ne",
+    "title": "HDataType",
+    "section": "ne",
+    "text": "ne\nne(other: HDataType) -&gt; bool  source \n\nDifference with another HDataType.\n\n\nArguments\n\nother\nAn HDataType.\n\n\n\n\nReturns\nA bool.\n\n\n\nExamples\nlibrary(harmonium)\nhdatatype1 = HDataType$Float32\nhdatatype2 = HDataType$Float64\nhdatatype1$ne(hdatatype2) # TRUE\n\n# or similarly:\nhdatatype1 != hdatatype2",
+    "crumbs": [
+      "Classes",
+      "HDataType"
+    ]
+  },
+  {
+    "objectID": "contents/hfile.html",
+    "href": "contents/hfile.html",
+    "title": "HFile",
+    "section": "",
+    "text": "decode(fpath: string, dtype: HDataType) -&gt; HDecodedAudio  source \n\nDecode an audio file, providing its decoded data and the sampling rate.\nThe samples are normalized to fit in the range of [-1.0, 1.0].\n\n\n\nfpath\nThe file path as a string.\n\ndtype\nA float HDataType.\n\n\n\n\n\nAn HDecodedAudio containing:\n* The decoded audio as a float HArray.\n* The sampling rate as an integer.\n\n\n\n\nlibrary(harmonium)\nfpath = \"../../../testfiles/gs-16b-2c-44100hz.flac\"\ndtype = HDataType$Float32\nHFile$decode(fpath, dtype)",
+    "crumbs": [
+      "Classes",
+      "HFile"
+    ]
+  },
+  {
+    "objectID": "contents/hfile.html#decode",
+    "href": "contents/hfile.html#decode",
+    "title": "HFile",
+    "section": "",
+    "text": "decode(fpath: string, dtype: HDataType) -&gt; HDecodedAudio  source \n\nDecode an audio file, providing its decoded data and the sampling rate.\nThe samples are normalized to fit in the range of [-1.0, 1.0].\n\n\n\nfpath\nThe file path as a string.\n\ndtype\nA float HDataType.\n\n\n\n\n\nAn HDecodedAudio containing:\n* The decoded audio as a float HArray.\n* The sampling rate as an integer.\n\n\n\n\nlibrary(harmonium)\nfpath = \"../../../testfiles/gs-16b-2c-44100hz.flac\"\ndtype = HDataType$Float32\nHFile$decode(fpath, dtype)",
+    "crumbs": [
+      "Classes",
+      "HFile"
+    ]
+  },
+  {
+    "objectID": "contents/hfile.html#stream",
+    "href": "contents/hfile.html#stream",
+    "title": "HFile",
+    "section": "stream",
+    "text": "stream\ndecode_stream(fpath: string, frames: integer, dtype: HDataType) -&gt; HDecoderStream  source \n\nCreates an HDecoderStream, used as an iterator to stream frames of decoded audio.\n\n\nArguments\n\nfpath\nThe file path as a string.\n\nframes\nNumber of frames to decode per iteration.\n\ndtype\nA float HDataType.\n\n\n\n\nReturns\nAn HDecoderStream.\n\n\n\nExamples\nlibrary(harmonium)\nfpath = \"../../../testfiles/gs-16b-2c-44100hz.flac\"\ndtype = HDataType$Float32\nframes = 1000L\nHFile$decode_stream(fpath, frames, dtype)",
+    "crumbs": [
+      "Classes",
+      "HFile"
+    ]
+  },
+  {
+    "objectID": "contents/hfile.html#metadata",
+    "href": "contents/hfile.html#metadata",
+    "title": "HFile",
+    "section": "metadata",
+    "text": "metadata\nmetadata(fpath: string, metadata_type: HMetadataType) -&gt; list  source \n\nExtract text and visual metadata from a file.\nTags that are part of the container format are preferentially extracted. Additional tags that were found while probing will not be extracted.\nThe following metadata tagging formats are supported.\n\n\nID3v1\n\nID3v2\n\nISO/MP4\n\nRIFF\n\nVorbis Comment (in OGG & FLAC)\n\n\nEach TextMetadata will be comprised of a Tag, which contains the following fields:\n* tag_key\nA key string indicating the type, meaning, or purpose of the Tags value. Note: The meaning of key is dependant on the underlying metadata format.\n* tag_std_key\nIf the Tag’s key string is commonly associated with a typical type, meaning, or purpose, then if recognized a StandardTagKey will be assigned to this Tag. This is a best effort guess since not all metadata formats have a well defined or specified tag mapping. However, it is recommended that consumers prefer std_key over key, if provided.\nCheck [StandardTagKey] for all the variants.\n* tag_value\nThe value of the Tag.\n\nEach VisualMetadata will be comprised of the following fields:\n* usage:\nThe usage and/or content of the Visual. A string version of symphonia_core::meta::StandardVisualKey, which is an enumeration providing standardized keys for common visual dispositions. A demuxer may assign a StandardVisualKey to a Visual if the disposition of the attached visual is known and can be mapped to a standard key. The visual types listed here are derived from, though do not entirely cover, the ID3v2 APIC frame specification.\n* media_type\nThe Media Type (MIME Type) used to encode the Visual.\n* dimensions\nThe dimensions (width and height) of the Visual, represented in pixels.\nNote: This value may not be accurate as it comes from metadata, not the embedded graphic itself. Consider it only a hint.\n* bits_per_pixel\nThe number of bits-per-pixel (aka bit-depth) of the unencoded image.\n* color_mode\nIndicates how the color of a pixel is encoded in a Visual. Variants:\nDiscrete\nEach pixel in the Visual stores its own color information.\nIndexed(NonZeroU32)\nEach pixel in the Visual stores an index into a color palette containing the color information. The value stored by this variant indicates the number\nof colors in the color palette.\n* size\nSize of the image in bytes.\n* tag\nTag with the following fields:\n** tag_key\nA key string indicating the type, meaning, or purpose of the Tags value. Note: The meaning of key is dependant on the underlying metadata format.\n** tag_std_key\nIf the Tag’s key string is commonly associated with a typical type, meaning, or purpose, then if recognized a StandardTagKey will be assigned to this Tag. This is a best effort guess since not all metadata formats have a well defined or specified tag mapping. However, it is recommended that consumers prefer std_key over key, if provided.\nCheck [StandardTagKey] for all the variants.\n** tag_value\nThe value of the Tag.\n\n\nArguments\n\nfpath\nThe file path as a string.\n\nmetadata_type\nAn HMetadataType.\n\n\n\n\nReturns\nA list of metadata. An empty list will be returned if there is no metadata in the file.\n\n\n\nExamples\nlibrary(harmonium)\nfpath = \"../../../testfiles/gs-16b-2c-44100hz.mp3\"\nmetadata_type = HMetadataType$Text\nHFile$metadata(fpath, metadata_type)",
+    "crumbs": [
+      "Classes",
+      "HFile"
+    ]
+  },
+  {
+    "objectID": "contents/hfile.html#params",
+    "href": "contents/hfile.html#params",
+    "title": "HFile",
+    "section": "params",
+    "text": "params\nparams(fpath: string) -&gt; atomicvector  source \n\nGet audio parameters from a file.\nNote that this avoids loading the contents into memory, and is therefore useful for querying these parameters from long files.\n\n\nArguments\n\nfpath\nThe file path as a string.\n\n\n\n\nReturns\nA double atomic vector containing, in order:\n* sampling rate in Hz.\n* number of frames.\n* number of channels.\n* duration in seconds.\n\n\n\nExamples\nlibrary(harmonium)\nfpath = \"../../../testfiles/gs-16b-2c-44100hz.flac\"\nHFile$params(fpath)",
+    "crumbs": [
+      "Classes",
+      "HFile"
+    ]
+  },
+  {
+    "objectID": "contents/hfile.html#verify",
+    "href": "contents/hfile.html#verify",
+    "title": "HFile",
+    "section": "verify",
+    "text": "verify\n`verify(fpath: string) -&gt; string  source \n\nVerify an audio file, if supported by the decoder.\nThe verification is done after the decoding process is finished.\n\n\nArguments\n\nfpath\nThe file path as a string.\n\n\n\n\nReturns\nA string.\nOne of [“passed”, “failed”, “not_supported”]\n\n\n\nExamples\nlibrary(harmonium)\nfpath = \"../../../testfiles/gs-16b-2c-44100hz.flac\"\nHFile$verify(fpath)",
+    "crumbs": [
+      "Classes",
+      "HFile"
+    ]
+  },
+  {
+    "objectID": "contents/haudioop.html",
+    "href": "contents/haudioop.html",
+    "title": "HAudioOp",
+    "section": "",
+    "text": "HAudioOp A collection of methods that can be applied to float 1D or 2D HArray which represents audio data.",
+    "crumbs": [
+      "Classes",
+      "HAudioOp"
+    ]
+  },
+  {
+    "objectID": "contents/haudioop.html#nchannels",
+    "href": "contents/haudioop.html#nchannels",
+    "title": "HAudioOp",
+    "section": "nchannels",
+    "text": "nchannels\nnchannels() -&gt; integer  source \n\nReturns the number of channels.\nThis is the same as the number of rows of a 1D or 2D HArray.\n\n\nReturns\nAn integer.\n\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nHAudioOp$nchannels(harray)",
+    "crumbs": [
+      "Classes",
+      "HAudioOp"
+    ]
+  },
+  {
+    "objectID": "contents/haudioop.html#nframes",
+    "href": "contents/haudioop.html#nframes",
+    "title": "HAudioOp",
+    "section": "nframes",
+    "text": "nframes\nnframes() -&gt; integer  source \n\nReturns the number of frames.\nThis is the same as the number of cols of a 1D or 2D HArray.\nThe number of frames is equivalent to the number of samples divided by the number of channels.\n\n\nReturns\nAn integer.\n\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nHAudioOp$nframes(harray)",
+    "crumbs": [
+      "Classes",
+      "HAudioOp"
+    ]
+  },
+  {
+    "objectID": "contents/haudioop.html#db_to_amplitude",
+    "href": "contents/haudioop.html#db_to_amplitude",
+    "title": "HAudioOp",
+    "section": "db_to_amplitude",
+    "text": "db_to_amplitude\ndb_to_amplitude(harray: HArray, reference: double)  source \n\nConverts the HArray input from dB to amplitude.\n\\(db_to_amplitude(x) = reference * (10.0**(x * 0.1))**power\\)\nThe operation is done in-place.\n\n\nArguments\n\nharray\nA 1D or 2D float HArray.\n\nreference\nA double that scales the output.\n\npower\nA double. If 1.0, will compute DB to power. If 0.5, will compute DB to amplitude.\n\n\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nHAudioOp$db_to_amplitude(harray, 2, 1)",
+    "crumbs": [
+      "Classes",
+      "HAudioOp"
+    ]
+  },
+  {
+    "objectID": "contents/haudioop.html#to_mono",
+    "href": "contents/haudioop.html#to_mono",
+    "title": "HAudioOp",
+    "section": "to_mono",
+    "text": "to_mono\nto_mono(harray: HArray)  source \n\nConvert to 1 channel by taking the average across channels.\nThe operation is done in-place. A new inner array is created.\n\n\nArguments\n\nharray\nA 2D float HArray.\n\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nHAudioOp$to_mono(harray)",
+    "crumbs": [
+      "Classes",
+      "HAudioOp"
     ]
   }
 ]
