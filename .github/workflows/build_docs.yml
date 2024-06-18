@@ -51,7 +51,7 @@ jobs:
 
       - name: Previous documentation cleanup
         run: |
-          DIRECTORY="./_docs/content"
+          DIRECTORY="./_docs/contents"
           if [ -d "$DIRECTORY" ]; then
             rm "$DIRECTORY"/*.qmd
           fi
