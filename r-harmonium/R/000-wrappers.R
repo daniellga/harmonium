@@ -457,55 +457,6 @@ HDecoderStream <- new.env(parent = emptyenv())
 
 
 
-### wrapper functions for HFft
-
-
-.savvy_wrap_HFft <- function(ptr) {
-  e <- new.env(parent = emptyenv())
-  e$.ptr <- ptr
-  
-  
-  class(e) <- "HFft"
-  e
-}
-
-
-
-HFft <- new.env(parent = emptyenv())
-
-### associated functions for HFft
-
-HFft$fft <- function(harray) {
-  harray <- .savvy_extract_ptr(harray, "HArray")
-  .savvy_wrap_HArray(.Call(savvy_HFft_fft__impl, harray))
-}
-
-HFft$fft_mut <- function(harray) {
-  harray <- .savvy_extract_ptr(harray, "HArray")
-invisible(.Call(savvy_HFft_fft_mut__impl, harray))
-}
-
-HFft$ifft <- function(harray) {
-  harray <- .savvy_extract_ptr(harray, "HArray")
-  .savvy_wrap_HArray(.Call(savvy_HFft_ifft__impl, harray))
-}
-
-HFft$ifft_mut <- function(harray) {
-  harray <- .savvy_extract_ptr(harray, "HArray")
-invisible(.Call(savvy_HFft_ifft_mut__impl, harray))
-}
-
-HFft$rfft_mut <- function(harray) {
-  harray <- .savvy_extract_ptr(harray, "HArray")
-invisible(.Call(savvy_HFft_rfft_mut__impl, harray))
-}
-
-HFft$irfft_mut <- function(harray, length) {
-  harray <- .savvy_extract_ptr(harray, "HArray")
-invisible(.Call(savvy_HFft_irfft_mut__impl, harray, length))
-}
-
-
 ### wrapper functions for HFftPlanner
 
 HFftPlanner_fft <- function(self) {

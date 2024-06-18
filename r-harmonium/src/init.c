@@ -260,36 +260,6 @@ SEXP savvy_HDecoderStream_stream__impl(SEXP self__) {
     return handle_result(res);
 }
 
-SEXP savvy_HFft_fft__impl(SEXP harray) {
-    SEXP res = savvy_HFft_fft__ffi(harray);
-    return handle_result(res);
-}
-
-SEXP savvy_HFft_fft_mut__impl(SEXP harray) {
-    SEXP res = savvy_HFft_fft_mut__ffi(harray);
-    return handle_result(res);
-}
-
-SEXP savvy_HFft_ifft__impl(SEXP harray) {
-    SEXP res = savvy_HFft_ifft__ffi(harray);
-    return handle_result(res);
-}
-
-SEXP savvy_HFft_ifft_mut__impl(SEXP harray) {
-    SEXP res = savvy_HFft_ifft_mut__ffi(harray);
-    return handle_result(res);
-}
-
-SEXP savvy_HFft_rfft_mut__impl(SEXP harray) {
-    SEXP res = savvy_HFft_rfft_mut__ffi(harray);
-    return handle_result(res);
-}
-
-SEXP savvy_HFft_irfft_mut__impl(SEXP harray, SEXP length) {
-    SEXP res = savvy_HFft_irfft_mut__ffi(harray, length);
-    return handle_result(res);
-}
-
 SEXP savvy_HFftPlanner_new__impl(SEXP dtype) {
     SEXP res = savvy_HFftPlanner_new__ffi(dtype);
     return handle_result(res);
@@ -588,12 +558,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"savvy_HDecodedAudio_sr__impl", (DL_FUNC) &savvy_HDecodedAudio_sr__impl, 1},
     {"savvy_HDecodedAudio_invalidate__impl", (DL_FUNC) &savvy_HDecodedAudio_invalidate__impl, 1},
     {"savvy_HDecoderStream_stream__impl", (DL_FUNC) &savvy_HDecoderStream_stream__impl, 1},
-    {"savvy_HFft_fft__impl", (DL_FUNC) &savvy_HFft_fft__impl, 1},
-    {"savvy_HFft_fft_mut__impl", (DL_FUNC) &savvy_HFft_fft_mut__impl, 1},
-    {"savvy_HFft_ifft__impl", (DL_FUNC) &savvy_HFft_ifft__impl, 1},
-    {"savvy_HFft_ifft_mut__impl", (DL_FUNC) &savvy_HFft_ifft_mut__impl, 1},
-    {"savvy_HFft_rfft_mut__impl", (DL_FUNC) &savvy_HFft_rfft_mut__impl, 1},
-    {"savvy_HFft_irfft_mut__impl", (DL_FUNC) &savvy_HFft_irfft_mut__impl, 2},
     {"savvy_HFftPlanner_new__impl", (DL_FUNC) &savvy_HFftPlanner_new__impl, 1},
     {"savvy_HFftPlanner_fft__impl", (DL_FUNC) &savvy_HFftPlanner_fft__impl, 2},
     {"savvy_HFftPlanner_ifft__impl", (DL_FUNC) &savvy_HFftPlanner_ifft__impl, 2},
