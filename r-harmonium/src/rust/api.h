@@ -65,6 +65,13 @@ SEXP savvy_HFft_ifft_mut__ffi(SEXP harray);
 SEXP savvy_HFft_rfft_mut__ffi(SEXP harray);
 SEXP savvy_HFft_irfft_mut__ffi(SEXP harray, SEXP length);
 
+// methods and associated functions for HFftPlanner
+SEXP savvy_HFftPlanner_new__ffi(SEXP dtype);
+SEXP savvy_HFftPlanner_fft__ffi(SEXP self__, SEXP harray);
+SEXP savvy_HFftPlanner_ifft__ffi(SEXP self__, SEXP harray);
+SEXP savvy_HFftPlanner_dtype__ffi(SEXP self__);
+SEXP savvy_HFftPlanner_print__ffi(SEXP self__);
+
 // methods and associated functions for HFile
 SEXP savvy_HFile_decode__ffi(SEXP fpath, SEXP dtype);
 SEXP savvy_HFile_decode_stream__ffi(SEXP fpath, SEXP frames, SEXP dtype);
@@ -86,6 +93,13 @@ SEXP savvy_HMetadataType_ne__ffi(SEXP self__, SEXP other);
 SEXP savvy_HPolynomialDegree_print__ffi(SEXP self__);
 SEXP savvy_HPolynomialDegree_eq__ffi(SEXP self__, SEXP other);
 SEXP savvy_HPolynomialDegree_ne__ffi(SEXP self__, SEXP other);
+
+// methods and associated functions for HRealFftPlanner
+SEXP savvy_HRealFftPlanner_new__ffi(SEXP dtype);
+SEXP savvy_HRealFftPlanner_rfft__ffi(SEXP self__, SEXP harray);
+SEXP savvy_HRealFftPlanner_irfft__ffi(SEXP self__, SEXP harray, SEXP length);
+SEXP savvy_HRealFftPlanner_dtype__ffi(SEXP self__);
+SEXP savvy_HRealFftPlanner_print__ffi(SEXP self__);
 
 // methods and associated functions for HResampler
 SEXP savvy_HResampler_new_fft__ffi(SEXP sr_in, SEXP sr_out, SEXP chunk_size, SEXP sub_chunks, SEXP nchannels, SEXP res_type, SEXP dtype);

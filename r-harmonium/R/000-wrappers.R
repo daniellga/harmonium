@@ -506,6 +506,58 @@ invisible(.Call(savvy_HFft_irfft_mut__impl, harray, length))
 }
 
 
+### wrapper functions for HFftPlanner
+
+HFftPlanner_fft <- function(self) {
+  function(harray) {
+    harray <- .savvy_extract_ptr(harray, "HArray")
+invisible(.Call(savvy_HFftPlanner_fft__impl, self, harray))
+  }
+}
+
+HFftPlanner_ifft <- function(self) {
+  function(harray) {
+    harray <- .savvy_extract_ptr(harray, "HArray")
+invisible(.Call(savvy_HFftPlanner_ifft__impl, self, harray))
+  }
+}
+
+HFftPlanner_dtype <- function(self) {
+  function() {
+    .savvy_wrap_HDataType(.Call(savvy_HFftPlanner_dtype__impl, self))
+  }
+}
+
+HFftPlanner_print <- function(self) {
+  function() {
+  invisible(.Call(savvy_HFftPlanner_print__impl, self))
+  }
+}
+
+.savvy_wrap_HFftPlanner <- function(ptr) {
+  e <- new.env(parent = emptyenv())
+  e$.ptr <- ptr
+    e$fft <- HFftPlanner_fft(ptr)
+  e$ifft <- HFftPlanner_ifft(ptr)
+  e$dtype <- HFftPlanner_dtype(ptr)
+  e$print <- HFftPlanner_print(ptr)
+  
+  class(e) <- "HFftPlanner"
+  e
+}
+
+
+
+HFftPlanner <- new.env(parent = emptyenv())
+
+### associated functions for HFftPlanner
+
+HFftPlanner$new <- function(dtype) {
+  dtype <- .savvy_extract_ptr(dtype, "HDataType")
+  .savvy_wrap_HFftPlanner(.Call(savvy_HFftPlanner_new__impl, dtype))
+}
+
+
 ### wrapper functions for HFile
 
 
@@ -743,6 +795,58 @@ print.HPolynomialDegree <- function(x, ...) {
 
 ### associated functions for HPolynomialDegree
 
+
+
+### wrapper functions for HRealFftPlanner
+
+HRealFftPlanner_rfft <- function(self) {
+  function(harray) {
+    harray <- .savvy_extract_ptr(harray, "HArray")
+invisible(.Call(savvy_HRealFftPlanner_rfft__impl, self, harray))
+  }
+}
+
+HRealFftPlanner_irfft <- function(self) {
+  function(harray, length) {
+    harray <- .savvy_extract_ptr(harray, "HArray")
+invisible(.Call(savvy_HRealFftPlanner_irfft__impl, self, harray, length))
+  }
+}
+
+HRealFftPlanner_dtype <- function(self) {
+  function() {
+    .savvy_wrap_HDataType(.Call(savvy_HRealFftPlanner_dtype__impl, self))
+  }
+}
+
+HRealFftPlanner_print <- function(self) {
+  function() {
+  invisible(.Call(savvy_HRealFftPlanner_print__impl, self))
+  }
+}
+
+.savvy_wrap_HRealFftPlanner <- function(ptr) {
+  e <- new.env(parent = emptyenv())
+  e$.ptr <- ptr
+    e$rfft <- HRealFftPlanner_rfft(ptr)
+  e$irfft <- HRealFftPlanner_irfft(ptr)
+  e$dtype <- HRealFftPlanner_dtype(ptr)
+  e$print <- HRealFftPlanner_print(ptr)
+  
+  class(e) <- "HRealFftPlanner"
+  e
+}
+
+
+
+HRealFftPlanner <- new.env(parent = emptyenv())
+
+### associated functions for HRealFftPlanner
+
+HRealFftPlanner$new <- function(dtype) {
+  dtype <- .savvy_extract_ptr(dtype, "HDataType")
+  .savvy_wrap_HRealFftPlanner(.Call(savvy_HRealFftPlanner_new__impl, dtype))
+}
 
 
 ### wrapper functions for HResampler

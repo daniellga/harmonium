@@ -142,7 +142,6 @@ impl HAudioOp {
     ///
     fn to_mono(harray: &mut HArray) -> savvy::Result<()> {
         let inner_mut = harray.get_inner_mut();
-        inner_mut.to_mono()?;
-        Ok(())
+        inner_mut.to_mono()
     }
 }

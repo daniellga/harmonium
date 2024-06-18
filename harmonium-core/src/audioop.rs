@@ -84,11 +84,7 @@ where
 
     fn to_mono(&self) -> HResult<HArray<T, Ix1>> {
         // Ok to unwrap. This is infallible.
-        let harray = self
-            .0
-            .mean_axis(ndarray::Axis(0))
-            .ok_or_else(|| HError::OutOfSpecError("The length of the axis is zero.".into()))
-            .unwrap();
+        let harray = unsafe { self.0.mean_axis(ndarray::Axis(0)).unwrap_unchecked() };
         Ok(HArray(harray.into()))
     }
 }

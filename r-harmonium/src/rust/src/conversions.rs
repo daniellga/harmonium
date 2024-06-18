@@ -1,7 +1,7 @@
 use savvy::{OwnedIntegerSexp, Sexp, TypedSexp};
 
 pub(crate) trait Conversions<T> {
-    fn to_scalar(self: Self) -> savvy::Result<T>;
+    fn to_scalar(self) -> savvy::Result<T>;
 }
 
 impl Conversions<&'static str> for Sexp {
@@ -15,7 +15,7 @@ impl Conversions<&'static str> for Sexp {
                     .unwrap_unchecked())
             },
             _ => {
-                let err = format!("Argument must be a string of length 1.");
+                let err = "Argument must be a string of length 1.".to_string();
                 Err(err.into())
             }
         }
@@ -29,7 +29,7 @@ impl Conversions<i32> for Sexp {
                 Ok(integer_sexp.as_slice()[0])
             }
             _ => {
-                let err = format!("Argument must be an integer of length 1.");
+                let err = "Argument must be a string of length 1.".to_string();
                 Err(err.into())
             }
         }
@@ -41,7 +41,7 @@ impl Conversions<f64> for Sexp {
         match self.into_typed() {
             TypedSexp::Real(real_sexp) if real_sexp.len() == 1 => Ok(real_sexp.as_slice()[0]),
             _ => {
-                let err = format!("Argument must be a double of length 1.");
+                let err = "Argument must be a string of length 1.".to_string();
                 Err(err.into())
             }
         }
@@ -55,7 +55,7 @@ impl Conversions<bool> for Sexp {
                 Ok(logical_sexp.as_slice_raw()[0] == 1)
             }
             _ => {
-                let err = format!("Argument must be a logical of length 1.");
+                let err = "Argument must be a string of length 1.".to_string();
                 Err(err.into())
             }
         }

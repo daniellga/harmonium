@@ -1,6 +1,5 @@
 use crate::{errors::HErrorR, hdatatype::HDataType};
 use harmonium_core::audioop::AudioOp;
-use harmonium_fft::fft::Fft;
 use ndarray::{IxDyn, SliceInfo, SliceInfoElem};
 use num_complex::Complex;
 use savvy::{r_println, OwnedComplexSexp, OwnedIntegerSexp, OwnedRealSexp, Sexp};
@@ -17,12 +16,6 @@ pub trait HArrayR: Send + Sync {
     fn collect(&self) -> savvy::Result<Sexp>;
     fn dtype(&self) -> HDataType;
     fn mem_adress(&self) -> String;
-    fn fft(&self) -> savvy::Result<Arc<dyn HArrayR>>;
-    fn fft_mut(&mut self) -> savvy::Result<()>;
-    fn ifft(&self) -> savvy::Result<Arc<dyn HArrayR>>;
-    fn ifft_mut(&mut self) -> savvy::Result<()>;
-    fn rfft_mut(&mut self) -> savvy::Result<Arc<dyn HArrayR>>;
-    fn irfft_mut(&mut self, length: usize) -> savvy::Result<Arc<dyn HArrayR>>;
     fn clone_inner(&self) -> Arc<dyn HArrayR>;
     fn nchannels(&self) -> savvy::Result<usize>;
     fn nframes(&self) -> savvy::Result<usize>;
@@ -90,34 +83,6 @@ impl HArrayR for harmonium_core::array::HArray<f32, IxDyn> {
         s.to_string()
     }
 
-    fn fft(&self) -> savvy::Result<Arc<dyn HArrayR>> {
-        let harray = Fft::<f32, IxDyn>::fft(self).map_err(HErrorR::from)?;
-        Ok(Arc::new(harray))
-    }
-
-    fn fft_mut(&mut self) -> savvy::Result<()> {
-        Fft::<f32, IxDyn>::fft_mut(self).map_err(|err| savvy::Error::from(HErrorR::from(err)))
-    }
-
-    fn ifft(&self) -> savvy::Result<Arc<dyn HArrayR>> {
-        let harray = Fft::<f32, IxDyn>::ifft(self).map_err(HErrorR::from)?;
-        Ok(Arc::new(harray))
-    }
-
-    fn ifft_mut(&mut self) -> savvy::Result<()> {
-        Fft::<f32, IxDyn>::ifft_mut(self).map_err(|err| savvy::Error::from(HErrorR::from(err)))
-    }
-
-    fn rfft_mut(&mut self) -> savvy::Result<Arc<dyn HArrayR>> {
-        let harray = Fft::<f32, IxDyn>::rfft(self).map_err(HErrorR::from)?;
-        Ok(Arc::new(harray))
-    }
-
-    fn irfft_mut(&mut self, length: usize) -> savvy::Result<Arc<dyn HArrayR>> {
-        let harray = Fft::<f32, IxDyn>::irfft(self, length).map_err(HErrorR::from)?;
-        Ok(Arc::new(harray))
-    }
-
     fn clone_inner(&self) -> Arc<dyn HArrayR> {
         Arc::new(self.clone())
     }
@@ -136,7 +101,7 @@ impl HArrayR for harmonium_core::array::HArray<f32, IxDyn> {
     }
 
     fn to_mono(&mut self) -> savvy::Result<()> {
-        *self = AudioOp::to_mono(self).map_err(|err| HErrorR::from(err))?;
+        *self = AudioOp::to_mono(self).map_err(HErrorR::from)?;
         Ok(())
     }
 }
@@ -200,34 +165,6 @@ impl HArrayR for harmonium_core::array::HArray<f64, IxDyn> {
         s.to_string()
     }
 
-    fn fft(&self) -> savvy::Result<Arc<dyn HArrayR>> {
-        let harray = Fft::<f64, IxDyn>::fft(self).map_err(HErrorR::from)?;
-        Ok(Arc::new(harray))
-    }
-
-    fn fft_mut(&mut self) -> savvy::Result<()> {
-        Fft::<f64, IxDyn>::fft_mut(self).map_err(|err| savvy::Error::from(HErrorR::from(err)))
-    }
-
-    fn ifft(&self) -> savvy::Result<Arc<dyn HArrayR>> {
-        let harray = Fft::<f64, IxDyn>::ifft(self).map_err(HErrorR::from)?;
-        Ok(Arc::new(harray))
-    }
-
-    fn ifft_mut(&mut self) -> savvy::Result<()> {
-        Fft::<f64, IxDyn>::ifft_mut(self).map_err(|err| savvy::Error::from(HErrorR::from(err)))
-    }
-
-    fn rfft_mut(&mut self) -> savvy::Result<Arc<dyn HArrayR>> {
-        let harray = Fft::<f64, IxDyn>::rfft(self).map_err(HErrorR::from)?;
-        Ok(Arc::new(harray))
-    }
-
-    fn irfft_mut(&mut self, length: usize) -> savvy::Result<Arc<dyn HArrayR>> {
-        let harray = Fft::<f64, IxDyn>::irfft(self, length).map_err(HErrorR::from)?;
-        Ok(Arc::new(harray))
-    }
-
     fn clone_inner(&self) -> Arc<dyn HArrayR> {
         Arc::new(self.clone())
     }
@@ -246,7 +183,7 @@ impl HArrayR for harmonium_core::array::HArray<f64, IxDyn> {
     }
 
     fn to_mono(&mut self) -> savvy::Result<()> {
-        *self = AudioOp::to_mono(self).map_err(|err| HErrorR::from(err))?;
+        *self = AudioOp::to_mono(self).map_err(HErrorR::from)?;
         Ok(())
     }
 }
@@ -308,34 +245,6 @@ impl HArrayR for harmonium_core::array::HArray<Complex<f32>, IxDyn> {
     fn mem_adress(&self) -> String {
         let s = format!("{:p}", self.0.as_ptr());
         s.to_string()
-    }
-
-    fn fft(&self) -> savvy::Result<Arc<dyn HArrayR>> {
-        let harray = Fft::<f32, IxDyn>::fft(self).map_err(HErrorR::from)?;
-        Ok(Arc::new(harray))
-    }
-
-    fn fft_mut(&mut self) -> savvy::Result<()> {
-        Fft::<f32, IxDyn>::fft_mut(self).map_err(|err| savvy::Error::from(HErrorR::from(err)))
-    }
-
-    fn ifft(&self) -> savvy::Result<Arc<dyn HArrayR>> {
-        let harray = Fft::<f32, IxDyn>::ifft(self).map_err(HErrorR::from)?;
-        Ok(Arc::new(harray))
-    }
-
-    fn ifft_mut(&mut self) -> savvy::Result<()> {
-        Fft::<f32, IxDyn>::ifft_mut(self).map_err(|err| savvy::Error::from(HErrorR::from(err)))
-    }
-
-    fn rfft_mut(&mut self) -> savvy::Result<Arc<dyn HArrayR>> {
-        let harray = Fft::<f32, IxDyn>::rfft(self).map_err(HErrorR::from)?;
-        Ok(Arc::new(harray))
-    }
-
-    fn irfft_mut(&mut self, length: usize) -> savvy::Result<Arc<dyn HArrayR>> {
-        let harray = Fft::<f32, IxDyn>::irfft(self, length).map_err(HErrorR::from)?;
-        Ok(Arc::new(harray))
     }
 
     fn clone_inner(&self) -> Arc<dyn HArrayR> {
@@ -416,34 +325,6 @@ impl HArrayR for harmonium_core::array::HArray<Complex<f64>, IxDyn> {
     fn mem_adress(&self) -> String {
         let s = format!("{:p}", self.0.as_ptr());
         s.to_string()
-    }
-
-    fn fft(&self) -> savvy::Result<Arc<dyn HArrayR>> {
-        let harray = Fft::<f64, IxDyn>::fft(self).map_err(HErrorR::from)?;
-        Ok(Arc::new(harray))
-    }
-
-    fn fft_mut(&mut self) -> savvy::Result<()> {
-        Fft::<f64, IxDyn>::fft_mut(self).map_err(|err| savvy::Error::from(HErrorR::from(err)))
-    }
-
-    fn ifft(&self) -> savvy::Result<Arc<dyn HArrayR>> {
-        let harray = Fft::<f64, IxDyn>::ifft(self).map_err(HErrorR::from)?;
-        Ok(Arc::new(harray))
-    }
-
-    fn ifft_mut(&mut self) -> savvy::Result<()> {
-        Fft::<f64, IxDyn>::ifft_mut(self).map_err(|err| savvy::Error::from(HErrorR::from(err)))
-    }
-
-    fn rfft_mut(&mut self) -> savvy::Result<Arc<dyn HArrayR>> {
-        let harray = Fft::<f64, IxDyn>::rfft(self).map_err(HErrorR::from)?;
-        Ok(Arc::new(harray))
-    }
-
-    fn irfft_mut(&mut self, length: usize) -> savvy::Result<Arc<dyn HArrayR>> {
-        let harray = Fft::<f64, IxDyn>::irfft(self, length).map_err(HErrorR::from)?;
-        Ok(Arc::new(harray))
     }
 
     fn clone_inner(&self) -> Arc<dyn HArrayR> {

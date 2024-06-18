@@ -200,7 +200,7 @@ where
 ///
 /// ```
 /// //let test_file = "../testfiles/gs-16b-2c-44100hz.wav";
-/// //stream(test_file, Some(1.0_f64), Some(1.0_f64), 1000)
+/// //stream(test_file, 1000)
 /// ```
 pub fn stream<T>(fpath: &str, frames: usize) -> HResult<DecoderStream<T>>
 where

@@ -493,7 +493,7 @@ fn list_from_textmetadata(text: decode::HTextMetadata) -> savvy::Result<OwnedLis
                 htag.tag_std_key.as_str(),
                 htag.tag_value.as_str(),
             ])?;
-            string_sexp.set_names(&["tag_key", "tag_std_key", "tag_value"])?;
+            string_sexp.set_names(["tag_key", "tag_std_key", "tag_value"])?;
             unsafe { list.set_value_unchecked(i, Sexp::from(string_sexp).0) };
         }
         Ok(list)
@@ -515,7 +515,7 @@ fn list_from_visualmetadata(visual: decode::HVisualMetadata) -> savvy::Result<Ow
                 hsvm.color_mode.as_str(),
                 hsvm.size.as_str(),
             ])?;
-            string_sexp.set_names(&[
+            string_sexp.set_names([
                 "usage",
                 "media_type",
                 "dimensions",
@@ -533,7 +533,7 @@ fn list_from_visualmetadata(visual: decode::HVisualMetadata) -> savvy::Result<Ow
                         htag.tag_std_key.as_str(),
                         htag.tag_value.as_str(),
                     ])?;
-                    string_sexp.set_names(&["tag_key", "tag_std_key", "tag_value"])?;
+                    string_sexp.set_names(["tag_key", "tag_std_key", "tag_value"])?;
                     unsafe { inner_inner_list.set_value_unchecked(i, Sexp::from(string_sexp).0) };
                 }
                 inner_inner_list

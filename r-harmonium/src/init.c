@@ -290,6 +290,31 @@ SEXP savvy_HFft_irfft_mut__impl(SEXP harray, SEXP length) {
     return handle_result(res);
 }
 
+SEXP savvy_HFftPlanner_new__impl(SEXP dtype) {
+    SEXP res = savvy_HFftPlanner_new__ffi(dtype);
+    return handle_result(res);
+}
+
+SEXP savvy_HFftPlanner_fft__impl(SEXP self__, SEXP harray) {
+    SEXP res = savvy_HFftPlanner_fft__ffi(self__, harray);
+    return handle_result(res);
+}
+
+SEXP savvy_HFftPlanner_ifft__impl(SEXP self__, SEXP harray) {
+    SEXP res = savvy_HFftPlanner_ifft__ffi(self__, harray);
+    return handle_result(res);
+}
+
+SEXP savvy_HFftPlanner_dtype__impl(SEXP self__) {
+    SEXP res = savvy_HFftPlanner_dtype__ffi(self__);
+    return handle_result(res);
+}
+
+SEXP savvy_HFftPlanner_print__impl(SEXP self__) {
+    SEXP res = savvy_HFftPlanner_print__ffi(self__);
+    return handle_result(res);
+}
+
 SEXP savvy_HFile_decode__impl(SEXP fpath, SEXP dtype) {
     SEXP res = savvy_HFile_decode__ffi(fpath, dtype);
     return handle_result(res);
@@ -357,6 +382,31 @@ SEXP savvy_HPolynomialDegree_eq__impl(SEXP self__, SEXP other) {
 
 SEXP savvy_HPolynomialDegree_ne__impl(SEXP self__, SEXP other) {
     SEXP res = savvy_HPolynomialDegree_ne__ffi(self__, other);
+    return handle_result(res);
+}
+
+SEXP savvy_HRealFftPlanner_new__impl(SEXP dtype) {
+    SEXP res = savvy_HRealFftPlanner_new__ffi(dtype);
+    return handle_result(res);
+}
+
+SEXP savvy_HRealFftPlanner_rfft__impl(SEXP self__, SEXP harray) {
+    SEXP res = savvy_HRealFftPlanner_rfft__ffi(self__, harray);
+    return handle_result(res);
+}
+
+SEXP savvy_HRealFftPlanner_irfft__impl(SEXP self__, SEXP harray, SEXP length) {
+    SEXP res = savvy_HRealFftPlanner_irfft__ffi(self__, harray, length);
+    return handle_result(res);
+}
+
+SEXP savvy_HRealFftPlanner_dtype__impl(SEXP self__) {
+    SEXP res = savvy_HRealFftPlanner_dtype__ffi(self__);
+    return handle_result(res);
+}
+
+SEXP savvy_HRealFftPlanner_print__impl(SEXP self__) {
+    SEXP res = savvy_HRealFftPlanner_print__ffi(self__);
     return handle_result(res);
 }
 
@@ -544,6 +594,11 @@ static const R_CallMethodDef CallEntries[] = {
     {"savvy_HFft_ifft_mut__impl", (DL_FUNC) &savvy_HFft_ifft_mut__impl, 1},
     {"savvy_HFft_rfft_mut__impl", (DL_FUNC) &savvy_HFft_rfft_mut__impl, 1},
     {"savvy_HFft_irfft_mut__impl", (DL_FUNC) &savvy_HFft_irfft_mut__impl, 2},
+    {"savvy_HFftPlanner_new__impl", (DL_FUNC) &savvy_HFftPlanner_new__impl, 1},
+    {"savvy_HFftPlanner_fft__impl", (DL_FUNC) &savvy_HFftPlanner_fft__impl, 2},
+    {"savvy_HFftPlanner_ifft__impl", (DL_FUNC) &savvy_HFftPlanner_ifft__impl, 2},
+    {"savvy_HFftPlanner_dtype__impl", (DL_FUNC) &savvy_HFftPlanner_dtype__impl, 1},
+    {"savvy_HFftPlanner_print__impl", (DL_FUNC) &savvy_HFftPlanner_print__impl, 1},
     {"savvy_HFile_decode__impl", (DL_FUNC) &savvy_HFile_decode__impl, 2},
     {"savvy_HFile_decode_stream__impl", (DL_FUNC) &savvy_HFile_decode_stream__impl, 3},
     {"savvy_HFile_metadata__impl", (DL_FUNC) &savvy_HFile_metadata__impl, 2},
@@ -558,6 +613,11 @@ static const R_CallMethodDef CallEntries[] = {
     {"savvy_HPolynomialDegree_print__impl", (DL_FUNC) &savvy_HPolynomialDegree_print__impl, 1},
     {"savvy_HPolynomialDegree_eq__impl", (DL_FUNC) &savvy_HPolynomialDegree_eq__impl, 2},
     {"savvy_HPolynomialDegree_ne__impl", (DL_FUNC) &savvy_HPolynomialDegree_ne__impl, 2},
+    {"savvy_HRealFftPlanner_new__impl", (DL_FUNC) &savvy_HRealFftPlanner_new__impl, 1},
+    {"savvy_HRealFftPlanner_rfft__impl", (DL_FUNC) &savvy_HRealFftPlanner_rfft__impl, 2},
+    {"savvy_HRealFftPlanner_irfft__impl", (DL_FUNC) &savvy_HRealFftPlanner_irfft__impl, 3},
+    {"savvy_HRealFftPlanner_dtype__impl", (DL_FUNC) &savvy_HRealFftPlanner_dtype__impl, 1},
+    {"savvy_HRealFftPlanner_print__impl", (DL_FUNC) &savvy_HRealFftPlanner_print__impl, 1},
     {"savvy_HResampler_new_fft__impl", (DL_FUNC) &savvy_HResampler_new_fft__impl, 7},
     {"savvy_HResampler_new_sinc__impl", (DL_FUNC) &savvy_HResampler_new_sinc__impl, 7},
     {"savvy_HResampler_new_fast__impl", (DL_FUNC) &savvy_HResampler_new_fast__impl, 7},

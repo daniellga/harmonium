@@ -10,6 +10,5 @@ harmonium-core = { workspace = true }
 harmonium-io = { workspace = true }
 rustfft = { workspace = true }
 realfft = { workspace = true }
-cached = { workspace = true }
 ndarray = { workspace = true }
 
