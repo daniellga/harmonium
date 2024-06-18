@@ -18,7 +18,7 @@ website:
 format:
   html:
     theme:
-      dark: litera
+      dark: minty
       light: litera
     css: styles.css
     toc: true
