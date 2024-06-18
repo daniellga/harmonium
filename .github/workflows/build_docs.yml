@@ -55,6 +55,11 @@ jobs:
           if [ -d "$DIRECTORY" ]; then
             rm "$DIRECTORY"/*.qmd
           fi
+
+          DIRECTORY="./docs/contents"
+          if [ -d "$DIRECTORY" ]; then
+            rm "$DIRECTORY"/*.html
+          fi
             
       - name: Build documentation
         run: |
