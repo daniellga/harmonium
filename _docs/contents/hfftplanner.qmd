@@ -58,7 +58,7 @@ A complex `HArray`. \
 
 #### Returns
 
-Will return an error if:
+Will return an error if: \
 * The `HArray`'s dtype is incompatible with the `HFftPlanner`'s dtype. \
 * The `HArray`'s `ndim` is greater than 2. \
 
@@ -96,7 +96,7 @@ A complex `HArray`. \
 
 #### Returns
 
-Will return an error if:
+Will return an error if: \
 * The `HArray`'s dtype is incompatible with the `HFftPlanner`'s dtype. \
 * The `HArray`'s `ndim` is greater than 2. \
 
