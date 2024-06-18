@@ -18,8 +18,8 @@ website:
 format:
   html:
     theme:
-      dark: darkly
-      light: flatly
+      dark: litera
+      light: litera
     css: styles.css
     toc: true
     grid:
