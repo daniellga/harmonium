@@ -96,8 +96,8 @@ impl HFftPlanner {
     /// #### Returns
     ///
     /// Will return an error if: \
-    /// * The `HArray`'s dtype is incompatible with the `HFftPlanner`'s dtype. \
-    /// * The `HArray`'s `ndim` is greater than 2. \
+    /// - The `HArray`'s dtype is incompatible with the `HFftPlanner`'s dtype. \
+    /// - The `HArray`'s `ndim` is greater than 2. \
     ///
     /// #### Examples
     ///
@@ -139,8 +139,8 @@ impl HFftPlanner {
     /// #### Returns
     ///
     /// Will return an error if: \
-    /// * The `HArray`'s dtype is incompatible with the `HFftPlanner`'s dtype. \
-    /// * The `HArray`'s `ndim` is greater than 2. \
+    /// - The `HArray`'s dtype is incompatible with the `HFftPlanner`'s dtype. \
+    /// - The `HArray`'s `ndim` is greater than 2. \
     ///
     /// #### Examples
     ///
@@ -286,8 +286,8 @@ impl HRealFftPlanner {
     /// #### Returns
     ///
     /// Will return an error if: \
-    /// * The `HArray`'s dtype is incompatible with the `HFftPlanner`'s dtype. \
-    /// * The `HArray`'s `ndim` is greater than 2. \
+    /// - The `HArray`'s dtype is incompatible with the `HFftPlanner`'s dtype. \
+    /// - The `HArray`'s `ndim` is greater than 2. \
     ///
     /// #### Examples
     ///
@@ -335,9 +335,9 @@ impl HRealFftPlanner {
     /// #### Returns
     ///
     /// Will return an error if: \
-    /// * The `HArray`'s dtype is incompatible with the `HFftPlanner`'s dtype. \
-    /// * The `HArray`'s `ndim` is greater than 2. \
-    /// * The `length` argument is not compatible with the spectrum length. \
+    /// - The `HArray`'s dtype is incompatible with the `HFftPlanner`'s dtype. \
+    /// - The `HArray`'s `ndim` is greater than 2. \
+    /// - The `length` argument is not compatible with the spectrum length. \
     ///
     /// #### Examples
     ///
