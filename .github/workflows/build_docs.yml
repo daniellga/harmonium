@@ -49,6 +49,7 @@ jobs:
         with:
           use-public-rspm: true
 
+      # This is needed to clean previous docs that don't exist anymore. 
       - name: Previous documentation cleanup
         run: |
           DIRECTORY="./_docs/contents"

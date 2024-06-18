@@ -18,12 +18,8 @@ website:
 format:
   html:
     theme:
-      dark: minty
+      dark: litera
       light: litera
-    css: styles.css
     toc: true
     grid:
       body-width: 1000px
-
-
-
