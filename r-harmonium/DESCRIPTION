@@ -3,11 +3,9 @@ Title: Audio analysis and I/O
 Version: 0.1.0
 Authors@R: 
     person("Daniel", "Gurgel", email = "daniellga@gmail.com", role = c("aut", "cre"))
-Description: Audio analysis and I/O, inspired by python's librosa.
+Description: Audio analysis and I/O.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Suggests: 
     testthat (>= 3.0.0)
-Roxygen: list(markdown = TRUE)
 SystemRequirements: Cargo (Rust's package manager), rustc
-Config/rextendr/version: 0.3.1

@@ -53,7 +53,8 @@ jobs:
         run: |
           DIRECTORY="./_docs/content"
           if [ -d "$DIRECTORY" ]; then
-          rm "$DIRECTORY"/*
+            rm "$DIRECTORY"/*.qmd
+          fi
             
       - name: Build documentation
         run: |
