@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Harmonium - HInterpolationType</title>
+<title>Harmonium - HRealFftPlanner</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -130,7 +130,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../contents/harray.html">Classes</a></li><li class="breadcrumb-item"><a href="../contents/hinterpolationtype.html">HInterpolationType</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../contents/harray.html">Classes</a></li><li class="breadcrumb-item"><a href="../contents/hrealfftplanner.html">HRealFftPlanner</a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -207,7 +207,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../contents/hinterpolationtype.html" class="sidebar-item-text sidebar-link active">
+  <a href="../contents/hinterpolationtype.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">HInterpolationType</span></a>
   </div>
 </li>
@@ -225,7 +225,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../contents/hrealfftplanner.html" class="sidebar-item-text sidebar-link">
+  <a href="../contents/hrealfftplanner.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">HRealFftPlanner</span></a>
   </div>
 </li>
@@ -271,21 +271,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#methods" id="toc-methods" class="nav-link active" data-scroll-target="#methods">Methods</a>
-  <ul class="collapse">
+  <li><a href="#new" id="toc-new" class="nav-link active" data-scroll-target="#new">new</a></li>
+  <li><a href="#rfft" id="toc-rfft" class="nav-link" data-scroll-target="#rfft">rfft</a></li>
+  <li><a href="#irfft" id="toc-irfft" class="nav-link" data-scroll-target="#irfft">irfft</a></li>
+  <li><a href="#dtype" id="toc-dtype" class="nav-link" data-scroll-target="#dtype">dtype</a></li>
   <li><a href="#print" id="toc-print" class="nav-link" data-scroll-target="#print">print</a></li>
-  <li><a href="#eq" id="toc-eq" class="nav-link" data-scroll-target="#eq">eq</a></li>
-  <li><a href="#ne" id="toc-ne" class="nav-link" data-scroll-target="#ne">ne</a></li>
-  </ul></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../contents/harray.html">Classes</a></li><li class="breadcrumb-item"><a href="../contents/hinterpolationtype.html">HInterpolationType</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../contents/harray.html">Classes</a></li><li class="breadcrumb-item"><a href="../contents/hrealfftplanner.html">HRealFftPlanner</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">HInterpolationType</h1>
+<h1 class="title">HRealFftPlanner</h1>
 </div>
 
 
@@ -302,88 +301,157 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>A interpolation type representation.<br>
-Supports <code>Cubic</code>, <code>Linear</code>, <code>Quadratic</code> and <code>Nearest</code>.<br>
+<section id="new" class="level2">
+<h2 class="anchored" data-anchor-id="new">new</h2>
+<p><code>new(dtype: HDataType) -&gt; HRealFftPlanner</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L253">source</a> </span><br>
 </p>
-<section id="methods" class="level1">
-<h1>Methods</h1>
-<section id="print" class="level2">
-<h2 class="anchored" data-anchor-id="print">print</h2>
-<p><code>print()</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hinterpolationtype.rs#L42">source</a> </span><br>
+<p>Creates a new <code>HRealFftPlanner</code> instance.<br>
+If you plan on creating multiple FFT instances, it is recommended to reuse the same planner for all of them. This is because the planner re-uses internal data across FFT instances wherever possible, saving memory and reducing setup time. (FFT instances created with one planner will never re-use data and buffers with FFT instances created by a different planner)<br>
+In the constructor, the FftPlanner will detect available CPU features. If AVX, SSE, Neon, or WASM SIMD are available, it will set itself up to plan FFTs with the fastest available instruction set. If no SIMD instruction sets are available, the planner will seamlessly fall back to planning non-SIMD FFTs.<br>
 </p>
-<p>Prints the <code>HInterpolationType</code>.<br>
-Differently from R’s behaviour, <code>print</code> doesn’t return the value invisibly.<br>
-</p>
-<section id="examples" class="level4">
-<h4 class="anchored" data-anchor-id="examples">Examples</h4>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>interpolationtype <span class="ot">=</span> HInterpolationType<span class="sc">$</span>Cubic</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>interpolationtype<span class="sc">$</span><span class="fu">print</span>()</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># or similarly:</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(interpolationtype)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<hr>
-</section>
-</section>
-<section id="eq" class="level2">
-<h2 class="anchored" data-anchor-id="eq">eq</h2>
-<p><code>eq(other: HInterpolationType) -&gt; bool</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hinterpolationtype.rs#L77">source</a> </span><br>
-</p>
-<p>Equality with another <code>HInterpolationType</code>.</p>
 <section id="arguments" class="level4">
 <h4 class="anchored" data-anchor-id="arguments">Arguments</h4>
 <ul>
-<li><code>other</code><br>
-An <code>HInterpolationType</code>.<br>
+<li><code>dtype</code><br>
+A float <code>HDataType</code> to indicate the dtype that the <code>HFftPlanner</code> will be working with.<br>
 </li>
 </ul>
 </section>
 <section id="returns" class="level4">
 <h4 class="anchored" data-anchor-id="returns">Returns</h4>
-<p>A <code>bool</code>.</p>
+<p>An <code>HRealFftPlanner</code>.<br>
+Will return an error if dtype is of a complex type.<br>
+</p>
 </section>
-<section id="examples-1" class="level4">
-<h4 class="anchored" data-anchor-id="examples-1">Examples</h4>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>interpolationtype1 <span class="ot">=</span> HInterpolationType<span class="sc">$</span>Cubic</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>interpolationtype2 <span class="ot">=</span> HInterpolationType<span class="sc">$</span>Cubic</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>interpolationtype1<span class="sc">$</span><span class="fu">eq</span>(interpolationtype2) <span class="co"># TRUE</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># or similarly:</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>interpolationtype1 <span class="sc">==</span> interpolationtype2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="examples" class="level4">
+<h4 class="anchored" data-anchor-id="examples">Examples</h4>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>arr <span class="ot">=</span> <span class="fu">array</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>,<span class="dv">9</span>,<span class="dv">10</span>,<span class="dv">11</span>,<span class="dv">12</span>), <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">4</span>))</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>dtype <span class="ot">=</span> HDataType<span class="sc">$</span>Float32</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>harray <span class="ot">=</span> HArray<span class="sc">$</span><span class="fu">new_from_values</span>(arr, dtype)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>real_fft_planner <span class="ot">=</span> HRealFftPlanner<span class="sc">$</span><span class="fu">new</span>(harray<span class="sc">$</span><span class="fu">dtype</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 </section>
 </section>
-<section id="ne" class="level2">
-<h2 class="anchored" data-anchor-id="ne">ne</h2>
-<p><code>ne(other: HInterpolationType) -&gt; bool</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hinterpolationtype.rs#L113">source</a> </span><br>
+<section id="rfft" class="level2">
+<h2 class="anchored" data-anchor-id="rfft">rfft</h2>
+<p><code>rfft(harray: HArray)</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L305">source</a> </span><br>
 </p>
-<p>Difference with another <code>HInterpolationType</code>.</p>
+<p>Computes the fast fourier transform of a float <code>HArray</code>. Transforms a real signal of length <code>N</code> to a complex-valued spectrum of length <code>N/2+1</code> (with <code>N/2</code> rounded down).<br>
+The operation is not done in-place, although the same external pointer is used to store the new HArray.<br>
+The FFT of a real signal is Hermitian-symmetric, X[i] = conj(X[-i]) so the output contains only the positive frequencies below the Nyquist frequency.<br>
+FFT (Fast Fourier Transform) refers to a way the discrete Fourier Transform (DFT) can be calculated efficiently, by using symmetries in the calculated terms. The symmetry is highest when n is a power of 2, and the transform is therefore most efficient for these sizes.<br>
+</p>
+<p>The function does not normalize outputs. Callers must manually normalize the results by scaling each element by <code>1/sqrt(n)</code>. Multiple normalization steps can be merged into one via pairwise multiplication, so when doing a forward FFT followed by an inverse callers can normalize once by scaling each element by <code>1/n</code>.<br>
+</p>
+<p>Elements in the output are ordered by ascending frequency, with the first element corresponding to frequency 0.<br>
+</p>
 <section id="arguments-1" class="level4">
 <h4 class="anchored" data-anchor-id="arguments-1">Arguments</h4>
 <ul>
-<li><code>other</code><br>
-An <code>HInterpolationType</code>.<br>
+<li><code>harray</code><br>
+A float <code>HArray</code>.<br>
 </li>
 </ul>
 </section>
 <section id="returns-1" class="level4">
 <h4 class="anchored" data-anchor-id="returns-1">Returns</h4>
-<p>A <code>bool</code>.</p>
+<p>Will return an error if: * The <code>HArray</code>’s dtype is incompatible with the <code>HFftPlanner</code>’s dtype.<br>
+* The <code>HArray</code>’s <code>ndim</code> is greater than 2.<br>
+</p>
+</section>
+<section id="examples-1" class="level4">
+<h4 class="anchored" data-anchor-id="examples-1">Examples</h4>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>arr <span class="ot">=</span> <span class="fu">array</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>,<span class="dv">9</span>,<span class="dv">10</span>,<span class="dv">11</span>,<span class="dv">12</span>), <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">4</span>))</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>dtype <span class="ot">=</span> HDataType<span class="sc">$</span>Float32</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>harray <span class="ot">=</span> HArray<span class="sc">$</span><span class="fu">new_from_values</span>(arr, dtype)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>real_fft_planner <span class="ot">=</span> HRealFftPlanner<span class="sc">$</span><span class="fu">new</span>(harray<span class="sc">$</span><span class="fu">dtype</span>())</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>real_fft_planner<span class="sc">$</span><span class="fu">rfft</span>(harray)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+</section>
+</section>
+<section id="irfft" class="level2">
+<h2 class="anchored" data-anchor-id="irfft">irfft</h2>
+<p><code>irfft(harray: HArray, length: integer)</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L357">source</a> </span><br>
+</p>
+<p>Computes the inverse fast fourier transform of a complex <code>HArray</code>. Transforms a complex spectrum of length <code>N/2+1</code> (with <code>N/2</code> rounded down) to a real-valued signal of length <code>N</code>.<br>
+The operation is not done in-place, although the same external pointer is used to store the new HArray.<br>
+The FFT of a real signal is Hermitian-symmetric, X[i] = conj(X[-i]) so the output contains only the positive frequencies below the Nyquist frequency.<br>
+FFT (Fast Fourier Transform) refers to a way the discrete Fourier Transform (DFT) can be calculated efficiently, by using symmetries in the calculated terms. The symmetry is highest when n is a power of 2, and the transform is therefore most efficient for these sizes.<br>
+</p>
+<p>The function does not normalize outputs. Callers must manually normalize the results by scaling each element by <code>1/sqrt(n)</code>. Multiple normalization steps can be merged into one via pairwise multiplication, so when doing a forward FFT followed by an inverse callers can normalize once by scaling each element by <code>1/n</code>.<br>
+</p>
+<section id="arguments-2" class="level4">
+<h4 class="anchored" data-anchor-id="arguments-2">Arguments</h4>
+<ul>
+<li><code>harray</code><br>
+A complex <code>HArray</code>. The <code>HArray</code>’s dtype must be the complex equivalent of the <code>HRealFftPlanner</code>’s dtype. For example if <code>HRealFftPlanner</code> dtype is <code>Float64</code>, the <code>HArray</code>’s dtype must be <code>Complex64</code>.<br>
+</li>
+<li><code>length</code><br>
+An integer. The output length of the signal. Since the spectrum is <code>N/2+1</code>, the length can be <code>N</code> and <code>N+1</code>, if <code>N</code> is even, or can be <code>N</code> and <code>N-1</code> if <code>N</code> is odd.<br>
+</li>
+</ul>
+</section>
+<section id="returns-2" class="level4">
+<h4 class="anchored" data-anchor-id="returns-2">Returns</h4>
+<p>Will return an error if: * The <code>HArray</code>’s dtype is incompatible with the <code>HFftPlanner</code>’s dtype.<br>
+* The <code>HArray</code>’s <code>ndim</code> is greater than 2.<br>
+* The <code>length</code> argument is not compatible with the spectrum length.<br>
+</p>
 </section>
 <section id="examples-2" class="level4">
 <h4 class="anchored" data-anchor-id="examples-2">Examples</h4>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>interpolationtype1 <span class="ot">=</span> HInterpolationType<span class="sc">$</span>Cubic</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>interpolationtype2 <span class="ot">=</span> HInterpolationType<span class="sc">$</span>Cubic</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>interpolationtype1<span class="sc">$</span><span class="fu">ne</span>(interpolationtype2) <span class="co"># FALSE</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># or similarly:</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>interpolationtype1 <span class="sc">!=</span> interpolationtype2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>r <span class="ot">=</span> <span class="fu">as.double</span>(<span class="fu">sample</span>(<span class="dv">100</span>, <span class="dv">4</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>i <span class="ot">=</span> <span class="fu">as.double</span>(<span class="fu">sample</span>(<span class="dv">100</span>, <span class="dv">3</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>arr <span class="ot">=</span> <span class="fu">array</span>(<span class="fu">complex</span>(<span class="at">real=</span>r, <span class="at">imaginary=</span><span class="fu">c</span>(<span class="dv">0</span>,i)), <span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">1</span>))</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>dtype <span class="ot">=</span> HDataType<span class="sc">$</span>Complex32</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>harray <span class="ot">=</span> HArray<span class="sc">$</span><span class="fu">new_from_values</span>(arr, dtype)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>real_fft_planner <span class="ot">=</span> HRealFftPlanner<span class="sc">$</span><span class="fu">new</span>(HDataType<span class="sc">$</span>Float32)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>real_fft_planner<span class="sc">$</span><span class="fu">irfft</span>(harray, <span class="dv">7</span>L)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+</section>
+</section>
+<section id="dtype" class="level2">
+<h2 class="anchored" data-anchor-id="dtype">dtype</h2>
+<p><code>dtype() -&gt; HDataType</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L388">source</a> </span><br>
+</p>
+<p>Gets the <code>HRealFftPlanner</code>’s dtype.</p>
+<section id="returns-3" class="level4">
+<h4 class="anchored" data-anchor-id="returns-3">Returns</h4>
+<p>An <code>HDataType</code>.</p>
+</section>
+<section id="examples-3" class="level4">
+<h4 class="anchored" data-anchor-id="examples-3">Examples</h4>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>arr <span class="ot">=</span> <span class="fu">array</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>,<span class="dv">9</span>,<span class="dv">10</span>,<span class="dv">11</span>,<span class="dv">12</span>), <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">4</span>))</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>dtype <span class="ot">=</span> HDataType<span class="sc">$</span>Float32</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>harray <span class="ot">=</span> HArray<span class="sc">$</span><span class="fu">new_from_values</span>(arr, dtype)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>real_fft_planner <span class="ot">=</span> HRealFftPlanner<span class="sc">$</span><span class="fu">new</span>(harray<span class="sc">$</span><span class="fu">dtype</span>())</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>real_fft_planner<span class="sc">$</span><span class="fu">dtype</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+</section>
+</section>
+<section id="print" class="level2">
+<h2 class="anchored" data-anchor-id="print">print</h2>
+<p><code>print()</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L415">source</a> </span><br>
+</p>
+<p>Print the <code>HRealFftPlanner</code>.<br>
+Differently from R’s normal behaviour, <code>print</code> doesn’t return the value invisibly.<br>
+</p>
+<section id="examples-4" class="level4">
+<h4 class="anchored" data-anchor-id="examples-4">Examples</h4>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>arr <span class="ot">=</span> <span class="fu">array</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>,<span class="dv">9</span>,<span class="dv">10</span>,<span class="dv">11</span>,<span class="dv">12</span>), <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">4</span>))</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>dtype <span class="ot">=</span> HDataType<span class="sc">$</span>Float32</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>harray <span class="ot">=</span> HArray<span class="sc">$</span><span class="fu">new_from_values</span>(arr, dtype)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>real_fft_planner <span class="ot">=</span> HRealFftPlanner<span class="sc">$</span><span class="fu">new</span>(harray<span class="sc">$</span><span class="fu">dtype</span>())</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>real_fft_planner<span class="sc">$</span><span class="fu">print</span>()</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co"># or similarly:</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(real_fft_planner)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 
 
-</section>
 </section>
 </section>
 

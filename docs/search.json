@@ -418,6 +418,196 @@
     ]
   },
   {
+    "objectID": "contents/hfftplanner.html",
+    "href": "contents/hfftplanner.html",
+    "title": "HFftPlanner",
+    "section": "",
+    "text": "new(dtype: HDataType) -&gt; HFftPlanner  source \n\nCreates a new HFftPlanner instance.\nIf you plan on creating multiple FFT instances, it is recommended to reuse the same planner for all of them. This is because the planner re-uses internal data across FFT instances wherever possible, saving memory and reducing setup time. (FFT instances created with one planner will never re-use data and buffers with FFT instances created by a different planner)\nIn the constructor, the FftPlanner will detect available CPU features. If AVX, SSE, Neon, or WASM SIMD are available, it will set itself up to plan FFTs with the fastest available instruction set. If no SIMD instruction sets are available, the planner will seamlessly fall back to planning non-SIMD FFTs.\n\n\n\n\ndtype\nA complex HDataType to indicate the dtype that the HFftPlanner will be working with.\n\n\n\n\n\nAn HFftPlanner.\nWill return an error if dtype is of a float type.\n\n\n\n\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nfft_planner = HFftPlanner$new(harray$dtype())",
+    "crumbs": [
+      "Classes",
+      "HFftPlanner"
+    ]
+  },
+  {
+    "objectID": "contents/hfftplanner.html#new",
+    "href": "contents/hfftplanner.html#new",
+    "title": "HFftPlanner",
+    "section": "",
+    "text": "new(dtype: HDataType) -&gt; HFftPlanner  source \n\nCreates a new HFftPlanner instance.\nIf you plan on creating multiple FFT instances, it is recommended to reuse the same planner for all of them. This is because the planner re-uses internal data across FFT instances wherever possible, saving memory and reducing setup time. (FFT instances created with one planner will never re-use data and buffers with FFT instances created by a different planner)\nIn the constructor, the FftPlanner will detect available CPU features. If AVX, SSE, Neon, or WASM SIMD are available, it will set itself up to plan FFTs with the fastest available instruction set. If no SIMD instruction sets are available, the planner will seamlessly fall back to planning non-SIMD FFTs.\n\n\n\n\ndtype\nA complex HDataType to indicate the dtype that the HFftPlanner will be working with.\n\n\n\n\n\nAn HFftPlanner.\nWill return an error if dtype is of a float type.\n\n\n\n\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nfft_planner = HFftPlanner$new(harray$dtype())",
+    "crumbs": [
+      "Classes",
+      "HFftPlanner"
+    ]
+  },
+  {
+    "objectID": "contents/hfftplanner.html#fft",
+    "href": "contents/hfftplanner.html#fft",
+    "title": "HFftPlanner",
+    "section": "fft",
+    "text": "fft\nfft(harray: HArray)  source \n\nComputes the fast fourier transform of a complex HArray.\nThe operation is done in-place.\nFFT (Fast Fourier Transform) refers to a way the discrete Fourier Transform (DFT) can be calculated efficiently, by using symmetries in the calculated terms. The symmetry is highest when n is a power of 2, and the transform is therefore most efficient for these sizes.\n\nThe function does not normalize outputs. Callers must manually normalize the results by scaling each element by 1/sqrt(n). Multiple normalization steps can be merged into one via pairwise multiplication, so when doing a forward FFT followed by an inverse callers can normalize once by scaling each element by 1/n.\n\nElements in the output are ordered by ascending frequency, with the first element corresponding to frequency 0.\n\n\nArguments\n\nharray\nA complex HArray.\n\n\n\n\nReturns\nWill return an error if: * The HArray’s dtype is incompatible with the HFftPlanner’s dtype.\n* The HArray’s ndim is greater than 2.\n\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nfft_planner = HFftPlanner$new(harray$dtype())\nfft_planner$fft(harray)",
+    "crumbs": [
+      "Classes",
+      "HFftPlanner"
+    ]
+  },
+  {
+    "objectID": "contents/hfftplanner.html#ifft",
+    "href": "contents/hfftplanner.html#ifft",
+    "title": "HFftPlanner",
+    "section": "ifft",
+    "text": "ifft\nifft(harray: HArray)  source \n\nComputes the inverse fast fourier transform of a complex HArray.\nThe operation is done in-place.\nFFT (Fast Fourier Transform) refers to a way the discrete Fourier Transform (DFT) can be calculated efficiently, by using symmetries in the calculated terms. The symmetry is highest when n is a power of 2, and the transform is therefore most efficient for these sizes.\n\nThe function does not normalize outputs. Callers must manually normalize the results by scaling each element by 1/sqrt(n). Multiple normalization steps can be merged into one via pairwise multiplication, so when doing a forward FFT followed by an inverse callers can normalize once by scaling each element by 1/n.\n\n\nArguments\n\nharray\nA complex HArray.\n\n\n\n\nReturns\nWill return an error if: * The HArray’s dtype is incompatible with the HFftPlanner’s dtype.\n* The HArray’s ndim is greater than 2.\n\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1+1i,2+2i,3+3i,4+4i,5+5i,6+6i), c(3,2))\ndtype = HDataType$Complex32\nharray = HArray$new_from_values(arr, dtype)\nfft_planner = HFftPlanner$new(harray$dtype())\nfft_planner$ifft(harray)",
+    "crumbs": [
+      "Classes",
+      "HFftPlanner"
+    ]
+  },
+  {
+    "objectID": "contents/hfftplanner.html#dtype",
+    "href": "contents/hfftplanner.html#dtype",
+    "title": "HFftPlanner",
+    "section": "dtype",
+    "text": "dtype\ndtype() -&gt; HDataType  source \n\nGets the HFftPlanner’s dtype.\n\nReturns\nAn HDataType.\n\n\nExamples\narr = array(c(1+1i,2+2i,3+3i,4+4i,5+5i,6+6i), c(3,2))\ndtype = HDataType$Complex32\nharray = HArray$new_from_values(arr, dtype)\nfft_planner = HFftPlanner$new(harray$dtype())\nfft_planner$dtype()",
+    "crumbs": [
+      "Classes",
+      "HFftPlanner"
+    ]
+  },
+  {
+    "objectID": "contents/hfftplanner.html#print",
+    "href": "contents/hfftplanner.html#print",
+    "title": "HFftPlanner",
+    "section": "print",
+    "text": "print\nprint()  source \n\nPrint the HFftPlanner.\nDifferently from R’s normal behaviour, print doesn’t return the value invisibly.\n\n\nExamples\narr = array(c(1+1i,2+2i,3+3i,4+4i,5+5i,6+6i), c(3,2))\ndtype = HDataType$Complex32\nharray = HArray$new_from_values(arr, dtype)\nfft_planner = HFftPlanner$new(harray$dtype())\nfft_planner$print()\n\n# or similarly:\nprint(fft_planner)",
+    "crumbs": [
+      "Classes",
+      "HFftPlanner"
+    ]
+  },
+  {
+    "objectID": "contents/hrealfftplanner.html",
+    "href": "contents/hrealfftplanner.html",
+    "title": "HRealFftPlanner",
+    "section": "",
+    "text": "new(dtype: HDataType) -&gt; HRealFftPlanner  source \n\nCreates a new HRealFftPlanner instance.\nIf you plan on creating multiple FFT instances, it is recommended to reuse the same planner for all of them. This is because the planner re-uses internal data across FFT instances wherever possible, saving memory and reducing setup time. (FFT instances created with one planner will never re-use data and buffers with FFT instances created by a different planner)\nIn the constructor, the FftPlanner will detect available CPU features. If AVX, SSE, Neon, or WASM SIMD are available, it will set itself up to plan FFTs with the fastest available instruction set. If no SIMD instruction sets are available, the planner will seamlessly fall back to planning non-SIMD FFTs.\n\n\n\n\ndtype\nA float HDataType to indicate the dtype that the HFftPlanner will be working with.\n\n\n\n\n\nAn HRealFftPlanner.\nWill return an error if dtype is of a complex type.\n\n\n\n\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nreal_fft_planner = HRealFftPlanner$new(harray$dtype())",
+    "crumbs": [
+      "Classes",
+      "HRealFftPlanner"
+    ]
+  },
+  {
+    "objectID": "contents/hrealfftplanner.html#new",
+    "href": "contents/hrealfftplanner.html#new",
+    "title": "HRealFftPlanner",
+    "section": "",
+    "text": "new(dtype: HDataType) -&gt; HRealFftPlanner  source \n\nCreates a new HRealFftPlanner instance.\nIf you plan on creating multiple FFT instances, it is recommended to reuse the same planner for all of them. This is because the planner re-uses internal data across FFT instances wherever possible, saving memory and reducing setup time. (FFT instances created with one planner will never re-use data and buffers with FFT instances created by a different planner)\nIn the constructor, the FftPlanner will detect available CPU features. If AVX, SSE, Neon, or WASM SIMD are available, it will set itself up to plan FFTs with the fastest available instruction set. If no SIMD instruction sets are available, the planner will seamlessly fall back to planning non-SIMD FFTs.\n\n\n\n\ndtype\nA float HDataType to indicate the dtype that the HFftPlanner will be working with.\n\n\n\n\n\nAn HRealFftPlanner.\nWill return an error if dtype is of a complex type.\n\n\n\n\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nreal_fft_planner = HRealFftPlanner$new(harray$dtype())",
+    "crumbs": [
+      "Classes",
+      "HRealFftPlanner"
+    ]
+  },
+  {
+    "objectID": "contents/hrealfftplanner.html#rfft",
+    "href": "contents/hrealfftplanner.html#rfft",
+    "title": "HRealFftPlanner",
+    "section": "rfft",
+    "text": "rfft\nrfft(harray: HArray)  source \n\nComputes the fast fourier transform of a float HArray. Transforms a real signal of length N to a complex-valued spectrum of length N/2+1 (with N/2 rounded down).\nThe operation is not done in-place, although the same external pointer is used to store the new HArray.\nThe FFT of a real signal is Hermitian-symmetric, X[i] = conj(X[-i]) so the output contains only the positive frequencies below the Nyquist frequency.\nFFT (Fast Fourier Transform) refers to a way the discrete Fourier Transform (DFT) can be calculated efficiently, by using symmetries in the calculated terms. The symmetry is highest when n is a power of 2, and the transform is therefore most efficient for these sizes.\n\nThe function does not normalize outputs. Callers must manually normalize the results by scaling each element by 1/sqrt(n). Multiple normalization steps can be merged into one via pairwise multiplication, so when doing a forward FFT followed by an inverse callers can normalize once by scaling each element by 1/n.\n\nElements in the output are ordered by ascending frequency, with the first element corresponding to frequency 0.\n\n\nArguments\n\nharray\nA float HArray.\n\n\n\n\nReturns\nWill return an error if: * The HArray’s dtype is incompatible with the HFftPlanner’s dtype.\n* The HArray’s ndim is greater than 2.\n\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nreal_fft_planner = HRealFftPlanner$new(harray$dtype())\nreal_fft_planner$rfft(harray)",
+    "crumbs": [
+      "Classes",
+      "HRealFftPlanner"
+    ]
+  },
+  {
+    "objectID": "contents/hrealfftplanner.html#irfft",
+    "href": "contents/hrealfftplanner.html#irfft",
+    "title": "HRealFftPlanner",
+    "section": "irfft",
+    "text": "irfft\nirfft(harray: HArray, length: integer)  source \n\nComputes the inverse fast fourier transform of a complex HArray. Transforms a complex spectrum of length N/2+1 (with N/2 rounded down) to a real-valued signal of length N.\nThe operation is not done in-place, although the same external pointer is used to store the new HArray.\nThe FFT of a real signal is Hermitian-symmetric, X[i] = conj(X[-i]) so the output contains only the positive frequencies below the Nyquist frequency.\nFFT (Fast Fourier Transform) refers to a way the discrete Fourier Transform (DFT) can be calculated efficiently, by using symmetries in the calculated terms. The symmetry is highest when n is a power of 2, and the transform is therefore most efficient for these sizes.\n\nThe function does not normalize outputs. Callers must manually normalize the results by scaling each element by 1/sqrt(n). Multiple normalization steps can be merged into one via pairwise multiplication, so when doing a forward FFT followed by an inverse callers can normalize once by scaling each element by 1/n.\n\n\nArguments\n\nharray\nA complex HArray. The HArray’s dtype must be the complex equivalent of the HRealFftPlanner’s dtype. For example if HRealFftPlanner dtype is Float64, the HArray’s dtype must be Complex64.\n\nlength\nAn integer. The output length of the signal. Since the spectrum is N/2+1, the length can be N and N+1, if N is even, or can be N and N-1 if N is odd.\n\n\n\n\nReturns\nWill return an error if: * The HArray’s dtype is incompatible with the HFftPlanner’s dtype.\n* The HArray’s ndim is greater than 2.\n* The length argument is not compatible with the spectrum length.\n\n\n\nExamples\nlibrary(harmonium)\nr = as.double(sample(100, 4, replace = TRUE))\ni = as.double(sample(100, 3, replace = TRUE))\narr = array(complex(real=r, imaginary=c(0,i)), c(4,1))\ndtype = HDataType$Complex32\nharray = HArray$new_from_values(arr, dtype)\nreal_fft_planner = HRealFftPlanner$new(HDataType$Float32)\nreal_fft_planner$irfft(harray, 7L)",
+    "crumbs": [
+      "Classes",
+      "HRealFftPlanner"
+    ]
+  },
+  {
+    "objectID": "contents/hrealfftplanner.html#dtype",
+    "href": "contents/hrealfftplanner.html#dtype",
+    "title": "HRealFftPlanner",
+    "section": "dtype",
+    "text": "dtype\ndtype() -&gt; HDataType  source \n\nGets the HRealFftPlanner’s dtype.\n\nReturns\nAn HDataType.\n\n\nExamples\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nreal_fft_planner = HRealFftPlanner$new(harray$dtype())\nreal_fft_planner$dtype()",
+    "crumbs": [
+      "Classes",
+      "HRealFftPlanner"
+    ]
+  },
+  {
+    "objectID": "contents/hrealfftplanner.html#print",
+    "href": "contents/hrealfftplanner.html#print",
+    "title": "HRealFftPlanner",
+    "section": "print",
+    "text": "print\nprint()  source \n\nPrint the HRealFftPlanner.\nDifferently from R’s normal behaviour, print doesn’t return the value invisibly.\n\n\nExamples\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nreal_fft_planner = HRealFftPlanner$new(harray$dtype())\nreal_fft_planner$print()\n\n# or similarly:\nprint(real_fft_planner)",
+    "crumbs": [
+      "Classes",
+      "HRealFftPlanner"
+    ]
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Harmonium",
+    "section": "",
+    "text": "Harmonium is an audio interface inspired by Python’s librosa.\n\n\nBasic usage\nLoad the library\nlibrary(harmonium)\nCreate an HArray from an existing array\narr = matrix(c(1,2,3,4,5,6,7,8,9,10,11,12), ncol = 2)\ndtype = HDataType$float64\nharray = HArray$new_from_values(arr, dtype = dtype)\nprint(harray)\nOr decode from an existing audio file\nl = HFile$decode(\"file.wav\", dtype)\nharray = l[[0]]\nsr = l[[1]] # sampling rate\nprint(harray)\nVerify the dimensions\nharray$len()\nHAudioOp$nchannels(harray)\nHAudioOp$nframes(harray)\nVerify the data type\nharray$dtype()\nConvert to an R array\nharray$collect()\nConvert to mono\nHAudioOp$to_mono(harray)\nResample the haudio\nsr_in = 48000L\nsr_out = 22050L\nnbr_channels = HAudioOp$nchannels(harray)\ndtype = HDataType$float64\nres_type = HResamplerType$fft_fixed_in\nresampler = HResampler$new_fft(sr_in, sr_out, nbr_channels, res_type)\nhresampler$process(harray)\nPlay the haudio\nhaudiosink = HAudioSink$new()\nhaudiosink$append_from_harray(harray)\nOr play directly from the file\nhaudiosink$append_from_file(\"file.wav\")\nGet the number of audios to be played\nhaudiosink$len()\nDouble the audio volume and the playback speed\nhaudiosink$set_volume(2)\nhaudiosink$set_speed(2)\nPause the playback and confirms it is paused\nhaudiosink$pause()\nhaudiosink$is_paused()\nIt is also possible to get metadata from an audio file\nmetatadatype = HMetadataType$text\nHFile$metadata(\"file.wav\", metatadatype)\nAnd to get some audio parameters directly from a file\nparams = HFile$params(\"file.wav\")\nsr = params[[1]]\nnframes = params[[2]]\nnchannels = params[[3]]\nduration = params[[4]]"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site"
+  },
+  {
+    "objectID": "contents/hwindowtype.html",
+    "href": "contents/hwindowtype.html",
+    "title": "HWindowType",
+    "section": "",
+    "text": "A window type representation.\nSupports Blackman, Blackman2, BlackmanHarris, BlackmanHarris2, Hann and Hann2 types.",
+    "crumbs": [
+      "Classes",
+      "HWindowType"
+    ]
+  },
+  {
+    "objectID": "contents/hwindowtype.html#print",
+    "href": "contents/hwindowtype.html#print",
+    "title": "HWindowType",
+    "section": "print",
+    "text": "print\nprint()  source \n\nPrints the HWindowType.\nDifferently from R’s behaviour, print doesn’t return the value invisibly.\n\n\nExamples\nwindowtype = HWindowType$Blackman\nwindowtype$print()\n\n# or similarly:\nprint(windowtype)",
+    "crumbs": [
+      "Classes",
+      "HWindowType"
+    ]
+  },
+  {
+    "objectID": "contents/hwindowtype.html#eq",
+    "href": "contents/hwindowtype.html#eq",
+    "title": "HWindowType",
+    "section": "eq",
+    "text": "eq\neq(other: HWindowType) -&gt; bool  source \n\nEquality with another HWindowType.\n\nArguments\n\nother\nAn HWindowType.\n\n\n\n\nReturns\nA bool.\n\n\nExamples\nwindowtype1 = HWindowType$Blackman\nwindowtype2 = HWindowType$Blackman\nwindowtype1$eq(windowtype2) # TRUE\n\n# or similarly:\nwindowtype1 == windowtype2",
+    "crumbs": [
+      "Classes",
+      "HWindowType"
+    ]
+  },
+  {
+    "objectID": "contents/hwindowtype.html#ne",
+    "href": "contents/hwindowtype.html#ne",
+    "title": "HWindowType",
+    "section": "ne",
+    "text": "ne\nne(other: HWindowType) -&gt; bool  source \n\nDifference with another HWindowType.\n\nArguments\n\nother\nAn HWindowType.\n\n\n\n\nReturns\nA bool.\n\n\nExamples\nwindowtype1 = HWindowType$Blackman\nwindowtype2 = HWindowType$Blackman\nwindowtype1$ne(windowtype2) # FALSE\n\n# or similarly:\nwindowtype1 != windowtype2",
+    "crumbs": [
+      "Classes",
+      "HWindowType"
+    ]
+  },
+  {
     "objectID": "contents/haudiosink.html",
     "href": "contents/haudiosink.html",
     "title": "HAudioSink",
@@ -646,64 +836,6 @@
     "crumbs": [
       "Classes",
       "HAudioSink"
-    ]
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Harmonium",
-    "section": "",
-    "text": "Harmonium is an audio interface inspired by Python’s librosa.\n\n\nBasic usage\nLoad the library\nlibrary(harmonium)\nCreate an HArray from an existing array\narr = matrix(c(1,2,3,4,5,6,7,8,9,10,11,12), ncol = 2)\ndtype = HDataType$float64\nharray = HArray$new_from_values(arr, dtype = dtype)\nprint(harray)\nOr decode from an existing audio file\nl = HFile$decode(\"file.wav\", dtype)\nharray = l[[0]]\nsr = l[[1]] # sampling rate\nprint(harray)\nVerify the dimensions\nharray$len()\nHAudioOp$nchannels(harray)\nHAudioOp$nframes(harray)\nVerify the data type\nharray$dtype()\nConvert to an R array\nharray$collect()\nConvert to mono\nHAudioOp$to_mono(harray)\nResample the haudio\nsr_in = 48000L\nsr_out = 22050L\nnbr_channels = HAudioOp$nchannels(harray)\ndtype = HDataType$float64\nres_type = HResamplerType$fft_fixed_in\nresampler = HResampler$new_fft(sr_in, sr_out, nbr_channels, res_type)\nhresampler$process(harray)\nPlay the haudio\nhaudiosink = HAudioSink$new()\nhaudiosink$append_from_harray(harray)\nOr play directly from the file\nhaudiosink$append_from_file(\"file.wav\")\nGet the number of audios to be played\nhaudiosink$len()\nDouble the audio volume and the playback speed\nhaudiosink$set_volume(2)\nhaudiosink$set_speed(2)\nPause the playback and confirms it is paused\nhaudiosink$pause()\nhaudiosink$is_paused()\nIt is also possible to get metadata from an audio file\nmetatadatype = HMetadataType$text\nHFile$metadata(\"file.wav\", metatadatype)\nAnd to get some audio parameters directly from a file\nparams = HFile$params(\"file.wav\")\nsr = params[[1]]\nnframes = params[[2]]\nnchannels = params[[3]]\nduration = params[[4]]"
-  },
-  {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
-    "section": "",
-    "text": "About this site"
-  },
-  {
-    "objectID": "contents/hwindowtype.html",
-    "href": "contents/hwindowtype.html",
-    "title": "HWindowType",
-    "section": "",
-    "text": "A window type representation.\nSupports Blackman, Blackman2, BlackmanHarris, BlackmanHarris2, Hann and Hann2 types.",
-    "crumbs": [
-      "Classes",
-      "HWindowType"
-    ]
-  },
-  {
-    "objectID": "contents/hwindowtype.html#print",
-    "href": "contents/hwindowtype.html#print",
-    "title": "HWindowType",
-    "section": "print",
-    "text": "print\nprint()  source \n\nPrints the HWindowType.\nDifferently from R’s behaviour, print doesn’t return the value invisibly.\n\n\nExamples\nwindowtype = HWindowType$Blackman\nwindowtype$print()\n\n# or similarly:\nprint(windowtype)",
-    "crumbs": [
-      "Classes",
-      "HWindowType"
-    ]
-  },
-  {
-    "objectID": "contents/hwindowtype.html#eq",
-    "href": "contents/hwindowtype.html#eq",
-    "title": "HWindowType",
-    "section": "eq",
-    "text": "eq\neq(other: HWindowType) -&gt; bool  source \n\nEquality with another HWindowType.\n\nArguments\n\nother\nAn HWindowType.\n\n\n\n\nReturns\nA bool.\n\n\nExamples\nwindowtype1 = HWindowType$Blackman\nwindowtype2 = HWindowType$Blackman\nwindowtype1$eq(windowtype2) # TRUE\n\n# or similarly:\nwindowtype1 == windowtype2",
-    "crumbs": [
-      "Classes",
-      "HWindowType"
-    ]
-  },
-  {
-    "objectID": "contents/hwindowtype.html#ne",
-    "href": "contents/hwindowtype.html#ne",
-    "title": "HWindowType",
-    "section": "ne",
-    "text": "ne\nne(other: HWindowType) -&gt; bool  source \n\nDifference with another HWindowType.\n\nArguments\n\nother\nAn HWindowType.\n\n\n\n\nReturns\nA bool.\n\n\nExamples\nwindowtype1 = HWindowType$Blackman\nwindowtype2 = HWindowType$Blackman\nwindowtype1$ne(windowtype2) # FALSE\n\n# or similarly:\nwindowtype1 != windowtype2",
-    "crumbs": [
-      "Classes",
-      "HWindowType"
     ]
   },
   {
