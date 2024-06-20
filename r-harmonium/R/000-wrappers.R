@@ -430,7 +430,7 @@ HDecodedAudio_invalidate <- function(self) {
 
 
 #' HDecodedAudio
-#' An audio represented by an HArray of samples and its corresponding sampling rate. \
+#' An audio represented by an HArray of samples and its corresponding sampling rate.
 #'
 #' # Methods
 #'
@@ -442,16 +442,16 @@ HDecodedAudio <- new.env(parent = emptyenv())
 
 ### wrapper functions for HDecoderStream
 
-HDecoderStream_next <- function(self) {
+HDecoderStream_stream <- function(self) {
   function() {
-    .savvy_wrap_HArray(.Call(savvy_HDecoderStream_next__impl, self))
+    .savvy_wrap_HArray(.Call(savvy_HDecoderStream_stream__impl, self))
   }
 }
 
 .savvy_wrap_HDecoderStream <- function(ptr) {
   e <- new.env(parent = emptyenv())
   e$.ptr <- ptr
-    e$next <- HDecoderStream_next(ptr)
+    e$stream <- HDecoderStream_stream(ptr)
   
   class(e) <- "HDecoderStream"
   e

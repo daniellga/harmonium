@@ -267,12 +267,12 @@ impl HFile {
     /// Each `VisualMetadata` will be comprised of the following fields:
     ///
     /// - usage
-
+    ///
     ///     The usage and/or content of the Visual. A string version of `symphonia_core::meta::StandardVisualKey`, which is an enumeration providing
     ///     standardized keys for common visual dispositions. A demuxer may assign a StandardVisualKey to a Visual if the disposition of the attached visual
     ///     is known and can be mapped to a standard key. The visual types listed here are derived from, though do not entirely cover, the ID3v2 APIC frame specification.
     /// - media_type
-
+    ///
     ///     The Media Type (MIME Type) used to encode the Visual.
     /// - dimensions
     ///
@@ -468,9 +468,9 @@ impl HFile {
 #[savvy]
 impl HDecoderStream {
     /// HDecoderStream
-    /// ## next
+    /// ## stream
     ///
-    /// `next() -> HArray` \
+    /// `stream() -> HArray` \
     ///
     /// Gets the next wave of frames as an `HArray`. \
     /// Returns an error if it's end of stream or if an error ocurred in
@@ -494,7 +494,7 @@ impl HDecoderStream {
     ///
     /// _________
     ///
-    fn next(&mut self) -> savvy::Result<HArray> {
+    fn stream(&mut self) -> savvy::Result<HArray> {
         self.0.next()
     }
 }
