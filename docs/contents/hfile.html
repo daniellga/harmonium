@@ -270,6 +270,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#decode" id="toc-decode" class="nav-link" data-scroll-target="#decode">decode</a></li>
   <li><a href="#decode_stream" id="toc-decode_stream" class="nav-link" data-scroll-target="#decode_stream">decode_stream</a></li>
   <li><a href="#metadata" id="toc-metadata" class="nav-link" data-scroll-target="#metadata">metadata</a></li>
+  <li><a href="#params" id="toc-params" class="nav-link" data-scroll-target="#params">params</a></li>
   <li><a href="#verify" id="toc-verify" class="nav-link" data-scroll-target="#verify">verify</a></li>
   </ul></li>
   </ul>
@@ -371,7 +372,8 @@ A float <code>HDataType</code>.<br>
 </section>
 <section id="metadata" class="level2">
 <h2 class="anchored" data-anchor-id="metadata">metadata</h2>
-<p><code>metadata(fpath: string, metadata_type: HMetadataType) -&gt; list</code></p>
+<p>`metadata(fpath: string, metadata_type: HMetadataType) -&gt; list<span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L347">source</a> </span><br>
+</p>
 <p>Extract text and visual metadata from a file.</p>
 <p>Tags that are part of the container format are preferentially extracted. Additional tags that were found while probing will not be extracted.</p>
 <p>The following metadata tagging formats are supported.<br>
@@ -391,44 +393,64 @@ A float <code>HDataType</code>.<br>
 </ul>
 <p>Each <code>VisualMetadata</code> will be comprised of the following fields:</p>
 <ul>
-<li>usage ## params</li>
+<li><p>usage</p>
+<p>The usage and/or content of the Visual. A string version of <code>symphonia_core::meta::StandardVisualKey</code>, which is an enumeration providing standardized keys for common visual dispositions. A demuxer may assign a StandardVisualKey to a Visual if the disposition of the attached visual is known and can be mapped to a standard key. The visual types listed here are derived from, though do not entirely cover, the ID3v2 APIC frame specification.</p></li>
+<li><p>media_type</p>
+<p>The Media Type (MIME Type) used to encode the Visual.</p></li>
+<li><p>dimensions</p>
+<p>The dimensions (width and height) of the Visual, represented in pixels. Note: This value may not be accurate as it comes from metadata, not the embedded graphic itself. Consider it only a hint.</p></li>
+<li><p>bits_per_pixel</p>
+<p>The number of bits-per-pixel (aka bit-depth) of the unencoded image.</p></li>
+<li><p>color_mode</p>
+<p>Indicates how the color of a pixel is encoded in a Visual. Variants:</p>
+<p>-Discrete</p>
+<pre><code>  Each pixel in the Visual stores its own color information.</code></pre>
+<p>-Indexed(NonZeroU32)</p>
+<pre><code>  Each pixel in the Visual stores an index into a color palette containing the color information. The value stored by this variant indicates the number
+  of colors in the color palette.</code></pre></li>
+<li><p>size</p>
+<p>Size of the image in bytes.</p></li>
+<li><p>tag</p>
+<p><code>Tag</code> with the following fields:</p>
+<ul>
+<li><p>tag_key</p>
+<p>A key string indicating the type, meaning, or purpose of the Tags value. Note: The meaning of key is dependant on the underlying metadata format.</p></li>
+<li><p>tag_std_key</p>
+<p>If the Tag’s key string is commonly associated with a typical type, meaning, or purpose, then if recognized a StandardTagKey will be assigned to this Tag. This is a best effort guess since not all metadata formats have a well defined or specified tag mapping. However, it is recommended that consumers prefer std_key over key, if provided. Check [<code>StandardTagKey</code>] for all the variants.</p></li>
+<li><p>tag_value</p>
+<p>The value of the Tag.</p></li>
+</ul></li>
 </ul>
+<section id="arguments-2" class="level4">
+<h4 class="anchored" data-anchor-id="arguments-2">Arguments</h4>
+<ul>
+<li><code>fpath</code></li>
+</ul>
+<p>The file path as a string.</p>
+<ul>
+<li><code>metadata_type</code></li>
+</ul>
+<p>An <code>HMetadataType</code>.</p>
+</section>
+<section id="returns-2" class="level4">
+<h4 class="anchored" data-anchor-id="returns-2">Returns</h4>
+<p>A list of metadata. An empty list will be returned if there is no metadata in the file.</p>
+</section>
+<section id="examples-2" class="level4">
+<h4 class="anchored" data-anchor-id="examples-2">Examples</h4>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>fpath <span class="ot">=</span> <span class="st">"../../../testfiles/gs-16b-2c-44100hz.mp3"</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>metadata_type <span class="ot">=</span> HMetadataType<span class="sc">$</span>Text</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>HFile<span class="sc">$</span><span class="fu">metadata</span>(fpath, metadata_type)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+</section>
+</section>
+<section id="params" class="level2">
+<h2 class="anchored" data-anchor-id="params">params</h2>
 <p><code>params(fpath: string) -&gt; atomicvector</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L419">source</a> </span><br>
 </p>
 <p>Get audio parameters from a file.<br>
 Note that this avoids loading the contents into memory, and is therefore useful for querying these parameters from long files.<br>
-</p>
-<section id="arguments-2" class="level4">
-<h4 class="anchored" data-anchor-id="arguments-2">Arguments</h4>
-<ul>
-<li><code>fpath</code><br>
-The file path as a string.<br>
-</li>
-</ul>
-</section>
-<section id="returns-2" class="level4">
-<h4 class="anchored" data-anchor-id="returns-2">Returns</h4>
-<p>A double atomic vector containing, in order:<br>
-- sampling rate in Hz.<br>
-- number of frames.<br>
-- number of channels.<br>
-- duration in seconds.<br>
-</p>
-</section>
-<section id="examples-2" class="level4">
-<h4 class="anchored" data-anchor-id="examples-2">Examples</h4>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>fpath <span class="ot">=</span> <span class="st">"../../../testfiles/gs-16b-2c-44100hz.flac"</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>HFile<span class="sc">$</span><span class="fu">params</span>(fpath)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<hr>
-</section>
-</section>
-<section id="verify" class="level2">
-<h2 class="anchored" data-anchor-id="verify">verify</h2>
-<p>`verify(fpath: string) -&gt; string <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L456">source</a> </span><br>
-</p>
-<p>Verify an audio file, if supported by the decoder.<br>
-The verification is done after the decoding process is finished.<br>
 </p>
 <section id="arguments-3" class="level4">
 <h4 class="anchored" data-anchor-id="arguments-3">Arguments</h4>
@@ -440,15 +462,47 @@ The file path as a string.<br>
 </section>
 <section id="returns-3" class="level4">
 <h4 class="anchored" data-anchor-id="returns-3">Returns</h4>
-<p>A string.<br>
-One of [“passed”, “failed”, “not_supported”]<br>
+<p>A double atomic vector containing, in order:<br>
+- sampling rate in Hz.<br>
+- number of frames.<br>
+- number of channels.<br>
+- duration in seconds.<br>
 </p>
 </section>
 <section id="examples-3" class="level4">
 <h4 class="anchored" data-anchor-id="examples-3">Examples</h4>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>fpath <span class="ot">=</span> <span class="st">"../../../testfiles/gs-16b-2c-44100hz.flac"</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>HFile<span class="sc">$</span><span class="fu">verify</span>(fpath)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>fpath <span class="ot">=</span> <span class="st">"../../../testfiles/gs-16b-2c-44100hz.flac"</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>HFile<span class="sc">$</span><span class="fu">params</span>(fpath)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+</section>
+</section>
+<section id="verify" class="level2">
+<h2 class="anchored" data-anchor-id="verify">verify</h2>
+<p>`verify(fpath: string) -&gt; string <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L456">source</a> </span><br>
+</p>
+<p>Verify an audio file, if supported by the decoder.<br>
+The verification is done after the decoding process is finished.<br>
+</p>
+<section id="arguments-4" class="level4">
+<h4 class="anchored" data-anchor-id="arguments-4">Arguments</h4>
+<ul>
+<li><code>fpath</code><br>
+The file path as a string.<br>
+</li>
+</ul>
+</section>
+<section id="returns-4" class="level4">
+<h4 class="anchored" data-anchor-id="returns-4">Returns</h4>
+<p>A string.<br>
+One of [“passed”, “failed”, “not_supported”]<br>
+</p>
+</section>
+<section id="examples-4" class="level4">
+<h4 class="anchored" data-anchor-id="examples-4">Examples</h4>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>fpath <span class="ot">=</span> <span class="st">"../../../testfiles/gs-16b-2c-44100hz.flac"</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>HFile<span class="sc">$</span><span class="fu">verify</span>(fpath)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 
 
