@@ -1,4 +1,4 @@
-use crate::{conversions::Conversions, errors::HErrorR, harray::HArray, hdatatype::HDataType};
+use crate::{conversions::AsScalar, errors::HErrorR, harray::HArray, hdatatype::HDataType};
 use ndarray::IxDyn;
 use num_complex::Complex;
 use realfft::RealFftPlanner;
@@ -355,7 +355,7 @@ impl HRealFftPlanner {
     /// _________
     ///
     fn irfft(&mut self, harray: &mut HArray, length: Sexp) -> savvy::Result<()> {
-        let length: i32 = length.to_scalar()?;
+        let length: i32 = length.as_scalar()?;
         let length: usize = length
             .try_into()
             .map_err(|_| savvy::Error::new("Cannot convert i32 to usize."))?;

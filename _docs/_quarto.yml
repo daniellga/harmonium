@@ -18,8 +18,9 @@ website:
 format:
   html:
     theme:
-      dark: litera
-      light: litera
+      dark: flatly
+      light: darkly
+    highlight-style: gruvbox
     css: styles.css
     toc: true
     grid:
