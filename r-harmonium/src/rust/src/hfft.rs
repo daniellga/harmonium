@@ -184,6 +184,7 @@ impl HFftPlanner {
     /// #### Examples
     ///
     /// ```r
+    /// library(harmonium)
     /// arr = array(c(1+1i,2+2i,3+3i,4+4i,5+5i,6+6i), c(3,2))
     /// dtype = HDataType$Complex32
     /// harray = HArray$new_from_values(arr, dtype)
@@ -208,6 +209,7 @@ impl HFftPlanner {
     /// #### Examples
     ///
     /// ```r
+    /// library(harmonium)
     /// arr = array(c(1+1i,2+2i,3+3i,4+4i,5+5i,6+6i), c(3,2))
     /// dtype = HDataType$Complex32
     /// harray = HArray$new_from_values(arr, dtype)
@@ -387,6 +389,7 @@ impl HRealFftPlanner {
     /// #### Examples
     ///
     /// ```r
+    /// library(harmonium)
     /// arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
     /// dtype = HDataType$Float32
     /// harray = HArray$new_from_values(arr, dtype)
@@ -411,6 +414,7 @@ impl HRealFftPlanner {
     /// #### Examples
     ///
     /// ```r
+    /// library(harmonium)
     /// arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
     /// dtype = HDataType$Float32
     /// harray = HArray$new_from_values(arr, dtype)
