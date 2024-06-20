@@ -6,9 +6,9 @@ An iterator that decodes audio in streams. \
 
 # Methods
 
-## stream
+## next
 
-`stream() -> HArray` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L470) </span> \
+`next() -> HArray` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L470) </span> \
 
 Gets the next wave of frames as an `HArray`. \
 Returns an error if it's end of stream or if an error ocurred in

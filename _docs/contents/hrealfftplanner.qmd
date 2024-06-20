@@ -9,7 +9,7 @@ This planner is used to calculate FFTs of real valued inputs and its inverse ope
 
 ## new
 
-`new(dtype: HDataType) -> HRealFftPlanner` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L264) </span> \
+`new(dtype: HDataType) -> HRealFftPlanner` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L266) </span> \
 
 Creates a new `HRealFftPlanner` instance. \
 If you plan on creating multiple FFT instances, it is recommended to reuse the same planner for all of them. This is because the planner re-uses internal data
@@ -42,7 +42,7 @@ _________
 
 ## rfft
 
-`rfft(harray: HArray)` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L316) </span> \
+`rfft(harray: HArray)` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L318) </span> \
 
 Computes the fast fourier transform of a float `HArray`. Transforms a real signal of length `N` to a complex-valued spectrum of length `N/2+1` (with `N/2` rounded down). \
 The operation is not done in-place, although the same external pointer is used to store the new HArray. \
@@ -84,7 +84,7 @@ _________
 
 ## irfft
 
-`irfft(harray: HArray, length: integer)` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L368) </span> \
+`irfft(harray: HArray, length: integer)` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L370) </span> \
 
 Computes the inverse fast fourier transform of a complex `HArray`. Transforms a complex spectrum of length `N/2+1` (with `N/2` rounded down) to a real-valued
 signal of length `N`. \
@@ -131,7 +131,7 @@ _________
 
 ## dtype
 
-`dtype() -> HDataType` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L399) </span> \
+`dtype() -> HDataType` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L402) </span> \
 
 Gets the `HRealFftPlanner`'s dtype.
 
@@ -142,6 +142,7 @@ An `HDataType`.
 #### Examples
 
 ```r
+library(harmonium)
 arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
 dtype = HDataType$Float32
 harray = HArray$new_from_values(arr, dtype)
@@ -153,7 +154,7 @@ _________
 
 ## print
 
-`print()` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L426) </span> \
+`print()` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L430) </span> \
 
 Print the `HRealFftPlanner`. \
 Differently from R's normal behaviour, `print` doesn't return the value invisibly. \
@@ -161,6 +162,7 @@ Differently from R's normal behaviour, `print` doesn't return the value invisibl
 #### Examples
 
 ```r
+library(harmonium)
 arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
 dtype = HDataType$Float32
 harray = HArray$new_from_values(arr, dtype)

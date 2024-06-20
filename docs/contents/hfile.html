@@ -268,7 +268,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#methods" id="toc-methods" class="nav-link active" data-scroll-target="#methods">Methods</a>
   <ul class="collapse">
   <li><a href="#decode" id="toc-decode" class="nav-link" data-scroll-target="#decode">decode</a></li>
-  <li><a href="#stream" id="toc-stream" class="nav-link" data-scroll-target="#stream">stream</a></li>
+  <li><a href="#decode_stream" id="toc-decode_stream" class="nav-link" data-scroll-target="#decode_stream">decode_stream</a></li>
   <li><a href="#metadata" id="toc-metadata" class="nav-link" data-scroll-target="#metadata">metadata</a></li>
   <li><a href="#params" id="toc-params" class="nav-link" data-scroll-target="#params">params</a></li>
   <li><a href="#verify" id="toc-verify" class="nav-link" data-scroll-target="#verify">verify</a></li>
@@ -335,8 +335,8 @@ A float <code>HDataType</code>.<br>
 <hr>
 </section>
 </section>
-<section id="stream" class="level2">
-<h2 class="anchored" data-anchor-id="stream">stream</h2>
+<section id="decode_stream" class="level2">
+<h2 class="anchored" data-anchor-id="decode_stream">decode_stream</h2>
 <p><code>decode_stream(fpath: string, frames: integer, dtype: HDataType) -&gt; HDecoderStream</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L214">source</a> </span><br>
 </p>
 <p>Creates an <code>HDecoderStream</code>, used as an iterator to stream frames of decoded audio.<br>
@@ -391,41 +391,41 @@ The following metadata tagging formats are supported.<br>
 </li>
 </ul>
 <p>Each <code>TextMetadata</code> will be comprised of a <code>Tag</code>, which contains the following fields:<br>
-* tag_key<br>
+- tag_key<br>
 A key string indicating the type, meaning, or purpose of the Tags value. Note: The meaning of key is dependant on the underlying metadata format.<br>
-* tag_std_key<br>
+- tag_std_key<br>
 If the Tag’s key string is commonly associated with a typical type, meaning, or purpose, then if recognized a StandardTagKey will be assigned to this Tag. This is a best effort guess since not all metadata formats have a well defined or specified tag mapping. However, it is recommended that consumers prefer std_key over key, if provided.<br>
 Check [<code>StandardTagKey</code>] for all the variants.<br>
-* tag_value<br>
+- tag_value<br>
 The value of the Tag.<br>
 </p>
 <p>Each <code>VisualMetadata</code> will be comprised of the following fields:<br>
-* usage:<br>
+- usage:<br>
 The usage and/or content of the Visual. A string version of <code>symphonia_core::meta::StandardVisualKey</code>, which is an enumeration providing standardized keys for common visual dispositions. A demuxer may assign a StandardVisualKey to a Visual if the disposition of the attached visual is known and can be mapped to a standard key. The visual types listed here are derived from, though do not entirely cover, the ID3v2 APIC frame specification.<br>
-* media_type<br>
+- media_type<br>
 The Media Type (MIME Type) used to encode the Visual.<br>
-* dimensions<br>
+- dimensions<br>
 The dimensions (width and height) of the Visual, represented in pixels.<br>
 Note: This value may not be accurate as it comes from metadata, not the embedded graphic itself. Consider it only a hint.<br>
-* bits_per_pixel<br>
+- bits_per_pixel<br>
 The number of bits-per-pixel (aka bit-depth) of the unencoded image.<br>
-* color_mode<br>
+- color_mode<br>
 Indicates how the color of a pixel is encoded in a Visual. Variants:<br>
 <strong>Discrete<br>
 Each pixel in the Visual stores its own color information.<br>
 </strong>Indexed(NonZeroU32)<br>
 Each pixel in the Visual stores an index into a color palette containing the color information. The value stored by this variant indicates the number<br>
 of colors in the color palette.<br>
-* size<br>
+- size<br>
 Size of the image in bytes.<br>
-* tag<br>
+- tag<br>
 <code>Tag</code> with the following fields:<br>
-** tag_key<br>
+- tag_key<br>
 A key string indicating the type, meaning, or purpose of the Tags value. Note: The meaning of key is dependant on the underlying metadata format.<br>
-** tag_std_key<br>
+- tag_std_key<br>
 If the Tag’s key string is commonly associated with a typical type, meaning, or purpose, then if recognized a StandardTagKey will be assigned to this Tag. This is a best effort guess since not all metadata formats have a well defined or specified tag mapping. However, it is recommended that consumers prefer std_key over key, if provided.<br>
 Check [<code>StandardTagKey</code>] for all the variants.<br>
-** tag_value<br>
+- tag_value<br>
 The value of the Tag.<br>
 </p>
 <section id="arguments-2" class="level4">
@@ -471,10 +471,10 @@ The file path as a string.<br>
 <section id="returns-3" class="level4">
 <h4 class="anchored" data-anchor-id="returns-3">Returns</h4>
 <p>A double atomic vector containing, in order:<br>
-* sampling rate in Hz.<br>
-* number of frames.<br>
-* number of channels.<br>
-* duration in seconds.<br>
+- sampling rate in Hz.<br>
+- number of frames.<br>
+- number of channels.<br>
+- duration in seconds.<br>
 </p>
 </section>
 <section id="examples-3" class="level4">

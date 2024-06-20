@@ -410,7 +410,7 @@ A complex <code>HArray</code>.<br>
 </section>
 <section id="dtype" class="level2">
 <h2 class="anchored" data-anchor-id="dtype">dtype</h2>
-<p><code>dtype() -&gt; HDataType</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L196">source</a> </span><br>
+<p><code>dtype() -&gt; HDataType</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L197">source</a> </span><br>
 </p>
 <p>Gets the <code>HFftPlanner</code>’s dtype.</p>
 <section id="returns-3" class="level4">
@@ -419,31 +419,33 @@ A complex <code>HArray</code>.<br>
 </section>
 <section id="examples-3" class="level4">
 <h4 class="anchored" data-anchor-id="examples-3">Examples</h4>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>arr <span class="ot">=</span> <span class="fu">array</span>(<span class="fu">c</span>(<span class="dv">1</span><span class="sc">+</span><span class="dv">1</span>i,<span class="dv">2</span><span class="sc">+</span><span class="dv">2</span>i,<span class="dv">3</span><span class="sc">+</span><span class="dv">3</span>i,<span class="dv">4</span><span class="sc">+</span><span class="dv">4</span>i,<span class="dv">5</span><span class="sc">+</span><span class="dv">5</span>i,<span class="dv">6</span><span class="sc">+</span><span class="dv">6</span>i), <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">2</span>))</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>dtype <span class="ot">=</span> HDataType<span class="sc">$</span>Complex32</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>harray <span class="ot">=</span> HArray<span class="sc">$</span><span class="fu">new_from_values</span>(arr, dtype)</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>fft_planner <span class="ot">=</span> HFftPlanner<span class="sc">$</span><span class="fu">new</span>(harray<span class="sc">$</span><span class="fu">dtype</span>())</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>fft_planner<span class="sc">$</span><span class="fu">dtype</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>arr <span class="ot">=</span> <span class="fu">array</span>(<span class="fu">c</span>(<span class="dv">1</span><span class="sc">+</span><span class="dv">1</span>i,<span class="dv">2</span><span class="sc">+</span><span class="dv">2</span>i,<span class="dv">3</span><span class="sc">+</span><span class="dv">3</span>i,<span class="dv">4</span><span class="sc">+</span><span class="dv">4</span>i,<span class="dv">5</span><span class="sc">+</span><span class="dv">5</span>i,<span class="dv">6</span><span class="sc">+</span><span class="dv">6</span>i), <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">2</span>))</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>dtype <span class="ot">=</span> HDataType<span class="sc">$</span>Complex32</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>harray <span class="ot">=</span> HArray<span class="sc">$</span><span class="fu">new_from_values</span>(arr, dtype)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>fft_planner <span class="ot">=</span> HFftPlanner<span class="sc">$</span><span class="fu">new</span>(harray<span class="sc">$</span><span class="fu">dtype</span>())</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>fft_planner<span class="sc">$</span><span class="fu">dtype</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 </section>
 </section>
 <section id="print" class="level2">
 <h2 class="anchored" data-anchor-id="print">print</h2>
-<p><code>print()</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L223">source</a> </span><br>
+<p><code>print()</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L225">source</a> </span><br>
 </p>
 <p>Print the <code>HFftPlanner</code>.<br>
 Differently from R’s normal behaviour, <code>print</code> doesn’t return the value invisibly.<br>
 </p>
 <section id="examples-4" class="level4">
 <h4 class="anchored" data-anchor-id="examples-4">Examples</h4>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>arr <span class="ot">=</span> <span class="fu">array</span>(<span class="fu">c</span>(<span class="dv">1</span><span class="sc">+</span><span class="dv">1</span>i,<span class="dv">2</span><span class="sc">+</span><span class="dv">2</span>i,<span class="dv">3</span><span class="sc">+</span><span class="dv">3</span>i,<span class="dv">4</span><span class="sc">+</span><span class="dv">4</span>i,<span class="dv">5</span><span class="sc">+</span><span class="dv">5</span>i,<span class="dv">6</span><span class="sc">+</span><span class="dv">6</span>i), <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">2</span>))</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>dtype <span class="ot">=</span> HDataType<span class="sc">$</span>Complex32</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>harray <span class="ot">=</span> HArray<span class="sc">$</span><span class="fu">new_from_values</span>(arr, dtype)</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>fft_planner <span class="ot">=</span> HFftPlanner<span class="sc">$</span><span class="fu">new</span>(harray<span class="sc">$</span><span class="fu">dtype</span>())</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>fft_planner<span class="sc">$</span><span class="fu">print</span>()</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co"># or similarly:</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(fft_planner)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>arr <span class="ot">=</span> <span class="fu">array</span>(<span class="fu">c</span>(<span class="dv">1</span><span class="sc">+</span><span class="dv">1</span>i,<span class="dv">2</span><span class="sc">+</span><span class="dv">2</span>i,<span class="dv">3</span><span class="sc">+</span><span class="dv">3</span>i,<span class="dv">4</span><span class="sc">+</span><span class="dv">4</span>i,<span class="dv">5</span><span class="sc">+</span><span class="dv">5</span>i,<span class="dv">6</span><span class="sc">+</span><span class="dv">6</span>i), <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">2</span>))</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>dtype <span class="ot">=</span> HDataType<span class="sc">$</span>Complex32</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>harray <span class="ot">=</span> HArray<span class="sc">$</span><span class="fu">new_from_values</span>(arr, dtype)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>fft_planner <span class="ot">=</span> HFftPlanner<span class="sc">$</span><span class="fu">new</span>(harray<span class="sc">$</span><span class="fu">dtype</span>())</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>fft_planner<span class="sc">$</span><span class="fu">print</span>()</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co"># or similarly:</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(fft_planner)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 
 
