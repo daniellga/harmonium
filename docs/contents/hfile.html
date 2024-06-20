@@ -265,11 +265,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#decode" id="toc-decode" class="nav-link active" data-scroll-target="#decode">decode</a></li>
+  <li><a href="#methods" id="toc-methods" class="nav-link active" data-scroll-target="#methods">Methods</a>
+  <ul class="collapse">
+  <li><a href="#decode" id="toc-decode" class="nav-link" data-scroll-target="#decode">decode</a></li>
   <li><a href="#stream" id="toc-stream" class="nav-link" data-scroll-target="#stream">stream</a></li>
   <li><a href="#metadata" id="toc-metadata" class="nav-link" data-scroll-target="#metadata">metadata</a></li>
   <li><a href="#params" id="toc-params" class="nav-link" data-scroll-target="#params">params</a></li>
   <li><a href="#verify" id="toc-verify" class="nav-link" data-scroll-target="#verify">verify</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -295,9 +298,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
+<p>A collection of methods designed to streamline input and output operations.<br>
+</p>
+<section id="methods" class="level1">
+<h1>Methods</h1>
 <section id="decode" class="level2">
 <h2 class="anchored" data-anchor-id="decode">decode</h2>
-<p><code>decode(fpath: string, dtype: HDataType) -&gt; HDecodedAudio</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L143">source</a> </span><br>
+<p><code>decode(fpath: string, dtype: HDataType) -&gt; HDecodedAudio</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L160">source</a> </span><br>
 </p>
 <p>Decode an audio file, providing its decoded data and the sampling rate.<br>
 The samples are normalized to fit in the range of [-1.0, 1.0].</p>
@@ -330,7 +337,7 @@ A float <code>HDataType</code>.<br>
 </section>
 <section id="stream" class="level2">
 <h2 class="anchored" data-anchor-id="stream">stream</h2>
-<p><code>decode_stream(fpath: string, frames: integer, dtype: HDataType) -&gt; HDecoderStream</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L197">source</a> </span><br>
+<p><code>decode_stream(fpath: string, frames: integer, dtype: HDataType) -&gt; HDecoderStream</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L214">source</a> </span><br>
 </p>
 <p>Creates an <code>HDecoderStream</code>, used as an iterator to stream frames of decoded audio.<br>
 </p>
@@ -365,7 +372,7 @@ A float <code>HDataType</code>.<br>
 </section>
 <section id="metadata" class="level2">
 <h2 class="anchored" data-anchor-id="metadata">metadata</h2>
-<p><code>metadata(fpath: string, metadata_type: HMetadataType) -&gt; list</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L303">source</a> </span><br>
+<p><code>metadata(fpath: string, metadata_type: HMetadataType) -&gt; list</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L320">source</a> </span><br>
 </p>
 <p>Extract text and visual metadata from a file.<br>
 Tags that are part of the container format are preferentially extracted. Additional tags that were found while probing will not be extracted.<br>
@@ -448,7 +455,7 @@ An <code>HMetadataType</code>.<br>
 </section>
 <section id="params" class="level2">
 <h2 class="anchored" data-anchor-id="params">params</h2>
-<p><code>params(fpath: string) -&gt; atomicvector</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L375">source</a> </span><br>
+<p><code>params(fpath: string) -&gt; atomicvector</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L392">source</a> </span><br>
 </p>
 <p>Get audio parameters from a file.<br>
 Note that this avoids loading the contents into memory, and is therefore useful for querying these parameters from long files.<br>
@@ -480,7 +487,7 @@ The file path as a string.<br>
 </section>
 <section id="verify" class="level2">
 <h2 class="anchored" data-anchor-id="verify">verify</h2>
-<p>`verify(fpath: string) -&gt; string <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L412">source</a> </span><br>
+<p>`verify(fpath: string) -&gt; string <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L429">source</a> </span><br>
 </p>
 <p>Verify an audio file, if supported by the decoder.<br>
 The verification is done after the decoding process is finished.<br>
@@ -507,6 +514,7 @@ One of [“passed”, “failed”, “not_supported”]<br>
 <hr>
 
 
+</section>
 </section>
 </section>
 

@@ -265,9 +265,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#harray" id="toc-harray" class="nav-link active" data-scroll-target="#harray">harray</a></li>
+  <li><a href="#methods" id="toc-methods" class="nav-link active" data-scroll-target="#methods">Methods</a>
+  <ul class="collapse">
+  <li><a href="#harray" id="toc-harray" class="nav-link" data-scroll-target="#harray">harray</a></li>
   <li><a href="#sr" id="toc-sr" class="nav-link" data-scroll-target="#sr">sr</a></li>
   <li><a href="#invalidate" id="toc-invalidate" class="nav-link" data-scroll-target="#invalidate">invalidate</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -293,9 +296,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
+<p>An audio represented by an HArray of samples and its corresponding sampling rate.<br>
+</p>
+<section id="methods" class="level1">
+<h1>Methods</h1>
 <section id="harray" class="level2">
 <h2 class="anchored" data-anchor-id="harray">harray</h2>
-<p><code>harray() -&gt; HArray</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L46">source</a> </span><br>
+<p><code>harray() -&gt; HArray</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L63">source</a> </span><br>
 </p>
 <p>Get the decoded HArray.</p>
 <section id="returns" class="level4">
@@ -315,7 +322,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="sr" class="level2">
 <h2 class="anchored" data-anchor-id="sr">sr</h2>
-<p><code>sr() -&gt; integer</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L74">source</a> </span><br>
+<p><code>sr() -&gt; integer</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L91">source</a> </span><br>
 </p>
 <p>Get the sampling rate of the decoded audio.</p>
 <section id="returns-1" class="level4">
@@ -335,7 +342,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="invalidate" class="level2">
 <h2 class="anchored" data-anchor-id="invalidate">invalidate</h2>
-<p><code>invalidate()</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L104">source</a> </span><br>
+<p><code>invalidate()</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L121">source</a> </span><br>
 </p>
 <p>Replaces the inner value of the external pointer, invalidating it.<br>
 This function is useful to remove one of the shared references of the inner pointer in rust.<br>
@@ -351,6 +358,7 @@ This function is useful to remove one of the shared references of the inner poin
 <hr>
 
 
+</section>
 </section>
 </section>
 

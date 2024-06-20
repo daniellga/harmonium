@@ -2,9 +2,13 @@
 title: HFile
 ---
 
+A collection of methods designed to streamline input and output operations. \
+
+# Methods
+
 ## decode
 
-`decode(fpath: string, dtype: HDataType) -> HDecodedAudio` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L143) </span> \
+`decode(fpath: string, dtype: HDataType) -> HDecodedAudio` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L160) </span> \
 
 Decode an audio file, providing its decoded data and the sampling rate. \
 The samples are normalized to fit in the range of \[-1.0, 1.0\].
@@ -35,7 +39,7 @@ _________
 
 ## stream
 
-`decode_stream(fpath: string, frames: integer, dtype: HDataType) -> HDecoderStream` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L197) </span> \
+`decode_stream(fpath: string, frames: integer, dtype: HDataType) -> HDecoderStream` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L214) </span> \
 
 Creates an `HDecoderStream`, used as an iterator to stream frames of decoded audio. \
 
@@ -67,7 +71,7 @@ _________
 
 ## metadata
 
-`metadata(fpath: string, metadata_type: HMetadataType) -> list` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L303) </span> \
+`metadata(fpath: string, metadata_type: HMetadataType) -> list` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L320) </span> \
 
 Extract text and visual metadata from a file. \
 Tags that are part of the container format are preferentially extracted. Additional tags that were found while probing will not be extracted. \
@@ -148,7 +152,7 @@ _________
 
 ## params
 
-`params(fpath: string) -> atomicvector` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L375) </span> \
+`params(fpath: string) -> atomicvector` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L392) </span> \
 
 Get audio parameters from a file. \
 Note that this avoids loading the contents into memory, and is therefore useful for querying these parameters from long files. \
@@ -178,7 +182,7 @@ _________
 
 ## verify
 
-`verify(fpath: string) -> string <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L412) </span> \
+`verify(fpath: string) -> string <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L429) </span> \
 
 Verify an audio file, if supported by the decoder. \
 The verification is done after the decoding process is finished. \

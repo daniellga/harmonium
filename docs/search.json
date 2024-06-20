@@ -4,7 +4,7 @@
     "href": "contents/hfile.html",
     "title": "HFile",
     "section": "",
-    "text": "decode(fpath: string, dtype: HDataType) -&gt; HDecodedAudio  source \n\nDecode an audio file, providing its decoded data and the sampling rate.\nThe samples are normalized to fit in the range of [-1.0, 1.0].\n\n\n\nfpath\nThe file path as a string.\n\ndtype\nA float HDataType.\n\n\n\n\n\nAn HDecodedAudio containing:\n* The decoded audio as a float HArray.\n* The sampling rate as an integer.\n\n\n\n\nlibrary(harmonium)\nfpath = \"../../../testfiles/gs-16b-2c-44100hz.flac\"\ndtype = HDataType$Float32\nHFile$decode(fpath, dtype)",
+    "text": "A collection of methods designed to streamline input and output operations.",
     "crumbs": [
       "Classes",
       "HFile"
@@ -14,8 +14,8 @@
     "objectID": "contents/hfile.html#decode",
     "href": "contents/hfile.html#decode",
     "title": "HFile",
-    "section": "",
-    "text": "decode(fpath: string, dtype: HDataType) -&gt; HDecodedAudio  source \n\nDecode an audio file, providing its decoded data and the sampling rate.\nThe samples are normalized to fit in the range of [-1.0, 1.0].\n\n\n\nfpath\nThe file path as a string.\n\ndtype\nA float HDataType.\n\n\n\n\n\nAn HDecodedAudio containing:\n* The decoded audio as a float HArray.\n* The sampling rate as an integer.\n\n\n\n\nlibrary(harmonium)\nfpath = \"../../../testfiles/gs-16b-2c-44100hz.flac\"\ndtype = HDataType$Float32\nHFile$decode(fpath, dtype)",
+    "section": "decode",
+    "text": "decode\ndecode(fpath: string, dtype: HDataType) -&gt; HDecodedAudio  source \n\nDecode an audio file, providing its decoded data and the sampling rate.\nThe samples are normalized to fit in the range of [-1.0, 1.0].\n\nArguments\n\nfpath\nThe file path as a string.\n\ndtype\nA float HDataType.\n\n\n\n\nReturns\nAn HDecodedAudio containing:\n* The decoded audio as a float HArray.\n* The sampling rate as an integer.\n\n\n\nExamples\nlibrary(harmonium)\nfpath = \"../../../testfiles/gs-16b-2c-44100hz.flac\"\ndtype = HDataType$Float32\nHFile$decode(fpath, dtype)",
     "crumbs": [
       "Classes",
       "HFile"
@@ -1206,7 +1206,7 @@
     "href": "contents/hdecodedaudio.html",
     "title": "HDecodedAudio",
     "section": "",
-    "text": "harray() -&gt; HArray  source \n\nGet the decoded HArray.\n\n\nA float HArray.\n\n\n\n\nlibrary(harmonium)\nfpath = \"../../../testfiles/gs-16b-2c-44100hz.flac\"\ndtype = HDataType$Float32\nhdecodedaudio = HFile$decode(fpath, dtype)\nhdecodedaudio$harray()",
+    "text": "An audio represented by an HArray of samples and its corresponding sampling rate.",
     "crumbs": [
       "Classes",
       "HDecodedAudio"
@@ -1216,8 +1216,8 @@
     "objectID": "contents/hdecodedaudio.html#harray",
     "href": "contents/hdecodedaudio.html#harray",
     "title": "HDecodedAudio",
-    "section": "",
-    "text": "harray() -&gt; HArray  source \n\nGet the decoded HArray.\n\n\nA float HArray.\n\n\n\n\nlibrary(harmonium)\nfpath = \"../../../testfiles/gs-16b-2c-44100hz.flac\"\ndtype = HDataType$Float32\nhdecodedaudio = HFile$decode(fpath, dtype)\nhdecodedaudio$harray()",
+    "section": "harray",
+    "text": "harray\nharray() -&gt; HArray  source \n\nGet the decoded HArray.\n\nReturns\nA float HArray.\n\n\n\nExamples\nlibrary(harmonium)\nfpath = \"../../../testfiles/gs-16b-2c-44100hz.flac\"\ndtype = HDataType$Float32\nhdecodedaudio = HFile$decode(fpath, dtype)\nhdecodedaudio$harray()",
     "crumbs": [
       "Classes",
       "HDecodedAudio"
