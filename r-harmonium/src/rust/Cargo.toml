@@ -31,7 +31,7 @@ rubato = "0.15.0"
 rustfft = "6.2"
 realfft = "3.3"
 ndarray = "0.15.6"
-num-complex = { version = "0.4" }
+num-complex = "0.4"
 savvy = { git = "https://github.com/yutannihilation/savvy.git", features = ["complex"] }
 
 [profile.dev]
