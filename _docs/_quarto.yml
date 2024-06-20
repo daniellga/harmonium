@@ -21,7 +21,7 @@ format:
       dark: darkly
       light: flatly
     highlight-style: github
-    mainfont: "'Roboto'"
+    mainfont: "'Open Sans'"
     css: styles.css
     toc: true
     grid:
