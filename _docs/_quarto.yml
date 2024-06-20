@@ -20,7 +20,7 @@ format:
     theme:
       dark: flatly
       light: darkly
-    highlight-style: atom-one
+    highlight-style: github
     css: styles.css
     toc: true
     grid:
