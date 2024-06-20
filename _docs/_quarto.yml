@@ -18,9 +18,9 @@ website:
 format:
   html:
     theme:
-      dark: darkly
+      dark: solar
       light: flatly
-    highlight-style: gruvbox
+    highlight-style: atom-one
     css: styles.css
     toc: true
     grid:
