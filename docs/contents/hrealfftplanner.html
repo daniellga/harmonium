@@ -265,11 +265,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#new" id="toc-new" class="nav-link active" data-scroll-target="#new">new</a></li>
+  <li><a href="#methods" id="toc-methods" class="nav-link active" data-scroll-target="#methods">Methods</a>
+  <ul class="collapse">
+  <li><a href="#new" id="toc-new" class="nav-link" data-scroll-target="#new">new</a></li>
   <li><a href="#rfft" id="toc-rfft" class="nav-link" data-scroll-target="#rfft">rfft</a></li>
   <li><a href="#irfft" id="toc-irfft" class="nav-link" data-scroll-target="#irfft">irfft</a></li>
   <li><a href="#dtype" id="toc-dtype" class="nav-link" data-scroll-target="#dtype">dtype</a></li>
   <li><a href="#print" id="toc-print" class="nav-link" data-scroll-target="#print">print</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -295,9 +298,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
+<p>A planner is used to create FFTs. It caches results internally, so when making more than one FFT it is advisable to reuse the same planner.<br>
+This planner is used to calculate FFTs of real valued inputs and its inverse operation.<br>
+</p>
+<section id="methods" class="level1">
+<h1>Methods</h1>
 <section id="new" class="level2">
 <h2 class="anchored" data-anchor-id="new">new</h2>
-<p><code>new(dtype: HDataType) -&gt; HRealFftPlanner</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L253">source</a> </span><br>
+<p><code>new(dtype: HDataType) -&gt; HRealFftPlanner</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L264">source</a> </span><br>
 </p>
 <p>Creates a new <code>HRealFftPlanner</code> instance.<br>
 If you plan on creating multiple FFT instances, it is recommended to reuse the same planner for all of them. This is because the planner re-uses internal data across FFT instances wherever possible, saving memory and reducing setup time. (FFT instances created with one planner will never re-use data and buffers with FFT instances created by a different planner)<br>
@@ -329,7 +337,7 @@ Will return an error if dtype is of a complex type.<br>
 </section>
 <section id="rfft" class="level2">
 <h2 class="anchored" data-anchor-id="rfft">rfft</h2>
-<p><code>rfft(harray: HArray)</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L305">source</a> </span><br>
+<p><code>rfft(harray: HArray)</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L316">source</a> </span><br>
 </p>
 <p>Computes the fast fourier transform of a float <code>HArray</code>. Transforms a real signal of length <code>N</code> to a complex-valued spectrum of length <code>N/2+1</code> (with <code>N/2</code> rounded down).<br>
 The operation is not done in-place, although the same external pointer is used to store the new HArray.<br>
@@ -368,7 +376,7 @@ A float <code>HArray</code>.<br>
 </section>
 <section id="irfft" class="level2">
 <h2 class="anchored" data-anchor-id="irfft">irfft</h2>
-<p><code>irfft(harray: HArray, length: integer)</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L357">source</a> </span><br>
+<p><code>irfft(harray: HArray, length: integer)</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L368">source</a> </span><br>
 </p>
 <p>Computes the inverse fast fourier transform of a complex <code>HArray</code>. Transforms a complex spectrum of length <code>N/2+1</code> (with <code>N/2</code> rounded down) to a real-valued signal of length <code>N</code>.<br>
 The operation is not done in-place, although the same external pointer is used to store the new HArray.<br>
@@ -411,7 +419,7 @@ An integer. The output length of the signal. Since the spectrum is <code>N/2+1</
 </section>
 <section id="dtype" class="level2">
 <h2 class="anchored" data-anchor-id="dtype">dtype</h2>
-<p><code>dtype() -&gt; HDataType</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L388">source</a> </span><br>
+<p><code>dtype() -&gt; HDataType</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L399">source</a> </span><br>
 </p>
 <p>Gets the <code>HRealFftPlanner</code>’s dtype.</p>
 <section id="returns-3" class="level4">
@@ -430,7 +438,7 @@ An integer. The output length of the signal. Since the spectrum is <code>N/2+1</
 </section>
 <section id="print" class="level2">
 <h2 class="anchored" data-anchor-id="print">print</h2>
-<p><code>print()</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L415">source</a> </span><br>
+<p><code>print()</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L426">source</a> </span><br>
 </p>
 <p>Print the <code>HRealFftPlanner</code>.<br>
 Differently from R’s normal behaviour, <code>print</code> doesn’t return the value invisibly.<br>
@@ -448,6 +456,7 @@ Differently from R’s normal behaviour, <code>print</code> doesn’t return the
 <hr>
 
 
+</section>
 </section>
 </section>
 

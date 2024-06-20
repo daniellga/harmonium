@@ -601,7 +601,7 @@
     "href": "contents/hfftplanner.html",
     "title": "HFftPlanner",
     "section": "",
-    "text": "new(dtype: HDataType) -&gt; HFftPlanner  source \n\nCreates a new HFftPlanner instance.\nIf you plan on creating multiple FFT instances, it is recommended to reuse the same planner for all of them. This is because the planner re-uses internal data across FFT instances wherever possible, saving memory and reducing setup time. (FFT instances created with one planner will never re-use data and buffers with FFT instances created by a different planner)\nIn the constructor, the FftPlanner will detect available CPU features. If AVX, SSE, Neon, or WASM SIMD are available, it will set itself up to plan FFTs with the fastest available instruction set. If no SIMD instruction sets are available, the planner will seamlessly fall back to planning non-SIMD FFTs.\n\n\n\n\ndtype\nA complex HDataType to indicate the dtype that the HFftPlanner will be working with.\n\n\n\n\n\nAn HFftPlanner.\nWill return an error if dtype is of a float type.\n\n\n\n\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nfft_planner = HFftPlanner$new(harray$dtype())",
+    "text": "A planner is used to create FFTs. It caches results internally, so when making more than one FFT it is advisable to reuse the same planner.",
     "crumbs": [
       "Classes",
       "HFftPlanner"
@@ -611,8 +611,8 @@
     "objectID": "contents/hfftplanner.html#new",
     "href": "contents/hfftplanner.html#new",
     "title": "HFftPlanner",
-    "section": "",
-    "text": "new(dtype: HDataType) -&gt; HFftPlanner  source \n\nCreates a new HFftPlanner instance.\nIf you plan on creating multiple FFT instances, it is recommended to reuse the same planner for all of them. This is because the planner re-uses internal data across FFT instances wherever possible, saving memory and reducing setup time. (FFT instances created with one planner will never re-use data and buffers with FFT instances created by a different planner)\nIn the constructor, the FftPlanner will detect available CPU features. If AVX, SSE, Neon, or WASM SIMD are available, it will set itself up to plan FFTs with the fastest available instruction set. If no SIMD instruction sets are available, the planner will seamlessly fall back to planning non-SIMD FFTs.\n\n\n\n\ndtype\nA complex HDataType to indicate the dtype that the HFftPlanner will be working with.\n\n\n\n\n\nAn HFftPlanner.\nWill return an error if dtype is of a float type.\n\n\n\n\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nfft_planner = HFftPlanner$new(harray$dtype())",
+    "section": "new",
+    "text": "new\nnew(dtype: HDataType) -&gt; HFftPlanner  source \n\nCreates a new HFftPlanner instance.\nIf you plan on creating multiple FFT instances, it is recommended to reuse the same planner for all of them. This is because the planner re-uses internal data across FFT instances wherever possible, saving memory and reducing setup time. (FFT instances created with one planner will never re-use data and buffers with FFT instances created by a different planner)\nIn the constructor, the FftPlanner will detect available CPU features. If AVX, SSE, Neon, or WASM SIMD are available, it will set itself up to plan FFTs with the fastest available instruction set. If no SIMD instruction sets are available, the planner will seamlessly fall back to planning non-SIMD FFTs.\n\n\nArguments\n\ndtype\nA complex HDataType to indicate the dtype that the HFftPlanner will be working with.\n\n\n\n\nReturns\nAn HFftPlanner.\nWill return an error if dtype is of a float type.\n\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nfft_planner = HFftPlanner$new(harray$dtype())",
     "crumbs": [
       "Classes",
       "HFftPlanner"
@@ -667,7 +667,7 @@
     "href": "contents/hrealfftplanner.html",
     "title": "HRealFftPlanner",
     "section": "",
-    "text": "new(dtype: HDataType) -&gt; HRealFftPlanner  source \n\nCreates a new HRealFftPlanner instance.\nIf you plan on creating multiple FFT instances, it is recommended to reuse the same planner for all of them. This is because the planner re-uses internal data across FFT instances wherever possible, saving memory and reducing setup time. (FFT instances created with one planner will never re-use data and buffers with FFT instances created by a different planner)\nIn the constructor, the FftPlanner will detect available CPU features. If AVX, SSE, Neon, or WASM SIMD are available, it will set itself up to plan FFTs with the fastest available instruction set. If no SIMD instruction sets are available, the planner will seamlessly fall back to planning non-SIMD FFTs.\n\n\n\n\ndtype\nA float HDataType to indicate the dtype that the HFftPlanner will be working with.\n\n\n\n\n\nAn HRealFftPlanner.\nWill return an error if dtype is of a complex type.\n\n\n\n\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nreal_fft_planner = HRealFftPlanner$new(harray$dtype())",
+    "text": "A planner is used to create FFTs. It caches results internally, so when making more than one FFT it is advisable to reuse the same planner.\nThis planner is used to calculate FFTs of real valued inputs and its inverse operation.",
     "crumbs": [
       "Classes",
       "HRealFftPlanner"
@@ -677,8 +677,8 @@
     "objectID": "contents/hrealfftplanner.html#new",
     "href": "contents/hrealfftplanner.html#new",
     "title": "HRealFftPlanner",
-    "section": "",
-    "text": "new(dtype: HDataType) -&gt; HRealFftPlanner  source \n\nCreates a new HRealFftPlanner instance.\nIf you plan on creating multiple FFT instances, it is recommended to reuse the same planner for all of them. This is because the planner re-uses internal data across FFT instances wherever possible, saving memory and reducing setup time. (FFT instances created with one planner will never re-use data and buffers with FFT instances created by a different planner)\nIn the constructor, the FftPlanner will detect available CPU features. If AVX, SSE, Neon, or WASM SIMD are available, it will set itself up to plan FFTs with the fastest available instruction set. If no SIMD instruction sets are available, the planner will seamlessly fall back to planning non-SIMD FFTs.\n\n\n\n\ndtype\nA float HDataType to indicate the dtype that the HFftPlanner will be working with.\n\n\n\n\n\nAn HRealFftPlanner.\nWill return an error if dtype is of a complex type.\n\n\n\n\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nreal_fft_planner = HRealFftPlanner$new(harray$dtype())",
+    "section": "new",
+    "text": "new\nnew(dtype: HDataType) -&gt; HRealFftPlanner  source \n\nCreates a new HRealFftPlanner instance.\nIf you plan on creating multiple FFT instances, it is recommended to reuse the same planner for all of them. This is because the planner re-uses internal data across FFT instances wherever possible, saving memory and reducing setup time. (FFT instances created with one planner will never re-use data and buffers with FFT instances created by a different planner)\nIn the constructor, the FftPlanner will detect available CPU features. If AVX, SSE, Neon, or WASM SIMD are available, it will set itself up to plan FFTs with the fastest available instruction set. If no SIMD instruction sets are available, the planner will seamlessly fall back to planning non-SIMD FFTs.\n\n\nArguments\n\ndtype\nA float HDataType to indicate the dtype that the HFftPlanner will be working with.\n\n\n\n\nReturns\nAn HRealFftPlanner.\nWill return an error if dtype is of a complex type.\n\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nreal_fft_planner = HRealFftPlanner$new(harray$dtype())",
     "crumbs": [
       "Classes",
       "HRealFftPlanner"
@@ -1151,7 +1151,7 @@
     "href": "contents/haudioop.html",
     "title": "HAudioOp",
     "section": "",
-    "text": "HAudioOp A collection of methods that can be applied to float 1D or 2D HArray which represents audio data.",
+    "text": "A collection of methods that can be applied to float 1D or 2D HArrays which represents audio data.",
     "crumbs": [
       "Classes",
       "HAudioOp"
