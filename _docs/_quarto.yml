@@ -18,9 +18,10 @@ website:
 format:
   html:
     theme:
-      dark: solar
+      dark: darkly
       light: flatly
-    highlight-style: atom-one
+    highlight-style: github
+    mainfont: "'Roboto'"
     css: styles.css
     toc: true
     grid:
