@@ -109,9 +109,9 @@ Each `VisualMetadata` will be comprised of the following fields: \
     The number of bits-per-pixel (aka bit-depth) of the unencoded image. \
 - color_mode \
     Indicates how the color of a pixel is encoded in a Visual. Variants: \
-    **Discrete \
+    -Discrete \
         Each pixel in the Visual stores its own color information. \
-    **Indexed(NonZeroU32) \
+    -Indexed(NonZeroU32) \
         Each pixel in the Visual stores an index into a color palette containing the color information. The value stored by this variant indicates the number \
         of colors in the color palette. \
 - size \
