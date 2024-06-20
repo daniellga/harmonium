@@ -156,7 +156,11 @@ HArray$new_from_values <- function(arr, dtype) {
 }
 
 
-
+#' HAudioOp
+#' A collection of methods that can be applied to float 1D or 2D `HArray`s which represents audio data. \
+#'
+#' # Methods
+#'
 HAudioOp <- new.env(parent = emptyenv())
 
 ### associated functions for HAudioOp
@@ -425,7 +429,11 @@ HDecodedAudio_invalidate <- function(self) {
 }
 
 
-
+#' HDecodedAudio
+#' An audio represented by an HArray of samples and its corresponding sampling rate. \
+#'
+#' # Methods
+#'
 HDecodedAudio <- new.env(parent = emptyenv())
 
 ### associated functions for HDecodedAudio
@@ -434,23 +442,27 @@ HDecodedAudio <- new.env(parent = emptyenv())
 
 ### wrapper functions for HDecoderStream
 
-HDecoderStream_stream <- function(self) {
+HDecoderStream_next <- function(self) {
   function() {
-    .savvy_wrap_HArray(.Call(savvy_HDecoderStream_stream__impl, self))
+    .savvy_wrap_HArray(.Call(savvy_HDecoderStream_next__impl, self))
   }
 }
 
 .savvy_wrap_HDecoderStream <- function(ptr) {
   e <- new.env(parent = emptyenv())
   e$.ptr <- ptr
-    e$stream <- HDecoderStream_stream(ptr)
+    e$next <- HDecoderStream_next(ptr)
   
   class(e) <- "HDecoderStream"
   e
 }
 
 
-
+#' HDecoderStream
+#' An iterator that decodes audio in streams. \
+#'
+#' # Methods
+#'
 HDecoderStream <- new.env(parent = emptyenv())
 
 ### associated functions for HDecoderStream
@@ -498,7 +510,11 @@ HFftPlanner_print <- function(self) {
 }
 
 
-
+#' HFftPlanner
+#' A planner is used to create FFTs. It caches results internally, so when making more than one FFT it is advisable to reuse the same planner. \
+#'
+#' # Methods
+#'
 HFftPlanner <- new.env(parent = emptyenv())
 
 ### associated functions for HFftPlanner
@@ -522,7 +538,11 @@ HFftPlanner$new <- function(dtype) {
 }
 
 
-
+#' HFile
+#' A collection of methods designed to streamline input and output operations. \
+#'
+#' # Methods
+#'
 HFile <- new.env(parent = emptyenv())
 
 ### associated functions for HFile
@@ -789,7 +809,12 @@ HRealFftPlanner_print <- function(self) {
 }
 
 
-
+#' HRealFftPlanner
+#' A planner is used to create FFTs. It caches results internally, so when making more than one FFT it is advisable to reuse the same planner. \
+#' This planner is used to calculate FFTs of real valued inputs and its inverse operation. \
+#'
+#' # Methods
+#'
 HRealFftPlanner <- new.env(parent = emptyenv())
 
 ### associated functions for HRealFftPlanner

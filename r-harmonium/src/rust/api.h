@@ -55,7 +55,7 @@ SEXP savvy_HDecodedAudio_sr__ffi(SEXP self__);
 SEXP savvy_HDecodedAudio_invalidate__ffi(SEXP self__);
 
 // methods and associated functions for HDecoderStream
-SEXP savvy_HDecoderStream_stream__ffi(SEXP self__);
+SEXP savvy_HDecoderStream_next__ffi(SEXP self__);
 
 // methods and associated functions for HFftPlanner
 SEXP savvy_HFftPlanner_new__ffi(SEXP dtype);

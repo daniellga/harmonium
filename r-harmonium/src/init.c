@@ -255,8 +255,8 @@ SEXP savvy_HDecodedAudio_invalidate__impl(SEXP self__) {
     return handle_result(res);
 }
 
-SEXP savvy_HDecoderStream_stream__impl(SEXP self__) {
-    SEXP res = savvy_HDecoderStream_stream__ffi(self__);
+SEXP savvy_HDecoderStream_next__impl(SEXP self__) {
+    SEXP res = savvy_HDecoderStream_next__ffi(self__);
     return handle_result(res);
 }
 
@@ -557,7 +557,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"savvy_HDecodedAudio_harray__impl", (DL_FUNC) &savvy_HDecodedAudio_harray__impl, 1},
     {"savvy_HDecodedAudio_sr__impl", (DL_FUNC) &savvy_HDecodedAudio_sr__impl, 1},
     {"savvy_HDecodedAudio_invalidate__impl", (DL_FUNC) &savvy_HDecodedAudio_invalidate__impl, 1},
-    {"savvy_HDecoderStream_stream__impl", (DL_FUNC) &savvy_HDecoderStream_stream__impl, 1},
+    {"savvy_HDecoderStream_next__impl", (DL_FUNC) &savvy_HDecoderStream_next__impl, 1},
     {"savvy_HFftPlanner_new__impl", (DL_FUNC) &savvy_HFftPlanner_new__impl, 1},
     {"savvy_HFftPlanner_fft__impl", (DL_FUNC) &savvy_HFftPlanner_fft__impl, 2},
     {"savvy_HFftPlanner_ifft__impl", (DL_FUNC) &savvy_HFftPlanner_ifft__impl, 2},
