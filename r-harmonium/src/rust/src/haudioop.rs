@@ -5,11 +5,7 @@ use crate::{
 use savvy::{savvy, Sexp};
 
 /// HAudioOp
-///
-/// _________
-///
-/// HAudioOp
-/// A collection of methods that can be applied to float 1D or 2D HArray which represents audio data. \
+/// A collection of methods that can be applied to float 1D or 2D `HArray`s which represents audio data. \
 ///
 /// # Methods
 ///

@@ -20,9 +20,20 @@ pub trait HRealFftPlannerR: Send {
     fn print(&self) -> savvy::Result<()>;
 }
 
+/// HFftPlanner
+/// A planner is used to create FFTs. It caches results internally, so when making more than one FFT it is advisable to reuse the same planner. \
+///
+/// # Methods
+///
 #[savvy]
 pub struct HFftPlanner(pub Box<dyn HFftPlannerR>);
 
+/// HRealFftPlanner
+/// A planner is used to create FFTs. It caches results internally, so when making more than one FFT it is advisable to reuse the same planner. \
+/// This planner is used to calculate FFTs of real valued inputs and its inverse operation. \
+///
+/// # Methods
+///
 #[savvy]
 pub struct HRealFftPlanner(pub Box<dyn HRealFftPlannerR>);
 

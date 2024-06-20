@@ -24,5 +24,3 @@ format:
     mainfont: "'Open Sans'"
     css: styles.css
     toc: true
-    grid:
-      body-width: 1000px
