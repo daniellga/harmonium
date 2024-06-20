@@ -2,7 +2,7 @@
 title: HDecodedAudio
 ---
 
-An audio represented by an HArray of samples and its corresponding sampling rate. \
+An audio represented by an HArray of samples and its corresponding sampling rate.
 
 # Methods
 
