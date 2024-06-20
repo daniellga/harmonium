@@ -1,5 +1,368 @@
 [
   {
+    "objectID": "contents/hfile.html",
+    "href": "contents/hfile.html",
+    "title": "HFile",
+    "section": "",
+    "text": "decode(fpath: string, dtype: HDataType) -&gt; HDecodedAudio  source \n\nDecode an audio file, providing its decoded data and the sampling rate.\nThe samples are normalized to fit in the range of [-1.0, 1.0].\n\n\n\nfpath\nThe file path as a string.\n\ndtype\nA float HDataType.\n\n\n\n\n\nAn HDecodedAudio containing:\n* The decoded audio as a float HArray.\n* The sampling rate as an integer.\n\n\n\n\nlibrary(harmonium)\nfpath = \"../../../testfiles/gs-16b-2c-44100hz.flac\"\ndtype = HDataType$Float32\nHFile$decode(fpath, dtype)",
+    "crumbs": [
+      "Classes",
+      "HFile"
+    ]
+  },
+  {
+    "objectID": "contents/hfile.html#decode",
+    "href": "contents/hfile.html#decode",
+    "title": "HFile",
+    "section": "",
+    "text": "decode(fpath: string, dtype: HDataType) -&gt; HDecodedAudio  source \n\nDecode an audio file, providing its decoded data and the sampling rate.\nThe samples are normalized to fit in the range of [-1.0, 1.0].\n\n\n\nfpath\nThe file path as a string.\n\ndtype\nA float HDataType.\n\n\n\n\n\nAn HDecodedAudio containing:\n* The decoded audio as a float HArray.\n* The sampling rate as an integer.\n\n\n\n\nlibrary(harmonium)\nfpath = \"../../../testfiles/gs-16b-2c-44100hz.flac\"\ndtype = HDataType$Float32\nHFile$decode(fpath, dtype)",
+    "crumbs": [
+      "Classes",
+      "HFile"
+    ]
+  },
+  {
+    "objectID": "contents/hfile.html#stream",
+    "href": "contents/hfile.html#stream",
+    "title": "HFile",
+    "section": "stream",
+    "text": "stream\ndecode_stream(fpath: string, frames: integer, dtype: HDataType) -&gt; HDecoderStream  source \n\nCreates an HDecoderStream, used as an iterator to stream frames of decoded audio.\n\n\nArguments\n\nfpath\nThe file path as a string.\n\nframes\nNumber of frames to decode per iteration.\n\ndtype\nA float HDataType.\n\n\n\n\nReturns\nAn HDecoderStream.\n\n\n\nExamples\nlibrary(harmonium)\nfpath = \"../../../testfiles/gs-16b-2c-44100hz.flac\"\ndtype = HDataType$Float32\nframes = 1000L\nHFile$decode_stream(fpath, frames, dtype)",
+    "crumbs": [
+      "Classes",
+      "HFile"
+    ]
+  },
+  {
+    "objectID": "contents/hfile.html#metadata",
+    "href": "contents/hfile.html#metadata",
+    "title": "HFile",
+    "section": "metadata",
+    "text": "metadata\nmetadata(fpath: string, metadata_type: HMetadataType) -&gt; list  source \n\nExtract text and visual metadata from a file.\nTags that are part of the container format are preferentially extracted. Additional tags that were found while probing will not be extracted.\nThe following metadata tagging formats are supported.\n\n\nID3v1\n\nID3v2\n\nISO/MP4\n\nRIFF\n\nVorbis Comment (in OGG & FLAC)\n\n\nEach TextMetadata will be comprised of a Tag, which contains the following fields:\n* tag_key\nA key string indicating the type, meaning, or purpose of the Tags value. Note: The meaning of key is dependant on the underlying metadata format.\n* tag_std_key\nIf the Tag’s key string is commonly associated with a typical type, meaning, or purpose, then if recognized a StandardTagKey will be assigned to this Tag. This is a best effort guess since not all metadata formats have a well defined or specified tag mapping. However, it is recommended that consumers prefer std_key over key, if provided.\nCheck [StandardTagKey] for all the variants.\n* tag_value\nThe value of the Tag.\n\nEach VisualMetadata will be comprised of the following fields:\n* usage:\nThe usage and/or content of the Visual. A string version of symphonia_core::meta::StandardVisualKey, which is an enumeration providing standardized keys for common visual dispositions. A demuxer may assign a StandardVisualKey to a Visual if the disposition of the attached visual is known and can be mapped to a standard key. The visual types listed here are derived from, though do not entirely cover, the ID3v2 APIC frame specification.\n* media_type\nThe Media Type (MIME Type) used to encode the Visual.\n* dimensions\nThe dimensions (width and height) of the Visual, represented in pixels.\nNote: This value may not be accurate as it comes from metadata, not the embedded graphic itself. Consider it only a hint.\n* bits_per_pixel\nThe number of bits-per-pixel (aka bit-depth) of the unencoded image.\n* color_mode\nIndicates how the color of a pixel is encoded in a Visual. Variants:\nDiscrete\nEach pixel in the Visual stores its own color information.\nIndexed(NonZeroU32)\nEach pixel in the Visual stores an index into a color palette containing the color information. The value stored by this variant indicates the number\nof colors in the color palette.\n* size\nSize of the image in bytes.\n* tag\nTag with the following fields:\n** tag_key\nA key string indicating the type, meaning, or purpose of the Tags value. Note: The meaning of key is dependant on the underlying metadata format.\n** tag_std_key\nIf the Tag’s key string is commonly associated with a typical type, meaning, or purpose, then if recognized a StandardTagKey will be assigned to this Tag. This is a best effort guess since not all metadata formats have a well defined or specified tag mapping. However, it is recommended that consumers prefer std_key over key, if provided.\nCheck [StandardTagKey] for all the variants.\n** tag_value\nThe value of the Tag.\n\n\nArguments\n\nfpath\nThe file path as a string.\n\nmetadata_type\nAn HMetadataType.\n\n\n\n\nReturns\nA list of metadata. An empty list will be returned if there is no metadata in the file.\n\n\n\nExamples\nlibrary(harmonium)\nfpath = \"../../../testfiles/gs-16b-2c-44100hz.mp3\"\nmetadata_type = HMetadataType$Text\nHFile$metadata(fpath, metadata_type)",
+    "crumbs": [
+      "Classes",
+      "HFile"
+    ]
+  },
+  {
+    "objectID": "contents/hfile.html#params",
+    "href": "contents/hfile.html#params",
+    "title": "HFile",
+    "section": "params",
+    "text": "params\nparams(fpath: string) -&gt; atomicvector  source \n\nGet audio parameters from a file.\nNote that this avoids loading the contents into memory, and is therefore useful for querying these parameters from long files.\n\n\nArguments\n\nfpath\nThe file path as a string.\n\n\n\n\nReturns\nA double atomic vector containing, in order:\n* sampling rate in Hz.\n* number of frames.\n* number of channels.\n* duration in seconds.\n\n\n\nExamples\nlibrary(harmonium)\nfpath = \"../../../testfiles/gs-16b-2c-44100hz.flac\"\nHFile$params(fpath)",
+    "crumbs": [
+      "Classes",
+      "HFile"
+    ]
+  },
+  {
+    "objectID": "contents/hfile.html#verify",
+    "href": "contents/hfile.html#verify",
+    "title": "HFile",
+    "section": "verify",
+    "text": "verify\n`verify(fpath: string) -&gt; string  source \n\nVerify an audio file, if supported by the decoder.\nThe verification is done after the decoding process is finished.\n\n\nArguments\n\nfpath\nThe file path as a string.\n\n\n\n\nReturns\nA string.\nOne of [“passed”, “failed”, “not_supported”]\n\n\n\nExamples\nlibrary(harmonium)\nfpath = \"../../../testfiles/gs-16b-2c-44100hz.flac\"\nHFile$verify(fpath)",
+    "crumbs": [
+      "Classes",
+      "HFile"
+    ]
+  },
+  {
+    "objectID": "contents/hdatatype.html",
+    "href": "contents/hdatatype.html",
+    "title": "HDataType",
+    "section": "",
+    "text": "A type representation.\nSupports Float32, Float64, Complex32 and Complex64 types.",
+    "crumbs": [
+      "Classes",
+      "HDataType"
+    ]
+  },
+  {
+    "objectID": "contents/hdatatype.html#print",
+    "href": "contents/hdatatype.html#print",
+    "title": "HDataType",
+    "section": "print",
+    "text": "print\nprint()  source \n\nPrints the HDataType.\nDifferently from R’s behaviour, print doesn’t return the value invisibly.\n\n\nExamples\nlibrary(harmonium)\ndtype = HDataType$Complex64\ndtype$print()\n\n# or similarly:\nprint(dtype)",
+    "crumbs": [
+      "Classes",
+      "HDataType"
+    ]
+  },
+  {
+    "objectID": "contents/hdatatype.html#eq",
+    "href": "contents/hdatatype.html#eq",
+    "title": "HDataType",
+    "section": "eq",
+    "text": "eq\neq(other: HDataType) -&gt; bool  source \n\nEquality with another HDataType.\n\n\nArguments\n\nother\nAn HDataType.\n\n\n\n\nReturns\nA bool.\n\n\nExamples\nlibrary(harmonium)\nhdatatype1 = HDataType$Float32\nhdatatype2 = HDataType$Float32\nhdatatype1$eq(hdatatype2) # TRUE\n\n# or similarly:\nhdatatype1 == hdatatype2",
+    "crumbs": [
+      "Classes",
+      "HDataType"
+    ]
+  },
+  {
+    "objectID": "contents/hdatatype.html#ne",
+    "href": "contents/hdatatype.html#ne",
+    "title": "HDataType",
+    "section": "ne",
+    "text": "ne\nne(other: HDataType) -&gt; bool  source \n\nDifference with another HDataType.\n\n\nArguments\n\nother\nAn HDataType.\n\n\n\n\nReturns\nA bool.\n\n\n\nExamples\nlibrary(harmonium)\nhdatatype1 = HDataType$Float32\nhdatatype2 = HDataType$Float64\nhdatatype1$ne(hdatatype2) # TRUE\n\n# or similarly:\nhdatatype1 != hdatatype2",
+    "crumbs": [
+      "Classes",
+      "HDataType"
+    ]
+  },
+  {
+    "objectID": "contents/hwindowtype.html",
+    "href": "contents/hwindowtype.html",
+    "title": "HWindowType",
+    "section": "",
+    "text": "A window type representation.\nSupports Blackman, Blackman2, BlackmanHarris, BlackmanHarris2, Hann and Hann2 types.",
+    "crumbs": [
+      "Classes",
+      "HWindowType"
+    ]
+  },
+  {
+    "objectID": "contents/hwindowtype.html#print",
+    "href": "contents/hwindowtype.html#print",
+    "title": "HWindowType",
+    "section": "print",
+    "text": "print\nprint()  source \n\nPrints the HWindowType.\nDifferently from R’s behaviour, print doesn’t return the value invisibly.\n\n\nExamples\nwindowtype = HWindowType$Blackman\nwindowtype$print()\n\n# or similarly:\nprint(windowtype)",
+    "crumbs": [
+      "Classes",
+      "HWindowType"
+    ]
+  },
+  {
+    "objectID": "contents/hwindowtype.html#eq",
+    "href": "contents/hwindowtype.html#eq",
+    "title": "HWindowType",
+    "section": "eq",
+    "text": "eq\neq(other: HWindowType) -&gt; bool  source \n\nEquality with another HWindowType.\n\nArguments\n\nother\nAn HWindowType.\n\n\n\n\nReturns\nA bool.\n\n\nExamples\nwindowtype1 = HWindowType$Blackman\nwindowtype2 = HWindowType$Blackman\nwindowtype1$eq(windowtype2) # TRUE\n\n# or similarly:\nwindowtype1 == windowtype2",
+    "crumbs": [
+      "Classes",
+      "HWindowType"
+    ]
+  },
+  {
+    "objectID": "contents/hwindowtype.html#ne",
+    "href": "contents/hwindowtype.html#ne",
+    "title": "HWindowType",
+    "section": "ne",
+    "text": "ne\nne(other: HWindowType) -&gt; bool  source \n\nDifference with another HWindowType.\n\nArguments\n\nother\nAn HWindowType.\n\n\n\n\nReturns\nA bool.\n\n\nExamples\nwindowtype1 = HWindowType$Blackman\nwindowtype2 = HWindowType$Blackman\nwindowtype1$ne(windowtype2) # FALSE\n\n# or similarly:\nwindowtype1 != windowtype2",
+    "crumbs": [
+      "Classes",
+      "HWindowType"
+    ]
+  },
+  {
+    "objectID": "contents/hresamplertype.html",
+    "href": "contents/hresamplertype.html",
+    "title": "HResamplerType",
+    "section": "",
+    "text": "A resampler type representation.\nSupports FftFixedIn, FftFixedInOut, FftFixedOut, SincFixedIn, SincFixedOut, FastFixedIn and FastFixedOut types.",
+    "crumbs": [
+      "Classes",
+      "HResamplerType"
+    ]
+  },
+  {
+    "objectID": "contents/hresamplertype.html#print",
+    "href": "contents/hresamplertype.html#print",
+    "title": "HResamplerType",
+    "section": "print",
+    "text": "print\nprint()  source \n\nPrints the HResamplerType.\nDifferently from R’s behaviour, print doesn’t return the value invisibly.\n\n\nExamples\nhresamplertype = HResamplerType$SincFixedIn\nhresamplertype$print()\n\n# or similarly:\nprint(hresamplertype)",
+    "crumbs": [
+      "Classes",
+      "HResamplerType"
+    ]
+  },
+  {
+    "objectID": "contents/hresamplertype.html#eq",
+    "href": "contents/hresamplertype.html#eq",
+    "title": "HResamplerType",
+    "section": "eq",
+    "text": "eq\neq(other: HResamplerType) -&gt; bool  source \n\nEquality with another HResamplerType.\n\nArguments\n\nother\nAn HResamplerType.\n\n\n\n\nReturns\nA bool.\n\n\nExamples\nhresamplertype1 = HResamplerType$SincFixedIn\nhresamplertype2 = HResamplerType$SincFixedIn\nhresamplertype1$eq(hresamplertype2) # TRUE\n\n# or similarly:\nhresamplertype1 == hresamplertype2",
+    "crumbs": [
+      "Classes",
+      "HResamplerType"
+    ]
+  },
+  {
+    "objectID": "contents/hresamplertype.html#ne",
+    "href": "contents/hresamplertype.html#ne",
+    "title": "HResamplerType",
+    "section": "ne",
+    "text": "ne\nne(other: HResamplerType) -&gt; bool  source \n\nDifference with another HResamplerType.\n\nArguments\n\nother\nAn HResamplerType.\n\n\n\n\nReturns\nA bool.\n\n\nExamples\nhresamplertype1 = HResamplerType$SincFixedIn\nhresamplertype2 = HResamplerType$SincFixedIn\nhresamplertype1$ne(hresamplertype2) # FALSE\n\n# or similarly:\nhresamplertype1 != hresamplertype2",
+    "crumbs": [
+      "Classes",
+      "HResamplerType"
+    ]
+  },
+  {
+    "objectID": "contents/harray.html",
+    "href": "contents/harray.html",
+    "title": "HArray",
+    "section": "",
+    "text": "An array representation.",
+    "crumbs": [
+      "Classes",
+      "HArray"
+    ]
+  },
+  {
+    "objectID": "contents/harray.html#new_from_values",
+    "href": "contents/harray.html#new_from_values",
+    "title": "HArray",
+    "section": "new_from_values",
+    "text": "new_from_values\nnew_from_values(arr: array, dtype: HDataType) -&gt; HArray  source \n\nCreates a new HArray from an R array.\n\n\nArguments\n\narr\nA double or complex array.\ndtype\nAn HDataType to indicate which type of HArray to be created.\nFor float dtypes, the atomic vector must be a double. For complex dtypes, a complex atomic vector.\n\n\n\nReturns\nAn HArray.\n\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nHArray$new_from_values(arr, dtype)",
+    "crumbs": [
+      "Classes",
+      "HArray"
+    ]
+  },
+  {
+    "objectID": "contents/harray.html#len",
+    "href": "contents/harray.html#len",
+    "title": "HArray",
+    "section": "len",
+    "text": "len\nlen() -&gt; integer  source \n\nReturns the number of elements of this Harray.\n\n\nReturns\nAn integer.\n\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nharray$len()",
+    "crumbs": [
+      "Classes",
+      "HArray"
+    ]
+  },
+  {
+    "objectID": "contents/harray.html#shape",
+    "href": "contents/harray.html#shape",
+    "title": "HArray",
+    "section": "shape",
+    "text": "shape\nshape() -&gt; integers  source \n\nReturns the shape of this HArray.\n\n\nReturns\nA vector of integers.\n\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nharray$shape()",
+    "crumbs": [
+      "Classes",
+      "HArray"
+    ]
+  },
+  {
+    "objectID": "contents/harray.html#ndim",
+    "href": "contents/harray.html#ndim",
+    "title": "HArray",
+    "section": "ndim",
+    "text": "ndim\nndim() -&gt; integer  source \n\nReturns the number of dimensions of this HArray.\n\n\nReturns\nAn integer.\n\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nharray$ndim()",
+    "crumbs": [
+      "Classes",
+      "HArray"
+    ]
+  },
+  {
+    "objectID": "contents/harray.html#slice",
+    "href": "contents/harray.html#slice",
+    "title": "HArray",
+    "section": "slice",
+    "text": "slice\nslice(range: list[atomicvector]) -&gt; HArray  source \n\nSlices the HArray.\nThis operation has a COW (clone-on-write) behaviour. The created slice shares the inner data with the original array until one of them is modified.\n\n\nArguments\n\nrange\nA list of vectors of integers. The number of vectors in the list must be equal to the number of dimensions in the original HArray as they represent the slice information for each axis.\nEach vector must be composed of 3 elements: [start, end, step]. All 3 values can be positive or negative, although step can’t be 0.\n\n\n\n\nReturns\nAn HArray.\n\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nharray$slice(list(c(0L, 2L, 1L), c(1L, 3L, 1L)))",
+    "crumbs": [
+      "Classes",
+      "HArray"
+    ]
+  },
+  {
+    "objectID": "contents/harray.html#print",
+    "href": "contents/harray.html#print",
+    "title": "HArray",
+    "section": "print",
+    "text": "print\nprint()  source \n\nPrints the HArray.\nDifferently from R’s normal behaviour, print doesn’t return the value invisibly.\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nharray$print()\n\n# or similarly:\nprint(harray)",
+    "crumbs": [
+      "Classes",
+      "HArray"
+    ]
+  },
+  {
+    "objectID": "contents/harray.html#eq",
+    "href": "contents/harray.html#eq",
+    "title": "HArray",
+    "section": "eq",
+    "text": "eq\neq(other: HArray) -&gt; bool  source \n\nEquality with another HArray.\nThe comparison only checks if the dtype and the values are the same. To compare if the underlying data is the same in memory, check mem_adress.\n\n\nArguments\n\nother\nAn HArray.\n\n\n\n\nReturns\nA bool.\n\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray1 = HArray$new_from_values(arr, dtype)\n\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray2 = HArray$new_from_values(arr, dtype)\n\nharray1$eq(harray2) # TRUE\n\n# or similarly:\nharray1 == harray2",
+    "crumbs": [
+      "Classes",
+      "HArray"
+    ]
+  },
+  {
+    "objectID": "contents/harray.html#ne",
+    "href": "contents/harray.html#ne",
+    "title": "HArray",
+    "section": "ne",
+    "text": "ne\nne(other: HArray) -&gt; bool  source \n\nDifference with another HArray.\nThe comparison only checks if the dtype and the values are the same. To compare if the underlying data is the same in memory, check mem_adress.\n\nArguments\n\nother\nAn HArray.\n\n\n\nReturns\nA bool.\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray1 = HArray$new_from_values(arr, dtype)\n\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray2 = HArray$new_from_values(arr, dtype)\n\nharray1$ne(harray2) # FALSE\n\n# or similarly:\nharray1 != harray2",
+    "crumbs": [
+      "Classes",
+      "HArray"
+    ]
+  },
+  {
+    "objectID": "contents/harray.html#clone",
+    "href": "contents/harray.html#clone",
+    "title": "HArray",
+    "section": "clone",
+    "text": "clone\nclone() -&gt; HArray  source \n\nCreates a new HArray, with the underlying data pointing to the same place in memory.\n\nReturns\nAn HArray.\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray1 = HArray$new_from_values(arr, dtype)\nharray2 = harray1$clone()\nharray1 == harray2 # TRUE",
+    "crumbs": [
+      "Classes",
+      "HArray"
+    ]
+  },
+  {
+    "objectID": "contents/harray.html#collect",
+    "href": "contents/harray.html#collect",
+    "title": "HArray",
+    "section": "collect",
+    "text": "collect\ncollect() -&gt; array  source \n\nCreates an R array from an HArray. The type of the array created (double or complex) will depend on the HArray’s dtype.\n\nReturns\nAn array of type double or complex.\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nharray$collect()",
+    "crumbs": [
+      "Classes",
+      "HArray"
+    ]
+  },
+  {
+    "objectID": "contents/harray.html#dtype",
+    "href": "contents/harray.html#dtype",
+    "title": "HArray",
+    "section": "dtype",
+    "text": "dtype\ndtype() -&gt; HDataType  source \n\nGets the HArray’s dtype as an HDataType.\n\nReturns\nAn HDataType.\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nharray$dtype()",
+    "crumbs": [
+      "Classes",
+      "HArray"
+    ]
+  },
+  {
+    "objectID": "contents/harray.html#is_shared",
+    "href": "contents/harray.html#is_shared",
+    "title": "HArray",
+    "section": "is_shared",
+    "text": "is_shared\nis_shared() -&gt; bool  source \n\nChecks if the object is shared.\nSince HArray has a COW (clone-on-write) behaviour, this function is useful to check if a new object will be created or if the change will be done in-place.\n\n\nReturns\nA bool.\n\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray1 = HArray$new_from_values(arr, dtype)\nharray1$is_shared() # FALSE.\n\nharray2 = harray1$clone()\nharray$is_shared() # TRUE, HArray object shared with harray2.",
+    "crumbs": [
+      "Classes",
+      "HArray"
+    ]
+  },
+  {
+    "objectID": "contents/harray.html#mem_adress",
+    "href": "contents/harray.html#mem_adress",
+    "title": "HArray",
+    "section": "mem_adress",
+    "text": "mem_adress\nmem_adress() -&gt; string  source \n\nThe memory adress of the first element of the inner array.\nThis is useful to check if different objects share the same underlying data.\n\n\nReturns\nA string.\n\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nharray$mem_adress()",
+    "crumbs": [
+      "Classes",
+      "HArray"
+    ]
+  },
+  {
+    "objectID": "contents/harray.html#invalidate",
+    "href": "contents/harray.html#invalidate",
+    "title": "HArray",
+    "section": "invalidate",
+    "text": "invalidate\ninvalidate()  source \n\nReplaces the inner value of the external pointer, invalidating it.\nThis function is useful to remove one of the shared references of the inner pointer in rust.\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nharray$invalidate()",
+    "crumbs": [
+      "Classes",
+      "HArray"
+    ]
+  },
+  {
     "objectID": "contents/hresampler.html",
     "href": "contents/hresampler.html",
     "title": "HResampler",
@@ -121,278 +484,58 @@
     ]
   },
   {
-    "objectID": "contents/hresamplertype.html",
-    "href": "contents/hresamplertype.html",
-    "title": "HResamplerType",
+    "objectID": "contents/hdecoderstream.html",
+    "href": "contents/hdecoderstream.html",
+    "title": "HDecoderStream",
     "section": "",
-    "text": "A resampler type representation.\nSupports FftFixedIn, FftFixedInOut, FftFixedOut, SincFixedIn, SincFixedOut, FastFixedIn and FastFixedOut types.",
+    "text": "An iterator that decodes audio in streams.",
     "crumbs": [
       "Classes",
-      "HResamplerType"
+      "HDecoderStream"
     ]
   },
   {
-    "objectID": "contents/hresamplertype.html#print",
-    "href": "contents/hresamplertype.html#print",
-    "title": "HResamplerType",
+    "objectID": "contents/hdecoderstream.html#stream",
+    "href": "contents/hdecoderstream.html#stream",
+    "title": "HDecoderStream",
+    "section": "stream",
+    "text": "stream\nstream() -&gt; HArray  source \n\nGets the next wave of frames as an HArray.\nReturns an error if it’s end of stream or if an error ocurred in the decoding process.\n\n\nReturns\nThe decoded audio as a float HArray.\nThe number of frames streamed is the one used as input in the creation of HDecoderStream.\n\n\n\nExamples\nlibrary(harmonium)\nfpath = \"../../../testfiles/gs-16b-2c-44100hz.flac\"\ndtype = HDataType$Float32\nframes = 1000L\nhdecoder_stream = HFile$decode_stream(fpath, frames, dtype)\nhdecoder_stream$stream()",
+    "crumbs": [
+      "Classes",
+      "HDecoderStream"
+    ]
+  },
+  {
+    "objectID": "contents/hsincinterpolationparameters.html",
+    "href": "contents/hsincinterpolationparameters.html",
+    "title": "HSincInterpolationParameters",
+    "section": "",
+    "text": "Parameters to be used for sinc interpolation.",
+    "crumbs": [
+      "Classes",
+      "HSincInterpolationParameters"
+    ]
+  },
+  {
+    "objectID": "contents/hsincinterpolationparameters.html#new",
+    "href": "contents/hsincinterpolationparameters.html#new",
+    "title": "HSincInterpolationParameters",
+    "section": "new",
+    "text": "new\nnew(sinc_len: integer, f_cutoff: double, oversampling_factor: integer, interpolation: HInterpolationType, window: HWindowType) -&gt; HSincInterpolationParameters  source \n\nCreates a new HSincInterpolationParameters.\n\n\nArguments\n\nsinc_len\nAn integer. Length of the windowed sinc interpolation filter. Higher values can allow a higher cut-off frequency leading to less high frequency roll-off at the expense of higher cpu usage. A good starting point should be 256. The value will be rounded up to the nearest multiple of 8.\n\nf_cutoff\nA double. Relative cutoff frequency of the sinc interpolation filter (relative to the lowest one of fs_in/2 or fs_out/2). Start at 0.95, and increase if needed.\n\noversampling_factor\nAn integer. The number of intermediate points to use for interpolation. Higher values use more memory for storing the sinc filters. Only the points actually needed are calculated during processing so a larger number does not directly lead to higher cpu usage. A lower value helps in keeping the sincs in the cpu cache. A good starting point should be 128.\n\ninterpolation\nAn HInterpolationType. The interpolation type.\n\nwindow\nAn HWindowType. The window function to use.\n\n\n\n\nReturns\nAn HSincInterpolationParameters.\n\n\n\nExamples\nsinc_len = 256L\nf_cutoff = 0.95\noversampling_factor = 128L\ninterpolation = HInterpolationType$Linear\nwindow = HWindowType$Blackman\n\nhsincinterpolationparameters = HSincInterpolationParameters$new(sinc_len, f_cutoff, oversampling_factor, interpolation, window)",
+    "crumbs": [
+      "Classes",
+      "HSincInterpolationParameters"
+    ]
+  },
+  {
+    "objectID": "contents/hsincinterpolationparameters.html#print",
+    "href": "contents/hsincinterpolationparameters.html#print",
+    "title": "HSincInterpolationParameters",
     "section": "print",
-    "text": "print\nprint()  source \n\nPrints the HResamplerType.\nDifferently from R’s behaviour, print doesn’t return the value invisibly.\n\n\nExamples\nhresamplertype = HResamplerType$SincFixedIn\nhresamplertype$print()\n\n# or similarly:\nprint(hresamplertype)",
+    "text": "print\nprint()  source \n\nPrints the HSincInterpolationParameters.\nDifferently from R’s behaviour, print doesn’t return the value invisibly.\n\n\nExamples\nsinc_len = 256L\nf_cutoff = 0.95\noversampling_factor = 128L\ninterpolation = HInterpolationType$Linear\nwindow = HWindowType$Blackman\n\nhsincinterpolationparameters = HSincInterpolationParameters$new(sinc_len, f_cutoff, oversampling_factor, interpolation, window)\nhsincinterpolationparameters$print()\n\n# or similarly:\nprint(hsincinterpolationparameters)",
     "crumbs": [
       "Classes",
-      "HResamplerType"
-    ]
-  },
-  {
-    "objectID": "contents/hresamplertype.html#eq",
-    "href": "contents/hresamplertype.html#eq",
-    "title": "HResamplerType",
-    "section": "eq",
-    "text": "eq\neq(other: HResamplerType) -&gt; bool  source \n\nEquality with another HResamplerType.\n\nArguments\n\nother\nAn HResamplerType.\n\n\n\n\nReturns\nA bool.\n\n\nExamples\nhresamplertype1 = HResamplerType$SincFixedIn\nhresamplertype2 = HResamplerType$SincFixedIn\nhresamplertype1$eq(hresamplertype2) # TRUE\n\n# or similarly:\nhresamplertype1 == hresamplertype2",
-    "crumbs": [
-      "Classes",
-      "HResamplerType"
-    ]
-  },
-  {
-    "objectID": "contents/hresamplertype.html#ne",
-    "href": "contents/hresamplertype.html#ne",
-    "title": "HResamplerType",
-    "section": "ne",
-    "text": "ne\nne(other: HResamplerType) -&gt; bool  source \n\nDifference with another HResamplerType.\n\nArguments\n\nother\nAn HResamplerType.\n\n\n\n\nReturns\nA bool.\n\n\nExamples\nhresamplertype1 = HResamplerType$SincFixedIn\nhresamplertype2 = HResamplerType$SincFixedIn\nhresamplertype1$ne(hresamplertype2) # FALSE\n\n# or similarly:\nhresamplertype1 != hresamplertype2",
-    "crumbs": [
-      "Classes",
-      "HResamplerType"
-    ]
-  },
-  {
-    "objectID": "contents/hinterpolationtype.html",
-    "href": "contents/hinterpolationtype.html",
-    "title": "HInterpolationType",
-    "section": "",
-    "text": "A interpolation type representation.\nSupports Cubic, Linear, Quadratic and Nearest.",
-    "crumbs": [
-      "Classes",
-      "HInterpolationType"
-    ]
-  },
-  {
-    "objectID": "contents/hinterpolationtype.html#print",
-    "href": "contents/hinterpolationtype.html#print",
-    "title": "HInterpolationType",
-    "section": "print",
-    "text": "print\nprint()  source \n\nPrints the HInterpolationType.\nDifferently from R’s behaviour, print doesn’t return the value invisibly.\n\n\nExamples\nlibrary(harmonium)\ninterpolationtype = HInterpolationType$Cubic\ninterpolationtype$print()\n\n# or similarly:\nprint(interpolationtype)",
-    "crumbs": [
-      "Classes",
-      "HInterpolationType"
-    ]
-  },
-  {
-    "objectID": "contents/hinterpolationtype.html#eq",
-    "href": "contents/hinterpolationtype.html#eq",
-    "title": "HInterpolationType",
-    "section": "eq",
-    "text": "eq\neq(other: HInterpolationType) -&gt; bool  source \n\nEquality with another HInterpolationType.\n\nArguments\n\nother\nAn HInterpolationType.\n\n\n\n\nReturns\nA bool.\n\n\nExamples\nlibrary(harmonium)\ninterpolationtype1 = HInterpolationType$Cubic\ninterpolationtype2 = HInterpolationType$Cubic\ninterpolationtype1$eq(interpolationtype2) # TRUE\n\n# or similarly:\ninterpolationtype1 == interpolationtype2",
-    "crumbs": [
-      "Classes",
-      "HInterpolationType"
-    ]
-  },
-  {
-    "objectID": "contents/hinterpolationtype.html#ne",
-    "href": "contents/hinterpolationtype.html#ne",
-    "title": "HInterpolationType",
-    "section": "ne",
-    "text": "ne\nne(other: HInterpolationType) -&gt; bool  source \n\nDifference with another HInterpolationType.\n\nArguments\n\nother\nAn HInterpolationType.\n\n\n\n\nReturns\nA bool.\n\n\nExamples\nlibrary(harmonium)\ninterpolationtype1 = HInterpolationType$Cubic\ninterpolationtype2 = HInterpolationType$Cubic\ninterpolationtype1$ne(interpolationtype2) # FALSE\n\n# or similarly:\ninterpolationtype1 != interpolationtype2",
-    "crumbs": [
-      "Classes",
-      "HInterpolationType"
-    ]
-  },
-  {
-    "objectID": "contents/hpolynomialdegree.html",
-    "href": "contents/hpolynomialdegree.html",
-    "title": "HPolynomialDegree",
-    "section": "",
-    "text": "Degree of the polynomial used for interpolation. A higher degree gives a higher quality result, while taking longer to compute.",
-    "crumbs": [
-      "Classes",
-      "HPolynomialDegree"
-    ]
-  },
-  {
-    "objectID": "contents/hpolynomialdegree.html#print",
-    "href": "contents/hpolynomialdegree.html#print",
-    "title": "HPolynomialDegree",
-    "section": "print",
-    "text": "print\nprint()  source \n\nPrints the HPolynomialDegree.\nDifferently from R’s behaviour, print doesn’t return the value invisibly.\n\n\nExamples\npol_deg = HPolynomialDegree$Complex64\npol_deg$print()\n\n# or similarly:\nprint(pol_deg)",
-    "crumbs": [
-      "Classes",
-      "HPolynomialDegree"
-    ]
-  },
-  {
-    "objectID": "contents/hpolynomialdegree.html#eq",
-    "href": "contents/hpolynomialdegree.html#eq",
-    "title": "HPolynomialDegree",
-    "section": "eq",
-    "text": "eq\neq(other: HPolynomialDegree) -&gt; bool  source \n\nEquality with another HPolynomialDegree.\n\nArguments\n\nother\nAn HPolynomialDegree.\n\n\n\n\nReturns\nA bool.\n\n\nExamples\npol_deg1 = HPolynomialDegree$quintic\npol_deg2 = HPolynomialDegree$quintic\npol_deg1$eq(pol_deg2) # TRUE\n\n# or similarly:\npol_deg1 == pol_deg2",
-    "crumbs": [
-      "Classes",
-      "HPolynomialDegree"
-    ]
-  },
-  {
-    "objectID": "contents/hpolynomialdegree.html#ne",
-    "href": "contents/hpolynomialdegree.html#ne",
-    "title": "HPolynomialDegree",
-    "section": "ne",
-    "text": "ne\nne(other: HPolynomialDegree) -&gt; bool  source \n\nDifference with another HPolynomialDegree.\n\nArguments\n\nother\nAn HPolynomialDegree.\n\n\n\n\nReturns\nA bool.\n\n\nExamples\npol_deg1 = HPolynomialDegree$quintic\npol_deg2 = HPolynomialDegree$nearest\npol_deg1$ne(pol_deg2) # TRUE\n\n# or similarly:\npol_deg1 != pol_deg2",
-    "crumbs": [
-      "Classes",
-      "HPolynomialDegree"
-    ]
-  },
-  {
-    "objectID": "contents/hwindow.html",
-    "href": "contents/hwindow.html",
-    "title": "HWindow",
-    "section": "",
-    "text": "A collection of window functions.",
-    "crumbs": [
-      "Classes",
-      "HWindow"
-    ]
-  },
-  {
-    "objectID": "contents/hwindow.html#barthann",
-    "href": "contents/hwindow.html#barthann",
-    "title": "HWindow",
-    "section": "barthann",
-    "text": "barthann\nbarthann(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray  source \n\nReturns a modified Bartlett-Hann window.\n\nThe maximum value is normalized to 1 (though the value 1 does not appear if npoints is even and window_type is symmetric).\n\n\nArguments\n\nnpoints\nAn integer. Number of points in the output window.\n\nsym\nA bool.\nWhen TRUE, generates a symmetric window, for use in filter design.\nWhen FALSE, generates a periodic window, for use in spectral analysis.\n\ndtype\nAn HDataType to indicate which type of HArray to be created.\nMust be a float dtype.\n\n\n\n\nReturns\nAn HArray.\n\n\n\nExamples\nHWindow$barthann(npoints = 10L, sym = TRUE, dtype = HDataType$Float64)",
-    "crumbs": [
-      "Classes",
-      "HWindow"
-    ]
-  },
-  {
-    "objectID": "contents/hwindow.html#bartlett",
-    "href": "contents/hwindow.html#bartlett",
-    "title": "HWindow",
-    "section": "bartlett",
-    "text": "bartlett\nbartlett(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray  source \n\n\\(w(n) = \\frac{2}{npoints-1} (\\frac{npoints-1}{2} - |n - \\frac{npoints-1}{2}|)\\)\nThe Bartlett window is very similar to a triangular window, except that the end points are at zero. It is often used in signal processing for tapering a signal, without generating too much ripple in the frequency domain.\n\nThe maximum value is normalized to 1 (though the value 1 does not appear if npoints is even and window_type is symmetric.\n\n\nArguments\n\nnpoints\nAn integer. Number of points in the output window.\n\nsym\nA bool.\nWhen TRUE, generates a symmetric window, for use in filter design.\nWhen FALSE, generates a periodic window, for use in spectral analysis.\n\ndtype\nAn HDataType to indicate which type of HArray to be created.\nMust be a float dtype.\n\n\n\n\nReturns\nAn HArray.\n\n\n\nExamples\nHWindow$bartlett(npoints = 10L, sym = TRUE, dtype = HDataType$Float64)",
-    "crumbs": [
-      "Classes",
-      "HWindow"
-    ]
-  },
-  {
-    "objectID": "contents/hwindow.html#blackman",
-    "href": "contents/hwindow.html#blackman",
-    "title": "HWindow",
-    "section": "blackman",
-    "text": "blackman\nblackman(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray  source \n\nReturns a Blackman window.\n\n\\(w(n) = 0.42 - 0.5 \\cos(2\\pi n/npoints) + 0.08 \\cos(4\\pi n/npoints)\\)\nThe Blackman window is a taper formed by using the first three terms of a summation of cosines. It was designed to have close to the minimal leakage possible. It is close to optimal, only slightly worse than a Kaiser window.\n\nThe maximum value is normalized to 1 (though the value 1 does not appear if npoints is even and sym is TRUE).\n\nThe “exact Blackman” window was designed to null out the third and fourth sidelobes, but has discontinuities at the boundaries, resulting in a 6 dB/oct fall-off. This window is an approximation of the “exact” window, which does not null the sidelobes as well, but is smooth at the edges, improving the fall-off rate to 18 dB/oct.\n\nMost references to the Blackman window come from the signal processing literature, where it is used as one of many windowing functions for smoothing values. It is also known as an apodization (which means “removing the foot”, i.e. smoothing discontinuities at the beginning and end of the sampled signal) or tapering function. It is known as a “near optimal” tapering function, almost as good (by some measures) as the Kaiser window.\n\n\nArguments\n\nnpoints\nAn integer. Number of points in the output window.\n\nsym\nA bool.\nWhen TRUE, generates a symmetric window, for use in filter design.\nWhen FALSE, generates a periodic window, for use in spectral analysis.\n\ndtype\nAn HDataType to indicate which type of HArray to be created.\nMust be a float dtype.\n\n\n\n\nReturns\nAn HArray.\n\n\n\nExamples\nHWindow$blackman(npoints = 10L, sym = TRUE, dtype = HDataType$Float64)",
-    "crumbs": [
-      "Classes",
-      "HWindow"
-    ]
-  },
-  {
-    "objectID": "contents/hwindow.html#blackmanharris",
-    "href": "contents/hwindow.html#blackmanharris",
-    "title": "HWindow",
-    "section": "blackmanharris",
-    "text": "blackmanharris\nblackmanharris(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray  source \n\nReturn a minimum 4-term Blackman-Harris window.\n\nThe maximum value is normalized to 1 (though the value 1 does not appear if npoints is even and window_type is symmetric.\n\n\nArguments\n\nnpoints\nAn integer. Number of points in the output window.\n\nsym\nA bool.\nWhen TRUE, generates a symmetric window, for use in filter design.\nWhen FALSE, generates a periodic window, for use in spectral analysis.\n\ndtype\nAn HDataType to indicate which type of HArray to be created.\nMust be a float dtype.\n\n\n\n\nReturns\nAn HArray.\n\n\n\nExamples\nHWindow$blackmanharris(npoints = 10L, sym = TRUE, dtype = HDataType$Float64)",
-    "crumbs": [
-      "Classes",
-      "HWindow"
-    ]
-  },
-  {
-    "objectID": "contents/hwindow.html#bohman",
-    "href": "contents/hwindow.html#bohman",
-    "title": "HWindow",
-    "section": "bohman",
-    "text": "bohman\nbohman(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray  source \n\nReturns a Bohman window.\n\nThe maximum value is normalized to 1 (though the value 1 does not appear if npoints is even and window_type is symmetric).\n\n\nArguments\n\nnpoints\nAn integer. Number of points in the output window.\n\nsym\nA bool.\nWhen TRUE, generates a symmetric window, for use in filter design.\nWhen FALSE, generates a periodic window, for use in spectral analysis.\n\ndtype\nAn HDataType to indicate which type of HArray to be created.\nMust be a float dtype.\n\n\n\n\nReturns\nAn HArray.\n\n\n\nExamples\nHWindow$bohman(npoints = 10L, sym = TRUE, dtype = HDataType$Float64)",
-    "crumbs": [
-      "Classes",
-      "HWindow"
-    ]
-  },
-  {
-    "objectID": "contents/hwindow.html#boxcar",
-    "href": "contents/hwindow.html#boxcar",
-    "title": "HWindow",
-    "section": "boxcar",
-    "text": "boxcar\nboxcar(npoints: integer, dtype: HDataType) -&gt; HArray  source \n\nReturns a boxcar or rectangular window.\n\nAlso known as a rectangular window or Dirichlet window, this is equivalent to no window at all.\n\n\nArguments\n\nnpoints\nAn integer. Number of points in the output window.\n\ndtype\nAn HDataType to indicate which type of HArray to be created.\nMust be a float dtype.\n\n\n\n\nReturns\nAn HArray.\n\n\n\nExamples\nHWindow$boxcar(npoints = 10L, dtype = HDataType$Float64)",
-    "crumbs": [
-      "Classes",
-      "HWindow"
-    ]
-  },
-  {
-    "objectID": "contents/hwindow.html#cosine",
-    "href": "contents/hwindow.html#cosine",
-    "title": "HWindow",
-    "section": "cosine",
-    "text": "cosine\ncosine(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray  source \n\nReturns a window with a simple cosine shape.\n\nThe maximum value is normalized to 1 (though the value 1 does not appear if npoints is even and window_type is symmetric).\n\n\nArguments\n\nnpoints\nAn integer. Number of points in the output window.\n\nsym\nA bool.\nWhen TRUE, generates a symmetric window, for use in filter design.\nWhen FALSE, generates a periodic window, for use in spectral analysis.\n\ndtype\nAn HDataType to indicate which type of HArray to be created.\nMust be a float dtype.\n\n\n\n\nReturns\nAn HArray.\n\n\n\nExamples\nHWindow$cosine(npoints = 10L, sym = TRUE, dtype = HDataType$Float64)",
-    "crumbs": [
-      "Classes",
-      "HWindow"
-    ]
-  },
-  {
-    "objectID": "contents/hwindow.html#hann",
-    "href": "contents/hwindow.html#hann",
-    "title": "HWindow",
-    "section": "hann",
-    "text": "hann\nhann(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray  source \n\nReturns a Hann window.\n\n\\(w(n) = 0.5 - 0.5 \\cos\\left(\\frac{2\\pi{n}}{npoints-1}\\right) \\qquad 0 \\leq n \\leq npoints-1\\)\nThe maximum value is normalized to 1 (though the value 1 does not appear if npoints is even and window_type is symmetric.\n\nThe Hann window is a taper formed by using a raised cosine or sine-squared with ends that touch zero.\n\n\nArguments\n\nnpoints\nAn integer. Number of points in the output window.\n\nsym\nA bool.\nWhen TRUE, generates a symmetric window, for use in filter design.\nWhen FALSE, generates a periodic window, for use in spectral analysis.\n\ndtype\nAn HDataType to indicate which type of HArray to be created.\nMust be a float dtype.\n\n\n\n\nReturns\nAn HArray.\n\n\n\nExamples\nHWindow$hann(npoints = 10L, sym = TRUE, dtype = HDataType$Float64)",
-    "crumbs": [
-      "Classes",
-      "HWindow"
-    ]
-  },
-  {
-    "objectID": "contents/hdecodedaudio.html",
-    "href": "contents/hdecodedaudio.html",
-    "title": "HDecodedAudio",
-    "section": "",
-    "text": "harray() -&gt; HArray  source \n\nGet the decoded HArray.\n\n\nA float HArray.\n\n\n\n\nlibrary(harmonium)\nfpath = \"../../../testfiles/gs-16b-2c-44100hz.flac\"\ndtype = HDataType$Float32\nhdecodedaudio = HFile$decode(fpath, dtype)\nhdecodedaudio$harray()",
-    "crumbs": [
-      "Classes",
-      "HDecodedAudio"
-    ]
-  },
-  {
-    "objectID": "contents/hdecodedaudio.html#harray",
-    "href": "contents/hdecodedaudio.html#harray",
-    "title": "HDecodedAudio",
-    "section": "",
-    "text": "harray() -&gt; HArray  source \n\nGet the decoded HArray.\n\n\nA float HArray.\n\n\n\n\nlibrary(harmonium)\nfpath = \"../../../testfiles/gs-16b-2c-44100hz.flac\"\ndtype = HDataType$Float32\nhdecodedaudio = HFile$decode(fpath, dtype)\nhdecodedaudio$harray()",
-    "crumbs": [
-      "Classes",
-      "HDecodedAudio"
-    ]
-  },
-  {
-    "objectID": "contents/hdecodedaudio.html#sr",
-    "href": "contents/hdecodedaudio.html#sr",
-    "title": "HDecodedAudio",
-    "section": "sr",
-    "text": "sr\nsr() -&gt; integer  source \n\nGet the sampling rate of the decoded audio.\n\nReturns\nAn integer.\n\n\n\nExamples\nlibrary(harmonium)\nfpath = \"../../../testfiles/gs-16b-2c-44100hz.flac\"\ndtype = HDataType$Float32\nhdecodedaudio = HFile$decode(fpath, dtype)\nhdecodedaudio$sr()",
-    "crumbs": [
-      "Classes",
-      "HDecodedAudio"
-    ]
-  },
-  {
-    "objectID": "contents/hdecodedaudio.html#invalidate",
-    "href": "contents/hdecodedaudio.html#invalidate",
-    "title": "HDecodedAudio",
-    "section": "invalidate",
-    "text": "invalidate\ninvalidate()  source \n\nReplaces the inner value of the external pointer, invalidating it.\nThis function is useful to remove one of the shared references of the inner pointer in rust.\n\n\nExamples\nlibrary(harmonium)\nfpath = \"../../../testfiles/gs-16b-2c-44100hz.flac\"\ndtype = HDataType$Float32\nhdecodedaudio = HFile$decode(fpath, dtype)\nharray = hdecodedaudio$harray() # now the inner HArray struct has 2 references.\nhdecodedaudio$invalidate() # back to 1 reference.",
-    "crumbs": [
-      "Classes",
-      "HDecodedAudio"
+      "HSincInterpolationParameters"
     ]
   },
   {
@@ -437,6 +580,152 @@
     "crumbs": [
       "Classes",
       "HMetadataType"
+    ]
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Harmonium",
+    "section": "",
+    "text": "Harmonium is an audio interface inspired by Python’s librosa.\n\n\nBasic usage\nLoad the library\nlibrary(harmonium)\nCreate an HArray from an existing array\narr = matrix(c(1,2,3,4,5,6,7,8,9,10,11,12), ncol = 2)\ndtype = HDataType$float64\nharray = HArray$new_from_values(arr, dtype = dtype)\nprint(harray)\nOr decode from an existing audio file\nl = HFile$decode(\"file.wav\", dtype)\nharray = l[[0]]\nsr = l[[1]] # sampling rate\nprint(harray)\nVerify the dimensions\nharray$len()\nHAudioOp$nchannels(harray)\nHAudioOp$nframes(harray)\nVerify the data type\nharray$dtype()\nConvert to an R array\nharray$collect()\nConvert to mono\nHAudioOp$to_mono(harray)\nResample the haudio\nsr_in = 48000L\nsr_out = 22050L\nnbr_channels = HAudioOp$nchannels(harray)\ndtype = HDataType$float64\nres_type = HResamplerType$fft_fixed_in\nresampler = HResampler$new_fft(sr_in, sr_out, nbr_channels, res_type)\nhresampler$process(harray)\nPlay the haudio\nhaudiosink = HAudioSink$new()\nhaudiosink$append_from_harray(harray)\nOr play directly from the file\nhaudiosink$append_from_file(\"file.wav\")\nGet the number of audios to be played\nhaudiosink$len()\nDouble the audio volume and the playback speed\nhaudiosink$set_volume(2)\nhaudiosink$set_speed(2)\nPause the playback and confirms it is paused\nhaudiosink$pause()\nhaudiosink$is_paused()\nIt is also possible to get metadata from an audio file\nmetatadatype = HMetadataType$text\nHFile$metadata(\"file.wav\", metatadatype)\nAnd to get some audio parameters directly from a file\nparams = HFile$params(\"file.wav\")\nsr = params[[1]]\nnframes = params[[2]]\nnchannels = params[[3]]\nduration = params[[4]]"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site"
+  },
+  {
+    "objectID": "contents/hfftplanner.html",
+    "href": "contents/hfftplanner.html",
+    "title": "HFftPlanner",
+    "section": "",
+    "text": "new(dtype: HDataType) -&gt; HFftPlanner  source \n\nCreates a new HFftPlanner instance.\nIf you plan on creating multiple FFT instances, it is recommended to reuse the same planner for all of them. This is because the planner re-uses internal data across FFT instances wherever possible, saving memory and reducing setup time. (FFT instances created with one planner will never re-use data and buffers with FFT instances created by a different planner)\nIn the constructor, the FftPlanner will detect available CPU features. If AVX, SSE, Neon, or WASM SIMD are available, it will set itself up to plan FFTs with the fastest available instruction set. If no SIMD instruction sets are available, the planner will seamlessly fall back to planning non-SIMD FFTs.\n\n\n\n\ndtype\nA complex HDataType to indicate the dtype that the HFftPlanner will be working with.\n\n\n\n\n\nAn HFftPlanner.\nWill return an error if dtype is of a float type.\n\n\n\n\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nfft_planner = HFftPlanner$new(harray$dtype())",
+    "crumbs": [
+      "Classes",
+      "HFftPlanner"
+    ]
+  },
+  {
+    "objectID": "contents/hfftplanner.html#new",
+    "href": "contents/hfftplanner.html#new",
+    "title": "HFftPlanner",
+    "section": "",
+    "text": "new(dtype: HDataType) -&gt; HFftPlanner  source \n\nCreates a new HFftPlanner instance.\nIf you plan on creating multiple FFT instances, it is recommended to reuse the same planner for all of them. This is because the planner re-uses internal data across FFT instances wherever possible, saving memory and reducing setup time. (FFT instances created with one planner will never re-use data and buffers with FFT instances created by a different planner)\nIn the constructor, the FftPlanner will detect available CPU features. If AVX, SSE, Neon, or WASM SIMD are available, it will set itself up to plan FFTs with the fastest available instruction set. If no SIMD instruction sets are available, the planner will seamlessly fall back to planning non-SIMD FFTs.\n\n\n\n\ndtype\nA complex HDataType to indicate the dtype that the HFftPlanner will be working with.\n\n\n\n\n\nAn HFftPlanner.\nWill return an error if dtype is of a float type.\n\n\n\n\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nfft_planner = HFftPlanner$new(harray$dtype())",
+    "crumbs": [
+      "Classes",
+      "HFftPlanner"
+    ]
+  },
+  {
+    "objectID": "contents/hfftplanner.html#fft",
+    "href": "contents/hfftplanner.html#fft",
+    "title": "HFftPlanner",
+    "section": "fft",
+    "text": "fft\nfft(harray: HArray)  source \n\nComputes the fast fourier transform of a complex HArray.\nThe operation is done in-place.\nFFT (Fast Fourier Transform) refers to a way the discrete Fourier Transform (DFT) can be calculated efficiently, by using symmetries in the calculated terms. The symmetry is highest when n is a power of 2, and the transform is therefore most efficient for these sizes.\n\nThe function does not normalize outputs. Callers must manually normalize the results by scaling each element by 1/sqrt(n). Multiple normalization steps can be merged into one via pairwise multiplication, so when doing a forward FFT followed by an inverse callers can normalize once by scaling each element by 1/n.\n\nElements in the output are ordered by ascending frequency, with the first element corresponding to frequency 0.\n\n\nArguments\n\nharray\nA complex HArray.\n\n\n\n\nReturns\nWill return an error if:\n- The HArray’s dtype is incompatible with the HFftPlanner’s dtype.\n- The HArray’s ndim is greater than 2.\n\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nfft_planner = HFftPlanner$new(harray$dtype())\nfft_planner$fft(harray)",
+    "crumbs": [
+      "Classes",
+      "HFftPlanner"
+    ]
+  },
+  {
+    "objectID": "contents/hfftplanner.html#ifft",
+    "href": "contents/hfftplanner.html#ifft",
+    "title": "HFftPlanner",
+    "section": "ifft",
+    "text": "ifft\nifft(harray: HArray)  source \n\nComputes the inverse fast fourier transform of a complex HArray.\nThe operation is done in-place.\nFFT (Fast Fourier Transform) refers to a way the discrete Fourier Transform (DFT) can be calculated efficiently, by using symmetries in the calculated terms. The symmetry is highest when n is a power of 2, and the transform is therefore most efficient for these sizes.\n\nThe function does not normalize outputs. Callers must manually normalize the results by scaling each element by 1/sqrt(n). Multiple normalization steps can be merged into one via pairwise multiplication, so when doing a forward FFT followed by an inverse callers can normalize once by scaling each element by 1/n.\n\n\nArguments\n\nharray\nA complex HArray.\n\n\n\n\nReturns\nWill return an error if:\n- The HArray’s dtype is incompatible with the HFftPlanner’s dtype.\n- The HArray’s ndim is greater than 2.\n\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1+1i,2+2i,3+3i,4+4i,5+5i,6+6i), c(3,2))\ndtype = HDataType$Complex32\nharray = HArray$new_from_values(arr, dtype)\nfft_planner = HFftPlanner$new(harray$dtype())\nfft_planner$ifft(harray)",
+    "crumbs": [
+      "Classes",
+      "HFftPlanner"
+    ]
+  },
+  {
+    "objectID": "contents/hfftplanner.html#dtype",
+    "href": "contents/hfftplanner.html#dtype",
+    "title": "HFftPlanner",
+    "section": "dtype",
+    "text": "dtype\ndtype() -&gt; HDataType  source \n\nGets the HFftPlanner’s dtype.\n\nReturns\nAn HDataType.\n\n\nExamples\narr = array(c(1+1i,2+2i,3+3i,4+4i,5+5i,6+6i), c(3,2))\ndtype = HDataType$Complex32\nharray = HArray$new_from_values(arr, dtype)\nfft_planner = HFftPlanner$new(harray$dtype())\nfft_planner$dtype()",
+    "crumbs": [
+      "Classes",
+      "HFftPlanner"
+    ]
+  },
+  {
+    "objectID": "contents/hfftplanner.html#print",
+    "href": "contents/hfftplanner.html#print",
+    "title": "HFftPlanner",
+    "section": "print",
+    "text": "print\nprint()  source \n\nPrint the HFftPlanner.\nDifferently from R’s normal behaviour, print doesn’t return the value invisibly.\n\n\nExamples\narr = array(c(1+1i,2+2i,3+3i,4+4i,5+5i,6+6i), c(3,2))\ndtype = HDataType$Complex32\nharray = HArray$new_from_values(arr, dtype)\nfft_planner = HFftPlanner$new(harray$dtype())\nfft_planner$print()\n\n# or similarly:\nprint(fft_planner)",
+    "crumbs": [
+      "Classes",
+      "HFftPlanner"
+    ]
+  },
+  {
+    "objectID": "contents/hrealfftplanner.html",
+    "href": "contents/hrealfftplanner.html",
+    "title": "HRealFftPlanner",
+    "section": "",
+    "text": "new(dtype: HDataType) -&gt; HRealFftPlanner  source \n\nCreates a new HRealFftPlanner instance.\nIf you plan on creating multiple FFT instances, it is recommended to reuse the same planner for all of them. This is because the planner re-uses internal data across FFT instances wherever possible, saving memory and reducing setup time. (FFT instances created with one planner will never re-use data and buffers with FFT instances created by a different planner)\nIn the constructor, the FftPlanner will detect available CPU features. If AVX, SSE, Neon, or WASM SIMD are available, it will set itself up to plan FFTs with the fastest available instruction set. If no SIMD instruction sets are available, the planner will seamlessly fall back to planning non-SIMD FFTs.\n\n\n\n\ndtype\nA float HDataType to indicate the dtype that the HFftPlanner will be working with.\n\n\n\n\n\nAn HRealFftPlanner.\nWill return an error if dtype is of a complex type.\n\n\n\n\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nreal_fft_planner = HRealFftPlanner$new(harray$dtype())",
+    "crumbs": [
+      "Classes",
+      "HRealFftPlanner"
+    ]
+  },
+  {
+    "objectID": "contents/hrealfftplanner.html#new",
+    "href": "contents/hrealfftplanner.html#new",
+    "title": "HRealFftPlanner",
+    "section": "",
+    "text": "new(dtype: HDataType) -&gt; HRealFftPlanner  source \n\nCreates a new HRealFftPlanner instance.\nIf you plan on creating multiple FFT instances, it is recommended to reuse the same planner for all of them. This is because the planner re-uses internal data across FFT instances wherever possible, saving memory and reducing setup time. (FFT instances created with one planner will never re-use data and buffers with FFT instances created by a different planner)\nIn the constructor, the FftPlanner will detect available CPU features. If AVX, SSE, Neon, or WASM SIMD are available, it will set itself up to plan FFTs with the fastest available instruction set. If no SIMD instruction sets are available, the planner will seamlessly fall back to planning non-SIMD FFTs.\n\n\n\n\ndtype\nA float HDataType to indicate the dtype that the HFftPlanner will be working with.\n\n\n\n\n\nAn HRealFftPlanner.\nWill return an error if dtype is of a complex type.\n\n\n\n\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nreal_fft_planner = HRealFftPlanner$new(harray$dtype())",
+    "crumbs": [
+      "Classes",
+      "HRealFftPlanner"
+    ]
+  },
+  {
+    "objectID": "contents/hrealfftplanner.html#rfft",
+    "href": "contents/hrealfftplanner.html#rfft",
+    "title": "HRealFftPlanner",
+    "section": "rfft",
+    "text": "rfft\nrfft(harray: HArray)  source \n\nComputes the fast fourier transform of a float HArray. Transforms a real signal of length N to a complex-valued spectrum of length N/2+1 (with N/2 rounded down).\nThe operation is not done in-place, although the same external pointer is used to store the new HArray.\nThe FFT of a real signal is Hermitian-symmetric, X[i] = conj(X[-i]) so the output contains only the positive frequencies below the Nyquist frequency.\nFFT (Fast Fourier Transform) refers to a way the discrete Fourier Transform (DFT) can be calculated efficiently, by using symmetries in the calculated terms. The symmetry is highest when n is a power of 2, and the transform is therefore most efficient for these sizes.\n\nThe function does not normalize outputs. Callers must manually normalize the results by scaling each element by 1/sqrt(n). Multiple normalization steps can be merged into one via pairwise multiplication, so when doing a forward FFT followed by an inverse callers can normalize once by scaling each element by 1/n.\n\nElements in the output are ordered by ascending frequency, with the first element corresponding to frequency 0.\n\n\nArguments\n\nharray\nA float HArray.\n\n\n\n\nReturns\nWill return an error if:\n- The HArray’s dtype is incompatible with the HFftPlanner’s dtype.\n- The HArray’s ndim is greater than 2.\n\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nreal_fft_planner = HRealFftPlanner$new(harray$dtype())\nreal_fft_planner$rfft(harray)",
+    "crumbs": [
+      "Classes",
+      "HRealFftPlanner"
+    ]
+  },
+  {
+    "objectID": "contents/hrealfftplanner.html#irfft",
+    "href": "contents/hrealfftplanner.html#irfft",
+    "title": "HRealFftPlanner",
+    "section": "irfft",
+    "text": "irfft\nirfft(harray: HArray, length: integer)  source \n\nComputes the inverse fast fourier transform of a complex HArray. Transforms a complex spectrum of length N/2+1 (with N/2 rounded down) to a real-valued signal of length N.\nThe operation is not done in-place, although the same external pointer is used to store the new HArray.\nThe FFT of a real signal is Hermitian-symmetric, X[i] = conj(X[-i]) so the output contains only the positive frequencies below the Nyquist frequency.\nFFT (Fast Fourier Transform) refers to a way the discrete Fourier Transform (DFT) can be calculated efficiently, by using symmetries in the calculated terms. The symmetry is highest when n is a power of 2, and the transform is therefore most efficient for these sizes.\n\nThe function does not normalize outputs. Callers must manually normalize the results by scaling each element by 1/sqrt(n). Multiple normalization steps can be merged into one via pairwise multiplication, so when doing a forward FFT followed by an inverse callers can normalize once by scaling each element by 1/n.\n\n\nArguments\n\nharray\nA complex HArray. The HArray’s dtype must be the complex equivalent of the HRealFftPlanner’s dtype. For example if HRealFftPlanner dtype is Float64, the HArray’s dtype must be Complex64.\n\nlength\nAn integer. The output length of the signal. Since the spectrum is N/2+1, the length can be N and N+1, if N is even, or can be N and N-1 if N is odd.\n\n\n\n\nReturns\nWill return an error if:\n- The HArray’s dtype is incompatible with the HFftPlanner’s dtype.\n- The HArray’s ndim is greater than 2.\n- The length argument is not compatible with the spectrum length.\n\n\n\nExamples\nlibrary(harmonium)\nr = as.double(sample(100, 4, replace = TRUE))\ni = as.double(sample(100, 3, replace = TRUE))\narr = array(complex(real=r, imaginary=c(0,i)), c(4,1))\ndtype = HDataType$Complex32\nharray = HArray$new_from_values(arr, dtype)\nreal_fft_planner = HRealFftPlanner$new(HDataType$Float32)\nreal_fft_planner$irfft(harray, 7L)",
+    "crumbs": [
+      "Classes",
+      "HRealFftPlanner"
+    ]
+  },
+  {
+    "objectID": "contents/hrealfftplanner.html#dtype",
+    "href": "contents/hrealfftplanner.html#dtype",
+    "title": "HRealFftPlanner",
+    "section": "dtype",
+    "text": "dtype\ndtype() -&gt; HDataType  source \n\nGets the HRealFftPlanner’s dtype.\n\nReturns\nAn HDataType.\n\n\nExamples\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nreal_fft_planner = HRealFftPlanner$new(harray$dtype())\nreal_fft_planner$dtype()",
+    "crumbs": [
+      "Classes",
+      "HRealFftPlanner"
+    ]
+  },
+  {
+    "objectID": "contents/hrealfftplanner.html#print",
+    "href": "contents/hrealfftplanner.html#print",
+    "title": "HRealFftPlanner",
+    "section": "print",
+    "text": "print\nprint()  source \n\nPrint the HRealFftPlanner.\nDifferently from R’s normal behaviour, print doesn’t return the value invisibly.\n\n\nExamples\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nreal_fft_planner = HRealFftPlanner$new(harray$dtype())\nreal_fft_planner$print()\n\n# or similarly:\nprint(real_fft_planner)",
+    "crumbs": [
+      "Classes",
+      "HRealFftPlanner"
     ]
   },
   {
@@ -671,523 +960,190 @@
     ]
   },
   {
-    "objectID": "contents/hwindowtype.html",
-    "href": "contents/hwindowtype.html",
-    "title": "HWindowType",
+    "objectID": "contents/hpolynomialdegree.html",
+    "href": "contents/hpolynomialdegree.html",
+    "title": "HPolynomialDegree",
     "section": "",
-    "text": "A window type representation.\nSupports Blackman, Blackman2, BlackmanHarris, BlackmanHarris2, Hann and Hann2 types.",
+    "text": "Degree of the polynomial used for interpolation. A higher degree gives a higher quality result, while taking longer to compute.",
     "crumbs": [
       "Classes",
-      "HWindowType"
+      "HPolynomialDegree"
     ]
   },
   {
-    "objectID": "contents/hwindowtype.html#print",
-    "href": "contents/hwindowtype.html#print",
-    "title": "HWindowType",
+    "objectID": "contents/hpolynomialdegree.html#print",
+    "href": "contents/hpolynomialdegree.html#print",
+    "title": "HPolynomialDegree",
     "section": "print",
-    "text": "print\nprint()  source \n\nPrints the HWindowType.\nDifferently from R’s behaviour, print doesn’t return the value invisibly.\n\n\nExamples\nwindowtype = HWindowType$Blackman\nwindowtype$print()\n\n# or similarly:\nprint(windowtype)",
+    "text": "print\nprint()  source \n\nPrints the HPolynomialDegree.\nDifferently from R’s behaviour, print doesn’t return the value invisibly.\n\n\nExamples\npol_deg = HPolynomialDegree$Complex64\npol_deg$print()\n\n# or similarly:\nprint(pol_deg)",
     "crumbs": [
       "Classes",
-      "HWindowType"
+      "HPolynomialDegree"
     ]
   },
   {
-    "objectID": "contents/hwindowtype.html#eq",
-    "href": "contents/hwindowtype.html#eq",
-    "title": "HWindowType",
+    "objectID": "contents/hpolynomialdegree.html#eq",
+    "href": "contents/hpolynomialdegree.html#eq",
+    "title": "HPolynomialDegree",
     "section": "eq",
-    "text": "eq\neq(other: HWindowType) -&gt; bool  source \n\nEquality with another HWindowType.\n\nArguments\n\nother\nAn HWindowType.\n\n\n\n\nReturns\nA bool.\n\n\nExamples\nwindowtype1 = HWindowType$Blackman\nwindowtype2 = HWindowType$Blackman\nwindowtype1$eq(windowtype2) # TRUE\n\n# or similarly:\nwindowtype1 == windowtype2",
+    "text": "eq\neq(other: HPolynomialDegree) -&gt; bool  source \n\nEquality with another HPolynomialDegree.\n\nArguments\n\nother\nAn HPolynomialDegree.\n\n\n\n\nReturns\nA bool.\n\n\nExamples\npol_deg1 = HPolynomialDegree$quintic\npol_deg2 = HPolynomialDegree$quintic\npol_deg1$eq(pol_deg2) # TRUE\n\n# or similarly:\npol_deg1 == pol_deg2",
     "crumbs": [
       "Classes",
-      "HWindowType"
+      "HPolynomialDegree"
     ]
   },
   {
-    "objectID": "contents/hwindowtype.html#ne",
-    "href": "contents/hwindowtype.html#ne",
-    "title": "HWindowType",
+    "objectID": "contents/hpolynomialdegree.html#ne",
+    "href": "contents/hpolynomialdegree.html#ne",
+    "title": "HPolynomialDegree",
     "section": "ne",
-    "text": "ne\nne(other: HWindowType) -&gt; bool  source \n\nDifference with another HWindowType.\n\nArguments\n\nother\nAn HWindowType.\n\n\n\n\nReturns\nA bool.\n\n\nExamples\nwindowtype1 = HWindowType$Blackman\nwindowtype2 = HWindowType$Blackman\nwindowtype1$ne(windowtype2) # FALSE\n\n# or similarly:\nwindowtype1 != windowtype2",
+    "text": "ne\nne(other: HPolynomialDegree) -&gt; bool  source \n\nDifference with another HPolynomialDegree.\n\nArguments\n\nother\nAn HPolynomialDegree.\n\n\n\n\nReturns\nA bool.\n\n\nExamples\npol_deg1 = HPolynomialDegree$quintic\npol_deg2 = HPolynomialDegree$nearest\npol_deg1$ne(pol_deg2) # TRUE\n\n# or similarly:\npol_deg1 != pol_deg2",
     "crumbs": [
       "Classes",
-      "HWindowType"
+      "HPolynomialDegree"
     ]
   },
   {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
+    "objectID": "contents/hinterpolationtype.html",
+    "href": "contents/hinterpolationtype.html",
+    "title": "HInterpolationType",
     "section": "",
-    "text": "About this site"
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Harmonium",
-    "section": "",
-    "text": "Harmonium is an audio interface inspired by Python’s librosa.\n\n\nBasic usage\nLoad the library\nlibrary(harmonium)\nCreate an HArray from an existing array\narr = matrix(c(1,2,3,4,5,6,7,8,9,10,11,12), ncol = 2)\ndtype = HDataType$float64\nharray = HArray$new_from_values(arr, dtype = dtype)\nprint(harray)\nOr decode from an existing audio file\nl = HFile$decode(\"file.wav\", dtype)\nharray = l[[0]]\nsr = l[[1]] # sampling rate\nprint(harray)\nVerify the dimensions\nharray$len()\nHAudioOp$nchannels(harray)\nHAudioOp$nframes(harray)\nVerify the data type\nharray$dtype()\nConvert to an R array\nharray$collect()\nConvert to mono\nHAudioOp$to_mono(harray)\nResample the haudio\nsr_in = 48000L\nsr_out = 22050L\nnbr_channels = HAudioOp$nchannels(harray)\ndtype = HDataType$float64\nres_type = HResamplerType$fft_fixed_in\nresampler = HResampler$new_fft(sr_in, sr_out, nbr_channels, res_type)\nhresampler$process(harray)\nPlay the haudio\nhaudiosink = HAudioSink$new()\nhaudiosink$append_from_harray(harray)\nOr play directly from the file\nhaudiosink$append_from_file(\"file.wav\")\nGet the number of audios to be played\nhaudiosink$len()\nDouble the audio volume and the playback speed\nhaudiosink$set_volume(2)\nhaudiosink$set_speed(2)\nPause the playback and confirms it is paused\nhaudiosink$pause()\nhaudiosink$is_paused()\nIt is also possible to get metadata from an audio file\nmetatadatype = HMetadataType$text\nHFile$metadata(\"file.wav\", metatadatype)\nAnd to get some audio parameters directly from a file\nparams = HFile$params(\"file.wav\")\nsr = params[[1]]\nnframes = params[[2]]\nnchannels = params[[3]]\nduration = params[[4]]"
-  },
-  {
-    "objectID": "contents/hrealfftplanner.html",
-    "href": "contents/hrealfftplanner.html",
-    "title": "HRealFftPlanner",
-    "section": "",
-    "text": "new(dtype: HDataType) -&gt; HRealFftPlanner  source \n\nCreates a new HRealFftPlanner instance.\nIf you plan on creating multiple FFT instances, it is recommended to reuse the same planner for all of them. This is because the planner re-uses internal data across FFT instances wherever possible, saving memory and reducing setup time. (FFT instances created with one planner will never re-use data and buffers with FFT instances created by a different planner)\nIn the constructor, the FftPlanner will detect available CPU features. If AVX, SSE, Neon, or WASM SIMD are available, it will set itself up to plan FFTs with the fastest available instruction set. If no SIMD instruction sets are available, the planner will seamlessly fall back to planning non-SIMD FFTs.\n\n\n\n\ndtype\nA float HDataType to indicate the dtype that the HFftPlanner will be working with.\n\n\n\n\n\nAn HRealFftPlanner.\nWill return an error if dtype is of a complex type.\n\n\n\n\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nreal_fft_planner = HRealFftPlanner$new(harray$dtype())",
+    "text": "A interpolation type representation.\nSupports Cubic, Linear, Quadratic and Nearest.",
     "crumbs": [
       "Classes",
-      "HRealFftPlanner"
+      "HInterpolationType"
     ]
   },
   {
-    "objectID": "contents/hrealfftplanner.html#new",
-    "href": "contents/hrealfftplanner.html#new",
-    "title": "HRealFftPlanner",
-    "section": "",
-    "text": "new(dtype: HDataType) -&gt; HRealFftPlanner  source \n\nCreates a new HRealFftPlanner instance.\nIf you plan on creating multiple FFT instances, it is recommended to reuse the same planner for all of them. This is because the planner re-uses internal data across FFT instances wherever possible, saving memory and reducing setup time. (FFT instances created with one planner will never re-use data and buffers with FFT instances created by a different planner)\nIn the constructor, the FftPlanner will detect available CPU features. If AVX, SSE, Neon, or WASM SIMD are available, it will set itself up to plan FFTs with the fastest available instruction set. If no SIMD instruction sets are available, the planner will seamlessly fall back to planning non-SIMD FFTs.\n\n\n\n\ndtype\nA float HDataType to indicate the dtype that the HFftPlanner will be working with.\n\n\n\n\n\nAn HRealFftPlanner.\nWill return an error if dtype is of a complex type.\n\n\n\n\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nreal_fft_planner = HRealFftPlanner$new(harray$dtype())",
-    "crumbs": [
-      "Classes",
-      "HRealFftPlanner"
-    ]
-  },
-  {
-    "objectID": "contents/hrealfftplanner.html#rfft",
-    "href": "contents/hrealfftplanner.html#rfft",
-    "title": "HRealFftPlanner",
-    "section": "rfft",
-    "text": "rfft\nrfft(harray: HArray)  source \n\nComputes the fast fourier transform of a float HArray. Transforms a real signal of length N to a complex-valued spectrum of length N/2+1 (with N/2 rounded down).\nThe operation is not done in-place, although the same external pointer is used to store the new HArray.\nThe FFT of a real signal is Hermitian-symmetric, X[i] = conj(X[-i]) so the output contains only the positive frequencies below the Nyquist frequency.\nFFT (Fast Fourier Transform) refers to a way the discrete Fourier Transform (DFT) can be calculated efficiently, by using symmetries in the calculated terms. The symmetry is highest when n is a power of 2, and the transform is therefore most efficient for these sizes.\n\nThe function does not normalize outputs. Callers must manually normalize the results by scaling each element by 1/sqrt(n). Multiple normalization steps can be merged into one via pairwise multiplication, so when doing a forward FFT followed by an inverse callers can normalize once by scaling each element by 1/n.\n\nElements in the output are ordered by ascending frequency, with the first element corresponding to frequency 0.\n\n\nArguments\n\nharray\nA float HArray.\n\n\n\n\nReturns\nWill return an error if:\n- The HArray’s dtype is incompatible with the HFftPlanner’s dtype.\n- The HArray’s ndim is greater than 2.\n\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nreal_fft_planner = HRealFftPlanner$new(harray$dtype())\nreal_fft_planner$rfft(harray)",
-    "crumbs": [
-      "Classes",
-      "HRealFftPlanner"
-    ]
-  },
-  {
-    "objectID": "contents/hrealfftplanner.html#irfft",
-    "href": "contents/hrealfftplanner.html#irfft",
-    "title": "HRealFftPlanner",
-    "section": "irfft",
-    "text": "irfft\nirfft(harray: HArray, length: integer)  source \n\nComputes the inverse fast fourier transform of a complex HArray. Transforms a complex spectrum of length N/2+1 (with N/2 rounded down) to a real-valued signal of length N.\nThe operation is not done in-place, although the same external pointer is used to store the new HArray.\nThe FFT of a real signal is Hermitian-symmetric, X[i] = conj(X[-i]) so the output contains only the positive frequencies below the Nyquist frequency.\nFFT (Fast Fourier Transform) refers to a way the discrete Fourier Transform (DFT) can be calculated efficiently, by using symmetries in the calculated terms. The symmetry is highest when n is a power of 2, and the transform is therefore most efficient for these sizes.\n\nThe function does not normalize outputs. Callers must manually normalize the results by scaling each element by 1/sqrt(n). Multiple normalization steps can be merged into one via pairwise multiplication, so when doing a forward FFT followed by an inverse callers can normalize once by scaling each element by 1/n.\n\n\nArguments\n\nharray\nA complex HArray. The HArray’s dtype must be the complex equivalent of the HRealFftPlanner’s dtype. For example if HRealFftPlanner dtype is Float64, the HArray’s dtype must be Complex64.\n\nlength\nAn integer. The output length of the signal. Since the spectrum is N/2+1, the length can be N and N+1, if N is even, or can be N and N-1 if N is odd.\n\n\n\n\nReturns\nWill return an error if:\n- The HArray’s dtype is incompatible with the HFftPlanner’s dtype.\n- The HArray’s ndim is greater than 2.\n- The length argument is not compatible with the spectrum length.\n\n\n\nExamples\nlibrary(harmonium)\nr = as.double(sample(100, 4, replace = TRUE))\ni = as.double(sample(100, 3, replace = TRUE))\narr = array(complex(real=r, imaginary=c(0,i)), c(4,1))\ndtype = HDataType$Complex32\nharray = HArray$new_from_values(arr, dtype)\nreal_fft_planner = HRealFftPlanner$new(HDataType$Float32)\nreal_fft_planner$irfft(harray, 7L)",
-    "crumbs": [
-      "Classes",
-      "HRealFftPlanner"
-    ]
-  },
-  {
-    "objectID": "contents/hrealfftplanner.html#dtype",
-    "href": "contents/hrealfftplanner.html#dtype",
-    "title": "HRealFftPlanner",
-    "section": "dtype",
-    "text": "dtype\ndtype() -&gt; HDataType  source \n\nGets the HRealFftPlanner’s dtype.\n\nReturns\nAn HDataType.\n\n\nExamples\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nreal_fft_planner = HRealFftPlanner$new(harray$dtype())\nreal_fft_planner$dtype()",
-    "crumbs": [
-      "Classes",
-      "HRealFftPlanner"
-    ]
-  },
-  {
-    "objectID": "contents/hrealfftplanner.html#print",
-    "href": "contents/hrealfftplanner.html#print",
-    "title": "HRealFftPlanner",
+    "objectID": "contents/hinterpolationtype.html#print",
+    "href": "contents/hinterpolationtype.html#print",
+    "title": "HInterpolationType",
     "section": "print",
-    "text": "print\nprint()  source \n\nPrint the HRealFftPlanner.\nDifferently from R’s normal behaviour, print doesn’t return the value invisibly.\n\n\nExamples\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nreal_fft_planner = HRealFftPlanner$new(harray$dtype())\nreal_fft_planner$print()\n\n# or similarly:\nprint(real_fft_planner)",
+    "text": "print\nprint()  source \n\nPrints the HInterpolationType.\nDifferently from R’s behaviour, print doesn’t return the value invisibly.\n\n\nExamples\nlibrary(harmonium)\ninterpolationtype = HInterpolationType$Cubic\ninterpolationtype$print()\n\n# or similarly:\nprint(interpolationtype)",
     "crumbs": [
       "Classes",
-      "HRealFftPlanner"
+      "HInterpolationType"
     ]
   },
   {
-    "objectID": "contents/hfftplanner.html",
-    "href": "contents/hfftplanner.html",
-    "title": "HFftPlanner",
-    "section": "",
-    "text": "new(dtype: HDataType) -&gt; HFftPlanner  source \n\nCreates a new HFftPlanner instance.\nIf you plan on creating multiple FFT instances, it is recommended to reuse the same planner for all of them. This is because the planner re-uses internal data across FFT instances wherever possible, saving memory and reducing setup time. (FFT instances created with one planner will never re-use data and buffers with FFT instances created by a different planner)\nIn the constructor, the FftPlanner will detect available CPU features. If AVX, SSE, Neon, or WASM SIMD are available, it will set itself up to plan FFTs with the fastest available instruction set. If no SIMD instruction sets are available, the planner will seamlessly fall back to planning non-SIMD FFTs.\n\n\n\n\ndtype\nA complex HDataType to indicate the dtype that the HFftPlanner will be working with.\n\n\n\n\n\nAn HFftPlanner.\nWill return an error if dtype is of a float type.\n\n\n\n\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nfft_planner = HFftPlanner$new(harray$dtype())",
-    "crumbs": [
-      "Classes",
-      "HFftPlanner"
-    ]
-  },
-  {
-    "objectID": "contents/hfftplanner.html#new",
-    "href": "contents/hfftplanner.html#new",
-    "title": "HFftPlanner",
-    "section": "",
-    "text": "new(dtype: HDataType) -&gt; HFftPlanner  source \n\nCreates a new HFftPlanner instance.\nIf you plan on creating multiple FFT instances, it is recommended to reuse the same planner for all of them. This is because the planner re-uses internal data across FFT instances wherever possible, saving memory and reducing setup time. (FFT instances created with one planner will never re-use data and buffers with FFT instances created by a different planner)\nIn the constructor, the FftPlanner will detect available CPU features. If AVX, SSE, Neon, or WASM SIMD are available, it will set itself up to plan FFTs with the fastest available instruction set. If no SIMD instruction sets are available, the planner will seamlessly fall back to planning non-SIMD FFTs.\n\n\n\n\ndtype\nA complex HDataType to indicate the dtype that the HFftPlanner will be working with.\n\n\n\n\n\nAn HFftPlanner.\nWill return an error if dtype is of a float type.\n\n\n\n\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nfft_planner = HFftPlanner$new(harray$dtype())",
-    "crumbs": [
-      "Classes",
-      "HFftPlanner"
-    ]
-  },
-  {
-    "objectID": "contents/hfftplanner.html#fft",
-    "href": "contents/hfftplanner.html#fft",
-    "title": "HFftPlanner",
-    "section": "fft",
-    "text": "fft\nfft(harray: HArray)  source \n\nComputes the fast fourier transform of a complex HArray.\nThe operation is done in-place.\nFFT (Fast Fourier Transform) refers to a way the discrete Fourier Transform (DFT) can be calculated efficiently, by using symmetries in the calculated terms. The symmetry is highest when n is a power of 2, and the transform is therefore most efficient for these sizes.\n\nThe function does not normalize outputs. Callers must manually normalize the results by scaling each element by 1/sqrt(n). Multiple normalization steps can be merged into one via pairwise multiplication, so when doing a forward FFT followed by an inverse callers can normalize once by scaling each element by 1/n.\n\nElements in the output are ordered by ascending frequency, with the first element corresponding to frequency 0.\n\n\nArguments\n\nharray\nA complex HArray.\n\n\n\n\nReturns\nWill return an error if:\n- The HArray’s dtype is incompatible with the HFftPlanner’s dtype.\n- The HArray’s ndim is greater than 2.\n\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nfft_planner = HFftPlanner$new(harray$dtype())\nfft_planner$fft(harray)",
-    "crumbs": [
-      "Classes",
-      "HFftPlanner"
-    ]
-  },
-  {
-    "objectID": "contents/hfftplanner.html#ifft",
-    "href": "contents/hfftplanner.html#ifft",
-    "title": "HFftPlanner",
-    "section": "ifft",
-    "text": "ifft\nifft(harray: HArray)  source \n\nComputes the inverse fast fourier transform of a complex HArray.\nThe operation is done in-place.\nFFT (Fast Fourier Transform) refers to a way the discrete Fourier Transform (DFT) can be calculated efficiently, by using symmetries in the calculated terms. The symmetry is highest when n is a power of 2, and the transform is therefore most efficient for these sizes.\n\nThe function does not normalize outputs. Callers must manually normalize the results by scaling each element by 1/sqrt(n). Multiple normalization steps can be merged into one via pairwise multiplication, so when doing a forward FFT followed by an inverse callers can normalize once by scaling each element by 1/n.\n\n\nArguments\n\nharray\nA complex HArray.\n\n\n\n\nReturns\nWill return an error if:\n- The HArray’s dtype is incompatible with the HFftPlanner’s dtype.\n- The HArray’s ndim is greater than 2.\n\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1+1i,2+2i,3+3i,4+4i,5+5i,6+6i), c(3,2))\ndtype = HDataType$Complex32\nharray = HArray$new_from_values(arr, dtype)\nfft_planner = HFftPlanner$new(harray$dtype())\nfft_planner$ifft(harray)",
-    "crumbs": [
-      "Classes",
-      "HFftPlanner"
-    ]
-  },
-  {
-    "objectID": "contents/hfftplanner.html#dtype",
-    "href": "contents/hfftplanner.html#dtype",
-    "title": "HFftPlanner",
-    "section": "dtype",
-    "text": "dtype\ndtype() -&gt; HDataType  source \n\nGets the HFftPlanner’s dtype.\n\nReturns\nAn HDataType.\n\n\nExamples\narr = array(c(1+1i,2+2i,3+3i,4+4i,5+5i,6+6i), c(3,2))\ndtype = HDataType$Complex32\nharray = HArray$new_from_values(arr, dtype)\nfft_planner = HFftPlanner$new(harray$dtype())\nfft_planner$dtype()",
-    "crumbs": [
-      "Classes",
-      "HFftPlanner"
-    ]
-  },
-  {
-    "objectID": "contents/hfftplanner.html#print",
-    "href": "contents/hfftplanner.html#print",
-    "title": "HFftPlanner",
-    "section": "print",
-    "text": "print\nprint()  source \n\nPrint the HFftPlanner.\nDifferently from R’s normal behaviour, print doesn’t return the value invisibly.\n\n\nExamples\narr = array(c(1+1i,2+2i,3+3i,4+4i,5+5i,6+6i), c(3,2))\ndtype = HDataType$Complex32\nharray = HArray$new_from_values(arr, dtype)\nfft_planner = HFftPlanner$new(harray$dtype())\nfft_planner$print()\n\n# or similarly:\nprint(fft_planner)",
-    "crumbs": [
-      "Classes",
-      "HFftPlanner"
-    ]
-  },
-  {
-    "objectID": "contents/hdecoderstream.html",
-    "href": "contents/hdecoderstream.html",
-    "title": "HDecoderStream",
-    "section": "",
-    "text": "An iterator that decodes audio in streams.",
-    "crumbs": [
-      "Classes",
-      "HDecoderStream"
-    ]
-  },
-  {
-    "objectID": "contents/hdecoderstream.html#stream",
-    "href": "contents/hdecoderstream.html#stream",
-    "title": "HDecoderStream",
-    "section": "stream",
-    "text": "stream\nstream() -&gt; HArray  source \n\nGets the next wave of frames as an HArray.\nReturns an error if it’s end of stream or if an error ocurred in the decoding process.\n\n\nReturns\nThe decoded audio as a float HArray.\nThe number of frames streamed is the one used as input in the creation of HDecoderStream.\n\n\n\nExamples\nlibrary(harmonium)\nfpath = \"../../../testfiles/gs-16b-2c-44100hz.flac\"\ndtype = HDataType$Float32\nframes = 1000L\nhdecoder_stream = HFile$decode_stream(fpath, frames, dtype)\nhdecoder_stream$stream()",
-    "crumbs": [
-      "Classes",
-      "HDecoderStream"
-    ]
-  },
-  {
-    "objectID": "contents/hsincinterpolationparameters.html",
-    "href": "contents/hsincinterpolationparameters.html",
-    "title": "HSincInterpolationParameters",
-    "section": "",
-    "text": "Parameters to be used for sinc interpolation.",
-    "crumbs": [
-      "Classes",
-      "HSincInterpolationParameters"
-    ]
-  },
-  {
-    "objectID": "contents/hsincinterpolationparameters.html#new",
-    "href": "contents/hsincinterpolationparameters.html#new",
-    "title": "HSincInterpolationParameters",
-    "section": "new",
-    "text": "new\nnew(sinc_len: integer, f_cutoff: double, oversampling_factor: integer, interpolation: HInterpolationType, window: HWindowType) -&gt; HSincInterpolationParameters  source \n\nCreates a new HSincInterpolationParameters.\n\n\nArguments\n\nsinc_len\nAn integer. Length of the windowed sinc interpolation filter. Higher values can allow a higher cut-off frequency leading to less high frequency roll-off at the expense of higher cpu usage. A good starting point should be 256. The value will be rounded up to the nearest multiple of 8.\n\nf_cutoff\nA double. Relative cutoff frequency of the sinc interpolation filter (relative to the lowest one of fs_in/2 or fs_out/2). Start at 0.95, and increase if needed.\n\noversampling_factor\nAn integer. The number of intermediate points to use for interpolation. Higher values use more memory for storing the sinc filters. Only the points actually needed are calculated during processing so a larger number does not directly lead to higher cpu usage. A lower value helps in keeping the sincs in the cpu cache. A good starting point should be 128.\n\ninterpolation\nAn HInterpolationType. The interpolation type.\n\nwindow\nAn HWindowType. The window function to use.\n\n\n\n\nReturns\nAn HSincInterpolationParameters.\n\n\n\nExamples\nsinc_len = 256L\nf_cutoff = 0.95\noversampling_factor = 128L\ninterpolation = HInterpolationType$Linear\nwindow = HWindowType$Blackman\n\nhsincinterpolationparameters = HSincInterpolationParameters$new(sinc_len, f_cutoff, oversampling_factor, interpolation, window)",
-    "crumbs": [
-      "Classes",
-      "HSincInterpolationParameters"
-    ]
-  },
-  {
-    "objectID": "contents/hsincinterpolationparameters.html#print",
-    "href": "contents/hsincinterpolationparameters.html#print",
-    "title": "HSincInterpolationParameters",
-    "section": "print",
-    "text": "print\nprint()  source \n\nPrints the HSincInterpolationParameters.\nDifferently from R’s behaviour, print doesn’t return the value invisibly.\n\n\nExamples\nsinc_len = 256L\nf_cutoff = 0.95\noversampling_factor = 128L\ninterpolation = HInterpolationType$Linear\nwindow = HWindowType$Blackman\n\nhsincinterpolationparameters = HSincInterpolationParameters$new(sinc_len, f_cutoff, oversampling_factor, interpolation, window)\nhsincinterpolationparameters$print()\n\n# or similarly:\nprint(hsincinterpolationparameters)",
-    "crumbs": [
-      "Classes",
-      "HSincInterpolationParameters"
-    ]
-  },
-  {
-    "objectID": "contents/harray.html",
-    "href": "contents/harray.html",
-    "title": "HArray",
-    "section": "",
-    "text": "An array representation.",
-    "crumbs": [
-      "Classes",
-      "HArray"
-    ]
-  },
-  {
-    "objectID": "contents/harray.html#new_from_values",
-    "href": "contents/harray.html#new_from_values",
-    "title": "HArray",
-    "section": "new_from_values",
-    "text": "new_from_values\nnew_from_values(arr: array, dtype: HDataType) -&gt; HArray  source \n\nCreates a new HArray from an R array.\n\n\nArguments\n\narr\nA double or complex array.\ndtype\nAn HDataType to indicate which type of HArray to be created.\nFor float dtypes, the atomic vector must be a double. For complex dtypes, a complex atomic vector.\n\n\n\nReturns\nAn HArray.\n\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nHArray$new_from_values(arr, dtype)",
-    "crumbs": [
-      "Classes",
-      "HArray"
-    ]
-  },
-  {
-    "objectID": "contents/harray.html#len",
-    "href": "contents/harray.html#len",
-    "title": "HArray",
-    "section": "len",
-    "text": "len\nlen() -&gt; integer  source \n\nReturns the number of elements of this Harray.\n\n\nReturns\nAn integer.\n\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nharray$len()",
-    "crumbs": [
-      "Classes",
-      "HArray"
-    ]
-  },
-  {
-    "objectID": "contents/harray.html#shape",
-    "href": "contents/harray.html#shape",
-    "title": "HArray",
-    "section": "shape",
-    "text": "shape\nshape() -&gt; integers  source \n\nReturns the shape of this HArray.\n\n\nReturns\nA vector of integers.\n\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nharray$shape()",
-    "crumbs": [
-      "Classes",
-      "HArray"
-    ]
-  },
-  {
-    "objectID": "contents/harray.html#ndim",
-    "href": "contents/harray.html#ndim",
-    "title": "HArray",
-    "section": "ndim",
-    "text": "ndim\nndim() -&gt; integer  source \n\nReturns the number of dimensions of this HArray.\n\n\nReturns\nAn integer.\n\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nharray$ndim()",
-    "crumbs": [
-      "Classes",
-      "HArray"
-    ]
-  },
-  {
-    "objectID": "contents/harray.html#slice",
-    "href": "contents/harray.html#slice",
-    "title": "HArray",
-    "section": "slice",
-    "text": "slice\nslice(range: list[atomicvector]) -&gt; HArray  source \n\nSlices the HArray.\nThis operation has a COW (clone-on-write) behaviour. The created slice shares the inner data with the original array until one of them is modified.\n\n\nArguments\n\nrange\nA list of vectors of integers. The number of vectors in the list must be equal to the number of dimensions in the original HArray as they represent the slice information for each axis.\nEach vector must be composed of 3 elements: [start, end, step]. All 3 values can be positive or negative, although step can’t be 0.\n\n\n\n\nReturns\nAn HArray.\n\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nharray$slice(list(c(0L, 2L, 1L), c(1L, 3L, 1L)))",
-    "crumbs": [
-      "Classes",
-      "HArray"
-    ]
-  },
-  {
-    "objectID": "contents/harray.html#print",
-    "href": "contents/harray.html#print",
-    "title": "HArray",
-    "section": "print",
-    "text": "print\nprint()  source \n\nPrints the HArray.\nDifferently from R’s normal behaviour, print doesn’t return the value invisibly.\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nharray$print()\n\n# or similarly:\nprint(harray)",
-    "crumbs": [
-      "Classes",
-      "HArray"
-    ]
-  },
-  {
-    "objectID": "contents/harray.html#eq",
-    "href": "contents/harray.html#eq",
-    "title": "HArray",
+    "objectID": "contents/hinterpolationtype.html#eq",
+    "href": "contents/hinterpolationtype.html#eq",
+    "title": "HInterpolationType",
     "section": "eq",
-    "text": "eq\neq(other: HArray) -&gt; bool  source \n\nEquality with another HArray.\nThe comparison only checks if the dtype and the values are the same. To compare if the underlying data is the same in memory, check mem_adress.\n\n\nArguments\n\nother\nAn HArray.\n\n\n\n\nReturns\nA bool.\n\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray1 = HArray$new_from_values(arr, dtype)\n\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray2 = HArray$new_from_values(arr, dtype)\n\nharray1$eq(harray2) # TRUE\n\n# or similarly:\nharray1 == harray2",
+    "text": "eq\neq(other: HInterpolationType) -&gt; bool  source \n\nEquality with another HInterpolationType.\n\nArguments\n\nother\nAn HInterpolationType.\n\n\n\n\nReturns\nA bool.\n\n\nExamples\nlibrary(harmonium)\ninterpolationtype1 = HInterpolationType$Cubic\ninterpolationtype2 = HInterpolationType$Cubic\ninterpolationtype1$eq(interpolationtype2) # TRUE\n\n# or similarly:\ninterpolationtype1 == interpolationtype2",
     "crumbs": [
       "Classes",
-      "HArray"
+      "HInterpolationType"
     ]
   },
   {
-    "objectID": "contents/harray.html#ne",
-    "href": "contents/harray.html#ne",
-    "title": "HArray",
+    "objectID": "contents/hinterpolationtype.html#ne",
+    "href": "contents/hinterpolationtype.html#ne",
+    "title": "HInterpolationType",
     "section": "ne",
-    "text": "ne\nne(other: HArray) -&gt; bool  source \n\nDifference with another HArray.\nThe comparison only checks if the dtype and the values are the same. To compare if the underlying data is the same in memory, check mem_adress.\n\nArguments\n\nother\nAn HArray.\n\n\n\nReturns\nA bool.\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray1 = HArray$new_from_values(arr, dtype)\n\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray2 = HArray$new_from_values(arr, dtype)\n\nharray1$ne(harray2) # FALSE\n\n# or similarly:\nharray1 != harray2",
+    "text": "ne\nne(other: HInterpolationType) -&gt; bool  source \n\nDifference with another HInterpolationType.\n\nArguments\n\nother\nAn HInterpolationType.\n\n\n\n\nReturns\nA bool.\n\n\nExamples\nlibrary(harmonium)\ninterpolationtype1 = HInterpolationType$Cubic\ninterpolationtype2 = HInterpolationType$Cubic\ninterpolationtype1$ne(interpolationtype2) # FALSE\n\n# or similarly:\ninterpolationtype1 != interpolationtype2",
     "crumbs": [
       "Classes",
-      "HArray"
+      "HInterpolationType"
     ]
   },
   {
-    "objectID": "contents/harray.html#clone",
-    "href": "contents/harray.html#clone",
-    "title": "HArray",
-    "section": "clone",
-    "text": "clone\nclone() -&gt; HArray  source \n\nCreates a new HArray, with the underlying data pointing to the same place in memory.\n\nReturns\nAn HArray.\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray1 = HArray$new_from_values(arr, dtype)\nharray2 = harray1$clone()\nharray1 == harray2 # TRUE",
-    "crumbs": [
-      "Classes",
-      "HArray"
-    ]
-  },
-  {
-    "objectID": "contents/harray.html#collect",
-    "href": "contents/harray.html#collect",
-    "title": "HArray",
-    "section": "collect",
-    "text": "collect\ncollect() -&gt; array  source \n\nCreates an R array from an HArray. The type of the array created (double or complex) will depend on the HArray’s dtype.\n\nReturns\nAn array of type double or complex.\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nharray$collect()",
-    "crumbs": [
-      "Classes",
-      "HArray"
-    ]
-  },
-  {
-    "objectID": "contents/harray.html#dtype",
-    "href": "contents/harray.html#dtype",
-    "title": "HArray",
-    "section": "dtype",
-    "text": "dtype\ndtype() -&gt; HDataType  source \n\nGets the HArray’s dtype as an HDataType.\n\nReturns\nAn HDataType.\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nharray$dtype()",
-    "crumbs": [
-      "Classes",
-      "HArray"
-    ]
-  },
-  {
-    "objectID": "contents/harray.html#is_shared",
-    "href": "contents/harray.html#is_shared",
-    "title": "HArray",
-    "section": "is_shared",
-    "text": "is_shared\nis_shared() -&gt; bool  source \n\nChecks if the object is shared.\nSince HArray has a COW (clone-on-write) behaviour, this function is useful to check if a new object will be created or if the change will be done in-place.\n\n\nReturns\nA bool.\n\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray1 = HArray$new_from_values(arr, dtype)\nharray1$is_shared() # FALSE.\n\nharray2 = harray1$clone()\nharray$is_shared() # TRUE, HArray object shared with harray2.",
-    "crumbs": [
-      "Classes",
-      "HArray"
-    ]
-  },
-  {
-    "objectID": "contents/harray.html#mem_adress",
-    "href": "contents/harray.html#mem_adress",
-    "title": "HArray",
-    "section": "mem_adress",
-    "text": "mem_adress\nmem_adress() -&gt; string  source \n\nThe memory adress of the first element of the inner array.\nThis is useful to check if different objects share the same underlying data.\n\n\nReturns\nA string.\n\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nharray$mem_adress()",
-    "crumbs": [
-      "Classes",
-      "HArray"
-    ]
-  },
-  {
-    "objectID": "contents/harray.html#invalidate",
-    "href": "contents/harray.html#invalidate",
-    "title": "HArray",
-    "section": "invalidate",
-    "text": "invalidate\ninvalidate()  source \n\nReplaces the inner value of the external pointer, invalidating it.\nThis function is useful to remove one of the shared references of the inner pointer in rust.\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nharray$invalidate()",
-    "crumbs": [
-      "Classes",
-      "HArray"
-    ]
-  },
-  {
-    "objectID": "contents/hdatatype.html",
-    "href": "contents/hdatatype.html",
-    "title": "HDataType",
+    "objectID": "contents/hwindow.html",
+    "href": "contents/hwindow.html",
+    "title": "HWindow",
     "section": "",
-    "text": "A type representation.\nSupports Float32, Float64, Complex32 and Complex64 types.",
+    "text": "A collection of window functions.",
     "crumbs": [
       "Classes",
-      "HDataType"
+      "HWindow"
     ]
   },
   {
-    "objectID": "contents/hdatatype.html#print",
-    "href": "contents/hdatatype.html#print",
-    "title": "HDataType",
-    "section": "print",
-    "text": "print\nprint()  source \n\nPrints the HDataType.\nDifferently from R’s behaviour, print doesn’t return the value invisibly.\n\n\nExamples\nlibrary(harmonium)\ndtype = HDataType$Complex64\ndtype$print()\n\n# or similarly:\nprint(dtype)",
+    "objectID": "contents/hwindow.html#barthann",
+    "href": "contents/hwindow.html#barthann",
+    "title": "HWindow",
+    "section": "barthann",
+    "text": "barthann\nbarthann(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray  source \n\nReturns a modified Bartlett-Hann window.\n\nThe maximum value is normalized to 1 (though the value 1 does not appear if npoints is even and window_type is symmetric).\n\n\nArguments\n\nnpoints\nAn integer. Number of points in the output window.\n\nsym\nA bool.\nWhen TRUE, generates a symmetric window, for use in filter design.\nWhen FALSE, generates a periodic window, for use in spectral analysis.\n\ndtype\nAn HDataType to indicate which type of HArray to be created.\nMust be a float dtype.\n\n\n\n\nReturns\nAn HArray.\n\n\n\nExamples\nHWindow$barthann(npoints = 10L, sym = TRUE, dtype = HDataType$Float64)",
     "crumbs": [
       "Classes",
-      "HDataType"
+      "HWindow"
     ]
   },
   {
-    "objectID": "contents/hdatatype.html#eq",
-    "href": "contents/hdatatype.html#eq",
-    "title": "HDataType",
-    "section": "eq",
-    "text": "eq\neq(other: HDataType) -&gt; bool  source \n\nEquality with another HDataType.\n\n\nArguments\n\nother\nAn HDataType.\n\n\n\n\nReturns\nA bool.\n\n\nExamples\nlibrary(harmonium)\nhdatatype1 = HDataType$Float32\nhdatatype2 = HDataType$Float32\nhdatatype1$eq(hdatatype2) # TRUE\n\n# or similarly:\nhdatatype1 == hdatatype2",
+    "objectID": "contents/hwindow.html#bartlett",
+    "href": "contents/hwindow.html#bartlett",
+    "title": "HWindow",
+    "section": "bartlett",
+    "text": "bartlett\nbartlett(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray  source \n\n\\(w(n) = \\frac{2}{npoints-1} (\\frac{npoints-1}{2} - |n - \\frac{npoints-1}{2}|)\\)\nThe Bartlett window is very similar to a triangular window, except that the end points are at zero. It is often used in signal processing for tapering a signal, without generating too much ripple in the frequency domain.\n\nThe maximum value is normalized to 1 (though the value 1 does not appear if npoints is even and window_type is symmetric.\n\n\nArguments\n\nnpoints\nAn integer. Number of points in the output window.\n\nsym\nA bool.\nWhen TRUE, generates a symmetric window, for use in filter design.\nWhen FALSE, generates a periodic window, for use in spectral analysis.\n\ndtype\nAn HDataType to indicate which type of HArray to be created.\nMust be a float dtype.\n\n\n\n\nReturns\nAn HArray.\n\n\n\nExamples\nHWindow$bartlett(npoints = 10L, sym = TRUE, dtype = HDataType$Float64)",
     "crumbs": [
       "Classes",
-      "HDataType"
+      "HWindow"
     ]
   },
   {
-    "objectID": "contents/hdatatype.html#ne",
-    "href": "contents/hdatatype.html#ne",
-    "title": "HDataType",
-    "section": "ne",
-    "text": "ne\nne(other: HDataType) -&gt; bool  source \n\nDifference with another HDataType.\n\n\nArguments\n\nother\nAn HDataType.\n\n\n\n\nReturns\nA bool.\n\n\n\nExamples\nlibrary(harmonium)\nhdatatype1 = HDataType$Float32\nhdatatype2 = HDataType$Float64\nhdatatype1$ne(hdatatype2) # TRUE\n\n# or similarly:\nhdatatype1 != hdatatype2",
+    "objectID": "contents/hwindow.html#blackman",
+    "href": "contents/hwindow.html#blackman",
+    "title": "HWindow",
+    "section": "blackman",
+    "text": "blackman\nblackman(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray  source \n\nReturns a Blackman window.\n\n\\(w(n) = 0.42 - 0.5 \\cos(2\\pi n/npoints) + 0.08 \\cos(4\\pi n/npoints)\\)\nThe Blackman window is a taper formed by using the first three terms of a summation of cosines. It was designed to have close to the minimal leakage possible. It is close to optimal, only slightly worse than a Kaiser window.\n\nThe maximum value is normalized to 1 (though the value 1 does not appear if npoints is even and sym is TRUE).\n\nThe “exact Blackman” window was designed to null out the third and fourth sidelobes, but has discontinuities at the boundaries, resulting in a 6 dB/oct fall-off. This window is an approximation of the “exact” window, which does not null the sidelobes as well, but is smooth at the edges, improving the fall-off rate to 18 dB/oct.\n\nMost references to the Blackman window come from the signal processing literature, where it is used as one of many windowing functions for smoothing values. It is also known as an apodization (which means “removing the foot”, i.e. smoothing discontinuities at the beginning and end of the sampled signal) or tapering function. It is known as a “near optimal” tapering function, almost as good (by some measures) as the Kaiser window.\n\n\nArguments\n\nnpoints\nAn integer. Number of points in the output window.\n\nsym\nA bool.\nWhen TRUE, generates a symmetric window, for use in filter design.\nWhen FALSE, generates a periodic window, for use in spectral analysis.\n\ndtype\nAn HDataType to indicate which type of HArray to be created.\nMust be a float dtype.\n\n\n\n\nReturns\nAn HArray.\n\n\n\nExamples\nHWindow$blackman(npoints = 10L, sym = TRUE, dtype = HDataType$Float64)",
     "crumbs": [
       "Classes",
-      "HDataType"
+      "HWindow"
     ]
   },
   {
-    "objectID": "contents/hfile.html",
-    "href": "contents/hfile.html",
-    "title": "HFile",
-    "section": "",
-    "text": "decode(fpath: string, dtype: HDataType) -&gt; HDecodedAudio  source \n\nDecode an audio file, providing its decoded data and the sampling rate.\nThe samples are normalized to fit in the range of [-1.0, 1.0].\n\n\n\nfpath\nThe file path as a string.\n\ndtype\nA float HDataType.\n\n\n\n\n\nAn HDecodedAudio containing:\n* The decoded audio as a float HArray.\n* The sampling rate as an integer.\n\n\n\n\nlibrary(harmonium)\nfpath = \"../../../testfiles/gs-16b-2c-44100hz.flac\"\ndtype = HDataType$Float32\nHFile$decode(fpath, dtype)",
+    "objectID": "contents/hwindow.html#blackmanharris",
+    "href": "contents/hwindow.html#blackmanharris",
+    "title": "HWindow",
+    "section": "blackmanharris",
+    "text": "blackmanharris\nblackmanharris(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray  source \n\nReturn a minimum 4-term Blackman-Harris window.\n\nThe maximum value is normalized to 1 (though the value 1 does not appear if npoints is even and window_type is symmetric.\n\n\nArguments\n\nnpoints\nAn integer. Number of points in the output window.\n\nsym\nA bool.\nWhen TRUE, generates a symmetric window, for use in filter design.\nWhen FALSE, generates a periodic window, for use in spectral analysis.\n\ndtype\nAn HDataType to indicate which type of HArray to be created.\nMust be a float dtype.\n\n\n\n\nReturns\nAn HArray.\n\n\n\nExamples\nHWindow$blackmanharris(npoints = 10L, sym = TRUE, dtype = HDataType$Float64)",
     "crumbs": [
       "Classes",
-      "HFile"
+      "HWindow"
     ]
   },
   {
-    "objectID": "contents/hfile.html#decode",
-    "href": "contents/hfile.html#decode",
-    "title": "HFile",
-    "section": "",
-    "text": "decode(fpath: string, dtype: HDataType) -&gt; HDecodedAudio  source \n\nDecode an audio file, providing its decoded data and the sampling rate.\nThe samples are normalized to fit in the range of [-1.0, 1.0].\n\n\n\nfpath\nThe file path as a string.\n\ndtype\nA float HDataType.\n\n\n\n\n\nAn HDecodedAudio containing:\n* The decoded audio as a float HArray.\n* The sampling rate as an integer.\n\n\n\n\nlibrary(harmonium)\nfpath = \"../../../testfiles/gs-16b-2c-44100hz.flac\"\ndtype = HDataType$Float32\nHFile$decode(fpath, dtype)",
+    "objectID": "contents/hwindow.html#bohman",
+    "href": "contents/hwindow.html#bohman",
+    "title": "HWindow",
+    "section": "bohman",
+    "text": "bohman\nbohman(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray  source \n\nReturns a Bohman window.\n\nThe maximum value is normalized to 1 (though the value 1 does not appear if npoints is even and window_type is symmetric).\n\n\nArguments\n\nnpoints\nAn integer. Number of points in the output window.\n\nsym\nA bool.\nWhen TRUE, generates a symmetric window, for use in filter design.\nWhen FALSE, generates a periodic window, for use in spectral analysis.\n\ndtype\nAn HDataType to indicate which type of HArray to be created.\nMust be a float dtype.\n\n\n\n\nReturns\nAn HArray.\n\n\n\nExamples\nHWindow$bohman(npoints = 10L, sym = TRUE, dtype = HDataType$Float64)",
     "crumbs": [
       "Classes",
-      "HFile"
+      "HWindow"
     ]
   },
   {
-    "objectID": "contents/hfile.html#stream",
-    "href": "contents/hfile.html#stream",
-    "title": "HFile",
-    "section": "stream",
-    "text": "stream\ndecode_stream(fpath: string, frames: integer, dtype: HDataType) -&gt; HDecoderStream  source \n\nCreates an HDecoderStream, used as an iterator to stream frames of decoded audio.\n\n\nArguments\n\nfpath\nThe file path as a string.\n\nframes\nNumber of frames to decode per iteration.\n\ndtype\nA float HDataType.\n\n\n\n\nReturns\nAn HDecoderStream.\n\n\n\nExamples\nlibrary(harmonium)\nfpath = \"../../../testfiles/gs-16b-2c-44100hz.flac\"\ndtype = HDataType$Float32\nframes = 1000L\nHFile$decode_stream(fpath, frames, dtype)",
+    "objectID": "contents/hwindow.html#boxcar",
+    "href": "contents/hwindow.html#boxcar",
+    "title": "HWindow",
+    "section": "boxcar",
+    "text": "boxcar\nboxcar(npoints: integer, dtype: HDataType) -&gt; HArray  source \n\nReturns a boxcar or rectangular window.\n\nAlso known as a rectangular window or Dirichlet window, this is equivalent to no window at all.\n\n\nArguments\n\nnpoints\nAn integer. Number of points in the output window.\n\ndtype\nAn HDataType to indicate which type of HArray to be created.\nMust be a float dtype.\n\n\n\n\nReturns\nAn HArray.\n\n\n\nExamples\nHWindow$boxcar(npoints = 10L, dtype = HDataType$Float64)",
     "crumbs": [
       "Classes",
-      "HFile"
+      "HWindow"
     ]
   },
   {
-    "objectID": "contents/hfile.html#metadata",
-    "href": "contents/hfile.html#metadata",
-    "title": "HFile",
-    "section": "metadata",
-    "text": "metadata\nmetadata(fpath: string, metadata_type: HMetadataType) -&gt; list  source \n\nExtract text and visual metadata from a file.\nTags that are part of the container format are preferentially extracted. Additional tags that were found while probing will not be extracted.\nThe following metadata tagging formats are supported.\n\n\nID3v1\n\nID3v2\n\nISO/MP4\n\nRIFF\n\nVorbis Comment (in OGG & FLAC)\n\n\nEach TextMetadata will be comprised of a Tag, which contains the following fields:\n* tag_key\nA key string indicating the type, meaning, or purpose of the Tags value. Note: The meaning of key is dependant on the underlying metadata format.\n* tag_std_key\nIf the Tag’s key string is commonly associated with a typical type, meaning, or purpose, then if recognized a StandardTagKey will be assigned to this Tag. This is a best effort guess since not all metadata formats have a well defined or specified tag mapping. However, it is recommended that consumers prefer std_key over key, if provided.\nCheck [StandardTagKey] for all the variants.\n* tag_value\nThe value of the Tag.\n\nEach VisualMetadata will be comprised of the following fields:\n* usage:\nThe usage and/or content of the Visual. A string version of symphonia_core::meta::StandardVisualKey, which is an enumeration providing standardized keys for common visual dispositions. A demuxer may assign a StandardVisualKey to a Visual if the disposition of the attached visual is known and can be mapped to a standard key. The visual types listed here are derived from, though do not entirely cover, the ID3v2 APIC frame specification.\n* media_type\nThe Media Type (MIME Type) used to encode the Visual.\n* dimensions\nThe dimensions (width and height) of the Visual, represented in pixels.\nNote: This value may not be accurate as it comes from metadata, not the embedded graphic itself. Consider it only a hint.\n* bits_per_pixel\nThe number of bits-per-pixel (aka bit-depth) of the unencoded image.\n* color_mode\nIndicates how the color of a pixel is encoded in a Visual. Variants:\nDiscrete\nEach pixel in the Visual stores its own color information.\nIndexed(NonZeroU32)\nEach pixel in the Visual stores an index into a color palette containing the color information. The value stored by this variant indicates the number\nof colors in the color palette.\n* size\nSize of the image in bytes.\n* tag\nTag with the following fields:\n** tag_key\nA key string indicating the type, meaning, or purpose of the Tags value. Note: The meaning of key is dependant on the underlying metadata format.\n** tag_std_key\nIf the Tag’s key string is commonly associated with a typical type, meaning, or purpose, then if recognized a StandardTagKey will be assigned to this Tag. This is a best effort guess since not all metadata formats have a well defined or specified tag mapping. However, it is recommended that consumers prefer std_key over key, if provided.\nCheck [StandardTagKey] for all the variants.\n** tag_value\nThe value of the Tag.\n\n\nArguments\n\nfpath\nThe file path as a string.\n\nmetadata_type\nAn HMetadataType.\n\n\n\n\nReturns\nA list of metadata. An empty list will be returned if there is no metadata in the file.\n\n\n\nExamples\nlibrary(harmonium)\nfpath = \"../../../testfiles/gs-16b-2c-44100hz.mp3\"\nmetadata_type = HMetadataType$Text\nHFile$metadata(fpath, metadata_type)",
+    "objectID": "contents/hwindow.html#cosine",
+    "href": "contents/hwindow.html#cosine",
+    "title": "HWindow",
+    "section": "cosine",
+    "text": "cosine\ncosine(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray  source \n\nReturns a window with a simple cosine shape.\n\nThe maximum value is normalized to 1 (though the value 1 does not appear if npoints is even and window_type is symmetric).\n\n\nArguments\n\nnpoints\nAn integer. Number of points in the output window.\n\nsym\nA bool.\nWhen TRUE, generates a symmetric window, for use in filter design.\nWhen FALSE, generates a periodic window, for use in spectral analysis.\n\ndtype\nAn HDataType to indicate which type of HArray to be created.\nMust be a float dtype.\n\n\n\n\nReturns\nAn HArray.\n\n\n\nExamples\nHWindow$cosine(npoints = 10L, sym = TRUE, dtype = HDataType$Float64)",
     "crumbs": [
       "Classes",
-      "HFile"
+      "HWindow"
     ]
   },
   {
-    "objectID": "contents/hfile.html#params",
-    "href": "contents/hfile.html#params",
-    "title": "HFile",
-    "section": "params",
-    "text": "params\nparams(fpath: string) -&gt; atomicvector  source \n\nGet audio parameters from a file.\nNote that this avoids loading the contents into memory, and is therefore useful for querying these parameters from long files.\n\n\nArguments\n\nfpath\nThe file path as a string.\n\n\n\n\nReturns\nA double atomic vector containing, in order:\n* sampling rate in Hz.\n* number of frames.\n* number of channels.\n* duration in seconds.\n\n\n\nExamples\nlibrary(harmonium)\nfpath = \"../../../testfiles/gs-16b-2c-44100hz.flac\"\nHFile$params(fpath)",
+    "objectID": "contents/hwindow.html#hann",
+    "href": "contents/hwindow.html#hann",
+    "title": "HWindow",
+    "section": "hann",
+    "text": "hann\nhann(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray  source \n\nReturns a Hann window.\n\n\\(w(n) = 0.5 - 0.5 \\cos\\left(\\frac{2\\pi{n}}{npoints-1}\\right) \\qquad 0 \\leq n \\leq npoints-1\\)\nThe maximum value is normalized to 1 (though the value 1 does not appear if npoints is even and window_type is symmetric.\n\nThe Hann window is a taper formed by using a raised cosine or sine-squared with ends that touch zero.\n\n\nArguments\n\nnpoints\nAn integer. Number of points in the output window.\n\nsym\nA bool.\nWhen TRUE, generates a symmetric window, for use in filter design.\nWhen FALSE, generates a periodic window, for use in spectral analysis.\n\ndtype\nAn HDataType to indicate which type of HArray to be created.\nMust be a float dtype.\n\n\n\n\nReturns\nAn HArray.\n\n\n\nExamples\nHWindow$hann(npoints = 10L, sym = TRUE, dtype = HDataType$Float64)",
     "crumbs": [
       "Classes",
-      "HFile"
-    ]
-  },
-  {
-    "objectID": "contents/hfile.html#verify",
-    "href": "contents/hfile.html#verify",
-    "title": "HFile",
-    "section": "verify",
-    "text": "verify\n`verify(fpath: string) -&gt; string  source \n\nVerify an audio file, if supported by the decoder.\nThe verification is done after the decoding process is finished.\n\n\nArguments\n\nfpath\nThe file path as a string.\n\n\n\n\nReturns\nA string.\nOne of [“passed”, “failed”, “not_supported”]\n\n\n\nExamples\nlibrary(harmonium)\nfpath = \"../../../testfiles/gs-16b-2c-44100hz.flac\"\nHFile$verify(fpath)",
-    "crumbs": [
-      "Classes",
-      "HFile"
+      "HWindow"
     ]
   },
   {
@@ -1243,6 +1199,50 @@
     "crumbs": [
       "Classes",
       "HAudioOp"
+    ]
+  },
+  {
+    "objectID": "contents/hdecodedaudio.html",
+    "href": "contents/hdecodedaudio.html",
+    "title": "HDecodedAudio",
+    "section": "",
+    "text": "harray() -&gt; HArray  source \n\nGet the decoded HArray.\n\n\nA float HArray.\n\n\n\n\nlibrary(harmonium)\nfpath = \"../../../testfiles/gs-16b-2c-44100hz.flac\"\ndtype = HDataType$Float32\nhdecodedaudio = HFile$decode(fpath, dtype)\nhdecodedaudio$harray()",
+    "crumbs": [
+      "Classes",
+      "HDecodedAudio"
+    ]
+  },
+  {
+    "objectID": "contents/hdecodedaudio.html#harray",
+    "href": "contents/hdecodedaudio.html#harray",
+    "title": "HDecodedAudio",
+    "section": "",
+    "text": "harray() -&gt; HArray  source \n\nGet the decoded HArray.\n\n\nA float HArray.\n\n\n\n\nlibrary(harmonium)\nfpath = \"../../../testfiles/gs-16b-2c-44100hz.flac\"\ndtype = HDataType$Float32\nhdecodedaudio = HFile$decode(fpath, dtype)\nhdecodedaudio$harray()",
+    "crumbs": [
+      "Classes",
+      "HDecodedAudio"
+    ]
+  },
+  {
+    "objectID": "contents/hdecodedaudio.html#sr",
+    "href": "contents/hdecodedaudio.html#sr",
+    "title": "HDecodedAudio",
+    "section": "sr",
+    "text": "sr\nsr() -&gt; integer  source \n\nGet the sampling rate of the decoded audio.\n\nReturns\nAn integer.\n\n\n\nExamples\nlibrary(harmonium)\nfpath = \"../../../testfiles/gs-16b-2c-44100hz.flac\"\ndtype = HDataType$Float32\nhdecodedaudio = HFile$decode(fpath, dtype)\nhdecodedaudio$sr()",
+    "crumbs": [
+      "Classes",
+      "HDecodedAudio"
+    ]
+  },
+  {
+    "objectID": "contents/hdecodedaudio.html#invalidate",
+    "href": "contents/hdecodedaudio.html#invalidate",
+    "title": "HDecodedAudio",
+    "section": "invalidate",
+    "text": "invalidate\ninvalidate()  source \n\nReplaces the inner value of the external pointer, invalidating it.\nThis function is useful to remove one of the shared references of the inner pointer in rust.\n\n\nExamples\nlibrary(harmonium)\nfpath = \"../../../testfiles/gs-16b-2c-44100hz.flac\"\ndtype = HDataType$Float32\nhdecodedaudio = HFile$decode(fpath, dtype)\nharray = hdecodedaudio$harray() # now the inner HArray struct has 2 references.\nhdecodedaudio$invalidate() # back to 1 reference.",
+    "crumbs": [
+      "Classes",
+      "HDecodedAudio"
     ]
   }
 ]
