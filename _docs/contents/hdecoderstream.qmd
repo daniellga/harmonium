@@ -8,7 +8,7 @@ An iterator that decodes audio in streams. \
 
 ## stream
 
-`stream() -> HArray` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L497) </span> \
+`stream() -> HArray` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L505) </span> \
 
 Gets the next wave of frames as an `HArray`. \
 Returns an error if it's end of stream or if an error ocurred in
