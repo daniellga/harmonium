@@ -20,7 +20,7 @@ format:
     theme:
       dark: flatly
       light: darkly
-    highlight-style: github
+    highlight-style: arrow-dark
     css: styles.css
     toc: true
     grid:
