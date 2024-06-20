@@ -255,13 +255,18 @@ impl HFile {
     /// Each `TextMetadata` will be comprised of a `Tag`, which contains the following fields:
     ///
     /// - tag_key
+    ///
     ///     A key string indicating the type, meaning, or purpose of the Tags value. Note: The meaning of key is dependant of the underlying metadata format.
+    ///
     /// - tag_std_key
+    ///
     ///     If the Tag’s key string is commonly associated with a typical type, meaning, or purpose, then if recognized a StandardTagKey will be assigned
     ///     to this Tag. This is a best effort guess since not all metadata formats have a well defined or specified tag mapping. However, it is recommended that
     ///     consumers prefer std_key over key, if provided.
     ///     Check [`StandardTagKey`] for all the variants.
+    ///
     /// - tag_value
+    ///
     ///     The value of the Tag.
     ///
     /// Each `VisualMetadata` will be comprised of the following fields:
@@ -271,9 +276,11 @@ impl HFile {
     ///     The usage and/or content of the Visual. A string version of `symphonia_core::meta::StandardVisualKey`, which is an enumeration providing
     ///     standardized keys for common visual dispositions. A demuxer may assign a StandardVisualKey to a Visual if the disposition of the attached visual
     ///     is known and can be mapped to a standard key. The visual types listed here are derived from, though do not entirely cover, the ID3v2 APIC frame specification.
+    ///
     /// - media_type
     ///
     ///     The Media Type (MIME Type) used to encode the Visual.
+    ///
     /// - dimensions
     ///
     ///     The dimensions (width and height) of the Visual, represented in pixels.
@@ -287,11 +294,11 @@ impl HFile {
     ///
     ///     Indicates how the color of a pixel is encoded in a Visual. Variants:
     ///
-    ///     -Discrete
+    ///     - Discrete
     ///
     ///         Each pixel in the Visual stores its own color information.
     ///
-    ///     -Indexed(NonZeroU32)
+    ///     - Indexed(NonZeroU32)
     ///
     ///         Each pixel in the Visual stores an index into a color palette containing the color information. The value stored by this variant indicates the number
     ///         of colors in the color palette.
@@ -310,10 +317,11 @@ impl HFile {
     ///
     ///      - tag_std_key
     ///
-    ///        If the Tag’s key string is commonly associated with a typical type, meaning, or purpose, then if recognized a StandardTagKey will be assigned
-    ///        to this Tag. This is a best effort guess since not all metadata formats have a well defined or specified tag mapping. However, it is recommended that
-    ///        consumers prefer std_key over key, if provided.
-    ///        Check [`StandardTagKey`] for all the variants.
+    ///         If the Tag’s key string is commonly associated with a typical type, meaning, or purpose, then if recognized a StandardTagKey will be assigned
+    ///         to this Tag. This is a best effort guess since not all metadata formats have a well defined or specified tag mapping. However, it is recommended that
+    ///         consumers prefer std_key over key, if provided.
+    ///
+    ///         Check [`StandardTagKey`] for all the variants.
     ///
     ///      - tag_value
     ///
@@ -323,11 +331,11 @@ impl HFile {
     ///
     /// * `fpath`
     ///
-    /// The file path as a string.
+    ///     The file path as a string.
     ///
     /// * `metadata_type`
     ///
-    /// An `HMetadataType`.
+    ///     An `HMetadataType`.
     ///
     /// #### Returns
     ///
