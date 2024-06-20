@@ -9,6 +9,7 @@ use savvy::{savvy, Sexp};
 ///
 /// # Methods
 ///
+#[savvy]
 pub struct HAudioOp;
 
 #[savvy]

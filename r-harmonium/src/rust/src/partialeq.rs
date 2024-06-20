@@ -1,8 +1,7 @@
+use crate::{harrayr::HArrayR, hdatatype::HDataType};
 use ndarray::IxDyn;
 use num_complex::Complex;
 use std::sync::Arc;
-
-use crate::{harrayr::HArrayR, hdatatype::HDataType};
 
 fn equal_harray(lhs: &dyn HArrayR, rhs: &dyn HArrayR) -> bool {
     if lhs.dtype() != rhs.dtype() {

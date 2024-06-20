@@ -7,10 +7,27 @@ use harmonium_io::decode;
 use savvy::{savvy, OwnedIntegerSexp, OwnedListSexp, OwnedRealSexp, OwnedStringSexp, Sexp};
 use std::sync::Arc;
 
+/// HFile
+/// A collection of methods designed to streamline input and output operations. \
+///
+/// # Methods
+///
 #[savvy]
 struct HFile;
+
+/// HDecoderStream
+/// An iterator that decodes audio in streams. \
+///
+/// # Methods
+///
 #[savvy]
 struct HDecoderStream(Box<dyn HDecoderStreamR>);
+
+/// HDecodedAudio
+/// An audio represented by an HArray of samples and its corresponding sampling rate. \
+///
+/// # Methods
+///
 #[savvy]
 struct HDecodedAudio {
     harray: HArray,
@@ -421,11 +438,6 @@ impl HFile {
     }
 }
 
-/// HDecoderStream
-/// An iterator that decodes audio in streams. \
-///
-/// # Methods
-///
 #[savvy]
 impl HDecoderStream {
     /// HDecoderStream
