@@ -8,7 +8,7 @@ use savvy::{savvy, OwnedIntegerSexp, OwnedListSexp, OwnedRealSexp, OwnedStringSe
 use std::sync::Arc;
 
 /// HFile
-/// A collection of methods designed to streamline input and output operations. \
+/// A collection of methods designed to streamline input and output operations.
 ///
 /// # Methods
 ///
@@ -16,7 +16,7 @@ use std::sync::Arc;
 struct HFile;
 
 /// HDecoderStream
-/// An iterator that decodes audio in streams. \
+/// An iterator that decodes audio in streams.
 ///
 /// # Methods
 ///
@@ -39,13 +39,13 @@ impl HDecodedAudio {
     /// HDecodedAudio
     /// ## harray
     ///
-    /// `harray() -> HArray` \
+    /// `harray() -> HArray`
     ///
     /// Get the decoded HArray.
     ///
     /// #### Returns
     ///
-    /// A float HArray. \
+    /// A float HArray.
     ///
     /// #### Examples
     ///
@@ -66,14 +66,13 @@ impl HDecodedAudio {
     /// HDecodedAudio
     /// ## sr
     ///
-    /// `sr() -> integer` \
+    /// `sr() -> integer`
     ///
     /// Get the sampling rate of the decoded audio.
     ///
-    ///
     /// #### Returns
     ///
-    /// An integer. \
+    /// An integer.
     ///
     /// #### Examples
     ///
@@ -100,10 +99,11 @@ impl HDecodedAudio {
     /// HDecodedAudio
     /// ## invalidate
     ///
-    /// `invalidate()` \
+    /// `invalidate()`
     ///
-    /// Replaces the inner value of the external pointer, invalidating it. \
-    /// This function is useful to remove one of the shared references of the inner pointer in rust. \
+    /// Replaces the inner value of the external pointer, invalidating it.
+    ///
+    /// This function is useful to remove one of the shared references of the inner pointer in rust.
     ///
     /// #### Examples
     ///
@@ -128,23 +128,29 @@ impl HFile {
     /// HFile
     /// ## decode
     ///
-    /// `decode(fpath: string, dtype: HDataType) -> HDecodedAudio` \
+    /// `decode(fpath: string, dtype: HDataType) -> HDecodedAudio`
     ///
-    /// Decode an audio file, providing its decoded data and the sampling rate. \
+    /// Decode an audio file, providing its decoded data and the sampling rate.
+    ///
     /// The samples are normalized to fit in the range of \[-1.0, 1.0\].
     ///
     /// #### Arguments
     ///
-    /// * `fpath` \
-    /// The file path as a string. \
-    /// * `dtype` \
-    /// A float `HDataType`. \
+    /// - `fpath`
+    ///
+    /// The file path as a string.
+    ///
+    /// - `dtype`
+    ///
+    /// A float `HDataType`.
     ///
     /// #### Returns
     ///
-    /// An HDecodedAudio containing: \
-    /// * The decoded audio as a float HArray. \
-    /// * The sampling rate as an integer. \
+    /// An HDecodedAudio containing:
+    ///
+    /// - The decoded audio as a float HArray.
+    ///
+    /// - The sampling rate as an integer.
     ///
     /// #### Examples
     ///
@@ -181,23 +187,27 @@ impl HFile {
     /// HFile
     /// ## decode_stream
     ///
-    /// `decode_stream(fpath: string, frames: integer, dtype: HDataType) -> HDecoderStream` \
+    /// `decode_stream(fpath: string, frames: integer, dtype: HDataType) -> HDecoderStream`
     ///
-    /// Creates an `HDecoderStream`, used as an iterator to stream frames of decoded audio. \
-    ///
+    /// Creates an `HDecoderStream`, used as an iterator to stream frames of decoded audio.
     ///
     /// #### Arguments
     ///
-    /// * `fpath` \
-    /// The file path as a string. \
-    /// * `frames` \
-    /// Number of frames to decode per iteration. \
-    /// * `dtype` \
-    /// A float `HDataType`. \
+    /// * `fpath`
+    ///
+    /// The file path as a string.
+    ///
+    /// * `frames`
+    ///
+    /// Number of frames to decode per iteration.
+    ///
+    /// * `dtype`
+    ///
+    /// A float `HDataType`.
     ///
     /// #### Returns
     ///
-    /// An `HDecoderStream`. \
+    /// An `HDecoderStream`.
     ///
     /// #### Examples
     ///
@@ -244,7 +254,7 @@ impl HFile {
     ///
     /// Tags that are part of the container format are preferentially extracted. Additional tags that were found while probing will not be extracted.
     ///
-    /// The following metadata tagging formats are supported. \
+    /// The following metadata tagging formats are supported.
     ///
     /// - ID3v1
     /// - ID3v2
@@ -263,6 +273,7 @@ impl HFile {
     ///     If the Tag’s key string is commonly associated with a typical type, meaning, or purpose, then if recognized a StandardTagKey will be assigned
     ///     to this Tag. This is a best effort guess since not all metadata formats have a well defined or specified tag mapping. However, it is recommended that
     ///     consumers prefer std_key over key, if provided.
+    ///
     ///     Check [`StandardTagKey`] for all the variants.
     ///
     /// - tag_value
@@ -329,11 +340,11 @@ impl HFile {
     ///
     /// #### Arguments
     ///
-    /// * `fpath`
+    /// - `fpath`
     ///
     ///     The file path as a string.
     ///
-    /// * `metadata_type`
+    /// - `metadata_type`
     ///
     ///     An `HMetadataType`.
     ///
@@ -396,23 +407,26 @@ impl HFile {
     /// HFile
     /// ## params
     ///
-    /// `params(fpath: string) -> atomicvector` \
+    /// `params(fpath: string) -> atomicvector`
     ///
-    /// Get audio parameters from a file. \
-    /// Note that this avoids loading the contents into memory, and is therefore useful for querying these parameters from long files. \
+    /// Get audio parameters from a file.
+    ///
+    /// Note that this avoids loading the contents into memory, and is therefore useful for querying these parameters from long files.
     ///
     /// #### Arguments
     ///
-    /// * `fpath` \
-    /// The file path as a string. \
+    /// * `fpath`
+    ///
+    /// The file path as a string.
     ///
     /// #### Returns
     ///
-    /// A double atomic vector containing, in order: \
-    /// - sampling rate in Hz. \
-    /// - number of frames. \
-    /// - number of channels. \
-    /// - duration in seconds. \
+    /// A double atomic vector containing, in order:
+    ///
+    /// - sampling rate in Hz.
+    /// - number of frames.
+    /// - number of channels.
+    /// - duration in seconds.
     ///
     /// #### Examples
     ///
@@ -436,20 +450,23 @@ impl HFile {
     /// HFile
     /// ## verify
     ///
-    /// `verify(fpath: string) -> string \
+    /// `verify(fpath: string) -> string`
     ///
-    /// Verify an audio file, if supported by the decoder. \
-    /// The verification is done after the decoding process is finished. \
+    /// Verify an audio file, if supported by the decoder.
+    ///
+    /// The verification is done after the decoding process is finished.
     ///
     /// #### Arguments
     ///
-    /// * `fpath` \
-    /// The file path as a string. \
+    /// * `fpath`
+    ///
+    /// The file path as a string.
     ///
     /// #### Returns
     ///
-    /// A string. \
-    /// One of \["passed", "failed", "not_supported"\] \
+    /// A string.
+    ///
+    /// One of \["passed", "failed", "not_supported"\].
     ///
     /// #### Examples
     ///
@@ -478,16 +495,18 @@ impl HDecoderStream {
     /// HDecoderStream
     /// ## stream
     ///
-    /// `stream() -> HArray` \
+    /// `stream() -> HArray`
     ///
-    /// Gets the next wave of frames as an `HArray`. \
+    /// Gets the next wave of frames as an `HArray`.
+    ///
     /// Returns an error if it's end of stream or if an error ocurred in
-    /// the decoding process. \
+    /// the decoding process.
     ///
     /// #### Returns
     ///
-    /// The decoded audio as a float HArray. \
-    /// The number of frames streamed is the one used as input in the creation of `HDecoderStream`. \
+    /// The decoded audio as a float HArray.
+    ///
+    /// The number of frames streamed is the one used as input in the creation of `HDecoderStream`.
     ///
     /// #### Examples
     ///
