@@ -2,20 +2,21 @@
 title: HAudioSink
 ---
 
-Handle to a device that outputs sounds. \
+Handle to a device that outputs sounds.
 
 # Methods
 
 ## new
 
-`new() -> HAudioSink` \<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L43) </span> \
+`new() -> HAudioSink`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L44) </span> \
 
-Creates a new `HAudioSink` instance. \
-The sink is set on "play" mode from the start. \
+Creates a new `HAudioSink` instance.
+
+The sink is set on "play" mode from the start.
 
 #### Returns
 
-An `HAudioSink`. \
+An `HAudioSink`.
 
 #### Examples
 
@@ -28,16 +29,19 @@ _________
 
 ## append_from_harray
 
-`append_from_harray(harray: HArray, sr: integer)` \<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L74) </span> \
+`append_from_harray(harray: HArray, sr: integer)`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L78) </span> \
 
-Appends a sound to the queue of sounds to play. \
+Appends a sound to the queue of sounds to play.
 
 #### Arguments
 
-* `harray` \
-An `HArray`. \
-* `sr` \
-An interger. The audio sampling rate. \
+- `harray`
+
+An `HArray`.
+
+- `sr`
+
+An integer. The audio sampling rate.
 
 #### Examples
 
@@ -54,14 +58,15 @@ _________
 
 ## append_from_file
 
-`append_from_file(fpath: string)` \<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L133) </span> \
+`append_from_file(fpath: string)`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L138) </span> \
 
-Appends a sound to the queue of sounds to play. \
+Appends a sound to the queue of sounds to play.
 
 #### Arguments
 
-* `fpath` \
-The file path as a `string`. \
+- `fpath`
+
+The file path as a `string`.
 
 #### Examples
 
@@ -75,13 +80,13 @@ _________
 
 ## audio_default_device
 
-`audio_default_device() -> string` \<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L162) </span> \
+`audio_default_device() -> string`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L167) </span> \
 
-Informs the default audio output device. \
+Informs the default audio output device.
 
 #### Returns
 
-A `string`. \
+A `string`.
 
 #### Examples
 
@@ -94,13 +99,13 @@ _________
 
 ## audio_output_devices
 
-`audio_output_devices() -> atomicvector` \<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L188) </span> \
+`audio_output_devices() -> characteratomicvector`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L193) </span> \
 
-Provides a list of available audio output devices. \
+Provides a list of available audio output devices.
 
 #### Returns
 
-A character atomic vector. \
+A character atomic vector.
 
 #### Examples
 
@@ -113,19 +118,23 @@ _________
 
 ## audio_supported_configs
 
-`audio_supported_configs() -> atomicvector` \<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L220) </span> \
+`audio_supported_configs() -> atomicvector`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L229) </span> \
 
-Provides the supported configurations for the default audio output device. \
-The following informations are given: \
+Provides the supported configurations for the default audio output device.
 
-* Number of channels. \
-* Minimum and maximum value for the sampling rate. \
-* Minimum and maximum value for the buffer size. \
-* Type of data expected by the device. \
+The following informations are given:
+
+- Number of channels.
+
+- Minimum and maximum value for the sampling rate.
+
+- Minimum and maximum value for the buffer size.
+
+- Type of data expected by the device.
 
 #### Returns
 
-A character atomic vector. \
+A character atomic vector.
 
 #### Examples
 
@@ -138,9 +147,9 @@ _________
 
 ## clear
 
-`clear()` \<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L246) </span> \
+`clear()`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L255) </span> \
 
-Removes all currently loaded `Source`s from the `Sink` and pauses it. \
+Removes all currently loaded `Source`s from the `Sink` and pauses it.
 
 #### Examples
 
@@ -157,13 +166,13 @@ _________
 
 ## is_empty
 
-`is_empty() -> bool` \<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L272) </span> \
+`is_empty() -> bool`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L281) </span> \
 
-Returns true if this sink has no more sounds to play. \
+Returns true if this sink has no more sounds to play.
 
 #### Returns
 
-A `bool`. \
+A `bool`.
 
 #### Examples
 
@@ -177,14 +186,15 @@ _________
 
 ## is_paused
 
-`is_paused() -> bool` \<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L303) </span> \
+`is_paused() -> bool`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L313) </span> \
 
-Gets if a sink is paused. \
-Sinks can be paused and resumed using pause() and play(). This returns true if the sink is paused. \
+Gets if a sink is paused.
+
+Sinks can be paused and resumed using pause() and play(). This returns true if the sink is paused .
 
 #### Returns
 
-A `bool`. \
+A `bool`.
 
 #### Examples
 
@@ -201,13 +211,13 @@ _________
 
 ## len
 
-`len() -> integer` \<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L333) </span> \
+`len() -> integer`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L343) </span> \
 
-Returns the number of sounds currently in the queue. \
+Returns the number of sounds currently in the queue.
 
 #### Returns
 
-An `integer`. \
+An `integer`.
 
 #### Examples
 
@@ -224,11 +234,13 @@ _________
 
 ## pause
 
-`pause()` \<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L360) </span> \
+`pause()`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L372) </span> \
 
-Pauses playback of this sink. \
-No effect if already paused. \
-A paused sink can be resumed with play(). \
+Pauses playback of this sink.
+
+No effect if already paused.
+
+A paused sink can be resumed with play().
 
 #### Examples
 
@@ -245,10 +257,11 @@ _________
 
 ## play
 
-`play()` \<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L387) </span> \
+`play()`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L400) </span> \
 
-Resumes playback of a paused sink. \
-No effect if not paused. \
+Resumes playback of a paused sink.
+
+No effect if not paused.
 
 #### Examples
 
@@ -266,15 +279,17 @@ _________
 
 ## set_speed
 
-`set_speed(value: double)` \<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L417) </span> \
+`set_speed(value: double)`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L432) </span> \
 
-Changes the speed of the sound. \
-The value 1.0 is the “normal” speed (unfiltered input). Any value other than 1.0 will change the play speed of the sound. \
+Changes the speed of the sound.
+
+The value 1.0 is the “normal” speed (unfiltered input). Any value other than 1.0 will change the play speed of the sound.
 
 #### Arguments
 
-* `value` \
-A `double`. \
+- `value`
+
+A `double`.
 
 #### Examples
 
@@ -290,15 +305,17 @@ _________
 
 ## set_volume
 
-`set_volume(value: double)` \<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L448) </span> \
+`set_volume(value: double)`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L465) </span> \
 
-Changes the volume of the sound. \
-The value 1.0 is the “normal” volume (unfiltered input). Any value other than 1.0 will multiply each sample by this value. \
+Changes the volume of the sound.
+
+The value 1.0 is the “normal” volume (unfiltered input). Any value other than 1.0 will multiply each sample by this value.
 
 #### Arguments
 
-* `value` \
-A `double`. \
+- `value`
+
+A `double`.
 
 #### Examples
 
@@ -314,11 +331,12 @@ _________
 
 ## skip_one
 
-`skip_one()` \<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L477) </span> \
+`skip_one()`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L495) </span> \
 
-Skips to the next `Source` in the `Sink`. \
+Skips to the next `Source` in the `Sink`.
+
 If there are more `Source`s appended to the `Sink` at the time, it will play the next one.
-Otherwise, the `Sink` will finish as if it had finished playing a `Source` all the way through. \
+Otherwise, the `Sink` will finish as if it had finished playing a `Source` all the way through.
 
 #### Examples
 
@@ -336,9 +354,9 @@ _________
 
 ## sleep_until_end
 
-`sleep_until_end()` \<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L500) </span> \
+`sleep_until_end()`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L518) </span> \
 
-Sleeps the current thread until the sound ends. \
+Sleeps the current thread until the sound ends.
 
 #### Examples
 
@@ -353,14 +371,15 @@ _________
 
 ## speed
 
-`speed() -> double` \<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L528) </span> \
+`speed() -> double`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L547) </span> \
 
-Gets the speed of the sound. \
-The value 1.0 is the “normal” speed (unfiltered input). Any value other than 1.0 will change the play speed of the sound. \
+Gets the speed of the sound.
+
+The value 1.0 is the “normal” speed (unfiltered input). Any value other than 1.0 will change the play speed of the sound.
 
 #### Returns
 
-A `double`. \
+A `double`.
 
 #### Examples
 
@@ -375,10 +394,11 @@ _________
 
 ## stop
 
-`stop()` \<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L557) </span> \
+`stop()`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L577) </span> \
 
-Stops the sink by emptying the queue. \
-The sink will keep its previous state (play or pause). \
+Stops the sink by emptying the queue.
+
+The sink will keep its previous state (play or pause).
 
 #### Examples
 
@@ -397,22 +417,28 @@ _________
 
 ## try_seek
 
-`try_seek(pos: f64)` \<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L593) </span> \
+`try_seek(pos: f64)`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L619) </span> \
 
-Attempts to seek to a given position in the current source. \
-This blocks between 0 and ~5 milliseconds. \
+Attempts to seek to a given position in the current source.
+
+This blocks between 0 and ~5 milliseconds.
+
 As long as the duration of the source is known, seek is guaranteed to saturate at the end of the source. For example given a
-source that reports a total duration of 42 seconds calling `try_seek()` with 60 seconds as argument will seek to 42 seconds. \
+source that reports a total duration of 42 seconds calling `try_seek()` with 60 seconds as argument will seek to 42 seconds.
 
 This function will return an error if:
+
 - one of the underlying sources does not support seeking.
+
 - an implementation ran into one during the seek.
+
 - when seeking beyond the end of a source when the duration of the source is not known.
 
 #### Arguments
 
-* `pos` \
-A `double`. The time to seek to in seconds. \
+- `pos`
+
+A `double`. The time to seek to in seconds.
 
 #### Examples
 
@@ -427,14 +453,15 @@ _________
 
 ## volume
 
-`volume() -> double` \<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L623) </span> \
+`volume() -> double`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L650) </span> \
 
-Gets the volume of the sound. \
-The value 1.0 is the “normal” volume (unfiltered input). Any value other than 1.0 will multiply each sample by this value. \
+Gets the volume of the sound.
+
+The value 1.0 is the “normal” volume (unfiltered input). Any value other than 1.0 will multiply each sample by this value.
 
 #### Returns
 
-A `double`. \
+A `double`.
 
 #### Examples
 

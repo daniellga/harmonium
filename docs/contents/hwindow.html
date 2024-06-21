@@ -330,294 +330,280 @@ window.Quarto = {
 </header>
 
 
-<p>A collection of window functions.<br>
-</p>
+<p>A collection of window functions.</p>
 <section id="methods" class="level1">
 <h1>Methods</h1>
 <section id="barthann" class="level2">
 <h2 class="anchored" data-anchor-id="barthann">barthann</h2>
-<p><code>barthann(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray</code> &lt;span style=“float: right;”&gt; <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hwindow.rs#L48">source</a> <br>
+<p><code>barthann(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hwindow.rs#L57">source</a> </span><br>
 </p>
-<p>Returns a modified Bartlett-Hann window.<br>
-</p>
-<p>The maximum value is normalized to 1 (though the value 1 does not appear if <code>npoints</code> is even and <code>window_type</code> is symmetric).<br>
-</p>
+<p>Returns a modified Bartlett-Hann window.</p>
+<p>The maximum value is normalized to 1 (though the value 1 does not appear if <code>npoints</code> is even and <code>window_type</code> is symmetric).</p>
 <section id="arguments" class="level4">
 <h4 class="anchored" data-anchor-id="arguments">Arguments</h4>
 <ul>
-<li><code>npoints</code><br>
-An <code>integer</code>. Number of points in the output window.<br>
-</li>
-<li><code>sym</code><br>
-A <code>bool</code>.<br>
-When <code>TRUE</code>, generates a symmetric window, for use in filter design.<br>
-When <code>FALSE</code>, generates a periodic window, for use in spectral analysis.<br>
-</li>
-<li><code>dtype</code><br>
-An <code>HDataType</code> to indicate which type of <code>HArray</code> to be created.<br>
-Must be a float dtype.<br>
-</li>
+<li><code>npoints</code></li>
 </ul>
+<p>An <code>integer</code>. Number of points in the output window.</p>
+<ul>
+<li><code>sym</code></li>
+</ul>
+<p>A <code>bool</code>.</p>
+<p>When <code>TRUE</code>, generates a symmetric window, for use in filter design.</p>
+<p>When <code>FALSE</code>, generates a periodic window, for use in spectral analysis.</p>
+<ul>
+<li><code>dtype</code></li>
+</ul>
+<p>An <code>HDataType</code> to indicate which type of <code>HArray</code> to be created.</p>
+<p>Must be a float dtype.</p>
 </section>
 <section id="returns" class="level4">
 <h4 class="anchored" data-anchor-id="returns">Returns</h4>
-<p>An <code>HArray</code>.<br>
-</p>
+<p>An <code>HArray</code>.</p>
 </section>
 <section id="examples" class="level4">
 <h4 class="anchored" data-anchor-id="examples">Examples</h4>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>HWindow<span class="sc">$</span><span class="fu">barthann</span>(<span class="at">npoints =</span> <span class="dv">10</span>L, <span class="at">sym =</span> <span class="cn">TRUE</span>, <span class="at">dtype =</span> HDataType<span class="sc">$</span>Float64)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmnonium)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>HWindow<span class="sc">$</span><span class="fu">barthann</span>(<span class="at">npoints =</span> <span class="dv">10</span>L, <span class="at">sym =</span> <span class="cn">TRUE</span>, <span class="at">dtype =</span> HDataType<span class="sc">$</span>Float64)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 </section>
 <section id="bartlett" class="level2">
 <h2 class="anchored" data-anchor-id="bartlett">bartlett</h2>
-<p><code>bartlett(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray</code> &lt;span style=“float: right;”&gt; <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hwindow.rs#L111">source</a> <br>
+<p><code>bartlett(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hwindow.rs#L129">source</a> </span><br>
 </p>
 <p><span class="math inline">\(w(n) = \frac{2}{npoints-1} (\frac{npoints-1}{2} - |n - \frac{npoints-1}{2}|)\)</span></p>
-<p>The Bartlett window is very similar to a triangular window, except that the end points are at zero. It is often used in signal processing for tapering a signal, without generating too much ripple in the frequency domain.<br>
-</p>
-<p>The maximum value is normalized to 1 (though the value 1 does not appear if <code>npoints</code> is even and <code>window_type</code> is symmetric.<br>
-</p>
+<p>The Bartlett window is very similar to a triangular window, except that the end points are at zero. It is often used in signal processing for tapering a signal, without generating too much ripple in the frequency domain.</p>
+<p>The maximum value is normalized to 1 (though the value 1 does not appear if <code>npoints</code> is even and <code>window_type</code> is symmetric.</p>
 <section id="arguments-1" class="level4">
 <h4 class="anchored" data-anchor-id="arguments-1">Arguments</h4>
 <ul>
-<li><code>npoints</code><br>
-An <code>integer</code>. Number of points in the output window.<br>
-</li>
-<li><code>sym</code><br>
-A <code>bool</code>.<br>
-When <code>TRUE</code>, generates a symmetric window, for use in filter design.<br>
-When <code>FALSE</code>, generates a periodic window, for use in spectral analysis.<br>
-</li>
-<li><code>dtype</code><br>
-An <code>HDataType</code> to indicate which type of <code>HArray</code> to be created.<br>
-Must be a float dtype.<br>
-</li>
+<li><code>npoints</code></li>
 </ul>
+<p>An <code>integer</code>. Number of points in the output window.</p>
+<ul>
+<li><code>sym</code></li>
+</ul>
+<p>A <code>bool</code>.</p>
+<p>When <code>TRUE</code>, generates a symmetric window, for use in filter design.</p>
+<p>When <code>FALSE</code>, generates a periodic window, for use in spectral analysis.</p>
+<ul>
+<li><code>dtype</code></li>
+</ul>
+<p>An <code>HDataType</code> to indicate which type of <code>HArray</code> to be created.</p>
+<p>Must be a float dtype.</p>
 </section>
 <section id="returns-1" class="level4">
 <h4 class="anchored" data-anchor-id="returns-1">Returns</h4>
-<p>An <code>HArray</code>.<br>
-</p>
+<p>An <code>HArray</code>.</p>
 </section>
 <section id="examples-1" class="level4">
 <h4 class="anchored" data-anchor-id="examples-1">Examples</h4>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>HWindow<span class="sc">$</span><span class="fu">bartlett</span>(<span class="at">npoints =</span> <span class="dv">10</span>L, <span class="at">sym =</span> <span class="cn">TRUE</span>, <span class="at">dtype =</span> HDataType<span class="sc">$</span>Float64)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmnonium)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>HWindow<span class="sc">$</span><span class="fu">bartlett</span>(<span class="at">npoints =</span> <span class="dv">10</span>L, <span class="at">sym =</span> <span class="cn">TRUE</span>, <span class="at">dtype =</span> HDataType<span class="sc">$</span>Float64)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 </section>
 <section id="blackman" class="level2">
 <h2 class="anchored" data-anchor-id="blackman">blackman</h2>
-<p><code>blackman(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray</code> &lt;span style=“float: right;”&gt; <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hwindow.rs#L191">source</a> <br>
+<p><code>blackman(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hwindow.rs#L218">source</a> </span><br>
 </p>
-<p>Returns a Blackman window.<br>
-</p>
+<p>Returns a Blackman window.</p>
 <p><span class="math inline">\(w(n) = 0.42 - 0.5 \cos(2\pi n/npoints) + 0.08 \cos(4\pi n/npoints)\)</span></p>
-<p>The Blackman window is a taper formed by using the first three terms of a summation of cosines. It was designed to have close to the minimal leakage possible. It is close to optimal, only slightly worse than a Kaiser window.<br>
-</p>
-<p>The maximum value is normalized to 1 (though the value 1 does not appear if <code>npoints</code> is even and <code>sym</code> is <code>TRUE</code>).<br>
-</p>
-<p>The “exact Blackman” window was designed to null out the third and fourth sidelobes, but has discontinuities at the boundaries, resulting in a 6 dB/oct fall-off. This window is an approximation of the “exact” window, which does not null the sidelobes as well, but is smooth at the edges, improving the fall-off rate to 18 dB/oct.<br>
-</p>
-<p>Most references to the Blackman window come from the signal processing literature, where it is used as one of many windowing functions for smoothing values. It is also known as an apodization (which means “removing the foot”, i.e.&nbsp;smoothing discontinuities at the beginning and end of the sampled signal) or tapering function. It is known as a “near optimal” tapering function, almost as good (by some measures) as the Kaiser window.<br>
-</p>
+<p>The Blackman window is a taper formed by using the first three terms of a summation of cosines. It was designed to have close to the minimal leakage possible. It is close to optimal, only slightly worse than a Kaiser window.</p>
+<p>The maximum value is normalized to 1 (though the value 1 does not appear if <code>npoints</code> is even and <code>sym</code> is <code>TRUE</code>).</p>
+<p>The “exact Blackman” window was designed to null out the third and fourth sidelobes, but has discontinuities at the boundaries, resulting in a 6 dB/oct fall-off. This window is an approximation of the “exact” window, which does not null the sidelobes as well, but is smooth at the edges, improving the fall-off rate to 18 dB/oct.</p>
+<p>Most references to the Blackman window come from the signal processing literature, where it is used as one of many windowing functions for smoothing values. It is also known as an apodization (which means “removing the foot”, i.e.&nbsp;smoothing discontinuities at the beginning and end of the sampled signal) or tapering function. It is known as a “near optimal” tapering function, almost as good (by some measures) as the Kaiser window.</p>
 <section id="arguments-2" class="level4">
 <h4 class="anchored" data-anchor-id="arguments-2">Arguments</h4>
 <ul>
-<li><code>npoints</code><br>
-An <code>integer</code>. Number of points in the output window.<br>
-</li>
-<li><code>sym</code><br>
-A <code>bool</code>.<br>
-When <code>TRUE</code>, generates a symmetric window, for use in filter design.<br>
-When <code>FALSE</code>, generates a periodic window, for use in spectral analysis.<br>
-</li>
-<li><code>dtype</code><br>
-An <code>HDataType</code> to indicate which type of <code>HArray</code> to be created.<br>
-Must be a float dtype.<br>
-</li>
+<li><code>npoints</code></li>
 </ul>
+<p>An <code>integer</code>. Number of points in the output window.</p>
+<ul>
+<li><code>sym</code></li>
+</ul>
+<p>A <code>bool</code>.</p>
+<p>When <code>TRUE</code>, generates a symmetric window, for use in filter design.</p>
+<p>When <code>FALSE</code>, generates a periodic window, for use in spectral analysis.</p>
+<ul>
+<li><code>dtype</code></li>
+</ul>
+<p>An <code>HDataType</code> to indicate which type of <code>HArray</code> to be created.</p>
+<p>Must be a float dtype.</p>
 </section>
 <section id="returns-2" class="level4">
 <h4 class="anchored" data-anchor-id="returns-2">Returns</h4>
-<p>An <code>HArray</code>.<br>
-</p>
+<p>An <code>HArray</code>.</p>
 </section>
 <section id="examples-2" class="level4">
 <h4 class="anchored" data-anchor-id="examples-2">Examples</h4>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>HWindow<span class="sc">$</span><span class="fu">blackman</span>(<span class="at">npoints =</span> <span class="dv">10</span>L, <span class="at">sym =</span> <span class="cn">TRUE</span>, <span class="at">dtype =</span> HDataType<span class="sc">$</span>Float64)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmnonium)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>HWindow<span class="sc">$</span><span class="fu">blackman</span>(<span class="at">npoints =</span> <span class="dv">10</span>L, <span class="at">sym =</span> <span class="cn">TRUE</span>, <span class="at">dtype =</span> HDataType<span class="sc">$</span>Float64)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 </section>
 <section id="blackmanharris" class="level2">
 <h2 class="anchored" data-anchor-id="blackmanharris">blackmanharris</h2>
-<p><code>blackmanharris(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray</code> &lt;span style=“float: right;”&gt; <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hwindow.rs#L250">source</a> <br>
+<p><code>blackmanharris(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hwindow.rs#L286">source</a> </span><br>
 </p>
-<p>Return a minimum 4-term Blackman-Harris window.<br>
-</p>
-<p>The maximum value is normalized to 1 (though the value 1 does not appear if <code>npoints</code> is even and <code>window_type</code> is symmetric.<br>
-</p>
+<p>Return a minimum 4-term Blackman-Harris window.</p>
+<p>The maximum value is normalized to 1 (though the value 1 does not appear if <code>npoints</code> is even and <code>window_type</code> is symmetric.</p>
 <section id="arguments-3" class="level4">
 <h4 class="anchored" data-anchor-id="arguments-3">Arguments</h4>
 <ul>
-<li><code>npoints</code><br>
-An <code>integer</code>. Number of points in the output window.<br>
-</li>
-<li><code>sym</code><br>
-A <code>bool</code>.<br>
-When <code>TRUE</code>, generates a symmetric window, for use in filter design.<br>
-When <code>FALSE</code>, generates a periodic window, for use in spectral analysis.<br>
-</li>
-<li><code>dtype</code><br>
-An <code>HDataType</code> to indicate which type of <code>HArray</code> to be created.<br>
-Must be a float dtype.<br>
-</li>
+<li><code>npoints</code></li>
 </ul>
+<p>An <code>integer</code>. Number of points in the output window.</p>
+<ul>
+<li><code>sym</code></li>
+</ul>
+<p>A <code>bool</code>.</p>
+<p>When <code>TRUE</code>, generates a symmetric window, for use in filter design.</p>
+<p>When <code>FALSE</code>, generates a periodic window, for use in spectral analysis.</p>
+<ul>
+<li><code>dtype</code></li>
+</ul>
+<p>An <code>HDataType</code> to indicate which type of <code>HArray</code> to be created.</p>
+<p>Must be a float dtype.</p>
 </section>
 <section id="returns-3" class="level4">
 <h4 class="anchored" data-anchor-id="returns-3">Returns</h4>
-<p>An <code>HArray</code>.<br>
-</p>
+<p>An <code>HArray</code>.</p>
 </section>
 <section id="examples-3" class="level4">
 <h4 class="anchored" data-anchor-id="examples-3">Examples</h4>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>HWindow<span class="sc">$</span><span class="fu">blackmanharris</span>(<span class="at">npoints =</span> <span class="dv">10</span>L, <span class="at">sym =</span> <span class="cn">TRUE</span>, <span class="at">dtype =</span> HDataType<span class="sc">$</span>Float64)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmnonium)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>HWindow<span class="sc">$</span><span class="fu">blackmanharris</span>(<span class="at">npoints =</span> <span class="dv">10</span>L, <span class="at">sym =</span> <span class="cn">TRUE</span>, <span class="at">dtype =</span> HDataType<span class="sc">$</span>Float64)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 </section>
 <section id="bohman" class="level2">
 <h2 class="anchored" data-anchor-id="bohman">bohman</h2>
-<p><code>bohman(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray</code> &lt;span style=“float: right;”&gt; <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hwindow.rs#L309">source</a> <br>
+<p><code>bohman(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hwindow.rs#L354">source</a> </span><br>
 </p>
-<p>Returns a Bohman window.<br>
-</p>
-<p>The maximum value is normalized to 1 (though the value 1 does not appear if <code>npoints</code> is even and <code>window_type</code> is symmetric).<br>
-</p>
+<p>Returns a Bohman window.</p>
+<p>The maximum value is normalized to 1 (though the value 1 does not appear if <code>npoints</code> is even and <code>window_type</code> is symmetric).</p>
 <section id="arguments-4" class="level4">
 <h4 class="anchored" data-anchor-id="arguments-4">Arguments</h4>
 <ul>
-<li><code>npoints</code><br>
-An <code>integer</code>. Number of points in the output window.<br>
-</li>
-<li><code>sym</code><br>
-A <code>bool</code>.<br>
-When <code>TRUE</code>, generates a symmetric window, for use in filter design.<br>
-When <code>FALSE</code>, generates a periodic window, for use in spectral analysis.<br>
-</li>
-<li><code>dtype</code><br>
-An <code>HDataType</code> to indicate which type of <code>HArray</code> to be created.<br>
-Must be a float dtype.<br>
-</li>
+<li><code>npoints</code></li>
 </ul>
+<p>An <code>integer</code>. Number of points in the output window.</p>
+<ul>
+<li><code>sym</code></li>
+</ul>
+<p>A <code>bool</code>.</p>
+<p>When <code>TRUE</code>, generates a symmetric window, for use in filter design.</p>
+<p>When <code>FALSE</code>, generates a periodic window, for use in spectral analysis.</p>
+<ul>
+<li><code>dtype</code></li>
+</ul>
+<p>An <code>HDataType</code> to indicate which type of <code>HArray</code> to be created.</p>
+<p>Must be a float dtype.</p>
 </section>
 <section id="returns-4" class="level4">
 <h4 class="anchored" data-anchor-id="returns-4">Returns</h4>
-<p>An <code>HArray</code>.<br>
-</p>
+<p>An <code>HArray</code>.</p>
 </section>
 <section id="examples-4" class="level4">
 <h4 class="anchored" data-anchor-id="examples-4">Examples</h4>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>HWindow<span class="sc">$</span><span class="fu">bohman</span>(<span class="at">npoints =</span> <span class="dv">10</span>L, <span class="at">sym =</span> <span class="cn">TRUE</span>, <span class="at">dtype =</span> HDataType<span class="sc">$</span>Float64)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmnonium)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>HWindow<span class="sc">$</span><span class="fu">bohman</span>(<span class="at">npoints =</span> <span class="dv">10</span>L, <span class="at">sym =</span> <span class="cn">TRUE</span>, <span class="at">dtype =</span> HDataType<span class="sc">$</span>Float64)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 </section>
 <section id="boxcar" class="level2">
 <h2 class="anchored" data-anchor-id="boxcar">boxcar</h2>
-<p><code>boxcar(npoints: integer, dtype: HDataType) -&gt; HArray</code> &lt;span style=“float: right;”&gt; <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hwindow.rs#L363">source</a> <br>
+<p><code>boxcar(npoints: integer, dtype: HDataType) -&gt; HArray</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hwindow.rs#L413">source</a> </span><br>
 </p>
-<p>Returns a boxcar or rectangular window.<br>
-</p>
-<p>Also known as a rectangular window or Dirichlet window, this is equivalent to no window at all.<br>
-</p>
+<p>Returns a boxcar or rectangular window.</p>
+<p>Also known as a rectangular window or Dirichlet window, this is equivalent to no window at all.</p>
 <section id="arguments-5" class="level4">
 <h4 class="anchored" data-anchor-id="arguments-5">Arguments</h4>
 <ul>
-<li><code>npoints</code><br>
-An <code>integer</code>. Number of points in the output window.<br>
-</li>
-<li><code>dtype</code><br>
-An <code>HDataType</code> to indicate which type of <code>HArray</code> to be created.<br>
-Must be a float dtype.<br>
-</li>
+<li><code>npoints</code></li>
 </ul>
+<p>An <code>integer</code>. Number of points in the output window.</p>
+<ul>
+<li><code>dtype</code></li>
+</ul>
+<p>An <code>HDataType</code> to indicate which type of <code>HArray</code> to be created.</p>
+<p>Must be a float dtype.</p>
 </section>
 <section id="returns-5" class="level4">
 <h4 class="anchored" data-anchor-id="returns-5">Returns</h4>
-<p>An <code>HArray</code>.<br>
-</p>
+<p>An <code>HArray</code>.</p>
 </section>
 <section id="examples-5" class="level4">
 <h4 class="anchored" data-anchor-id="examples-5">Examples</h4>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>HWindow<span class="sc">$</span><span class="fu">boxcar</span>(<span class="at">npoints =</span> <span class="dv">10</span>L, <span class="at">dtype =</span> HDataType<span class="sc">$</span>Float64)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmnonium)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>HWindow<span class="sc">$</span><span class="fu">boxcar</span>(<span class="at">npoints =</span> <span class="dv">10</span>L, <span class="at">dtype =</span> HDataType<span class="sc">$</span>Float64)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 </section>
 <section id="cosine" class="level2">
 <h2 class="anchored" data-anchor-id="cosine">cosine</h2>
-<p><code>cosine(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray</code> &lt;span style=“float: right;”&gt; <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hwindow.rs#L414">source</a> <br>
+<p><code>cosine(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hwindow.rs#L473">source</a> </span><br>
 </p>
-<p>Returns a window with a simple cosine shape.<br>
-</p>
-<p>The maximum value is normalized to 1 (though the value 1 does not appear if <code>npoints</code> is even and <code>window_type</code> is symmetric).<br>
-</p>
+<p>Returns a window with a simple cosine shape.</p>
+<p>The maximum value is normalized to 1 (though the value 1 does not appear if <code>npoints</code> is even and <code>window_type</code> is symmetric).</p>
 <section id="arguments-6" class="level4">
 <h4 class="anchored" data-anchor-id="arguments-6">Arguments</h4>
 <ul>
-<li><code>npoints</code><br>
-An <code>integer</code>. Number of points in the output window.<br>
-</li>
-<li><code>sym</code><br>
-A <code>bool</code>.<br>
-When <code>TRUE</code>, generates a symmetric window, for use in filter design.<br>
-When <code>FALSE</code>, generates a periodic window, for use in spectral analysis.<br>
-</li>
-<li><code>dtype</code><br>
-An <code>HDataType</code> to indicate which type of <code>HArray</code> to be created.<br>
-Must be a float dtype.<br>
-</li>
+<li><code>npoints</code></li>
 </ul>
+<p>An <code>integer</code>. Number of points in the output window.</p>
+<ul>
+<li><code>sym</code></li>
+</ul>
+<p>A <code>bool</code>.</p>
+<p>When <code>TRUE</code>, generates a symmetric window, for use in filter design.</p>
+<p>When <code>FALSE</code>, generates a periodic window, for use in spectral analysis.</p>
+<ul>
+<li><code>dtype</code></li>
+</ul>
+<p>An <code>HDataType</code> to indicate which type of <code>HArray</code> to be created.</p>
+<p>Must be a float dtype.</p>
 </section>
 <section id="returns-6" class="level4">
 <h4 class="anchored" data-anchor-id="returns-6">Returns</h4>
-<p>An <code>HArray</code>.<br>
-</p>
+<p>An <code>HArray</code>.</p>
 </section>
 <section id="examples-6" class="level4">
 <h4 class="anchored" data-anchor-id="examples-6">Examples</h4>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>HWindow<span class="sc">$</span><span class="fu">cosine</span>(<span class="at">npoints =</span> <span class="dv">10</span>L, <span class="at">sym =</span> <span class="cn">TRUE</span>, <span class="at">dtype =</span> HDataType<span class="sc">$</span>Float64)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmnonium)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>HWindow<span class="sc">$</span><span class="fu">cosine</span>(<span class="at">npoints =</span> <span class="dv">10</span>L, <span class="at">sym =</span> <span class="cn">TRUE</span>, <span class="at">dtype =</span> HDataType<span class="sc">$</span>Float64)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 </section>
 <section id="hann" class="level2">
 <h2 class="anchored" data-anchor-id="hann">hann</h2>
-<p><code>hann(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray</code> &lt;span style=“float: right;”&gt; <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hwindow.rs#L478">source</a> <br>
+<p><code>hann(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hwindow.rs#L546">source</a> </span><br>
 </p>
-<p>Returns a Hann window.<br>
-</p>
+<p>Returns a Hann window.</p>
 <p><span class="math inline">\(w(n) = 0.5 - 0.5 \cos\left(\frac{2\pi{n}}{npoints-1}\right) \qquad 0 \leq n \leq npoints-1\)</span></p>
-<p>The maximum value is normalized to 1 (though the value 1 does not appear if <code>npoints</code> is even and <code>window_type</code> is symmetric.<br>
-</p>
-<p>The Hann window is a taper formed by using a raised cosine or sine-squared with ends that touch zero.<br>
-</p>
+<p>The maximum value is normalized to 1 (though the value 1 does not appear if <code>npoints</code> is even and <code>window_type</code> is symmetric.</p>
+<p>The Hann window is a taper formed by using a raised cosine or sine-squared with ends that touch zero.</p>
 <section id="arguments-7" class="level4">
 <h4 class="anchored" data-anchor-id="arguments-7">Arguments</h4>
 <ul>
-<li><code>npoints</code><br>
-An <code>integer</code>. Number of points in the output window.<br>
-</li>
-<li><code>sym</code><br>
-A <code>bool</code>.<br>
-When <code>TRUE</code>, generates a symmetric window, for use in filter design.<br>
-When <code>FALSE</code>, generates a periodic window, for use in spectral analysis.<br>
-</li>
-<li><code>dtype</code><br>
-An <code>HDataType</code> to indicate which type of <code>HArray</code> to be created.<br>
-Must be a float dtype.<br>
-</li>
+<li><code>npoints</code></li>
 </ul>
+<p>An <code>integer</code>. Number of points in the output window.</p>
+<ul>
+<li><code>sym</code></li>
+</ul>
+<p>A <code>bool</code>.</p>
+<p>When <code>TRUE</code>, generates a symmetric window, for use in filter design.</p>
+<p>When <code>FALSE</code>, generates a periodic window, for use in spectral analysis.</p>
+<ul>
+<li><code>dtype</code></li>
+</ul>
+<p>An <code>HDataType</code> to indicate which type of <code>HArray</code> to be created.</p>
+<p>Must be a float dtype.</p>
 </section>
 <section id="returns-7" class="level4">
 <h4 class="anchored" data-anchor-id="returns-7">Returns</h4>
-<p>An <code>HArray</code>.<br>
-</p>
+<p>An <code>HArray</code>.</p>
 </section>
 <section id="examples-7" class="level4">
 <h4 class="anchored" data-anchor-id="examples-7">Examples</h4>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>HWindow<span class="sc">$</span><span class="fu">hann</span>(<span class="at">npoints =</span> <span class="dv">10</span>L, <span class="at">sym =</span> <span class="cn">TRUE</span>, <span class="at">dtype =</span> HDataType<span class="sc">$</span>Float64)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmnonium)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>HWindow<span class="sc">$</span><span class="fu">hann</span>(<span class="at">npoints =</span> <span class="dv">10</span>L, <span class="at">sym =</span> <span class="cn">TRUE</span>, <span class="at">dtype =</span> HDataType<span class="sc">$</span>Float64)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
 </section>

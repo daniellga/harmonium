@@ -296,40 +296,38 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>A window type representation.<br>
-Supports <code>Blackman</code>, <code>Blackman2</code>, <code>BlackmanHarris</code>, <code>BlackmanHarris2</code>, <code>Hann</code> and <code>Hann2</code> types.<br>
-</p>
+<p>A window type representation.</p>
+<p>Supports <code>Blackman</code>, <code>Blackman2</code>, <code>BlackmanHarris</code>, <code>BlackmanHarris2</code>, <code>Hann</code> and <code>Hann2</code> types.</p>
 <section id="methods" class="level1">
 <h1>Methods</h1>
 <section id="print" class="level2">
 <h2 class="anchored" data-anchor-id="print">print</h2>
-<p><code>print()</code> &lt;span style=“float: right;”&gt; <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hwindowtype.rs#L43">source</a> <br>
+<p><code>print()</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hwindowtype.rs#L46">source</a> </span><br>
 </p>
-<p>Prints the <code>HWindowType</code>.<br>
-Differently from R’s behaviour, <code>print</code> doesn’t return the value invisibly.<br>
-</p>
+<p>Prints the <code>HWindowType</code>.</p>
+<p>Differently from R’s behaviour, <code>print</code> doesn’t return the value invisibly.</p>
 <section id="examples" class="level4">
 <h4 class="anchored" data-anchor-id="examples">Examples</h4>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>windowtype <span class="ot">=</span> HWindowType<span class="sc">$</span>Blackman</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>windowtype<span class="sc">$</span><span class="fu">print</span>()</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># or similarly:</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(windowtype)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>windowtype <span class="ot">=</span> HWindowType<span class="sc">$</span>Blackman</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>windowtype<span class="sc">$</span><span class="fu">print</span>()</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># or similarly:</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(windowtype)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 </section>
 </section>
 <section id="eq" class="level2">
 <h2 class="anchored" data-anchor-id="eq">eq</h2>
-<p><code>eq(other: HWindowType) -&gt; bool</code> &lt;span style=“float: right;”&gt; <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hwindowtype.rs#L77">source</a> <br>
+<p><code>eq(other: HWindowType) -&gt; bool</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hwindowtype.rs#L82">source</a> </span><br>
 </p>
 <p>Equality with another <code>HWindowType</code>.</p>
 <section id="arguments" class="level4">
 <h4 class="anchored" data-anchor-id="arguments">Arguments</h4>
 <ul>
-<li><code>other</code><br>
-An <code>HWindowType</code>.<br>
-</li>
+<li><code>other</code></li>
 </ul>
+<p>An <code>HWindowType</code>.</p>
 </section>
 <section id="returns" class="level4">
 <h4 class="anchored" data-anchor-id="returns">Returns</h4>
@@ -337,27 +335,27 @@ An <code>HWindowType</code>.<br>
 </section>
 <section id="examples-1" class="level4">
 <h4 class="anchored" data-anchor-id="examples-1">Examples</h4>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>windowtype1 <span class="ot">=</span> HWindowType<span class="sc">$</span>Blackman</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>windowtype2 <span class="ot">=</span> HWindowType<span class="sc">$</span>Blackman</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>windowtype1<span class="sc">$</span><span class="fu">eq</span>(windowtype2) <span class="co"># TRUE</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># or similarly:</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>windowtype1 <span class="sc">==</span> windowtype2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>windowtype1 <span class="ot">=</span> HWindowType<span class="sc">$</span>Blackman</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>windowtype2 <span class="ot">=</span> HWindowType<span class="sc">$</span>Blackman</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>windowtype1<span class="sc">$</span><span class="fu">eq</span>(windowtype2) <span class="co"># TRUE</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># or similarly:</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>windowtype1 <span class="sc">==</span> windowtype2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 </section>
 </section>
 <section id="ne" class="level2">
 <h2 class="anchored" data-anchor-id="ne">ne</h2>
-<p><code>ne(other: HWindowType) -&gt; bool</code> &lt;span style=“float: right;”&gt; <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hwindowtype.rs#L112">source</a> <br>
+<p><code>ne(other: HWindowType) -&gt; bool</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hwindowtype.rs#L119">source</a> </span><br>
 </p>
 <p>Difference with another <code>HWindowType</code>.</p>
 <section id="arguments-1" class="level4">
 <h4 class="anchored" data-anchor-id="arguments-1">Arguments</h4>
 <ul>
-<li><code>other</code><br>
-An <code>HWindowType</code>.<br>
-</li>
+<li><code>other</code></li>
 </ul>
+<p>An <code>HWindowType</code>.</p>
 </section>
 <section id="returns-1" class="level4">
 <h4 class="anchored" data-anchor-id="returns-1">Returns</h4>
@@ -365,12 +363,13 @@ An <code>HWindowType</code>.<br>
 </section>
 <section id="examples-2" class="level4">
 <h4 class="anchored" data-anchor-id="examples-2">Examples</h4>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>windowtype1 <span class="ot">=</span> HWindowType<span class="sc">$</span>Blackman</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>windowtype2 <span class="ot">=</span> HWindowType<span class="sc">$</span>Blackman</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>windowtype1<span class="sc">$</span><span class="fu">ne</span>(windowtype2) <span class="co"># FALSE</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># or similarly:</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>windowtype1 <span class="sc">!=</span> windowtype2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>windowtype1 <span class="ot">=</span> HWindowType<span class="sc">$</span>Blackman</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>windowtype2 <span class="ot">=</span> HWindowType<span class="sc">$</span>Blackman</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>windowtype1<span class="sc">$</span><span class="fu">ne</span>(windowtype2) <span class="co"># FALSE</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># or similarly:</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>windowtype1 <span class="sc">!=</span> windowtype2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 
 

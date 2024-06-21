@@ -326,21 +326,18 @@ window.Quarto = {
 </header>
 
 
-<p>A collection of methods that can be applied to float 1D or 2D <code>HArray</code>s which represents audio data.<br>
-</p>
+<p>A collection of methods that can be applied to float 1D or 2D <code>HArray</code>s which represents audio data.</p>
 <section id="methods" class="level1">
 <h1>Methods</h1>
 <section id="nchannels" class="level2">
 <h2 class="anchored" data-anchor-id="nchannels">nchannels</h2>
-<p><code>nchannels() -&gt; integer</code> &lt;span style=“float: right;”&gt; <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudioop.rs#L41">source</a> <br>
+<p><code>nchannels() -&gt; integer</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudioop.rs#L42">source</a> </span><br>
 </p>
-<p>Returns the number of channels.<br>
-This is the same as the number of rows of a 1D or 2D HArray.<br>
-</p>
+<p>Returns the number of channels.</p>
+<p>This is the same as the number of rows of a 1D or 2D HArray.</p>
 <section id="returns" class="level4">
 <h4 class="anchored" data-anchor-id="returns">Returns</h4>
-<p>An <code>integer</code>.<br>
-</p>
+<p>An <code>integer</code>.</p>
 </section>
 <section id="examples" class="level4">
 <h4 class="anchored" data-anchor-id="examples">Examples</h4>
@@ -354,16 +351,14 @@ This is the same as the number of rows of a 1D or 2D HArray.<br>
 </section>
 <section id="nframes" class="level2">
 <h2 class="anchored" data-anchor-id="nframes">nframes</h2>
-<p><code>nframes() -&gt; integer</code> &lt;span style=“float: right;”&gt; <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudioop.rs#L72">source</a> <br>
+<p><code>nframes() -&gt; integer</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudioop.rs#L75">source</a> </span><br>
 </p>
-<p>Returns the number of frames.<br>
-This is the same as the number of cols of a 1D or 2D HArray.<br>
-The number of frames is equivalent to the number of samples divided by the number of channels.<br>
-</p>
+<p>Returns the number of frames.</p>
+<p>This is the same as the number of cols of a 1D or 2D HArray.</p>
+<p>The number of frames is equivalent to the number of samples divided by the number of channels.</p>
 <section id="returns-1" class="level4">
 <h4 class="anchored" data-anchor-id="returns-1">Returns</h4>
-<p>An <code>integer</code>.<br>
-</p>
+<p>An <code>integer</code>.</p>
 </section>
 <section id="examples-1" class="level4">
 <h4 class="anchored" data-anchor-id="examples-1">Examples</h4>
@@ -377,25 +372,25 @@ The number of frames is equivalent to the number of samples divided by the numbe
 </section>
 <section id="db_to_amplitude" class="level2">
 <h2 class="anchored" data-anchor-id="db_to_amplitude">db_to_amplitude</h2>
-<p><code>db_to_amplitude(harray: HArray, reference: double)</code> &lt;span style=“float: right;”&gt; <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudioop.rs#L108">source</a> <br>
+<p><code>db_to_amplitude(harray: HArray, reference: double)</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudioop.rs#L118">source</a> </span><br>
 </p>
-<p>Converts the <code>HArray</code> input from dB to amplitude.<br>
-<span class="math inline">\(db_to_amplitude(x) = reference * (10.0**(x * 0.1))**power\)</span><br>
-The operation is done in-place.<br>
-</p>
+<p>Converts the <code>HArray</code> input from dB to amplitude.</p>
+<p><span class="math inline">\(db_to_amplitude(x) = reference * (10.0**(x * 0.1))**power\)</span></p>
+<p>The operation is done in-place.</p>
 <section id="arguments" class="level4">
 <h4 class="anchored" data-anchor-id="arguments">Arguments</h4>
 <ul>
-<li><code>harray</code><br>
-A 1D or 2D float <code>HArray</code>.<br>
-</li>
-<li><code>reference</code><br>
-A double that scales the output.<br>
-</li>
-<li><code>power</code><br>
-A double. If 1.0, will compute DB to power. If 0.5, will compute DB to amplitude.<br>
-</li>
+<li><code>harray</code></li>
 </ul>
+<p>A 1D or 2D float <code>HArray</code>.</p>
+<ul>
+<li><code>reference</code></li>
+</ul>
+<p>A double that scales the output.</p>
+<ul>
+<li><code>power</code></li>
+</ul>
+<p>A double. If 1.0, will compute DB to power. If 0.5, will compute DB to amplitude.</p>
 </section>
 <section id="examples-2" class="level4">
 <h4 class="anchored" data-anchor-id="examples-2">Examples</h4>
@@ -409,17 +404,16 @@ A double. If 1.0, will compute DB to power. If 0.5, will compute DB to amplitude
 </section>
 <section id="to_mono" class="level2">
 <h2 class="anchored" data-anchor-id="to_mono">to_mono</h2>
-<p><code>to_mono(harray: HArray)</code> &lt;span style=“float: right;”&gt; <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudioop.rs#L140">source</a> <br>
+<p><code>to_mono(harray: HArray)</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudioop.rs#L152">source</a> </span><br>
 </p>
-<p>Convert to 1 channel by taking the average across channels.<br>
-The operation is done in-place. A new inner array is created.<br>
-</p>
+<p>Convert to 1 channel by taking the average across channels.</p>
+<p>The operation is done in-place. A new inner array is created.</p>
 <section id="arguments-1" class="level4">
 <h4 class="anchored" data-anchor-id="arguments-1">Arguments</h4>
 <ul>
-<li><code>harray</code><br>
-A 2D float <code>HArray</code>.</li>
+<li><code>harray</code></li>
 </ul>
+<p>A 2D float <code>HArray</code>.</p>
 </section>
 <section id="examples-3" class="level4">
 <h4 class="anchored" data-anchor-id="examples-3">Examples</h4>

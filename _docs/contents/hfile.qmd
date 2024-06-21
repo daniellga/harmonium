@@ -51,15 +51,15 @@ Creates an `HDecoderStream`, used as an iterator to stream frames of decoded aud
 
 #### Arguments
 
-* `fpath`
+- `fpath`
 
 The file path as a string.
 
-* `frames`
+- `frames`
 
 Number of frames to decode per iteration.
 
-* `dtype`
+- `dtype`
 
 A float `HDataType`.
 
@@ -206,7 +206,7 @@ Note that this avoids loading the contents into memory, and is therefore useful 
 
 #### Arguments
 
-* `fpath`
+- `fpath`
 
 The file path as a string.
 
@@ -239,7 +239,7 @@ The verification is done after the decoding process is finished.
 
 #### Arguments
 
-* `fpath`
+- `fpath`
 
 The file path as a string.
 

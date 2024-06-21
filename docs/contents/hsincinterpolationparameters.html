@@ -295,73 +295,74 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>Parameters to be used for sinc interpolation.<br>
-</p>
+<p>Parameters to be used for sinc interpolation.</p>
 <section id="methods" class="level1">
 <h1>Methods</h1>
 <section id="new" class="level2">
 <h2 class="anchored" data-anchor-id="new">new</h2>
-<p><code>new(sinc_len: integer, f_cutoff: double, oversampling_factor: integer, interpolation: HInterpolationType, window: HWindowType) -&gt; HSincInterpolationParameters</code> &lt;span style=“float: right;”&gt; <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hsincinterpolationparameters.rs#L66">source</a> <br>
+<p><code>new(sinc_len: integer, f_cutoff: double, oversampling_factor: integer, interpolation: HInterpolationType, window: HWindowType) -&gt; HSincInterpolationParameters</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hsincinterpolationparameters.rs#L76">source</a> </span><br>
 </p>
-<p>Creates a new <code>HSincInterpolationParameters</code>.<br>
-</p>
+<p>Creates a new <code>HSincInterpolationParameters</code>.</p>
 <section id="arguments" class="level4">
 <h4 class="anchored" data-anchor-id="arguments">Arguments</h4>
 <ul>
-<li><code>sinc_len</code><br>
-An integer. Length of the windowed sinc interpolation filter. Higher values can allow a higher cut-off frequency leading to less high frequency roll-off at the expense of higher cpu usage. A good starting point should be 256. The value will be rounded up to the nearest multiple of 8.<br>
-</li>
-<li><code>f_cutoff</code><br>
-A double. Relative cutoff frequency of the sinc interpolation filter (relative to the lowest one of <code>fs_in/2</code> or <code>fs_out/2</code>). Start at 0.95, and increase if needed.<br>
-</li>
-<li><code>oversampling_factor</code><br>
-An integer. The number of intermediate points to use for interpolation. Higher values use more memory for storing the sinc filters. Only the points actually needed are calculated during processing so a larger number does not directly lead to higher cpu usage. A lower value helps in keeping the sincs in the cpu cache. A good starting point should be 128.<br>
-</li>
-<li><code>interpolation</code><br>
-An <code>HInterpolationType</code>. The interpolation type.<br>
-</li>
-<li><code>window</code><br>
-An <code>HWindowType</code>. The window function to use.<br>
-</li>
+<li><code>sinc_len</code></li>
 </ul>
+<p>An integer. Length of the windowed sinc interpolation filter. Higher values can allow a higher cut-off frequency leading to less high frequency roll-off at the expense of higher cpu usage. A good starting point should be 256. The value will be rounded up to the nearest multiple of 8.</p>
+<ul>
+<li><code>f_cutoff</code></li>
+</ul>
+<p>A double. Relative cutoff frequency of the sinc interpolation filter (relative to the lowest one of <code>fs_in/2</code> or <code>fs_out/2</code>). Start at 0.95, and increase if needed.</p>
+<ul>
+<li><code>oversampling_factor</code></li>
+</ul>
+<p>An integer. The number of intermediate points to use for interpolation. Higher values use more memory for storing the sinc filters. Only the points actually needed are calculated during processing so a larger number does not directly lead to higher cpu usage. A lower value helps in keeping the sincs in the cpu cache. A good starting point should be 128.</p>
+<ul>
+<li><code>interpolation</code></li>
+</ul>
+<p>An <code>HInterpolationType</code>. The interpolation type.</p>
+<ul>
+<li><code>window</code></li>
+</ul>
+<p>An <code>HWindowType</code>. The window function to use.</p>
 </section>
 <section id="returns" class="level4">
 <h4 class="anchored" data-anchor-id="returns">Returns</h4>
-<p>An <code>HSincInterpolationParameters</code>.<br>
-</p>
+<p>An <code>HSincInterpolationParameters</code>.</p>
 </section>
 <section id="examples" class="level4">
 <h4 class="anchored" data-anchor-id="examples">Examples</h4>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>sinc_len <span class="ot">=</span> <span class="dv">256</span>L</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>f_cutoff <span class="ot">=</span> <span class="fl">0.95</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>oversampling_factor <span class="ot">=</span> <span class="dv">128</span>L</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>interpolation <span class="ot">=</span> HInterpolationType<span class="sc">$</span>Linear</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>window <span class="ot">=</span> HWindowType<span class="sc">$</span>Blackman</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>hsincinterpolationparameters <span class="ot">=</span> HSincInterpolationParameters<span class="sc">$</span><span class="fu">new</span>(sinc_len, f_cutoff, oversampling_factor, interpolation, window)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>sinc_len <span class="ot">=</span> <span class="dv">256</span>L</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>f_cutoff <span class="ot">=</span> <span class="fl">0.95</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>oversampling_factor <span class="ot">=</span> <span class="dv">128</span>L</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>interpolation <span class="ot">=</span> HInterpolationType<span class="sc">$</span>Linear</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>window <span class="ot">=</span> HWindowType<span class="sc">$</span>Blackman</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>hsincinterpolationparameters <span class="ot">=</span> HSincInterpolationParameters<span class="sc">$</span><span class="fu">new</span>(sinc_len, f_cutoff, oversampling_factor, interpolation, window)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 </section>
 </section>
 <section id="print" class="level2">
 <h2 class="anchored" data-anchor-id="print">print</h2>
-<p><code>print()</code> &lt;span style=“float: right;”&gt; <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hsincinterpolationparameters.rs#L114">source</a> <br>
+<p><code>print()</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hsincinterpolationparameters.rs#L126">source</a> </span><br>
 </p>
-<p>Prints the <code>HSincInterpolationParameters</code>.<br>
-Differently from R’s behaviour, <code>print</code> doesn’t return the value invisibly.<br>
-</p>
+<p>Prints the <code>HSincInterpolationParameters</code>.</p>
+<p>Differently from R’s behaviour, <code>print</code> doesn’t return the value invisibly.</p>
 <section id="examples-1" class="level4">
 <h4 class="anchored" data-anchor-id="examples-1">Examples</h4>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>sinc_len <span class="ot">=</span> <span class="dv">256</span>L</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>f_cutoff <span class="ot">=</span> <span class="fl">0.95</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>oversampling_factor <span class="ot">=</span> <span class="dv">128</span>L</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>interpolation <span class="ot">=</span> HInterpolationType<span class="sc">$</span>Linear</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>window <span class="ot">=</span> HWindowType<span class="sc">$</span>Blackman</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>hsincinterpolationparameters <span class="ot">=</span> HSincInterpolationParameters<span class="sc">$</span><span class="fu">new</span>(sinc_len, f_cutoff, oversampling_factor, interpolation, window)</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>hsincinterpolationparameters<span class="sc">$</span><span class="fu">print</span>()</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co"># or similarly:</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(hsincinterpolationparameters)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>sinc_len <span class="ot">=</span> <span class="dv">256</span>L</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>f_cutoff <span class="ot">=</span> <span class="fl">0.95</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>oversampling_factor <span class="ot">=</span> <span class="dv">128</span>L</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>interpolation <span class="ot">=</span> HInterpolationType<span class="sc">$</span>Linear</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>window <span class="ot">=</span> HWindowType<span class="sc">$</span>Blackman</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>hsincinterpolationparameters <span class="ot">=</span> HSincInterpolationParameters<span class="sc">$</span><span class="fu">new</span>(sinc_len, f_cutoff, oversampling_factor, interpolation, window)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>hsincinterpolationparameters<span class="sc">$</span><span class="fu">print</span>()</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co"># or similarly:</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(hsincinterpolationparameters)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 
 

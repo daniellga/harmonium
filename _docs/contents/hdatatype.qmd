@@ -2,17 +2,19 @@
 title: HDataType
 ---
 
-A type representation. \
-Supports `Float32`, `Float64`, `Complex32` and `Complex64` types. \
+A type representation.
+
+Supports `Float32`, `Float64`, `Complex32` and `Complex64` types.
 
 # Methods
 
 ## print
 
-`print()` \<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hdatatype.rs#L42) </span> \
+`print()`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hdatatype.rs#L44) </span> \
 
-Prints the `HDataType`. \
-Differently from R's behaviour, `print` doesn't return the value invisibly. \
+Prints the `HDataType`.
+
+Differently from R's behaviour, `print` doesn't return the value invisibly.
 
 #### Examples
 
@@ -29,14 +31,15 @@ _________
 
 ## eq
 
-`eq(other: HDataType) -> bool` \<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hdatatype.rs#L77) </span> \
+`eq(other: HDataType) -> bool`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hdatatype.rs#L80) </span> \
 
-Equality with another `HDataType`. \
+Equality with another `HDataType`.
 
 #### Arguments
 
-* `other` \
-An `HDataType`. \
+- `other`
+
+An `HDataType`.
 
 #### Returns
 
@@ -58,18 +61,19 @@ _________
 
 ## ne
 
-`ne(other: HDataType) -> bool` \<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hdatatype.rs#L113) </span> \
+`ne(other: HDataType) -> bool`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hdatatype.rs#L117) </span> \
 
-Difference with another `HDataType`. \
+Difference with another `HDataType`.
 
 #### Arguments
 
-* `other` \
-An `HDataType`. \
+- `other`
+
+An `HDataType`.
 
 #### Returns
 
-A `bool`. \
+A `bool`.
 
 #### Examples
 

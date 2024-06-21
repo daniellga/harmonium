@@ -296,56 +296,57 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>Degree of the polynomial used for interpolation. A higher degree gives a higher quality result, while taking longer to compute.<br>
-</p>
+<p>Degree of the polynomial used for interpolation. A higher degree gives a higher quality result, while taking longer to compute.</p>
 <ul>
-<li><p><code>Septic</code><br>
-Septic polynomial, fitted using 8 sample points.<br>
-</p></li>
-<li><p><code>Quintic</code>.<br>
-Quintic polynomial, fitted using 6 sample points.<br>
-</p></li>
-<li><p><code>Cubic</code>.<br>
-Cubic polynomial, fitted using 4 sample points.<br>
-</p></li>
-<li><p><code>Linear</code>.<br>
-Linear polynomial, fitted using 2 sample points.<br>
-</p></li>
-<li><p><code>Nearest</code>.<br>
-Nearest, uses the nearest sample point without any fitting.<br>
-</p></li>
+<li><code>Septic</code></li>
 </ul>
+<p>Septic polynomial, fitted using 8 sample points.</p>
+<ul>
+<li><code>Quintic</code>.</li>
+</ul>
+<p>Quintic polynomial, fitted using 6 sample points.</p>
+<ul>
+<li><code>Cubic</code>.</li>
+</ul>
+<p>Cubic polynomial, fitted using 4 sample points.</p>
+<ul>
+<li><code>Linear</code>.</li>
+</ul>
+<p>Linear polynomial, fitted using 2 sample points.</p>
+<ul>
+<li><code>Nearest</code>.</li>
+</ul>
+<p>Nearest, uses the nearest sample point without any fitting.</p>
 <section id="methods" class="level1">
 <h1>Methods</h1>
 <section id="print" class="level2">
 <h2 class="anchored" data-anchor-id="print">print</h2>
-<p><code>print()</code> &lt;span style=“float: right;”&gt; <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hpolynomialdegree.rs#L57">source</a> <br>
+<p><code>print()</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hpolynomialdegree.rs#L64">source</a> </span><br>
 </p>
-<p>Prints the <code>HPolynomialDegree</code>.<br>
-Differently from R’s behaviour, <code>print</code> doesn’t return the value invisibly.<br>
-</p>
+<p>Prints the <code>HPolynomialDegree</code>.</p>
+<p>Differently from R’s behaviour, <code>print</code> doesn’t return the value invisibly.</p>
 <section id="examples" class="level4">
 <h4 class="anchored" data-anchor-id="examples">Examples</h4>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pol_deg <span class="ot">=</span> HPolynomialDegree<span class="sc">$</span>Complex64</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>pol_deg<span class="sc">$</span><span class="fu">print</span>()</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># or similarly:</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(pol_deg)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>pol_deg <span class="ot">=</span> HPolynomialDegree<span class="sc">$</span>Complex64</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>pol_deg<span class="sc">$</span><span class="fu">print</span>()</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># or similarly:</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(pol_deg)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 </section>
 </section>
 <section id="eq" class="level2">
 <h2 class="anchored" data-anchor-id="eq">eq</h2>
-<p><code>eq(other: HPolynomialDegree) -&gt; bool</code> &lt;span style=“float: right;”&gt; <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hpolynomialdegree.rs#L91">source</a> <br>
+<p><code>eq(other: HPolynomialDegree) -&gt; bool</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hpolynomialdegree.rs#L100">source</a> </span><br>
 </p>
 <p>Equality with another <code>HPolynomialDegree</code>.</p>
 <section id="arguments" class="level4">
 <h4 class="anchored" data-anchor-id="arguments">Arguments</h4>
 <ul>
-<li><code>other</code><br>
-An <code>HPolynomialDegree</code>.<br>
-</li>
+<li><code>other</code></li>
 </ul>
+<p>An <code>HPolynomialDegree</code>.</p>
 </section>
 <section id="returns" class="level4">
 <h4 class="anchored" data-anchor-id="returns">Returns</h4>
@@ -353,27 +354,27 @@ An <code>HPolynomialDegree</code>.<br>
 </section>
 <section id="examples-1" class="level4">
 <h4 class="anchored" data-anchor-id="examples-1">Examples</h4>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>pol_deg1 <span class="ot">=</span> HPolynomialDegree<span class="sc">$</span>quintic</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>pol_deg2 <span class="ot">=</span> HPolynomialDegree<span class="sc">$</span>quintic</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>pol_deg1<span class="sc">$</span><span class="fu">eq</span>(pol_deg2) <span class="co"># TRUE</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># or similarly:</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>pol_deg1 <span class="sc">==</span> pol_deg2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>pol_deg1 <span class="ot">=</span> HPolynomialDegree<span class="sc">$</span>quintic</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>pol_deg2 <span class="ot">=</span> HPolynomialDegree<span class="sc">$</span>quintic</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>pol_deg1<span class="sc">$</span><span class="fu">eq</span>(pol_deg2) <span class="co"># TRUE</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># or similarly:</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>pol_deg1 <span class="sc">==</span> pol_deg2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 </section>
 </section>
 <section id="ne" class="level2">
 <h2 class="anchored" data-anchor-id="ne">ne</h2>
-<p><code>ne(other: HPolynomialDegree) -&gt; bool</code> &lt;span style=“float: right;”&gt; <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hpolynomialdegree.rs#L126">source</a> <br>
+<p><code>ne(other: HPolynomialDegree) -&gt; bool</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hpolynomialdegree.rs#L137">source</a> </span><br>
 </p>
 <p>Difference with another <code>HPolynomialDegree</code>.</p>
 <section id="arguments-1" class="level4">
 <h4 class="anchored" data-anchor-id="arguments-1">Arguments</h4>
 <ul>
-<li><code>other</code><br>
-An <code>HPolynomialDegree</code>.<br>
-</li>
+<li><code>other</code></li>
 </ul>
+<p>An <code>HPolynomialDegree</code>.</p>
 </section>
 <section id="returns-1" class="level4">
 <h4 class="anchored" data-anchor-id="returns-1">Returns</h4>
@@ -381,12 +382,13 @@ An <code>HPolynomialDegree</code>.<br>
 </section>
 <section id="examples-2" class="level4">
 <h4 class="anchored" data-anchor-id="examples-2">Examples</h4>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>pol_deg1 <span class="ot">=</span> HPolynomialDegree<span class="sc">$</span>quintic</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>pol_deg2 <span class="ot">=</span> HPolynomialDegree<span class="sc">$</span>nearest</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>pol_deg1<span class="sc">$</span><span class="fu">ne</span>(pol_deg2) <span class="co"># TRUE</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># or similarly:</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>pol_deg1 <span class="sc">!=</span> pol_deg2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>pol_deg1 <span class="ot">=</span> HPolynomialDegree<span class="sc">$</span>quintic</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>pol_deg2 <span class="ot">=</span> HPolynomialDegree<span class="sc">$</span>nearest</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>pol_deg1<span class="sc">$</span><span class="fu">ne</span>(pol_deg2) <span class="co"># TRUE</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># or similarly:</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>pol_deg1 <span class="sc">!=</span> pol_deg2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 
 

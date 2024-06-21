@@ -2,17 +2,19 @@
 title: HInterpolationType
 ---
 
-A interpolation type representation. \
-Supports `Cubic`, `Linear`, `Quadratic` and `Nearest`. \
+A interpolation type representation.
+
+Supports `Cubic`, `Linear`, `Quadratic` and `Nearest` types.
 
 # Methods
 
 ## print
 
-`print()` \<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hinterpolationtype.rs#L42) </span> \
+`print()`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hinterpolationtype.rs#L44) </span> \
 
-Prints the `HInterpolationType`. \
-Differently from R's behaviour, `print` doesn't return the value invisibly. \
+Prints the `HInterpolationType`.
+
+Differently from R's behaviour, `print` doesn't return the value invisibly.
 
 #### Examples
 
@@ -29,14 +31,15 @@ _________
 
 ## eq
 
-`eq(other: HInterpolationType) -> bool` \<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hinterpolationtype.rs#L77) </span> \
+`eq(other: HInterpolationType) -> bool`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hinterpolationtype.rs#L80) </span> \
 
 Equality with another `HInterpolationType`.
 
 #### Arguments
 
-* `other` \
-An `HInterpolationType`. \
+- `other`
+
+An `HInterpolationType`.
 
 #### Returns
 
@@ -58,14 +61,15 @@ _________
 
 ## ne
 
-`ne(other: HInterpolationType) -> bool` \<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hinterpolationtype.rs#L113) </span> \
+`ne(other: HInterpolationType) -> bool`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hinterpolationtype.rs#L117) </span> \
 
 Difference with another `HInterpolationType`.
 
 #### Arguments
 
-* `other` \
-An `HInterpolationType`. \
+- `other`
+
+An `HInterpolationType`.
 
 #### Returns
 

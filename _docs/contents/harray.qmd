@@ -2,27 +2,31 @@
 title: HArray
 ---
 
-An array representation. \
+An array representation.
 
 # Methods
 
 ## new_from_values
 
-`new_from_values(arr: array, dtype: HDataType) -> HArray` \<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L53) </span> \
+`new_from_values(arr: array, dtype: HDataType) -> HArray`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L57) </span> \
 
-Creates a new `HArray` from an R array. \
+Creates a new `HArray` from an R array.
 
 #### Arguments
 
-* `arr` \
+- `arr`
+
 A `double` or `complex` array.
-* `dtype` \
-An `HDataType` to indicate which type of `HArray` to be created. \
+
+- `dtype`
+
+An `HDataType` to indicate which type of `HArray` to be created.
+
 For float dtypes, the atomic vector must be a `double`. For complex dtypes, a `complex` atomic vector.
 
 #### Returns
 
-An `HArray`. \
+An `HArray`.
 
 #### Examples
 
@@ -37,13 +41,13 @@ _________
 
 ## len
 
-`len() -> integer` \<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L121) </span> \
+`len() -> integer`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L125) </span> \
 
-Returns the number of elements of this `Harray`. \
+Returns the number of elements of this `Harray`.
 
 #### Returns
 
-An `integer`. \
+An integer.
 
 #### Examples
 
@@ -59,13 +63,13 @@ _________
 
 ## shape
 
-`shape() -> integers` \<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L149) </span> \
+`shape() -> integeratomicvector`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L153) </span> \
 
-Returns the shape of this `HArray`. \
+Returns the shape of this `HArray`.
 
 #### Returns
 
-A vector of integers. \
+An integer atomic vector.
 
 #### Examples
 
@@ -81,13 +85,13 @@ _________
 
 ## ndim
 
-`ndim() -> integer` \<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L183) </span> \
+`ndim() -> integer`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L187) </span> \
 
-Returns the number of dimensions of this `HArray`. \
+Returns the number of dimensions of this `HArray`.
 
 #### Returns
 
-An integer. \
+An integer.
 
 #### Examples
 
@@ -103,23 +107,26 @@ _________
 
 ## slice
 
-`slice(range: list[atomicvector]) -> HArray` \<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L221) </span> \
+`slice(range: list[atomicvector]) -> HArray`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L228) </span> \
 
-Slices the HArray. \
+Slices the HArray.
+
 This operation has a COW ([clone-on-write](https://doc.rust-lang.org/std/borrow/enum.Cow.html)) behaviour. The created slice shares the inner data with
-the original array until one of them is modified. \
+the original array until one of them is modified.
 
 #### Arguments
 
-* `range` \
+- `range`
+
 A list of vectors of integers.
-The number of vectors in the list must be equal to the number of dimensions in the original HArray as they represent the slice information for each axis. \
-Each vector must be composed of 3 elements: [start, end, step]. All 3 values can be
-positive or negative, although step can't be 0. \
+
+The number of vectors in the list must be equal to the number of dimensions in the original HArray as they represent the slice information for each axis.
+
+Each vector must be composed of 3 elements: [start, end, step]. All 3 values can be positive or negative, although step can't be 0.
 
 #### Returns
 
-An `HArray`. \
+An `HArray`.
 
 #### Examples
 
@@ -135,10 +142,11 @@ _________
 
 ## print
 
-`print()` \<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L279) </span> \
+`print()`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L287) </span> \
 
-Prints the `HArray`. \
-Differently from R's normal behaviour, `print` doesn't return the value invisibly. \
+Prints the `HArray`.
+
+Differently from R's normal behaviour, `print` doesn't return the value invisibly.
 
 #### Examples
 
@@ -157,20 +165,22 @@ _________
 
 ## eq
 
-`eq(other: HArray) -> bool` \<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L322) </span> \
+`eq(other: HArray) -> bool`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L332) </span> \
 
-Equality with another `HArray`. \
+Equality with another `HArray`.
+
 The comparison only checks if the dtype and the values are the same. To compare if the
-underlying data is the same in memory, check `mem_adress`. \
+underlying data is the same in memory, check `mem_adress`.
 
 #### Arguments
 
-* `other` \
-An `HArray`. \
+- `other`
+
+An `HArray`.
 
 #### Returns
 
-A `bool`. \
+A `bool`.
 
 #### Examples
 
@@ -194,15 +204,17 @@ _________
 
 ## ne
 
-`ne(other: HArray) -> bool` \<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L366) </span> \
+`ne(other: HArray) -> bool`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L378) </span> \
 
-Difference with another `HArray`. \
+Difference with another `HArray`.
+
 The comparison only checks if the dtype and the values are the same. To compare if the
 underlying data is the same in memory, check `mem_adress`.
 
 #### Arguments
 
-* `other` \
+- `other`
+
 An `HArray`.
 
 #### Returns
@@ -231,7 +243,7 @@ _________
 
 ## clone
 
-`clone() -> HArray` \<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L396) </span> \
+`clone() -> HArray`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L408) </span> \
 
 Creates a new `HArray`, with the underlying data pointing to the same place in memory.
 
@@ -254,7 +266,7 @@ _________
 
 ## collect
 
-`collect() -> array` \<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L423) </span> \
+`collect() -> array`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L435) </span> \
 
 Creates an R array from an `HArray`. The type of the array created (`double` or `complex`) will depend on the `HArray`'s dtype.
 
@@ -276,7 +288,7 @@ _________
 
 ## dtype
 
-`dtype() -> HDataType` \<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L450) </span> \
+`dtype() -> HDataType`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L462) </span> \
 
 Gets the `HArray`'s dtype as an `HDataType`.
 
@@ -298,15 +310,16 @@ _________
 
 ## is_shared
 
-`is_shared() -> bool` \<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L482) </span> \
+`is_shared() -> bool`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L495) </span> \
 
-Checks if the object is shared. \
+Checks if the object is shared.
+
 Since `HArray` has a COW ([clone-on-write](https://doc.rust-lang.org/std/borrow/enum.Cow.html)) behaviour, this function is useful to check if a new
-object will be created or if the change will be done in-place. \
+object will be created or if the change will be done in-place.
 
 #### Returns
 
-A `bool`. \
+A `bool`.
 
 #### Examples
 
@@ -325,14 +338,15 @@ _________
 
 ## mem_adress
 
-`mem_adress() -> string` \<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L512) </span> \
+`mem_adress() -> string`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L526) </span> \
 
-The memory adress of the first element of the inner array. \
-This is useful to check if different objects share the same underlying data. \
+The memory adress of the first element of the inner array.
+
+This is useful to check if different objects share the same underlying data.
 
 #### Returns
 
-A `string`. \
+A `string`.
 
 #### Examples
 
@@ -348,10 +362,10 @@ _________
 
 ## invalidate
 
-`invalidate()` \<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L537) </span> \
+`invalidate()`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L551) </span> \
 
-Replaces the inner value of the external pointer, invalidating it. \
-This function is useful to remove one of the shared references of the inner pointer in rust. \
+Replaces the inner value of the external pointer, invalidating it.
+This function is useful to remove one of the shared references of the inner pointer in rust.
 
 #### Examples
 

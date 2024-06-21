@@ -298,32 +298,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>A planner is used to create FFTs. It caches results internally, so when making more than one FFT it is advisable to reuse the same planner.<br>
-This planner is used to calculate FFTs of real valued inputs and its inverse operation.<br>
-</p>
+<p>A planner is used to create FFTs. It caches results internally, so when making more than one FFT it is advisable to reuse the same planner.</p>
+<p>This planner is used to calculate FFTs of real valued inputs and its inverse operation.</p>
 <section id="methods" class="level1">
 <h1>Methods</h1>
 <section id="new" class="level2">
 <h2 class="anchored" data-anchor-id="new">new</h2>
-<p><code>new(dtype: HDataType) -&gt; HRealFftPlanner</code> &lt;span style=“float: right;”&gt; <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L266">source</a> <br>
+<p><code>new(dtype: HDataType) -&gt; HRealFftPlanner</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L286">source</a> </span><br>
 </p>
-<p>Creates a new <code>HRealFftPlanner</code> instance.<br>
-If you plan on creating multiple FFT instances, it is recommended to reuse the same planner for all of them. This is because the planner re-uses internal data across FFT instances wherever possible, saving memory and reducing setup time. (FFT instances created with one planner will never re-use data and buffers with FFT instances created by a different planner)<br>
-In the constructor, the FftPlanner will detect available CPU features. If AVX, SSE, Neon, or WASM SIMD are available, it will set itself up to plan FFTs with the fastest available instruction set. If no SIMD instruction sets are available, the planner will seamlessly fall back to planning non-SIMD FFTs.<br>
-</p>
+<p>Creates a new <code>HRealFftPlanner</code> instance.</p>
+<p>If you plan on creating multiple FFT instances, it is recommended to reuse the same planner for all of them. This is because the planner re-uses internal data across FFT instances wherever possible, saving memory and reducing setup time (FFT instances created with one planner will never re-use data and buffers with FFT instances created by a different planner).</p>
+<p>In the constructor, the FftPlanner will detect available CPU features. If AVX, SSE, Neon, or WASM SIMD are available, it will set itself up to plan FFTs with the fastest available instruction set. If no SIMD instruction sets are available, the planner will seamlessly fall back to planning non-SIMD FFTs.</p>
 <section id="arguments" class="level4">
 <h4 class="anchored" data-anchor-id="arguments">Arguments</h4>
 <ul>
-<li><code>dtype</code><br>
-A float <code>HDataType</code> to indicate the dtype that the <code>HFftPlanner</code> will be working with.<br>
-</li>
+<li><code>dtype</code></li>
 </ul>
+<p>A float <code>HDataType</code> to indicate the dtype that the <code>HFftPlanner</code> will be working with.</p>
 </section>
 <section id="returns" class="level4">
 <h4 class="anchored" data-anchor-id="returns">Returns</h4>
-<p>An <code>HRealFftPlanner</code>.<br>
-Will return an error if dtype is of a complex type.<br>
-</p>
+<p>An <code>HRealFftPlanner</code>.</p>
+<p>Will return an error if dtype is of a complex type.</p>
 </section>
 <section id="examples" class="level4">
 <h4 class="anchored" data-anchor-id="examples">Examples</h4>
@@ -337,31 +333,28 @@ Will return an error if dtype is of a complex type.<br>
 </section>
 <section id="rfft" class="level2">
 <h2 class="anchored" data-anchor-id="rfft">rfft</h2>
-<p><code>rfft(harray: HArray)</code> &lt;span style=“float: right;”&gt; <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L318">source</a> <br>
+<p><code>rfft(harray: HArray)</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L344">source</a> </span><br>
 </p>
-<p>Computes the fast fourier transform of a float <code>HArray</code>. Transforms a real signal of length <code>N</code> to a complex-valued spectrum of length <code>N/2+1</code> (with <code>N/2</code> rounded down).<br>
-The operation is not done in-place, although the same external pointer is used to store the new HArray.<br>
-The FFT of a real signal is Hermitian-symmetric, X[i] = conj(X[-i]) so the output contains only the positive frequencies below the Nyquist frequency.<br>
-FFT (Fast Fourier Transform) refers to a way the discrete Fourier Transform (DFT) can be calculated efficiently, by using symmetries in the calculated terms. The symmetry is highest when n is a power of 2, and the transform is therefore most efficient for these sizes.<br>
-</p>
-<p>The function does not normalize outputs. Callers must manually normalize the results by scaling each element by <code>1/sqrt(n)</code>. Multiple normalization steps can be merged into one via pairwise multiplication, so when doing a forward FFT followed by an inverse callers can normalize once by scaling each element by <code>1/n</code>.<br>
-</p>
-<p>Elements in the output are ordered by ascending frequency, with the first element corresponding to frequency 0.<br>
-</p>
+<p>Computes the fast fourier transform of a float <code>HArray</code>. Transforms a real signal of length <code>N</code> to a complex-valued spectrum of length <code>N/2+1</code> (with <code>N/2</code> rounded down).</p>
+<p>The operation is not done in-place, although the same external pointer is used to store the new HArray.</p>
+<p>The FFT of a real signal is Hermitian-symmetric, X[i] = conj(X[-i]) so the output contains only the positive frequencies below the Nyquist frequency.</p>
+<p>FFT (Fast Fourier Transform) refers to a way the discrete Fourier Transform (DFT) can be calculated efficiently, by using symmetries in the calculated terms. The symmetry is highest when n is a power of 2, and the transform is therefore most efficient for these sizes.</p>
+<p>The function does not normalize outputs. Callers must manually normalize the results by scaling each element by <code>1/sqrt(n)</code>. Multiple normalization steps can be merged into one via pairwise multiplication, so when doing a forward FFT followed by an inverse callers can normalize once by scaling each element by <code>1/n</code>.</p>
+<p>Elements in the output are ordered by ascending frequency, with the first element corresponding to frequency 0.</p>
 <section id="arguments-1" class="level4">
 <h4 class="anchored" data-anchor-id="arguments-1">Arguments</h4>
 <ul>
-<li><code>harray</code><br>
-A float <code>HArray</code>.<br>
-</li>
+<li><code>harray</code></li>
 </ul>
+<p>A float <code>HArray</code>.</p>
 </section>
 <section id="returns-1" class="level4">
 <h4 class="anchored" data-anchor-id="returns-1">Returns</h4>
-<p>Will return an error if:<br>
-- The <code>HArray</code>’s dtype is incompatible with the <code>HFftPlanner</code>’s dtype.<br>
-- The <code>HArray</code>’s <code>ndim</code> is greater than 2.<br>
-</p>
+<p>Will return an error if:</p>
+<ul>
+<li><p>The <code>HArray</code>’s dtype is incompatible with the <code>HFftPlanner</code>’s dtype.</p></li>
+<li><p>The <code>HArray</code>’s <code>ndim</code> is greater than 2.</p></li>
+</ul>
 </section>
 <section id="examples-1" class="level4">
 <h4 class="anchored" data-anchor-id="examples-1">Examples</h4>
@@ -376,33 +369,31 @@ A float <code>HArray</code>.<br>
 </section>
 <section id="irfft" class="level2">
 <h2 class="anchored" data-anchor-id="irfft">irfft</h2>
-<p><code>irfft(harray: HArray, length: integer)</code> &lt;span style=“float: right;”&gt; <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L370">source</a> <br>
+<p><code>irfft(harray: HArray, length: integer)</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L404">source</a> </span><br>
 </p>
-<p>Computes the inverse fast fourier transform of a complex <code>HArray</code>. Transforms a complex spectrum of length <code>N/2+1</code> (with <code>N/2</code> rounded down) to a real-valued signal of length <code>N</code>.<br>
-The operation is not done in-place, although the same external pointer is used to store the new HArray.<br>
-The FFT of a real signal is Hermitian-symmetric, X[i] = conj(X[-i]) so the output contains only the positive frequencies below the Nyquist frequency.<br>
-FFT (Fast Fourier Transform) refers to a way the discrete Fourier Transform (DFT) can be calculated efficiently, by using symmetries in the calculated terms. The symmetry is highest when n is a power of 2, and the transform is therefore most efficient for these sizes.<br>
-</p>
-<p>The function does not normalize outputs. Callers must manually normalize the results by scaling each element by <code>1/sqrt(n)</code>. Multiple normalization steps can be merged into one via pairwise multiplication, so when doing a forward FFT followed by an inverse callers can normalize once by scaling each element by <code>1/n</code>.<br>
-</p>
+<p>Computes the inverse fast fourier transform of a complex <code>HArray</code>. Transforms a complex spectrum of length <code>N/2+1</code> (with <code>N/2</code> rounded down) to a real-valued signal of length <code>N</code>.</p>
+<p>The operation is not done in-place, although the same external pointer is used to store the new HArray. The FFT of a real signal is Hermitian-symmetric, X[i] = conj(X[-i]) so the output contains only the positive frequencies below the Nyquist frequency.</p>
+<p>FFT (Fast Fourier Transform) refers to a way the discrete Fourier Transform (DFT) can be calculated efficiently, by using symmetries in the calculated terms. The symmetry is highest when n is a power of 2, and the transform is therefore most efficient for these sizes.</p>
+<p>The function does not normalize outputs. Callers must manually normalize the results by scaling each element by <code>1/sqrt(n)</code>. Multiple normalization steps can be merged into one via pairwise multiplication, so when doing a forward FFT followed by an inverse callers can normalize once by scaling each element by <code>1/n</code>.</p>
 <section id="arguments-2" class="level4">
 <h4 class="anchored" data-anchor-id="arguments-2">Arguments</h4>
 <ul>
-<li><code>harray</code><br>
-A complex <code>HArray</code>. The <code>HArray</code>’s dtype must be the complex equivalent of the <code>HRealFftPlanner</code>’s dtype. For example if <code>HRealFftPlanner</code> dtype is <code>Float64</code>, the <code>HArray</code>’s dtype must be <code>Complex64</code>.<br>
-</li>
-<li><code>length</code><br>
-An integer. The output length of the signal. Since the spectrum is <code>N/2+1</code>, the length can be <code>N</code> and <code>N+1</code>, if <code>N</code> is even, or can be <code>N</code> and <code>N-1</code> if <code>N</code> is odd.<br>
-</li>
+<li><code>harray</code></li>
 </ul>
+<p>A complex <code>HArray</code>. The <code>HArray</code>’s dtype must be the complex equivalent of the <code>HRealFftPlanner</code>’s dtype. For example if <code>HRealFftPlanner</code> dtype is <code>Float64</code>, the <code>HArray</code>’s dtype must be <code>Complex64</code>.</p>
+<ul>
+<li><code>length</code></li>
+</ul>
+<p>An integer. The output length of the signal. Since the spectrum is <code>N/2+1</code>, the length can be <code>N</code> and <code>N+1</code>, if <code>N</code> is even, or can be <code>N</code> and <code>N-1</code> if <code>N</code> is odd.</p>
 </section>
 <section id="returns-2" class="level4">
 <h4 class="anchored" data-anchor-id="returns-2">Returns</h4>
-<p>Will return an error if:<br>
-- The <code>HArray</code>’s dtype is incompatible with the <code>HFftPlanner</code>’s dtype.<br>
-- The <code>HArray</code>’s <code>ndim</code> is greater than 2.<br>
-- The <code>length</code> argument is not compatible with the spectrum length.<br>
-</p>
+<p>Will return an error if:</p>
+<ul>
+<li><p>The <code>HArray</code>’s dtype is incompatible with the <code>HFftPlanner</code>’s dtype.</p></li>
+<li><p>The <code>HArray</code>’s <code>ndim</code> is greater than 2.</p></li>
+<li><p>The <code>length</code> argument is not compatible with the spectrum length.</p></li>
+</ul>
 </section>
 <section id="examples-2" class="level4">
 <h4 class="anchored" data-anchor-id="examples-2">Examples</h4>
@@ -419,7 +410,7 @@ An integer. The output length of the signal. Since the spectrum is <code>N/2+1</
 </section>
 <section id="dtype" class="level2">
 <h2 class="anchored" data-anchor-id="dtype">dtype</h2>
-<p><code>dtype() -&gt; HDataType</code> &lt;span style=“float: right;”&gt; <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L402">source</a> <br>
+<p><code>dtype() -&gt; HDataType</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L436">source</a> </span><br>
 </p>
 <p>Gets the <code>HRealFftPlanner</code>’s dtype.</p>
 <section id="returns-3" class="level4">
@@ -439,11 +430,10 @@ An integer. The output length of the signal. Since the spectrum is <code>N/2+1</
 </section>
 <section id="print" class="level2">
 <h2 class="anchored" data-anchor-id="print">print</h2>
-<p><code>print()</code> &lt;span style=“float: right;”&gt; <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L430">source</a> <br>
+<p><code>print()</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L465">source</a> </span><br>
 </p>
-<p>Print the <code>HRealFftPlanner</code>.<br>
-Differently from R’s normal behaviour, <code>print</code> doesn’t return the value invisibly.<br>
-</p>
+<p>Print the <code>HRealFftPlanner</code>.</p>
+<p>Differently from R’s normal behaviour, <code>print</code> doesn’t return the value invisibly.</p>
 <section id="examples-4" class="level4">
 <h4 class="anchored" data-anchor-id="examples-4">Examples</h4>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>

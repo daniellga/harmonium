@@ -2,22 +2,25 @@
 title: HResamplerType
 ---
 
-A resampler type representation. \
+A resampler type representation.
+
 Supports `FftFixedIn`, `FftFixedInOut`, `FftFixedOut`, `SincFixedIn`, `SincFixedOut`,
-`FastFixedIn` and `FastFixedOut` types. \
+`FastFixedIn` and `FastFixedOut` types.
 
 # Methods
 
 ## print
 
-`print()` \<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hresamplertype.rs#L45) </span> \
+`print()`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hresamplertype.rs#L48) </span> \
 
-Prints the `HResamplerType`. \
-Differently from R's behaviour, `print` doesn't return the value invisibly. \
+Prints the `HResamplerType`.
+
+Differently from R's behaviour, `print` doesn't return the value invisibly.
 
 #### Examples
 
 ```r
+library(harmonium)
 hresamplertype = HResamplerType$SincFixedIn
 hresamplertype$print()
 
@@ -29,14 +32,15 @@ _________
 
 ## eq
 
-`eq(other: HResamplerType) -> bool` \<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hresamplertype.rs#L79) </span> \
+`eq(other: HResamplerType) -> bool`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hresamplertype.rs#L84) </span> \
 
 Equality with another `HResamplerType`.
 
 #### Arguments
 
-* `other` \
-An `HResamplerType`. \
+- `other`
+
+An `HResamplerType`.
 
 #### Returns
 
@@ -45,6 +49,7 @@ A `bool`.
 #### Examples
 
 ```r
+library(harmonium)
 hresamplertype1 = HResamplerType$SincFixedIn
 hresamplertype2 = HResamplerType$SincFixedIn
 hresamplertype1$eq(hresamplertype2) # TRUE
@@ -57,14 +62,15 @@ _________
 
 ## ne
 
-`ne(other: HResamplerType) -> bool` \<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hresamplertype.rs#L114) </span> \
+`ne(other: HResamplerType) -> bool`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hresamplertype.rs#L121) </span> \
 
 Difference with another `HResamplerType`.
 
 #### Arguments
 
-* `other` \
-An `HResamplerType`. \
+- `other`
+
+An `HResamplerType`.
 
 #### Returns
 
@@ -73,6 +79,7 @@ A `bool`.
 #### Examples
 
 ```r
+library(harmonium)
 hresamplertype1 = HResamplerType$SincFixedIn
 hresamplertype2 = HResamplerType$SincFixedIn
 hresamplertype1$ne(hresamplertype2) # FALSE
