@@ -8,7 +8,7 @@ A collection of methods that can be applied to float 1D or 2D `HArray`s which re
 
 ## nchannels
 
-`nchannels() -> integer` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudioop.rs#L41) </span> \
+`nchannels() -> integer` \<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudioop.rs#L41) </span> \
 
 Returns the number of channels. \
 This is the same as the number of rows of a 1D or 2D HArray. \
@@ -31,7 +31,7 @@ _________
 
 ## nframes
 
-`nframes() -> integer` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudioop.rs#L72) </span> \
+`nframes() -> integer` \<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudioop.rs#L72) </span> \
 
 Returns the number of frames. \
 This is the same as the number of cols of a 1D or 2D HArray. \
@@ -55,7 +55,7 @@ _________
 
 ## db_to_amplitude
 
-`db_to_amplitude(harray: HArray, reference: double)` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudioop.rs#L108) </span> \
+`db_to_amplitude(harray: HArray, reference: double)` \<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudioop.rs#L108) </span> \
 
 Converts the `HArray` input from dB to amplitude. \
 $db_to_amplitude(x) = reference * (10.0**(x * 0.1))**power$ \
@@ -84,7 +84,7 @@ _________
 
 ## to_mono
 
-`to_mono(harray: HArray)` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudioop.rs#L140) </span> \
+`to_mono(harray: HArray)` \<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudioop.rs#L140) </span> \
 
 Convert to 1 channel by taking the average across channels. \
 The operation is done in-place. A new inner array is created. \

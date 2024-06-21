@@ -8,13 +8,13 @@ An audio represented by an HArray of samples and its corresponding sampling rate
 
 ## harray
 
-`harray() -> HArray` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L63) </span> \
+`harray() -> HArray`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L63) </span> \
 
 Get the decoded HArray.
 
 #### Returns
 
-A float HArray. \
+A float HArray.
 
 #### Examples
 
@@ -31,14 +31,13 @@ _________
 
 ## sr
 
-`sr() -> integer` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L91) </span> \
+`sr() -> integer`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L90) </span> \
 
 Get the sampling rate of the decoded audio.
 
-
 #### Returns
 
-An integer. \
+An integer.
 
 #### Examples
 
@@ -55,10 +54,11 @@ _________
 
 ## invalidate
 
-`invalidate()` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L121) </span> \
+`invalidate()`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L121) </span> \
 
-Replaces the inner value of the external pointer, invalidating it. \
-This function is useful to remove one of the shared references of the inner pointer in rust. \
+Replaces the inner value of the external pointer, invalidating it.
+
+This function is useful to remove one of the shared references of the inner pointer in rust.
 
 #### Examples
 

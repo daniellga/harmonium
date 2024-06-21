@@ -332,7 +332,7 @@ window.Quarto = {
 <h1>Methods</h1>
 <section id="nchannels" class="level2">
 <h2 class="anchored" data-anchor-id="nchannels">nchannels</h2>
-<p><code>nchannels() -&gt; integer</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudioop.rs#L41">source</a> </span><br>
+<p><code>nchannels() -&gt; integer</code> &lt;span style=“float: right;”&gt; <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudioop.rs#L41">source</a> <br>
 </p>
 <p>Returns the number of channels.<br>
 This is the same as the number of rows of a 1D or 2D HArray.<br>
@@ -354,7 +354,7 @@ This is the same as the number of rows of a 1D or 2D HArray.<br>
 </section>
 <section id="nframes" class="level2">
 <h2 class="anchored" data-anchor-id="nframes">nframes</h2>
-<p><code>nframes() -&gt; integer</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudioop.rs#L72">source</a> </span><br>
+<p><code>nframes() -&gt; integer</code> &lt;span style=“float: right;”&gt; <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudioop.rs#L72">source</a> <br>
 </p>
 <p>Returns the number of frames.<br>
 This is the same as the number of cols of a 1D or 2D HArray.<br>
@@ -377,7 +377,7 @@ The number of frames is equivalent to the number of samples divided by the numbe
 </section>
 <section id="db_to_amplitude" class="level2">
 <h2 class="anchored" data-anchor-id="db_to_amplitude">db_to_amplitude</h2>
-<p><code>db_to_amplitude(harray: HArray, reference: double)</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudioop.rs#L108">source</a> </span><br>
+<p><code>db_to_amplitude(harray: HArray, reference: double)</code> &lt;span style=“float: right;”&gt; <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudioop.rs#L108">source</a> <br>
 </p>
 <p>Converts the <code>HArray</code> input from dB to amplitude.<br>
 <span class="math inline">\(db_to_amplitude(x) = reference * (10.0**(x * 0.1))**power\)</span><br>
@@ -409,7 +409,7 @@ A double. If 1.0, will compute DB to power. If 0.5, will compute DB to amplitude
 </section>
 <section id="to_mono" class="level2">
 <h2 class="anchored" data-anchor-id="to_mono">to_mono</h2>
-<p><code>to_mono(harray: HArray)</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudioop.rs#L140">source</a> </span><br>
+<p><code>to_mono(harray: HArray)</code> &lt;span style=“float: right;”&gt; <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudioop.rs#L140">source</a> <br>
 </p>
 <p>Convert to 1 channel by taking the average across channels.<br>
 The operation is done in-place. A new inner array is created.<br>

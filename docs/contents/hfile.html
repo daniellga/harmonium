@@ -298,33 +298,33 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>A collection of methods designed to streamline input and output operations.<br>
-</p>
+<p>A collection of methods designed to streamline input and output operations.</p>
 <section id="methods" class="level1">
 <h1>Methods</h1>
 <section id="decode" class="level2">
 <h2 class="anchored" data-anchor-id="decode">decode</h2>
-<p><code>decode(fpath: string, dtype: HDataType) -&gt; HDecodedAudio</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L160">source</a> </span><br>
+<p><code>decode(fpath: string, dtype: HDataType) -&gt; HDecodedAudio</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L166">source</a> </span><br>
 </p>
-<p>Decode an audio file, providing its decoded data and the sampling rate.<br>
-The samples are normalized to fit in the range of [-1.0, 1.0].</p>
+<p>Decode an audio file, providing its decoded data and the sampling rate.</p>
+<p>The samples are normalized to fit in the range of [-1.0, 1.0].</p>
 <section id="arguments" class="level4">
 <h4 class="anchored" data-anchor-id="arguments">Arguments</h4>
 <ul>
-<li><code>fpath</code><br>
-The file path as a string.<br>
-</li>
-<li><code>dtype</code><br>
-A float <code>HDataType</code>.<br>
-</li>
+<li><code>fpath</code></li>
 </ul>
+<p>The file path as a string.</p>
+<ul>
+<li><code>dtype</code></li>
+</ul>
+<p>A float <code>HDataType</code>.</p>
 </section>
 <section id="returns" class="level4">
 <h4 class="anchored" data-anchor-id="returns">Returns</h4>
-<p>An HDecodedAudio containing:<br>
-* The decoded audio as a float HArray.<br>
-* The sampling rate as an integer.<br>
-</p>
+<p>An HDecodedAudio containing:</p>
+<ul>
+<li><p>The decoded audio as a float HArray.</p></li>
+<li><p>The sampling rate as an integer.</p></li>
+</ul>
 </section>
 <section id="examples" class="level4">
 <h4 class="anchored" data-anchor-id="examples">Examples</h4>
@@ -337,28 +337,27 @@ A float <code>HDataType</code>.<br>
 </section>
 <section id="decode_stream" class="level2">
 <h2 class="anchored" data-anchor-id="decode_stream">decode_stream</h2>
-<p><code>decode_stream(fpath: string, frames: integer, dtype: HDataType) -&gt; HDecoderStream</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L214">source</a> </span><br>
+<p><code>decode_stream(fpath: string, frames: integer, dtype: HDataType) -&gt; HDecoderStream</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L224">source</a> </span><br>
 </p>
-<p>Creates an <code>HDecoderStream</code>, used as an iterator to stream frames of decoded audio.<br>
-</p>
+<p>Creates an <code>HDecoderStream</code>, used as an iterator to stream frames of decoded audio.</p>
 <section id="arguments-1" class="level4">
 <h4 class="anchored" data-anchor-id="arguments-1">Arguments</h4>
 <ul>
-<li><code>fpath</code><br>
-The file path as a string.<br>
-</li>
-<li><code>frames</code><br>
-Number of frames to decode per iteration.<br>
-</li>
-<li><code>dtype</code><br>
-A float <code>HDataType</code>.<br>
-</li>
+<li><code>fpath</code></li>
 </ul>
+<p>The file path as a string.</p>
+<ul>
+<li><code>frames</code></li>
+</ul>
+<p>Number of frames to decode per iteration.</p>
+<ul>
+<li><code>dtype</code></li>
+</ul>
+<p>A float <code>HDataType</code>.</p>
 </section>
 <section id="returns-1" class="level4">
 <h4 class="anchored" data-anchor-id="returns-1">Returns</h4>
-<p>An <code>HDecoderStream</code>.<br>
-</p>
+<p>An <code>HDecoderStream</code>.</p>
 </section>
 <section id="examples-1" class="level4">
 <h4 class="anchored" data-anchor-id="examples-1">Examples</h4>
@@ -372,12 +371,11 @@ A float <code>HDataType</code>.<br>
 </section>
 <section id="metadata" class="level2">
 <h2 class="anchored" data-anchor-id="metadata">metadata</h2>
-<p>`metadata(fpath: string, metadata_type: HMetadataType) -&gt; list<span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L355">source</a> </span><br>
+<p><code>metadata(fpath: string, metadata_type: HMetadataType) -&gt; list</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L366">source</a> </span><br>
 </p>
 <p>Extract text and visual metadata from a file.</p>
 <p>Tags that are part of the container format are preferentially extracted. Additional tags that were found while probing will not be extracted.</p>
-<p>The following metadata tagging formats are supported.<br>
-</p>
+<p>The following metadata tagging formats are supported.</p>
 <ul>
 <li>ID3v1</li>
 <li>ID3v2</li>
@@ -390,7 +388,8 @@ A float <code>HDataType</code>.<br>
 <li><p>tag_key</p>
 <p>A key string indicating the type, meaning, or purpose of the Tags value. Note: The meaning of key is dependant of the underlying metadata format.</p></li>
 <li><p>tag_std_key</p>
-<p>If the Tag’s key string is commonly associated with a typical type, meaning, or purpose, then if recognized a StandardTagKey will be assigned to this Tag. This is a best effort guess since not all metadata formats have a well defined or specified tag mapping. However, it is recommended that consumers prefer std_key over key, if provided. Check [<code>StandardTagKey</code>] for all the variants.</p></li>
+<p>If the Tag’s key string is commonly associated with a typical type, meaning, or purpose, then if recognized a StandardTagKey will be assigned to this Tag. This is a best effort guess since not all metadata formats have a well defined or specified tag mapping. However, it is recommended that consumers prefer std_key over key, if provided.</p>
+<p>Check [<code>StandardTagKey</code>] for all the variants.</p></li>
 <li><p>tag_value</p>
 <p>The value of the Tag.</p></li>
 </ul>
@@ -450,27 +449,26 @@ A float <code>HDataType</code>.<br>
 </section>
 <section id="params" class="level2">
 <h2 class="anchored" data-anchor-id="params">params</h2>
-<p><code>params(fpath: string) -&gt; atomicvector</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L427">source</a> </span><br>
+<p><code>params(fpath: string) -&gt; atomicvector</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L441">source</a> </span><br>
 </p>
-<p>Get audio parameters from a file.<br>
-Note that this avoids loading the contents into memory, and is therefore useful for querying these parameters from long files.<br>
-</p>
+<p>Get audio parameters from a file.</p>
+<p>Note that this avoids loading the contents into memory, and is therefore useful for querying these parameters from long files.</p>
 <section id="arguments-3" class="level4">
 <h4 class="anchored" data-anchor-id="arguments-3">Arguments</h4>
 <ul>
-<li><code>fpath</code><br>
-The file path as a string.<br>
-</li>
+<li><code>fpath</code></li>
 </ul>
+<p>The file path as a string.</p>
 </section>
 <section id="returns-3" class="level4">
 <h4 class="anchored" data-anchor-id="returns-3">Returns</h4>
-<p>A double atomic vector containing, in order:<br>
-- sampling rate in Hz.<br>
-- number of frames.<br>
-- number of channels.<br>
-- duration in seconds.<br>
-</p>
+<p>A double atomic vector containing, in order:</p>
+<ul>
+<li>sampling rate in Hz.</li>
+<li>number of frames.</li>
+<li>number of channels.</li>
+<li>duration in seconds.</li>
+</ul>
 </section>
 <section id="examples-3" class="level4">
 <h4 class="anchored" data-anchor-id="examples-3">Examples</h4>
@@ -482,24 +480,21 @@ The file path as a string.<br>
 </section>
 <section id="verify" class="level2">
 <h2 class="anchored" data-anchor-id="verify">verify</h2>
-<p>`verify(fpath: string) -&gt; string <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L464">source</a> </span><br>
+<p><code>verify(fpath: string) -&gt; string</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L481">source</a> </span><br>
 </p>
-<p>Verify an audio file, if supported by the decoder.<br>
-The verification is done after the decoding process is finished.<br>
-</p>
+<p>Verify an audio file, if supported by the decoder.</p>
+<p>The verification is done after the decoding process is finished.</p>
 <section id="arguments-4" class="level4">
 <h4 class="anchored" data-anchor-id="arguments-4">Arguments</h4>
 <ul>
-<li><code>fpath</code><br>
-The file path as a string.<br>
-</li>
+<li><code>fpath</code></li>
 </ul>
+<p>The file path as a string.</p>
 </section>
 <section id="returns-4" class="level4">
 <h4 class="anchored" data-anchor-id="returns-4">Returns</h4>
-<p>A string.<br>
-One of [“passed”, “failed”, “not_supported”]<br>
-</p>
+<p>A string.</p>
+<p>One of [“passed”, “failed”, “not_supported”].</p>
 </section>
 <section id="examples-4" class="level4">
 <h4 class="anchored" data-anchor-id="examples-4">Examples</h4>

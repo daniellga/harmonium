@@ -304,7 +304,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h1>Methods</h1>
 <section id="new" class="level2">
 <h2 class="anchored" data-anchor-id="new">new</h2>
-<p><code>new(dtype: HDataType) -&gt; HFftPlanner</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L76">source</a> </span><br>
+<p><code>new(dtype: HDataType) -&gt; HFftPlanner</code> &lt;span style=“float: right;”&gt; <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L76">source</a> <br>
 </p>
 <p>Creates a new <code>HFftPlanner</code> instance.<br>
 If you plan on creating multiple FFT instances, it is recommended to reuse the same planner for all of them. This is because the planner re-uses internal data across FFT instances wherever possible, saving memory and reducing setup time. (FFT instances created with one planner will never re-use data and buffers with FFT instances created by a different planner)<br>
@@ -336,7 +336,7 @@ Will return an error if dtype is of a float type.<br>
 </section>
 <section id="fft" class="level2">
 <h2 class="anchored" data-anchor-id="fft">fft</h2>
-<p><code>fft(harray: HArray)</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L126">source</a> </span><br>
+<p><code>fft(harray: HArray)</code> &lt;span style=“float: right;”&gt; <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L126">source</a> <br>
 </p>
 <p>Computes the fast fourier transform of a complex <code>HArray</code>.<br>
 The operation is done in-place.<br>
@@ -374,7 +374,7 @@ A complex <code>HArray</code>.<br>
 </section>
 <section id="ifft" class="level2">
 <h2 class="anchored" data-anchor-id="ifft">ifft</h2>
-<p><code>ifft(harray: HArray)</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L169">source</a> </span><br>
+<p><code>ifft(harray: HArray)</code> &lt;span style=“float: right;”&gt; <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L169">source</a> <br>
 </p>
 <p>Computes the inverse fast fourier transform of a complex <code>HArray</code>.<br>
 The operation is done in-place.<br>
@@ -410,7 +410,7 @@ A complex <code>HArray</code>.<br>
 </section>
 <section id="dtype" class="level2">
 <h2 class="anchored" data-anchor-id="dtype">dtype</h2>
-<p><code>dtype() -&gt; HDataType</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L197">source</a> </span><br>
+<p><code>dtype() -&gt; HDataType</code> &lt;span style=“float: right;”&gt; <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L197">source</a> <br>
 </p>
 <p>Gets the <code>HFftPlanner</code>’s dtype.</p>
 <section id="returns-3" class="level4">
@@ -430,7 +430,7 @@ A complex <code>HArray</code>.<br>
 </section>
 <section id="print" class="level2">
 <h2 class="anchored" data-anchor-id="print">print</h2>
-<p><code>print()</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L225">source</a> </span><br>
+<p><code>print()</code> &lt;span style=“float: right;”&gt; <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L225">source</a> <br>
 </p>
 <p>Print the <code>HFftPlanner</code>.<br>
 Differently from R’s normal behaviour, <code>print</code> doesn’t return the value invisibly.<br>

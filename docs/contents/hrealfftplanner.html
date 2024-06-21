@@ -305,7 +305,7 @@ This planner is used to calculate FFTs of real valued inputs and its inverse ope
 <h1>Methods</h1>
 <section id="new" class="level2">
 <h2 class="anchored" data-anchor-id="new">new</h2>
-<p><code>new(dtype: HDataType) -&gt; HRealFftPlanner</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L266">source</a> </span><br>
+<p><code>new(dtype: HDataType) -&gt; HRealFftPlanner</code> &lt;span style=“float: right;”&gt; <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L266">source</a> <br>
 </p>
 <p>Creates a new <code>HRealFftPlanner</code> instance.<br>
 If you plan on creating multiple FFT instances, it is recommended to reuse the same planner for all of them. This is because the planner re-uses internal data across FFT instances wherever possible, saving memory and reducing setup time. (FFT instances created with one planner will never re-use data and buffers with FFT instances created by a different planner)<br>
@@ -337,7 +337,7 @@ Will return an error if dtype is of a complex type.<br>
 </section>
 <section id="rfft" class="level2">
 <h2 class="anchored" data-anchor-id="rfft">rfft</h2>
-<p><code>rfft(harray: HArray)</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L318">source</a> </span><br>
+<p><code>rfft(harray: HArray)</code> &lt;span style=“float: right;”&gt; <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L318">source</a> <br>
 </p>
 <p>Computes the fast fourier transform of a float <code>HArray</code>. Transforms a real signal of length <code>N</code> to a complex-valued spectrum of length <code>N/2+1</code> (with <code>N/2</code> rounded down).<br>
 The operation is not done in-place, although the same external pointer is used to store the new HArray.<br>
@@ -376,7 +376,7 @@ A float <code>HArray</code>.<br>
 </section>
 <section id="irfft" class="level2">
 <h2 class="anchored" data-anchor-id="irfft">irfft</h2>
-<p><code>irfft(harray: HArray, length: integer)</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L370">source</a> </span><br>
+<p><code>irfft(harray: HArray, length: integer)</code> &lt;span style=“float: right;”&gt; <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L370">source</a> <br>
 </p>
 <p>Computes the inverse fast fourier transform of a complex <code>HArray</code>. Transforms a complex spectrum of length <code>N/2+1</code> (with <code>N/2</code> rounded down) to a real-valued signal of length <code>N</code>.<br>
 The operation is not done in-place, although the same external pointer is used to store the new HArray.<br>
@@ -419,7 +419,7 @@ An integer. The output length of the signal. Since the spectrum is <code>N/2+1</
 </section>
 <section id="dtype" class="level2">
 <h2 class="anchored" data-anchor-id="dtype">dtype</h2>
-<p><code>dtype() -&gt; HDataType</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L402">source</a> </span><br>
+<p><code>dtype() -&gt; HDataType</code> &lt;span style=“float: right;”&gt; <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L402">source</a> <br>
 </p>
 <p>Gets the <code>HRealFftPlanner</code>’s dtype.</p>
 <section id="returns-3" class="level4">
@@ -439,7 +439,7 @@ An integer. The output length of the signal. Since the spectrum is <code>N/2+1</
 </section>
 <section id="print" class="level2">
 <h2 class="anchored" data-anchor-id="print">print</h2>
-<p><code>print()</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L430">source</a> </span><br>
+<p><code>print()</code> &lt;span style=“float: right;”&gt; <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L430">source</a> <br>
 </p>
 <p>Print the <code>HRealFftPlanner</code>.<br>
 Differently from R’s normal behaviour, <code>print</code> doesn’t return the value invisibly.<br>

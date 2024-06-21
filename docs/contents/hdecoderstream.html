@@ -294,22 +294,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>An iterator that decodes audio in streams.<br>
-</p>
+<p>An iterator that decodes audio in streams.</p>
 <section id="methods" class="level1">
 <h1>Methods</h1>
 <section id="stream" class="level2">
 <h2 class="anchored" data-anchor-id="stream">stream</h2>
-<p><code>stream() -&gt; HArray</code> <span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L505">source</a> </span><br>
+<p><code>stream() -&gt; HArray</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L524">source</a> </span><br>
 </p>
-<p>Gets the next wave of frames as an <code>HArray</code>.<br>
-Returns an error if it’s end of stream or if an error ocurred in the decoding process.<br>
-</p>
+<p>Gets the next wave of frames as an <code>HArray</code>.</p>
+<p>Returns an error if it’s end of stream or if an error ocurred in the decoding process.</p>
 <section id="returns" class="level4">
 <h4 class="anchored" data-anchor-id="returns">Returns</h4>
-<p>The decoded audio as a float HArray.<br>
-The number of frames streamed is the one used as input in the creation of <code>HDecoderStream</code>.<br>
-</p>
+<p>The decoded audio as a float HArray.</p>
+<p>The number of frames streamed is the one used as input in the creation of <code>HDecoderStream</code>.</p>
 </section>
 <section id="examples" class="level4">
 <h4 class="anchored" data-anchor-id="examples">Examples</h4>

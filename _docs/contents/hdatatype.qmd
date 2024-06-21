@@ -9,7 +9,7 @@ Supports `Float32`, `Float64`, `Complex32` and `Complex64` types. \
 
 ## print
 
-`print()` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hdatatype.rs#L42) </span> \
+`print()` \<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hdatatype.rs#L42) </span> \
 
 Prints the `HDataType`. \
 Differently from R's behaviour, `print` doesn't return the value invisibly. \
@@ -29,7 +29,7 @@ _________
 
 ## eq
 
-`eq(other: HDataType) -> bool` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hdatatype.rs#L77) </span> \
+`eq(other: HDataType) -> bool` \<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hdatatype.rs#L77) </span> \
 
 Equality with another `HDataType`. \
 
@@ -58,7 +58,7 @@ _________
 
 ## ne
 
-`ne(other: HDataType) -> bool` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hdatatype.rs#L113) </span> \
+`ne(other: HDataType) -> bool` \<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hdatatype.rs#L113) </span> \
 
 Difference with another `HDataType`. \
 

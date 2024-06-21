@@ -23,7 +23,7 @@ Nearest, uses the nearest sample point without any fitting. \
 
 ## print
 
-`print()` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hpolynomialdegree.rs#L57) </span> \
+`print()` \<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hpolynomialdegree.rs#L57) </span> \
 
 Prints the `HPolynomialDegree`. \
 Differently from R's behaviour, `print` doesn't return the value invisibly. \
@@ -42,7 +42,7 @@ _________
 
 ## eq
 
-`eq(other: HPolynomialDegree) -> bool` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hpolynomialdegree.rs#L91) </span> \
+`eq(other: HPolynomialDegree) -> bool` \<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hpolynomialdegree.rs#L91) </span> \
 
 Equality with another `HPolynomialDegree`.
 
@@ -70,7 +70,7 @@ _________
 
 ## ne
 
-`ne(other: HPolynomialDegree) -> bool` <span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hpolynomialdegree.rs#L126) </span> \
+`ne(other: HPolynomialDegree) -> bool` \<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hpolynomialdegree.rs#L126) </span> \
 
 Difference with another `HPolynomialDegree`.
 
