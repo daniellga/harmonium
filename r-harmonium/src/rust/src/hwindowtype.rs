@@ -2,8 +2,9 @@ use savvy::{r_println, savvy, OwnedLogicalSexp, Sexp};
 use std::fmt;
 
 /// HWindowType
-/// A window type representation. \
-/// Supports `Blackman`, `Blackman2`, `BlackmanHarris`, `BlackmanHarris2`, `Hann` and `Hann2` types. \
+/// A window type representation.
+///
+/// Supports `Blackman`, `Blackman2`, `BlackmanHarris`, `BlackmanHarris2`, `Hann` and `Hann2` types.
 ///
 /// # Methods
 ///
@@ -23,14 +24,16 @@ impl HWindowType {
     /// HWindowType
     /// ## print
     ///
-    /// `print()` \
+    /// `print()`
     ///
-    /// Prints the `HWindowType`. \
-    /// Differently from R's behaviour, `print` doesn't return the value invisibly. \
+    /// Prints the `HWindowType`.
+    ///
+    /// Differently from R's behaviour, `print` doesn't return the value invisibly.
     ///
     /// #### Examples
     ///
     /// ```r
+    /// library(harmonium)
     /// windowtype = HWindowType$Blackman
     /// windowtype$print()
     ///
@@ -48,14 +51,15 @@ impl HWindowType {
     /// HWindowType
     /// ## eq
     ///
-    /// `eq(other: HWindowType) -> bool` \
+    /// `eq(other: HWindowType) -> bool`
     ///
     /// Equality with another `HWindowType`.
     ///
     /// #### Arguments
     ///
-    /// * `other` \
-    /// An `HWindowType`. \
+    /// - `other`
+    ///
+    /// An `HWindowType`.
     ///
     /// #### Returns
     ///
@@ -64,6 +68,7 @@ impl HWindowType {
     /// #### Examples
     ///
     /// ```r
+    /// library(harmonium)
     /// windowtype1 = HWindowType$Blackman
     /// windowtype2 = HWindowType$Blackman
     /// windowtype1$eq(windowtype2) # TRUE
@@ -83,14 +88,15 @@ impl HWindowType {
     /// HWindowType
     /// ## ne
     ///
-    /// `ne(other: HWindowType) -> bool` \
+    /// `ne(other: HWindowType) -> bool`
     ///
     /// Difference with another `HWindowType`.
     ///
     /// #### Arguments
     ///
-    /// * `other` \
-    /// An `HWindowType`. \
+    /// - `other`
+    ///
+    /// An `HWindowType`.
     ///
     /// #### Returns
     ///
@@ -99,6 +105,7 @@ impl HWindowType {
     /// #### Examples
     ///
     /// ```r
+    /// library(harmonium)
     /// windowtype1 = HWindowType$Blackman
     /// windowtype2 = HWindowType$Blackman
     /// windowtype1$ne(windowtype2) # FALSE

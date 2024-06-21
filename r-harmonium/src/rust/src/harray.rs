@@ -10,7 +10,7 @@ use savvy::{
 use std::sync::Arc;
 
 /// HArray
-/// An array representation. \
+/// An array representation.
 ///
 /// # Methods
 ///
@@ -23,21 +23,25 @@ impl HArray {
     /// HArray
     /// ## new_from_values
     ///
-    /// `new_from_values(arr: array, dtype: HDataType) -> HArray` \
+    /// `new_from_values(arr: array, dtype: HDataType) -> HArray`
     ///
-    /// Creates a new `HArray` from an R array. \
+    /// Creates a new `HArray` from an R array.
     ///
     /// #### Arguments
     ///
-    /// * `arr` \
+    /// - `arr`
+    ///
     /// A `double` or `complex` array.
-    /// * `dtype` \
-    /// An `HDataType` to indicate which type of `HArray` to be created. \
+    ///
+    /// - `dtype`
+    ///
+    /// An `HDataType` to indicate which type of `HArray` to be created.
+    ///
     /// For float dtypes, the atomic vector must be a `double`. For complex dtypes, a `complex` atomic vector.
     ///
     /// #### Returns
     ///
-    /// An `HArray`. \
+    /// An `HArray`.
     ///
     /// #### Examples
     ///
@@ -98,13 +102,13 @@ impl HArray {
     /// HArray
     /// ## len
     ///
-    /// `len() -> integer` \
+    /// `len() -> integer`
     ///
-    /// Returns the number of elements of this `Harray`. \
+    /// Returns the number of elements of this `Harray`.
     ///
     /// #### Returns
     ///
-    /// An `integer`. \
+    /// An integer.
     ///
     /// #### Examples
     ///
@@ -126,13 +130,13 @@ impl HArray {
     /// HArray
     /// ## shape
     ///
-    /// `shape() -> integers` \
+    /// `shape() -> integeratomicvector`
     ///
-    /// Returns the shape of this `HArray`. \
+    /// Returns the shape of this `HArray`.
     ///
     /// #### Returns
     ///
-    /// A vector of integers. \
+    /// An integer atomic vector.
     ///
     /// #### Examples
     ///
@@ -160,13 +164,13 @@ impl HArray {
     /// HArray
     /// ## ndim
     ///
-    /// `ndim() -> integer` \
+    /// `ndim() -> integer`
     ///
-    /// Returns the number of dimensions of this `HArray`. \
+    /// Returns the number of dimensions of this `HArray`.
     ///
     /// #### Returns
     ///
-    /// An integer. \
+    /// An integer.
     ///
     /// #### Examples
     ///
@@ -188,23 +192,26 @@ impl HArray {
     /// HArray
     /// ## slice
     ///
-    /// `slice(range: list[atomicvector]) -> HArray` \
+    /// `slice(range: list[atomicvector]) -> HArray`
     ///
-    /// Slices the HArray. \
+    /// Slices the HArray.
+    ///
     /// This operation has a COW ([clone-on-write](https://doc.rust-lang.org/std/borrow/enum.Cow.html)) behaviour. The created slice shares the inner data with
-    /// the original array until one of them is modified. \
+    /// the original array until one of them is modified.
     ///
     /// #### Arguments
     ///
-    /// * `range` \
+    /// - `range`
+    ///
     /// A list of vectors of integers.
-    /// The number of vectors in the list must be equal to the number of dimensions in the original HArray as they represent the slice information for each axis. \
-    /// Each vector must be composed of 3 elements: [start, end, step]. All 3 values can be
-    /// positive or negative, although step can't be 0. \
+    ///
+    /// The number of vectors in the list must be equal to the number of dimensions in the original HArray as they represent the slice information for each axis.
+    ///
+    /// Each vector must be composed of 3 elements: [start, end, step]. All 3 values can be positive or negative, although step can't be 0.
     ///
     /// #### Returns
     ///
-    /// An `HArray`. \
+    /// An `HArray`.
     ///
     /// #### Examples
     ///
@@ -256,10 +263,11 @@ impl HArray {
     /// HArray
     /// ## print
     ///
-    /// `print()` \
+    /// `print()`
     ///
-    /// Prints the `HArray`. \
-    /// Differently from R's normal behaviour, `print` doesn't return the value invisibly. \
+    /// Prints the `HArray`.
+    ///
+    /// Differently from R's normal behaviour, `print` doesn't return the value invisibly.
     ///
     /// #### Examples
     ///
@@ -284,20 +292,22 @@ impl HArray {
     /// HArray
     /// ## eq
     ///
-    /// `eq(other: HArray) -> bool` \
+    /// `eq(other: HArray) -> bool`
     ///
-    /// Equality with another `HArray`. \
+    /// Equality with another `HArray`.
+    ///
     /// The comparison only checks if the dtype and the values are the same. To compare if the
-    /// underlying data is the same in memory, check `mem_adress`. \
+    /// underlying data is the same in memory, check `mem_adress`.
     ///
     /// #### Arguments
     ///
-    /// * `other` \
-    /// An `HArray`. \
+    /// - `other`
+    ///
+    /// An `HArray`.
     ///
     /// #### Returns
     ///
-    /// A `bool`. \
+    /// A `bool`.
     ///
     /// #### Examples
     ///
@@ -328,15 +338,17 @@ impl HArray {
     /// HArray
     /// ## ne
     ///
-    /// `ne(other: HArray) -> bool` \
+    /// `ne(other: HArray) -> bool`
     ///
-    /// Difference with another `HArray`. \
+    /// Difference with another `HArray`.
+    ///
     /// The comparison only checks if the dtype and the values are the same. To compare if the
     /// underlying data is the same in memory, check `mem_adress`.
     ///
     /// #### Arguments
     ///
-    /// * `other` \
+    /// - `other`
+    ///
     /// An `HArray`.
     ///
     /// #### Returns
@@ -372,7 +384,7 @@ impl HArray {
     /// HArray
     /// ## clone
     ///
-    /// `clone() -> HArray` \
+    /// `clone() -> HArray`
     ///
     /// Creates a new `HArray`, with the underlying data pointing to the same place in memory.
     ///
@@ -400,7 +412,7 @@ impl HArray {
     /// HArray
     /// ## collect
     ///
-    /// `collect() -> array` \
+    /// `collect() -> array`
     ///
     /// Creates an R array from an `HArray`. The type of the array created (`double` or `complex`) will depend on the `HArray`'s dtype.
     ///
@@ -427,7 +439,7 @@ impl HArray {
     /// HArray
     /// ## dtype
     ///
-    /// `dtype() -> HDataType` \
+    /// `dtype() -> HDataType`
     ///
     /// Gets the `HArray`'s dtype as an `HDataType`.
     ///
@@ -454,15 +466,16 @@ impl HArray {
     /// HArray
     /// ## is_shared
     ///
-    /// `is_shared() -> bool` \
+    /// `is_shared() -> bool`
     ///
-    /// Checks if the object is shared. \
+    /// Checks if the object is shared.
+    ///
     /// Since `HArray` has a COW ([clone-on-write](https://doc.rust-lang.org/std/borrow/enum.Cow.html)) behaviour, this function is useful to check if a new
-    /// object will be created or if the change will be done in-place. \
+    /// object will be created or if the change will be done in-place.
     ///
     /// #### Returns
     ///
-    /// A `bool`. \
+    /// A `bool`.
     ///
     /// #### Examples
     ///
@@ -488,14 +501,15 @@ impl HArray {
     /// HArray
     /// ## mem_adress
     ///
-    /// `mem_adress() -> string` \
+    /// `mem_adress() -> string`
     ///
-    /// The memory adress of the first element of the inner array. \
-    /// This is useful to check if different objects share the same underlying data. \
+    /// The memory adress of the first element of the inner array.
+    ///
+    /// This is useful to check if different objects share the same underlying data.
     ///
     /// #### Returns
     ///
-    /// A `string`. \
+    /// A `string`.
     ///
     /// #### Examples
     ///
@@ -517,10 +531,10 @@ impl HArray {
     /// HArray
     /// ## invalidate
     ///
-    /// `invalidate()` \
+    /// `invalidate()`
     ///
-    /// Replaces the inner value of the external pointer, invalidating it. \
-    /// This function is useful to remove one of the shared references of the inner pointer in rust. \
+    /// Replaces the inner value of the external pointer, invalidating it.
+    /// This function is useful to remove one of the shared references of the inner pointer in rust.
     ///
     /// #### Examples
     ///

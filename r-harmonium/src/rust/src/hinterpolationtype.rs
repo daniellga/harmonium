@@ -2,8 +2,9 @@ use savvy::{r_println, savvy, OwnedLogicalSexp, Sexp};
 use std::fmt;
 
 /// HInterpolationType
-/// A interpolation type representation. \
-/// Supports `Cubic`, `Linear`, `Quadratic` and `Nearest`. \
+/// A interpolation type representation.
+///
+/// Supports `Cubic`, `Linear`, `Quadratic` and `Nearest` types.
 ///
 /// # Methods
 ///
@@ -21,10 +22,11 @@ impl HInterpolationType {
     /// HInterpolationType
     /// ## print
     ///
-    /// `print()` \
+    /// `print()`
     ///
-    /// Prints the `HInterpolationType`. \
-    /// Differently from R's behaviour, `print` doesn't return the value invisibly. \
+    /// Prints the `HInterpolationType`.
+    ///
+    /// Differently from R's behaviour, `print` doesn't return the value invisibly.
     ///
     /// #### Examples
     ///
@@ -47,14 +49,15 @@ impl HInterpolationType {
     /// HInterpolationType
     /// ## eq
     ///
-    /// `eq(other: HInterpolationType) -> bool` \
+    /// `eq(other: HInterpolationType) -> bool`
     ///
     /// Equality with another `HInterpolationType`.
     ///
     /// #### Arguments
     ///
-    /// * `other` \
-    /// An `HInterpolationType`. \
+    /// - `other`
+    ///
+    /// An `HInterpolationType`.
     ///
     /// #### Returns
     ///
@@ -83,14 +86,15 @@ impl HInterpolationType {
     /// HInterpolationType
     /// ## ne
     ///
-    /// `ne(other: HInterpolationType) -> bool` \
+    /// `ne(other: HInterpolationType) -> bool`
     ///
     /// Difference with another `HInterpolationType`.
     ///
     /// #### Arguments
     ///
-    /// * `other` \
-    /// An `HInterpolationType`. \
+    /// - `other`
+    ///
+    /// An `HInterpolationType`.
     ///
     /// #### Returns
     ///

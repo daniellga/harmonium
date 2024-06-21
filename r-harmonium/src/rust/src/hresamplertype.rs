@@ -2,9 +2,10 @@ use savvy::{r_println, savvy, OwnedLogicalSexp, Sexp};
 use std::fmt;
 
 /// HResamplerType
-/// A resampler type representation. \
+/// A resampler type representation.
+///
 /// Supports `FftFixedIn`, `FftFixedInOut`, `FftFixedOut`, `SincFixedIn`, `SincFixedOut`,
-/// `FastFixedIn` and `FastFixedOut` types. \
+/// `FastFixedIn` and `FastFixedOut` types.
 ///
 /// # Methods
 ///
@@ -25,14 +26,16 @@ impl HResamplerType {
     /// HResamplerType
     /// ## print
     ///
-    /// `print()` \
+    /// `print()`
     ///
-    /// Prints the `HResamplerType`. \
-    /// Differently from R's behaviour, `print` doesn't return the value invisibly. \
+    /// Prints the `HResamplerType`.
+    ///
+    /// Differently from R's behaviour, `print` doesn't return the value invisibly.
     ///
     /// #### Examples
     ///
     /// ```r
+    /// library(harmonium)
     /// hresamplertype = HResamplerType$SincFixedIn
     /// hresamplertype$print()
     ///
@@ -50,14 +53,15 @@ impl HResamplerType {
     /// HResamplerType
     /// ## eq
     ///
-    /// `eq(other: HResamplerType) -> bool` \
+    /// `eq(other: HResamplerType) -> bool`
     ///
     /// Equality with another `HResamplerType`.
     ///
     /// #### Arguments
     ///
-    /// * `other` \
-    /// An `HResamplerType`. \
+    /// - `other`
+    ///
+    /// An `HResamplerType`.
     ///
     /// #### Returns
     ///
@@ -66,6 +70,7 @@ impl HResamplerType {
     /// #### Examples
     ///
     /// ```r
+    /// library(harmonium)
     /// hresamplertype1 = HResamplerType$SincFixedIn
     /// hresamplertype2 = HResamplerType$SincFixedIn
     /// hresamplertype1$eq(hresamplertype2) # TRUE
@@ -85,14 +90,15 @@ impl HResamplerType {
     /// HResamplerType
     /// ## ne
     ///
-    /// `ne(other: HResamplerType) -> bool` \
+    /// `ne(other: HResamplerType) -> bool`
     ///
     /// Difference with another `HResamplerType`.
     ///
     /// #### Arguments
     ///
-    /// * `other` \
-    /// An `HResamplerType`. \
+    /// - `other`
+    ///
+    /// An `HResamplerType`.
     ///
     /// #### Returns
     ///
@@ -101,6 +107,7 @@ impl HResamplerType {
     /// #### Examples
     ///
     /// ```r
+    /// library(harmonium)
     /// hresamplertype1 = HResamplerType$SincFixedIn
     /// hresamplertype2 = HResamplerType$SincFixedIn
     /// hresamplertype1$ne(hresamplertype2) # FALSE

@@ -3,8 +3,9 @@ use std::fmt;
 use savvy::{r_println, savvy, OwnedLogicalSexp, Sexp};
 
 /// HMetadataType
-/// A metadata type representation. \
-/// Supports `All`, `Text` and `Visual` types. \
+/// A metadata type representation.
+///
+/// Supports `All`, `Text` and `Visual` types.
 ///
 /// # Methods
 ///
@@ -21,10 +22,11 @@ impl HMetadataType {
     /// HMetadataType
     /// ## print
     ///
-    /// `print()` \
+    /// `print()`
     ///
-    /// Prints the `HMetadataType`. \
-    /// Differently from R's behaviour, `print` doesn't return the value invisibly. \
+    /// Prints the `HMetadataType`.
+    ///
+    /// Differently from R's behaviour, `print` doesn't return the value invisibly.
     ///
     /// #### Examples
     ///
@@ -47,14 +49,15 @@ impl HMetadataType {
     /// HMetadataType
     /// ## eq
     ///
-    /// `eq(other: HMetadataType) -> bool` \
+    /// `eq(other: HMetadataType) -> bool`
     ///
     /// Equality with another `HMetadataType`.
     ///
     /// #### Arguments
     ///
-    /// * `other` \
-    /// An `HMetadataType`. \
+    /// - `other`
+    ///
+    /// An `HMetadataType`.
     ///
     /// #### Returns
     ///
@@ -83,14 +86,15 @@ impl HMetadataType {
     /// HMetadataType
     /// ## ne
     ///
-    /// `ne(other: HMetadataType) -> bool` \
+    /// `ne(other: HMetadataType) -> bool`
     ///
     /// Difference with another `HMetadataType`.
     ///
     /// #### Arguments
     ///
-    /// * `other` \
-    /// An `HMetadataType`. \
+    /// - `other`
+    ///
+    /// An `HMetadataType`.
     ///
     /// #### Returns
     ///

@@ -21,7 +21,7 @@ pub trait HRealFftPlannerR: Send {
 }
 
 /// HFftPlanner
-/// A planner is used to create FFTs. It caches results internally, so when making more than one FFT it is advisable to reuse the same planner. \
+/// A planner is used to create FFTs. It caches results internally, so when making more than one FFT it is advisable to reuse the same planner.
 ///
 /// # Methods
 ///
@@ -29,8 +29,9 @@ pub trait HRealFftPlannerR: Send {
 pub struct HFftPlanner(pub Box<dyn HFftPlannerR>);
 
 /// HRealFftPlanner
-/// A planner is used to create FFTs. It caches results internally, so when making more than one FFT it is advisable to reuse the same planner. \
-/// This planner is used to calculate FFTs of real valued inputs and its inverse operation. \
+/// A planner is used to create FFTs. It caches results internally, so when making more than one FFT it is advisable to reuse the same planner.
+///
+/// This planner is used to calculate FFTs of real valued inputs and its inverse operation.
 ///
 /// # Methods
 ///
@@ -42,24 +43,28 @@ impl HFftPlanner {
     /// HFftPlanner
     /// ## new
     ///
-    /// `new(dtype: HDataType) -> HFftPlanner` \
+    /// `new(dtype: HDataType) -> HFftPlanner`
     ///
-    /// Creates a new `HFftPlanner` instance. \
+    /// Creates a new `HFftPlanner` instance.
+    ///
     /// If you plan on creating multiple FFT instances, it is recommended to reuse the same planner for all of them. This is because the planner re-uses internal data
-    /// across FFT instances wherever possible, saving memory and reducing setup time. (FFT instances created with one planner will never re-use data and buffers with
-    /// FFT instances created by a different planner) \
+    /// across FFT instances wherever possible, saving memory and reducing setup time (FFT instances created with one planner will never re-use data and buffers with
+    /// FFT instances created by a different planner).
+    ///
     /// In the constructor, the FftPlanner will detect available CPU features. If AVX, SSE, Neon, or WASM SIMD are available, it will set itself up to plan FFTs with
-    /// the fastest available instruction set. If no SIMD instruction sets are available, the planner will seamlessly fall back to planning non-SIMD FFTs. \
+    /// the fastest available instruction set. If no SIMD instruction sets are available, the planner will seamlessly fall back to planning non-SIMD FFTs.
     ///
     /// #### Arguments
     ///
-    /// * `dtype` \
-    /// A complex `HDataType` to indicate the dtype that the `HFftPlanner` will be working with. \
+    /// - `dtype`
+    ///
+    /// A complex `HDataType` to indicate the dtype that the `HFftPlanner` will be working with.
     ///
     /// #### Returns
     ///
-    /// An `HFftPlanner`. \
-    /// Will return an error if dtype is of a float type. \
+    /// An `HFftPlanner`.
+    ///
+    /// Will return an error if dtype is of a float type.
     ///
     /// #### Examples
     ///
@@ -85,30 +90,35 @@ impl HFftPlanner {
     /// HFftPlanner
     /// ## fft
     ///
-    /// `fft(harray: HArray)` \
+    /// `fft(harray: HArray)`
     ///
-    /// Computes the fast fourier transform of a complex `HArray`. \
-    /// The operation is done in-place. \
+    /// Computes the fast fourier transform of a complex `HArray`.
+    ///
+    /// The operation is done in-place.
+    ///
     /// FFT (Fast Fourier Transform) refers to a way the discrete Fourier Transform (DFT) can be calculated efficiently,
     /// by using symmetries in the calculated terms. The symmetry is highest when n is a power of 2, and the transform
-    /// is therefore most efficient for these sizes. \
+    /// is therefore most efficient for these sizes.
     ///
     /// The function does not normalize outputs. Callers must manually normalize the results by scaling each element by
     /// `1/sqrt(n)`. Multiple normalization steps can be merged into one via pairwise multiplication, so when doing
-    /// a forward FFT followed by an inverse callers can normalize once by scaling each element by `1/n`. \
+    /// a forward FFT followed by an inverse callers can normalize once by scaling each element by `1/n`.
     ///
-    /// Elements in the output are ordered by ascending frequency, with the first element corresponding to frequency 0. \
+    /// Elements in the output are ordered by ascending frequency, with the first element corresponding to frequency 0.
     ///
     /// #### Arguments
     ///
-    /// * `harray` \
-    /// A complex `HArray`. \
+    /// - `harray`
+    ///
+    /// A complex `HArray`.
     ///
     /// #### Returns
     ///
-    /// Will return an error if: \
-    /// - The `HArray`'s dtype is incompatible with the `HFftPlanner`'s dtype. \
-    /// - The `HArray`'s `ndim` is greater than 2. \
+    /// Will return an error if:
+    ///
+    /// - The `HArray`'s dtype is incompatible with the `HFftPlanner`'s dtype.
+    ///
+    /// - The `HArray`'s `ndim` is greater than 2.
     ///
     /// #### Examples
     ///
@@ -130,28 +140,33 @@ impl HFftPlanner {
     /// HFftPlanner
     /// ## ifft
     ///
-    /// `ifft(harray: HArray)` \
+    /// `ifft(harray: HArray)`
     ///
-    /// Computes the inverse fast fourier transform of a complex `HArray`. \
-    /// The operation is done in-place. \
+    /// Computes the inverse fast fourier transform of a complex `HArray`.
+    ///
+    /// The operation is done in-place.
+    ///
     /// FFT (Fast Fourier Transform) refers to a way the discrete Fourier Transform (DFT) can be calculated efficiently,
     /// by using symmetries in the calculated terms. The symmetry is highest when n is a power of 2, and the transform
-    /// is therefore most efficient for these sizes. \
+    /// is therefore most efficient for these sizes.
     ///
     /// The function does not normalize outputs. Callers must manually normalize the results by scaling each element by
     /// `1/sqrt(n)`. Multiple normalization steps can be merged into one via pairwise multiplication, so when doing
-    /// a forward FFT followed by an inverse callers can normalize once by scaling each element by `1/n`. \
+    /// a forward FFT followed by an inverse callers can normalize once by scaling each element by `1/n`.
     ///
     /// #### Arguments
     ///
-    /// * `harray` \
-    /// A complex `HArray`. \
+    /// - `harray`
+    ///
+    /// A complex `HArray`.
     ///
     /// #### Returns
     ///
-    /// Will return an error if: \
-    /// - The `HArray`'s dtype is incompatible with the `HFftPlanner`'s dtype. \
-    /// - The `HArray`'s `ndim` is greater than 2. \
+    /// Will return an error if:
+    ///
+    /// - The `HArray`'s dtype is incompatible with the `HFftPlanner`'s dtype.
+    ///
+    /// - The `HArray`'s `ndim` is greater than 2.
     ///
     /// #### Examples
     ///
@@ -173,7 +188,7 @@ impl HFftPlanner {
     /// HFftPlanner
     /// ## dtype
     ///
-    /// `dtype() -> HDataType` \
+    /// `dtype() -> HDataType`
     ///
     /// Gets the `HFftPlanner`'s dtype.
     ///
@@ -201,10 +216,11 @@ impl HFftPlanner {
     /// HFftPlanner
     /// ## print
     ///
-    /// `print()` \
+    /// `print()`
     ///
-    /// Print the `HFftPlanner`. \
-    /// Differently from R's normal behaviour, `print` doesn't return the value invisibly. \
+    /// Print the `HFftPlanner`.
+    ///
+    /// Differently from R's normal behaviour, `print` doesn't return the value invisibly.
     ///
     /// #### Examples
     ///
@@ -232,24 +248,28 @@ impl HRealFftPlanner {
     /// HRealFftPlanner
     /// ## new
     ///
-    /// `new(dtype: HDataType) -> HRealFftPlanner` \
+    /// `new(dtype: HDataType) -> HRealFftPlanner`
     ///
-    /// Creates a new `HRealFftPlanner` instance. \
+    /// Creates a new `HRealFftPlanner` instance.
+    ///
     /// If you plan on creating multiple FFT instances, it is recommended to reuse the same planner for all of them. This is because the planner re-uses internal data
-    /// across FFT instances wherever possible, saving memory and reducing setup time. (FFT instances created with one planner will never re-use data and buffers with
-    /// FFT instances created by a different planner) \
+    /// across FFT instances wherever possible, saving memory and reducing setup time (FFT instances created with one planner will never re-use data and buffers with
+    /// FFT instances created by a different planner).
+    ///
     /// In the constructor, the FftPlanner will detect available CPU features. If AVX, SSE, Neon, or WASM SIMD are available, it will set itself up to plan FFTs with
-    /// the fastest available instruction set. If no SIMD instruction sets are available, the planner will seamlessly fall back to planning non-SIMD FFTs. \
+    /// the fastest available instruction set. If no SIMD instruction sets are available, the planner will seamlessly fall back to planning non-SIMD FFTs.
     ///
     /// #### Arguments
     ///
-    /// * `dtype` \
-    /// A float `HDataType` to indicate the dtype that the `HFftPlanner` will be working with. \
+    /// - `dtype`
+    ///
+    /// A float `HDataType` to indicate the dtype that the `HFftPlanner` will be working with.
     ///
     /// #### Returns
     ///
-    /// An `HRealFftPlanner`. \
-    /// Will return an error if dtype is of a complex type. \
+    /// An `HRealFftPlanner`.
+    ///
+    /// Will return an error if dtype is of a complex type.
     ///
     /// #### Examples
     ///
@@ -275,32 +295,38 @@ impl HRealFftPlanner {
     /// HRealFftPlanner
     /// ## rfft
     ///
-    /// `rfft(harray: HArray)` \
+    /// `rfft(harray: HArray)`
     ///
-    /// Computes the fast fourier transform of a float `HArray`. Transforms a real signal of length `N` to a complex-valued spectrum of length `N/2+1` (with `N/2` rounded down). \
-    /// The operation is not done in-place, although the same external pointer is used to store the new HArray. \
+    /// Computes the fast fourier transform of a float `HArray`. Transforms a real signal of length `N` to a complex-valued spectrum of length `N/2+1` (with `N/2` rounded down).
+    ///
+    /// The operation is not done in-place, although the same external pointer is used to store the new HArray.
+    ///
     /// The FFT of a real signal is Hermitian-symmetric, X[i] = conj(X[-i]) so the output contains only the positive frequencies
-    /// below the Nyquist frequency. \
+    /// below the Nyquist frequency.
+    ///
     /// FFT (Fast Fourier Transform) refers to a way the discrete Fourier Transform (DFT) can be calculated efficiently,
     /// by using symmetries in the calculated terms. The symmetry is highest when n is a power of 2, and the transform
-    /// is therefore most efficient for these sizes. \
+    /// is therefore most efficient for these sizes.
     ///
     /// The function does not normalize outputs. Callers must manually normalize the results by scaling each element by
     /// `1/sqrt(n)`. Multiple normalization steps can be merged into one via pairwise multiplication, so when doing
-    /// a forward FFT followed by an inverse callers can normalize once by scaling each element by `1/n`. \
+    /// a forward FFT followed by an inverse callers can normalize once by scaling each element by `1/n`.
     ///
-    /// Elements in the output are ordered by ascending frequency, with the first element corresponding to frequency 0. \
+    /// Elements in the output are ordered by ascending frequency, with the first element corresponding to frequency 0.
     ///
     /// #### Arguments
     ///
-    /// * `harray` \
-    /// A float `HArray`. \
+    /// - `harray`
+    ///
+    /// A float `HArray`.
     ///
     /// #### Returns
     ///
-    /// Will return an error if: \
-    /// - The `HArray`'s dtype is incompatible with the `HFftPlanner`'s dtype. \
-    /// - The `HArray`'s `ndim` is greater than 2. \
+    /// Will return an error if:
+    ///
+    /// - The `HArray`'s dtype is incompatible with the `HFftPlanner`'s dtype.
+    ///
+    /// - The `HArray`'s `ndim` is greater than 2.
     ///
     /// #### Examples
     ///
@@ -322,35 +348,43 @@ impl HRealFftPlanner {
     /// HRealFftPlanner
     /// ## irfft
     ///
-    /// `irfft(harray: HArray, length: integer)` \
+    /// `irfft(harray: HArray, length: integer)`
     ///
     /// Computes the inverse fast fourier transform of a complex `HArray`. Transforms a complex spectrum of length `N/2+1` (with `N/2` rounded down) to a real-valued
-    /// signal of length `N`. \
-    /// The operation is not done in-place, although the same external pointer is used to store the new HArray. \
+    /// signal of length `N`.
+    ///
+    /// The operation is not done in-place, although the same external pointer is used to store the new HArray.
     /// The FFT of a real signal is Hermitian-symmetric, X[i] = conj(X[-i]) so the output contains only the positive frequencies
-    /// below the Nyquist frequency. \
+    /// below the Nyquist frequency.
+    ///
     /// FFT (Fast Fourier Transform) refers to a way the discrete Fourier Transform (DFT) can be calculated efficiently,
     /// by using symmetries in the calculated terms. The symmetry is highest when n is a power of 2, and the transform
-    /// is therefore most efficient for these sizes. \
+    /// is therefore most efficient for these sizes.
     ///
     /// The function does not normalize outputs. Callers must manually normalize the results by scaling each element by
     /// `1/sqrt(n)`. Multiple normalization steps can be merged into one via pairwise multiplication, so when doing
-    /// a forward FFT followed by an inverse callers can normalize once by scaling each element by `1/n`. \
+    /// a forward FFT followed by an inverse callers can normalize once by scaling each element by `1/n`.
     ///
     /// #### Arguments
     ///
-    /// * `harray` \
+    /// - `harray`
+    ///
     /// A complex `HArray`. The `HArray`'s dtype must be the complex equivalent of the `HRealFftPlanner`'s dtype. For example if `HRealFftPlanner` dtype is `Float64`,
-    /// the `HArray`'s dtype must be `Complex64`. \
-    /// * `length` \
-    /// An integer. The output length of the signal. Since the spectrum is `N/2+1`, the length can be `N` and `N+1`, if `N` is even, or can be `N` and `N-1` if `N` is odd.  \
+    /// the `HArray`'s dtype must be `Complex64`.
+    ///
+    /// - `length`
+    ///
+    /// An integer. The output length of the signal. Since the spectrum is `N/2+1`, the length can be `N` and `N+1`, if `N` is even, or can be `N` and `N-1` if `N` is odd.
     ///
     /// #### Returns
     ///
-    /// Will return an error if: \
-    /// - The `HArray`'s dtype is incompatible with the `HFftPlanner`'s dtype. \
-    /// - The `HArray`'s `ndim` is greater than 2. \
-    /// - The `length` argument is not compatible with the spectrum length. \
+    /// Will return an error if:
+    ///
+    /// - The `HArray`'s dtype is incompatible with the `HFftPlanner`'s dtype.
+    ///
+    /// - The `HArray`'s `ndim` is greater than 2.
+    ///
+    /// - The `length` argument is not compatible with the spectrum length.
     ///
     /// #### Examples
     ///
@@ -378,7 +412,7 @@ impl HRealFftPlanner {
     /// HRealFftPlanner
     /// ## dtype
     ///
-    /// `dtype() -> HDataType` \
+    /// `dtype() -> HDataType`
     ///
     /// Gets the `HRealFftPlanner`'s dtype.
     ///
@@ -406,10 +440,11 @@ impl HRealFftPlanner {
     /// HRealFftPlanner
     /// ## print
     ///
-    /// `print()` \
+    /// `print()`
     ///
-    /// Print the `HRealFftPlanner`. \
-    /// Differently from R's normal behaviour, `print` doesn't return the value invisibly. \
+    /// Print the `HRealFftPlanner`.
+    ///
+    /// Differently from R's normal behaviour, `print` doesn't return the value invisibly.
     ///
     /// #### Examples
     ///

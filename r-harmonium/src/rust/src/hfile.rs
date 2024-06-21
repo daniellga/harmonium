@@ -193,15 +193,15 @@ impl HFile {
     ///
     /// #### Arguments
     ///
-    /// * `fpath`
+    /// - `fpath`
     ///
     /// The file path as a string.
     ///
-    /// * `frames`
+    /// - `frames`
     ///
     /// Number of frames to decode per iteration.
     ///
-    /// * `dtype`
+    /// - `dtype`
     ///
     /// A float `HDataType`.
     ///
@@ -415,7 +415,7 @@ impl HFile {
     ///
     /// #### Arguments
     ///
-    /// * `fpath`
+    /// - `fpath`
     ///
     /// The file path as a string.
     ///
@@ -458,7 +458,7 @@ impl HFile {
     ///
     /// #### Arguments
     ///
-    /// * `fpath`
+    /// - `fpath`
     ///
     /// The file path as a string.
     ///

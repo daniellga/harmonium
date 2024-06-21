@@ -2,8 +2,9 @@ use savvy::{r_println, savvy, OwnedLogicalSexp, Sexp};
 use std::fmt;
 
 /// HDataType
-/// A type representation. \
-/// Supports `Float32`, `Float64`, `Complex32` and `Complex64` types. \
+/// A type representation.
+///
+/// Supports `Float32`, `Float64`, `Complex32` and `Complex64` types.
 ///
 /// # Methods
 ///
@@ -21,10 +22,11 @@ impl HDataType {
     /// HDataType
     /// ## print
     ///
-    /// `print()` \
+    /// `print()`
     ///
-    /// Prints the `HDataType`. \
-    /// Differently from R's behaviour, `print` doesn't return the value invisibly. \
+    /// Prints the `HDataType`.
+    ///
+    /// Differently from R's behaviour, `print` doesn't return the value invisibly.
     ///
     /// #### Examples
     ///
@@ -47,14 +49,15 @@ impl HDataType {
     /// HDataType
     /// ## eq
     ///
-    /// `eq(other: HDataType) -> bool` \
+    /// `eq(other: HDataType) -> bool`
     ///
-    /// Equality with another `HDataType`. \
+    /// Equality with another `HDataType`.
     ///
     /// #### Arguments
     ///
-    /// * `other` \
-    /// An `HDataType`. \
+    /// - `other`
+    ///
+    /// An `HDataType`.
     ///
     /// #### Returns
     ///
@@ -83,18 +86,19 @@ impl HDataType {
     /// HDataType
     /// ## ne
     ///
-    /// `ne(other: HDataType) -> bool` \
+    /// `ne(other: HDataType) -> bool`
     ///
-    /// Difference with another `HDataType`. \
+    /// Difference with another `HDataType`.
     ///
     /// #### Arguments
     ///
-    /// * `other` \
-    /// An `HDataType`. \
+    /// - `other`
+    ///
+    /// An `HDataType`.
     ///
     /// #### Returns
     ///
-    /// A `bool`. \
+    /// A `bool`.
     ///
     /// #### Examples
     ///

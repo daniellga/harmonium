@@ -22,32 +22,34 @@ pub trait HResamplerR: Send {
 }
 
 /// HResampler
-/// A resampler. \
+/// A resampler.
 ///
 /// #### Asynchronous Resamplers
 ///
-/// The resampling is based on band-limited interpolation using sinc interpolation filters. The sinc interpolation upsamples by an adjustable factor, \
-/// and then the new sample points are calculated by interpolating between these points. \
-/// The resampling ratio can be updated at any time. \
+/// The resampling is based on band-limited interpolation using sinc interpolation filters. The sinc interpolation upsamples by an adjustable factor,
+/// and then the new sample points are calculated by interpolating between these points.
 ///
-/// * `SincFixedIn` \
+/// The resampling ratio can be updated at any time.
 ///
-/// * `SincFixedOut` \
+/// - `SincFixedIn`
 ///
-/// * `FastFixedIn` \
+/// - `SincFixedOut`
 ///
-/// * `FastFixedOut` \
+/// - `FastFixedIn`
+///
+/// - `FastFixedOut`
 ///
 /// #### Synchronous Resamplers
 ///
-/// Is implemented via FFT. The data is FFTed, the spectrum modified, and then inverse FFTed to get the resampled data. \
-/// This type of resampler is considerably faster but doesn’t support changing the resampling ratio. \
+/// Is implemented via FFT. The data is FFTed, the spectrum modified, and then inverse FFTed to get the resampled data.
 ///
-/// * `FftFixedIn` \
+/// This type of resampler is considerably faster but doesn’t support changing the resampling ratio.
 ///
-/// * `FftFixedInOut` \
+/// - `FftFixedIn`
 ///
-/// * `FftFixedOut` \
+/// - `FftFixedInOut`
+///
+/// - `FftFixedOut`
 ///
 /// # Methods
 ///
@@ -59,49 +61,71 @@ impl HResampler {
     /// HResampler
     /// ## new_fft
     ///
-    /// `new_fft(sr_in: integer, sr_out: integer, chunk_size: integer, sub_chunks: integer, nbr_channels: integer, res_type: HResamplerType, dtype: HDataType) -> HResampler` \
+    /// `new_fft(sr_in: integer, sr_out: integer, chunk_size: integer, sub_chunks: integer, nbr_channels: integer, res_type: HResamplerType, dtype: HDataType) -> HResampler`
     ///
-    /// Creates a new FFT type HResampler. \
-    /// Supports any of  `[FftFixedIn, FftFixedInOut, FftFixedOut]` `HResamplerType`. \
-    /// The resampling is done by FFTing the input data. The spectrum is then extended or truncated as well as multiplied with an antialiasing \
-    /// filter before it’s inverse transformed to get the resampled waveforms. \
+    /// Creates a new FFT type HResampler.
     ///
-    /// * `FftFixedIn` \
-    /// A synchronous resampler that needs a fixed number of audio frames for input and returns a variable number of frames. \
+    /// Supports any of  `[FftFixedIn, FftFixedInOut, FftFixedOut]` `HResamplerType`.
     ///
-    /// * `FftFixedInOut` \
-    /// A synchronous resampler that accepts a fixed number of audio frames for input and returns a fixed number of frames. \
+    /// The resampling is done by FFTing the input data. The spectrum is then extended or truncated as well as multiplied with an antialiasing
+    /// filter before it’s inverse transformed to get the resampled waveforms.
     ///
-    /// * `FftFixedOut` \
-    /// A synchronous resampler that needs a fixed number of audio frames for input and returns a variable number of frames. \
+    /// - `FftFixedIn`
+    ///
+    /// A synchronous resampler that needs a fixed number of audio frames for input and returns a variable number of frames.
+    ///
+    /// - `FftFixedInOut`
+    ///
+    /// A synchronous resampler that accepts a fixed number of audio frames for input and returns a fixed number of frames.
+    ///
+    /// - `FftFixedOut`
+    ///
+    /// A synchronous resampler that needs a fixed number of audio frames for input and returns a variable number of frames.
     ///
     /// #### Arguments
     ///
-    /// * `sr_in` \
-    /// The input sampling rate in hz. \
-    /// * `sr_out` \
-    /// The output sampling rate in hz. \
-    /// * `chunk_size` \
-    /// Chunks size of input or output data in frames. \
-    /// It can be used as input or output, depending on `HResamplerType`. \
-    /// * `sub_chunks` \
-    /// Desired number of subchunks for processing, actual number may be different. \
-    /// * `nbr_channels` \
-    /// Number of channels in input and output. \
-    /// Must be the same number of channels as the `HAudio` that will be processed by the `HResampler`. \
-    /// * `res_type` \
-    /// An `HResamplerType` to indicate which type of `HResampler` to be created. \
-    /// * `dtype` \
-    /// A float `HDataType` to indicate the dtype that the `HResampler` will be working with. \
-    /// Must be the same as the `HAudio`'s dtype that will be processed by the `HResampler`. \
+    /// - `sr_in`
+    ///
+    /// The input sampling rate in hz.
+    ///
+    /// - `sr_out`
+    ///
+    /// The output sampling rate in hz.
+    ///
+    /// - `chunk_size`
+    ///
+    /// Chunks size of input or output data in frames.
+    ///
+    /// It can be used as input or output, depending on `HResamplerType`.
+    ///
+    /// - `sub_chunks`
+    ///
+    /// Desired number of subchunks for processing, actual number may be different.
+    ///
+    /// - `nbr_channels`
+    ///
+    /// Number of channels in input and output.
+    ///
+    /// Must be the same number of channels as the `HAudio` that will be processed by the `HResampler`.
+    ///
+    /// - `res_type`
+    ///
+    /// An `HResamplerType` to indicate which type of `HResampler` to be created.
+    ///
+    /// - `dtype`
+    ///
+    /// A float `HDataType` to indicate the dtype that the `HResampler` will be working with.
+    ///
+    /// Must be the same as the `HAudio`'s dtype that will be processed by the `HResampler`.
     ///
     /// #### Returns
     ///
-    /// A FFT type `HResampler`. \
+    /// A FFT type `HResampler`.
     ///
     /// #### Examples
     ///
     /// ```r
+    /// library(harmonium)
     /// sr_in = 48000L
     /// sr_out = 44100L
     /// chunk_size = 1024L
@@ -199,47 +223,67 @@ impl HResampler {
     /// HResampler
     /// ## new_sinc
     ///
-    /// `new_sinc(resample_ratio: double, max_resample_ratio_relative: double, parameters: HSincInterpolationParameters, chunk_size: integer, nchannels: integer, res_type: HResamplerType, dtype: HDataType) -> HResampler` \
+    /// `new_sinc(resample_ratio: double, max_resample_ratio_relative: double, parameters: HSincInterpolationParameters, chunk_size: integer, nchannels: integer, res_type: HResamplerType, dtype: HDataType) -> HResampler`
     ///
-    /// Creates a new Sinc type HResampler. \
-    /// Supports any of  `[SincFixedIn, SincFixedOut]` `HResamplerType`. \
-    /// The resampling is done by creating a number of intermediate points (defined by oversampling_factor) by sinc interpolation. \
-    /// The new samples are then calculated by interpolating between these points. \
+    /// Creates a new Sinc type HResampler.
     ///
-    /// * `SincFixedIn` \
-    /// An asynchronous resampler that accepts a fixed number of audio frames for input and returns a variable number of frames. \
+    /// Supports any of  `[SincFixedIn, SincFixedOut]` `HResamplerType`.
     ///
-    /// * `SincFixedOut` \
-    /// An asynchronous resampler that accepts a variable number of audio frames for input nad returns a fixed number of frames. \
+    /// The resampling is done by creating a number of intermediate points (defined by oversampling_factor) by sinc interpolation.
+    /// The new samples are then calculated by interpolating between these points.
+    ///
+    /// - `SincFixedIn`
+    ///
+    /// An asynchronous resampler that accepts a fixed number of audio frames for input and returns a variable number of frames.
+    ///
+    /// - `SincFixedOut`
+    ///
+    /// An asynchronous resampler that accepts a variable number of audio frames for input nad returns a fixed number of frames.
     ///
     /// #### Arguments
     ///
-    /// * `resample_ratio` \
-    /// The output's sampling rate divided by the input's sampling rate. \
-    /// * `max_resample_ratio_relative` \
-    /// Maximum ratio that can be set with `set_resample_ratio` relative to `resample_ratio`, must be >= 1.0. The minimum relative \
-    /// ratio is the reciprocal of the maximum. For example, with `max_resample_ratio_relative` of 10.0, the ratio can be set between \
-    /// `resample_ratio * 10.0` and `resample_ratio / 10.0`. \
-    /// * `parameters` \
-    /// An `HSincInterpolationParameters`. Parameters for interpolation. \
-    /// * `chunk_size` \
-    /// Chunks size of input or output data in frames. \
-    /// * `nchannels` \
-    /// Number of channels in input and output. \
-    /// Must be the same number of channels as the `HAudio` that will be processed by the `HResampler`. \
-    /// * `res_type` \
-    /// An `HResamplerType`. Indicates which type of `HResampler` to be created. \
-    /// * `dtype` \
-    /// A float `HDataType` to indicate the dtype that the `HResampler` will be working with. \
-    /// Must be the same as the `HAudio`'s dtype that will be processed by the `HResampler`. \
+    /// - `resample_ratio`
+    ///
+    /// The output's sampling rate divided by the input's sampling rate.
+    ///
+    /// - `max_resample_ratio_relative`
+    ///
+    /// Maximum ratio that can be set with `set_resample_ratio` relative to `resample_ratio`, must be >= 1.0. The minimum relative
+    /// ratio is the reciprocal of the maximum. For example, with `max_resample_ratio_relative` of 10.0, the ratio can be set between
+    /// `resample_ratio * 10.0` and `resample_ratio / 10.0`.
+    ///
+    /// - `parameters`
+    ///
+    /// An `HSincInterpolationParameters`. Parameters for interpolation.
+    ///
+    /// - `chunk_size`
+    ///
+    /// Chunks size of input or output data in frames.
+    ///
+    /// - `nchannels`
+    ///
+    /// Number of channels in input and output.
+    ///
+    /// Must be the same number of channels as the `HAudio` that will be processed by the `HResampler`.
+    ///
+    /// - `res_type`
+    ///
+    /// An `HResamplerType`. Indicates which type of `HResampler` to be created.
+    ///
+    /// - `dtype`
+    ///
+    /// A float `HDataType` to indicate the dtype that the `HResampler` will be working with.
+    ///
+    /// Must be the same as the `HAudio`'s dtype that will be processed by the `HResampler`.
     ///
     /// #### Returns
     ///
-    /// A Sinc type `HResampler`. \
+    /// A Sinc type `HResampler`.
     ///
     /// #### Examples
     ///
     /// ```r
+    /// library(harmonium)
     /// sr_in = 44100L
     /// sr_out = 48000L
     /// resample_ratio = sr_out / sr_in
@@ -328,48 +372,69 @@ impl HResampler {
     /// HResampler
     /// ## new_fast
     ///
-    /// `new_sinc(resample_ratio: double, max_resample_ratio_relative: double, pol_deg: HPolynomialDegree, chunk_size: integer, nchannels: integer, res_type: HResamplerType, dtype: HDataType) -> HResampler` \
+    /// `new_sinc(resample_ratio: double, max_resample_ratio_relative: double, pol_deg: HPolynomialDegree, chunk_size: integer, nchannels: integer, res_type: HResamplerType, dtype: HDataType) -> HResampler`
     ///
-    /// Creates a new Fast type HResampler. \
-    /// Supports any of  `[FastFixedIn, FastFixedOut]` `HResamplerType`. \
-    /// The resampling is done by interpolating between the input samples by fitting polynomials. \
-    /// Note that no anti-aliasing filter is used. This makes it run considerably faster than the corresponding `SincFixedIn`, which performs anti-aliasing filtering. The price is that the resampling creates some artefacts \
-    /// in the output, mainly at higher frequencies. Use `SincFixedIn` if this can not be tolerated. \
+    /// Creates a new Fast type HResampler.
     ///
-    /// * `FastFixedIn` \
-    /// An asynchronous resampler that accepts a fixed number of audio frames for input and returns a variable number of frames. \
+    /// Supports any of  `[FastFixedIn, FastFixedOut]` `HResamplerType`.
     ///
-    /// * `FastFixedOut` \
-    /// An asynchronous resampler that accepts a variable number of audio frames for input nad returns a fixed number of frames. \
+    /// The resampling is done by interpolating between the input samples by fitting polynomials.
+    ///
+    /// Note that no anti-aliasing filter is used. This makes it run considerably faster than the corresponding `SincFixedIn`, which performs anti-aliasing filtering. The price is that the resampling creates some artefacts
+    /// in the output, mainly at higher frequencies. Use `SincFixedIn` if this can not be tolerated.
+    ///
+    /// - `FastFixedIn`
+    ///
+    /// An asynchronous resampler that accepts a fixed number of audio frames for input and returns a variable number of frames.
+    ///
+    /// - `FastFixedOut`
+    ///
+    /// An asynchronous resampler that accepts a variable number of audio frames for input nad returns a fixed number of frames.
     ///
     /// #### Arguments
     ///
-    /// * `resample_ratio` \
-    /// The output's sampling rate divided by the input's sampling rate. \
-    /// * `max_resample_ratio_relative` \
-    /// Maximum ratio that can be set with `set_resample_ratio` relative to `resample_ratio`, must be >= 1.0. The minimum relative \
-    /// ratio is the reciprocal of the maximum. For example, with `max_resample_ratio_relative` of 10.0, the ratio can be set between \
-    /// `resample_ratio * 10.0` and `resample_ratio / 10.0`. \
-    /// * `pol_deg` \
-    /// An `HPolynomialDegree`. Used to select the polynomial degree for interpolation. \
-    /// * `chunk_size` \
-    /// Chunks size of input or output data in frames. \
-    /// * `nchannels` \
-    /// Number of channels in input and output. \
-    /// Must be the same number of channels as the `HAudio` that will be processed by the `HResampler`. \
-    /// * `res_type` \
-    /// An `HResamplerType`. Indicates which type of `HResampler` to be created. \
-    /// * `dtype` \
-    /// A float `HDataType` to indicate the dtype that the `HResampler` will be working with. \
-    /// Must be the same as the `HAudio`'s dtype that will be processed by the `HResampler`. \
+    /// - `resample_ratio`
+    ///
+    /// The output's sampling rate divided by the input's sampling rate.
+    ///
+    /// - `max_resample_ratio_relative`
+    ///
+    /// Maximum ratio that can be set with `set_resample_ratio` relative to `resample_ratio`, must be >= 1.0. The minimum relative
+    /// ratio is the reciprocal of the maximum. For example, with `max_resample_ratio_relative` of 10.0, the ratio can be set between
+    /// `resample_ratio * 10.0` and `resample_ratio / 10.0`.
+    ///
+    /// - `pol_deg`
+    ///
+    /// An `HPolynomialDegree`. Used to select the polynomial degree for interpolation.
+    ///
+    /// - `chunk_size`
+    ///
+    /// Chunks size of input or output data in frames.
+    ///
+    /// - `nchannels`
+    ///
+    /// Number of channels in input and output.
+    ///
+    /// Must be the same number of channels as the `HAudio` that will be processed by the `HResampler`.
+    ///
+    /// - `res_type`
+    ///
+    /// An `HResamplerType`. Indicates which type of `HResampler` to be created.
+    ///
+    /// - `dtype`
+    ///
+    /// A float `HDataType` to indicate the dtype that the `HResampler` will be working with.
+    ///
+    /// Must be the same as the `HAudio`'s dtype that will be processed by the `HResampler`.
     ///
     /// #### Returns
     ///
-    /// A Fast type `HResampler`. \
+    /// A Fast type `HResampler`.
     ///
     /// #### Examples
     ///
     /// ```r
+    /// library(harmonium)
     /// sr_in = 44100L
     /// sr_out = 48000L
     /// resample_ratio = sr_out / sr_in
@@ -451,18 +516,20 @@ impl HResampler {
     /// HResampler
     /// ## process
     ///
-    /// `process(harray: HArray)` \
+    /// `process(harray: HArray)`
     ///
-    /// Process the resampler, changing the `HArray`'s sampling rate. \
+    /// Process the resampler, changing the `HArray`'s sampling rate.
     ///
     /// #### Arguments
     ///
-    /// * `harray` \
-    /// An `HArray` that will have it's sampling rate converted. \
+    /// - `harray`
+    ///
+    /// An `HArray` that will have it's sampling rate converted.
     ///
     /// #### Examples
     ///
     /// ```r
+    /// library(harmonium)
     /// arr = matrix(0, nrow = 512, ncol = 2)
     /// harray = HArray$new_from_values(arr, dtype = HDataType$Float64)
     /// hparams = HSincInterpolationParameters$new(256L, 0.95, 256L, "linear", "blackmanharris2")
@@ -479,22 +546,30 @@ impl HResampler {
     /// HResampler
     /// ## set_resample_ratio
     ///
-    /// `set_resample_ratio(new_ratio: double, ramp: bool)` \
+    /// `set_resample_ratio(new_ratio: double, ramp: bool)`
     ///
-    /// Update the resample ratio. \
-    /// For asynchronous resamplers, the ratio must be within `original / maximum` to `original * maximum`, where `original` and `maximum` are the resampling ratios that were provided to the constructor. Trying to set the ratio outside these bounds will return an error. \
-    /// For synchronous resamplers, this will always return an error. \
+    /// Update the resample ratio.
+    ///
+    /// For asynchronous resamplers, the ratio must be within `original / maximum` to `original * maximum`, where `original` and `maximum` are the resampling ratios that were provided to the constructor.
+    /// Trying to set the ratio outside these bounds will return an error.
+    ///
+    /// For synchronous resamplers, this will always return an error.
     ///
     /// #### Arguments
     ///
-    /// * `new_ratio` \
-    /// The new `resample_ratio` to be set. \
-    /// * `ramp` \
-    /// If `TRUE`, the ratio will be ramped from the old to the new value during processing of the next chunk. This allows smooth transitions from one ratio to another. If ramp is false, the new ratio will be applied from the start of the next chunk. \
+    /// - `new_ratio`
+    ///
+    /// The new `resample_ratio` to be set.
+    ///
+    /// - `ramp`
+    ///
+    /// If `TRUE`, the ratio will be ramped from the old to the new value during processing of the next chunk. This allows smooth transitions from one ratio to another.
+    /// If `FALSE`, the new ratio will be applied from the start of the next chunk.
     ///
     /// #### Examples
     ///
     /// ```r
+    /// library(harmonium)
     /// data = matrix(0, nrow = 512, ncol = 2)
     /// haudio = HAudio$new_from_values(data, 44100, dtype = HDataType$Float64)
     /// hparams = HSincInterpolationParameters$new(256L, 0.95, 256L, "linear", "blackmanharris2")
@@ -513,23 +588,31 @@ impl HResampler {
     /// HResampler
     /// ## set_resample_ratio_relative
     ///
-    /// `set_resample_ratio_relative(rel_ratio: double, ramp: bool)` \
+    /// `set_resample_ratio_relative(rel_ratio: double, ramp: bool)`
     ///
-    /// Update the resample ratio as a factor relative to the original one. \
-    /// For asynchronous resamplers, the relative ratio must be within `1 / maximum` to `maximum`, where `maximum` is the maximum resampling ratio that was provided to the constructor. Trying to set the ratio outside these bounds will return an error. \
-    /// Higher ratios above `1.0` slow down the output and lower the pitch. Lower ratios below `1.0` speed up the output and raise the pitch. \
-    /// For synchronous resamplers, this will always return an error. \
+    /// Update the resample ratio as a factor relative to the original one.
+    ///
+    /// For asynchronous resamplers, the relative ratio must be within `1 / maximum` to `maximum`, where `maximum` is the maximum resampling ratio that was provided to the constructor.
+    /// Trying to set the ratio outside these bounds will return an error.
+    /// Higher ratios above `1.0` slow down the output and lower the pitch. Lower ratios below `1.0` speed up the output and raise the pitch.
+    ///
+    /// For synchronous resamplers, this will always return an error.
     ///
     /// #### Arguments
     ///
-    /// * `rel_ratio` \
-    /// A factor to update the resample_ratio relative to the original one. \
-    /// * `ramp` \
-    /// If `TRUE`, the ratio will be ramped from the old to the new value during processing of the next chunk. This allows smooth transitions from one ratio to another. If ramp is false, the new ratio will be applied from the start of the next chunk. \
+    /// - `rel_ratio`
+    ///
+    /// A factor to update the resample_ratio relative to the original one.
+    ///
+    /// - `ramp`
+    ///
+    /// If `TRUE`, the ratio will be ramped from the old to the new value during processing of the next chunk. This allows smooth transitions from one ratio to another.
+    /// If ramp is false, the new ratio will be applied from the start of the next chunk.
     ///
     /// #### Examples
     ///
     /// ```r
+    /// library(harmonium)
     /// data = matrix(0, nrow = 512, ncol = 2)
     /// haudio = HAudio$new_from_values(data, 44100, dtype = HDataType$Float64)
     /// hparams = HSincInterpolationParameters$new(256L, 0.95, 256L, "linear", "blackmanharris2")
@@ -548,13 +631,14 @@ impl HResampler {
     /// HResampler
     /// ## reset
     ///
-    /// `reset()` \
+    /// `reset()`
     ///
-    /// Reset the resampler state and clear all internal buffers. \
+    /// Reset the resampler state and clear all internal buffers.
     ///
     /// #### Examples
     ///
     /// ```r
+    /// library(harmonium)
     /// sr_in = 44100L
     /// sr_out = 48000L
     /// resample_ratio = sr_out / sr_in
@@ -579,9 +663,9 @@ impl HResampler {
     /// HResampler
     /// ## res_type
     ///
-    /// `res_type() -> HResamplerType` \
+    /// `res_type() -> HResamplerType`
     ///
-    /// Gets the `HResampler`'s type. \
+    /// Gets the `HResampler`'s type.
     ///
     /// #### Returns
     ///
@@ -590,6 +674,7 @@ impl HResampler {
     /// #### Examples
     ///
     /// ```r
+    /// library(harmonium)
     /// sr_in = 44100L
     /// sr_out = 48000L
     /// resample_ratio = sr_out / sr_in
@@ -613,7 +698,7 @@ impl HResampler {
     /// HResampler
     /// ## dtype
     ///
-    /// `dtype() -> HDataType` \
+    /// `dtype() -> HDataType`
     ///
     /// Gets the `HResampler`'s dtype.
     ///
@@ -624,6 +709,7 @@ impl HResampler {
     /// #### Examples
     ///
     /// ```r
+    /// library(harmonium)
     /// sr_in = 44100L
     /// sr_out = 48000L
     /// resample_ratio = sr_out / sr_in
@@ -647,14 +733,16 @@ impl HResampler {
     /// HResampler
     /// ## print
     ///
-    /// `print()` \
+    /// `print()`
     ///
-    /// Print the `HResampler`. \
-    /// Differently from R's normal behaviour, `print` doesn't return the value invisibly. \
+    /// Prints the `HResampler`.
+    ///
+    /// Differently from R's normal behaviour, `print` doesn't return the value invisibly.
     ///
     /// #### Examples
     ///
     /// ```r
+    /// library(harmonium)
     /// sr_in = 44100L
     /// sr_out = 48000L
     /// resample_ratio = sr_out / sr_in

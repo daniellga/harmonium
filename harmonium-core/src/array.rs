@@ -39,6 +39,12 @@ where
         self.0.is_empty()
     }
 
+    /// Returns true if the array data is laid out in contiguous “C order” in memory (where the last index is the most rapidly varying).
+    /// Returns false otherwise, i.e. the array is possibly not contiguous in memory, it has custom strides, etc.
+    pub fn is_standard_layout(&self) -> bool {
+        self.0.is_standard_layout()
+    }
+
     /// Gets the underlying slice. Returns `None` if not contiguous.
     pub fn as_slice(&self) -> Option<&[T]> {
         self.0.as_slice()

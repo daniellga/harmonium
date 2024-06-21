@@ -10,7 +10,7 @@ use ndarray::IxDyn;
 use savvy::{savvy, OwnedIntegerSexp, OwnedLogicalSexp, OwnedRealSexp, OwnedStringSexp, Sexp};
 
 /// HAudioSink
-/// Handle to a device that outputs sounds. \
+/// Handle to a device that outputs sounds.
 ///
 /// # Methods
 ///
@@ -22,14 +22,15 @@ impl HAudioSink {
     /// HAudioSink
     /// ## new
     ///
-    /// `new() -> HAudioSink` \
+    /// `new() -> HAudioSink`
     ///
-    /// Creates a new `HAudioSink` instance. \
-    /// The sink is set on "play" mode from the start. \
+    /// Creates a new `HAudioSink` instance.
+    ///
+    /// The sink is set on "play" mode from the start.
     ///
     /// #### Returns
     ///
-    /// An `HAudioSink`. \
+    /// An `HAudioSink`.
     ///
     /// #### Examples
     ///
@@ -47,16 +48,19 @@ impl HAudioSink {
     /// HAudioSink
     /// ## append_from_harray
     ///
-    /// `append_from_harray(harray: HArray, sr: integer)` \
+    /// `append_from_harray(harray: HArray, sr: integer)`
     ///
-    /// Appends a sound to the queue of sounds to play. \
+    /// Appends a sound to the queue of sounds to play.
     ///
     /// #### Arguments
     ///
-    /// * `harray` \
-    /// An `HArray`. \
-    /// * `sr` \
-    /// An interger. The audio sampling rate. \
+    /// - `harray`
+    ///
+    /// An `HArray`.
+    ///
+    /// - `sr`
+    ///
+    /// An integer. The audio sampling rate.
     ///
     /// #### Examples
     ///
@@ -111,14 +115,15 @@ impl HAudioSink {
     /// HAudioSink
     /// ## append_from_file
     ///
-    /// `append_from_file(fpath: string)` \
+    /// `append_from_file(fpath: string)`
     ///
-    /// Appends a sound to the queue of sounds to play. \
+    /// Appends a sound to the queue of sounds to play.
     ///
     /// #### Arguments
     ///
-    /// * `fpath` \
-    /// The file path as a `string`. \
+    /// - `fpath`
+    ///
+    /// The file path as a `string`.
     ///
     /// #### Examples
     ///
@@ -142,13 +147,13 @@ impl HAudioSink {
     /// HAudioSink
     /// ## audio_default_device
     ///
-    /// `audio_default_device() -> string` \
+    /// `audio_default_device() -> string`
     ///
-    /// Informs the default audio output device. \
+    /// Informs the default audio output device.
     ///
     /// #### Returns
     ///
-    /// A `string`. \
+    /// A `string`.
     ///
     /// #### Examples
     ///
@@ -168,13 +173,13 @@ impl HAudioSink {
     /// HAudioSink
     /// ## audio_output_devices
     ///
-    /// `audio_output_devices() -> atomicvector` \
+    /// `audio_output_devices() -> characteratomicvector`
     ///
-    /// Provides a list of available audio output devices. \
+    /// Provides a list of available audio output devices.
     ///
     /// #### Returns
     ///
-    /// A character atomic vector. \
+    /// A character atomic vector.
     ///
     /// #### Examples
     ///
@@ -194,19 +199,23 @@ impl HAudioSink {
     /// HAudioSink
     /// ## audio_supported_configs
     ///
-    /// `audio_supported_configs() -> atomicvector` \
+    /// `audio_supported_configs() -> atomicvector`
     ///
-    /// Provides the supported configurations for the default audio output device. \
-    /// The following informations are given: \
+    /// Provides the supported configurations for the default audio output device.
     ///
-    /// * Number of channels. \
-    /// * Minimum and maximum value for the sampling rate. \
-    /// * Minimum and maximum value for the buffer size. \
-    /// * Type of data expected by the device. \
+    /// The following informations are given:
+    ///
+    /// - Number of channels.
+    ///
+    /// - Minimum and maximum value for the sampling rate.
+    ///
+    /// - Minimum and maximum value for the buffer size.
+    ///
+    /// - Type of data expected by the device.
     ///
     /// #### Returns
     ///
-    /// A character atomic vector. \
+    /// A character atomic vector.
     ///
     /// #### Examples
     ///
@@ -226,9 +235,9 @@ impl HAudioSink {
     /// HAudioSink
     /// ## clear
     ///
-    /// `clear()` \
+    /// `clear()`
     ///
-    /// Removes all currently loaded `Source`s from the `Sink` and pauses it. \
+    /// Removes all currently loaded `Source`s from the `Sink` and pauses it.
     ///
     /// #### Examples
     ///
@@ -251,13 +260,13 @@ impl HAudioSink {
     /// HAudioSink
     /// ## is_empty
     ///
-    /// `is_empty() -> bool` \
+    /// `is_empty() -> bool`
     ///
-    /// Returns true if this sink has no more sounds to play. \
+    /// Returns true if this sink has no more sounds to play.
     ///
     /// #### Returns
     ///
-    /// A `bool`. \
+    /// A `bool`.
     ///
     /// #### Examples
     ///
@@ -278,14 +287,15 @@ impl HAudioSink {
     /// HAudioSink
     /// ## is_paused
     ///
-    /// `is_paused() -> bool` \
+    /// `is_paused() -> bool`
     ///
-    /// Gets if a sink is paused. \
-    /// Sinks can be paused and resumed using pause() and play(). This returns true if the sink is paused. \
+    /// Gets if a sink is paused.
+    ///
+    /// Sinks can be paused and resumed using pause() and play(). This returns true if the sink is paused .
     ///
     /// #### Returns
     ///
-    /// A `bool`. \
+    /// A `bool`.
     ///
     /// #### Examples
     ///
@@ -309,13 +319,13 @@ impl HAudioSink {
     /// HAudioSink
     /// ## len
     ///
-    /// `len() -> integer` \
+    /// `len() -> integer`
     ///
-    /// Returns the number of sounds currently in the queue. \
+    /// Returns the number of sounds currently in the queue.
     ///
     /// #### Returns
     ///
-    /// An `integer`. \
+    /// An `integer`.
     ///
     /// #### Examples
     ///
@@ -338,11 +348,13 @@ impl HAudioSink {
     /// HAudioSink
     /// ## pause
     ///
-    /// `pause()` \
+    /// `pause()`
     ///
-    /// Pauses playback of this sink. \
-    /// No effect if already paused. \
-    /// A paused sink can be resumed with play(). \
+    /// Pauses playback of this sink.
+    ///
+    /// No effect if already paused.
+    ///
+    /// A paused sink can be resumed with play().
     ///
     /// #### Examples
     ///
@@ -365,10 +377,11 @@ impl HAudioSink {
     /// HAudioSink
     /// ## play
     ///
-    /// `play()` \
+    /// `play()`
     ///
-    /// Resumes playback of a paused sink. \
-    /// No effect if not paused. \
+    /// Resumes playback of a paused sink.
+    ///
+    /// No effect if not paused.
     ///
     /// #### Examples
     ///
@@ -392,15 +405,17 @@ impl HAudioSink {
     /// HAudioSink
     /// ## set_speed
     ///
-    /// `set_speed(value: double)` \
+    /// `set_speed(value: double)`
     ///
-    /// Changes the speed of the sound. \
-    /// The value 1.0 is the “normal” speed (unfiltered input). Any value other than 1.0 will change the play speed of the sound. \
+    /// Changes the speed of the sound.
+    ///
+    /// The value 1.0 is the “normal” speed (unfiltered input). Any value other than 1.0 will change the play speed of the sound.
     ///
     /// #### Arguments
     ///
-    /// * `value` \
-    /// A `double`. \
+    /// - `value`
+    ///
+    /// A `double`.
     ///
     /// #### Examples
     ///
@@ -423,15 +438,17 @@ impl HAudioSink {
     /// HAudioSink
     /// ## set_volume
     ///
-    /// `set_volume(value: double)` \
+    /// `set_volume(value: double)`
     ///
-    /// Changes the volume of the sound. \
-    /// The value 1.0 is the “normal” volume (unfiltered input). Any value other than 1.0 will multiply each sample by this value. \
+    /// Changes the volume of the sound.
+    ///
+    /// The value 1.0 is the “normal” volume (unfiltered input). Any value other than 1.0 will multiply each sample by this value.
     ///
     /// #### Arguments
     ///
-    /// * `value` \
-    /// A `double`. \
+    /// - `value`
+    ///
+    /// A `double`.
     ///
     /// #### Examples
     ///
@@ -454,11 +471,12 @@ impl HAudioSink {
     /// HAudioSink
     /// ## skip_one
     ///
-    /// `skip_one()` \
+    /// `skip_one()`
     ///
-    /// Skips to the next `Source` in the `Sink`. \
+    /// Skips to the next `Source` in the `Sink`.
+    ///
     /// If there are more `Source`s appended to the `Sink` at the time, it will play the next one.
-    /// Otherwise, the `Sink` will finish as if it had finished playing a `Source` all the way through. \
+    /// Otherwise, the `Sink` will finish as if it had finished playing a `Source` all the way through.
     ///
     /// #### Examples
     ///
@@ -482,9 +500,9 @@ impl HAudioSink {
     /// HAudioSink
     /// ## sleep_until_end
     ///
-    /// `sleep_until_end()` \
+    /// `sleep_until_end()`
     ///
-    /// Sleeps the current thread until the sound ends. \
+    /// Sleeps the current thread until the sound ends.
     ///
     /// #### Examples
     ///
@@ -505,14 +523,15 @@ impl HAudioSink {
     /// HAudioSink
     /// ## speed
     ///
-    /// `speed() -> double` \
+    /// `speed() -> double`
     ///
-    /// Gets the speed of the sound. \
-    /// The value 1.0 is the “normal” speed (unfiltered input). Any value other than 1.0 will change the play speed of the sound. \
+    /// Gets the speed of the sound.
+    ///
+    /// The value 1.0 is the “normal” speed (unfiltered input). Any value other than 1.0 will change the play speed of the sound.
     ///
     /// #### Returns
     ///
-    /// A `double`. \
+    /// A `double`.
     ///
     /// #### Examples
     ///
@@ -534,10 +553,11 @@ impl HAudioSink {
     /// HAudioSink
     /// ## stop
     ///
-    /// `stop()` \
+    /// `stop()`
     ///
-    /// Stops the sink by emptying the queue. \
-    /// The sink will keep its previous state (play or pause). \
+    /// Stops the sink by emptying the queue.
+    ///
+    /// The sink will keep its previous state (play or pause).
     ///
     /// #### Examples
     ///
@@ -562,22 +582,28 @@ impl HAudioSink {
     /// HAudioSink
     /// ## try_seek
     ///
-    /// `try_seek(pos: f64)` \
+    /// `try_seek(pos: f64)`
     ///
-    /// Attempts to seek to a given position in the current source. \
-    /// This blocks between 0 and ~5 milliseconds. \
+    /// Attempts to seek to a given position in the current source.
+    ///
+    /// This blocks between 0 and ~5 milliseconds.
+    ///
     /// As long as the duration of the source is known, seek is guaranteed to saturate at the end of the source. For example given a
-    /// source that reports a total duration of 42 seconds calling `try_seek()` with 60 seconds as argument will seek to 42 seconds. \
+    /// source that reports a total duration of 42 seconds calling `try_seek()` with 60 seconds as argument will seek to 42 seconds.
     ///
     /// This function will return an error if:
+    ///
     /// - one of the underlying sources does not support seeking.
+    ///
     /// - an implementation ran into one during the seek.
+    ///
     /// - when seeking beyond the end of a source when the duration of the source is not known.
     ///
     /// #### Arguments
     ///
-    /// * `pos` \
-    /// A `double`. The time to seek to in seconds. \
+    /// - `pos`
+    ///
+    /// A `double`. The time to seek to in seconds.
     ///
     /// #### Examples
     ///
@@ -600,14 +626,15 @@ impl HAudioSink {
     /// HAudioSink
     /// ## volume
     ///
-    /// `volume() -> double` \
+    /// `volume() -> double`
     ///
-    /// Gets the volume of the sound. \
-    /// The value 1.0 is the “normal” volume (unfiltered input). Any value other than 1.0 will multiply each sample by this value. \
+    /// Gets the volume of the sound.
+    ///
+    /// The value 1.0 is the “normal” volume (unfiltered input). Any value other than 1.0 will multiply each sample by this value.
     ///
     /// #### Returns
     ///
-    /// A `double`. \
+    /// A `double`.
     ///
     /// #### Examples
     ///

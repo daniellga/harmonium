@@ -3,22 +3,27 @@ use savvy::{r_println, savvy, OwnedLogicalSexp, Sexp};
 use std::fmt;
 
 /// HPolynomialDegree
-/// Degree of the polynomial used for interpolation. A higher degree gives a higher quality result, while taking longer to compute. \
+/// Degree of the polynomial used for interpolation. A higher degree gives a higher quality result, while taking longer to compute.
 ///
-/// * `Septic` \
-/// Septic polynomial, fitted using 8 sample points. \
+/// - `Septic`
 ///
-/// * `Quintic`. \
-/// Quintic polynomial, fitted using 6 sample points. \
+/// Septic polynomial, fitted using 8 sample points.
 ///
-/// * `Cubic`. \
-/// Cubic polynomial, fitted using 4 sample points. \
+/// - `Quintic`.
 ///
-/// * `Linear`. \
-/// Linear polynomial, fitted using 2 sample points. \
+/// Quintic polynomial, fitted using 6 sample points.
 ///
-/// * `Nearest`. \
-/// Nearest, uses the nearest sample point without any fitting. \
+/// - `Cubic`.
+///
+/// Cubic polynomial, fitted using 4 sample points.
+///
+/// - `Linear`.
+///
+/// Linear polynomial, fitted using 2 sample points.
+///
+/// - `Nearest`.
+///
+/// Nearest, uses the nearest sample point without any fitting.
 ///
 /// # Methods
 ///
@@ -37,14 +42,16 @@ impl HPolynomialDegree {
     /// HPolynomialDegree
     /// ## print
     ///
-    /// `print()` \
+    /// `print()`
     ///
-    /// Prints the `HPolynomialDegree`. \
-    /// Differently from R's behaviour, `print` doesn't return the value invisibly. \
+    /// Prints the `HPolynomialDegree`.
+    ///
+    /// Differently from R's behaviour, `print` doesn't return the value invisibly.
     ///
     /// #### Examples
     ///
     /// ```r
+    /// library(harmonium)
     /// pol_deg = HPolynomialDegree$Complex64
     /// pol_deg$print()
     ///
@@ -62,14 +69,15 @@ impl HPolynomialDegree {
     /// HPolynomialDegree
     /// ## eq
     ///
-    /// `eq(other: HPolynomialDegree) -> bool` \
+    /// `eq(other: HPolynomialDegree) -> bool`
     ///
     /// Equality with another `HPolynomialDegree`.
     ///
     /// #### Arguments
     ///
-    /// * `other` \
-    /// An `HPolynomialDegree`. \
+    /// - `other`
+    ///
+    /// An `HPolynomialDegree`.
     ///
     /// #### Returns
     ///
@@ -78,6 +86,7 @@ impl HPolynomialDegree {
     /// #### Examples
     ///
     /// ```r
+    /// library(harmonium)
     /// pol_deg1 = HPolynomialDegree$quintic
     /// pol_deg2 = HPolynomialDegree$quintic
     /// pol_deg1$eq(pol_deg2) # TRUE
@@ -97,14 +106,15 @@ impl HPolynomialDegree {
     /// HPolynomialDegree
     /// ## ne
     ///
-    /// `ne(other: HPolynomialDegree) -> bool` \
+    /// `ne(other: HPolynomialDegree) -> bool`
     ///
     /// Difference with another `HPolynomialDegree`.
     ///
     /// #### Arguments
     ///
-    /// * `other` \
-    /// An `HPolynomialDegree`. \
+    /// - `other`
+    ///
+    /// An `HPolynomialDegree`.
     ///
     /// #### Returns
     ///
@@ -113,6 +123,7 @@ impl HPolynomialDegree {
     /// #### Examples
     ///
     /// ```r
+    /// library(harmonium)
     /// pol_deg1 = HPolynomialDegree$quintic
     /// pol_deg2 = HPolynomialDegree$nearest
     /// pol_deg1$ne(pol_deg2) # TRUE

@@ -5,7 +5,7 @@ use crate::{
 use savvy::{savvy, Sexp};
 
 /// HAudioOp
-/// A collection of methods that can be applied to float 1D or 2D `HArray`s which represents audio data. \
+/// A collection of methods that can be applied to float 1D or 2D `HArray`s which represents audio data.
 ///
 /// # Methods
 ///
@@ -17,14 +17,15 @@ impl HAudioOp {
     /// HAudioOp
     /// ## nchannels
     ///
-    /// `nchannels() -> integer` \
+    /// `nchannels() -> integer`
     ///
-    /// Returns the number of channels. \
-    /// This is the same as the number of rows of a 1D or 2D HArray. \
+    /// Returns the number of channels.
+    ///
+    /// This is the same as the number of rows of a 1D or 2D HArray.
     ///
     /// #### Returns
     ///
-    /// An `integer`. \
+    /// An `integer`.
     ///
     /// #### Examples
     ///
@@ -47,15 +48,17 @@ impl HAudioOp {
     /// HAudioOp
     /// ## nframes
     ///
-    /// `nframes() -> integer` \
+    /// `nframes() -> integer`
     ///
-    /// Returns the number of frames. \
-    /// This is the same as the number of cols of a 1D or 2D HArray. \
-    /// The number of frames is equivalent to the number of samples divided by the number of channels. \
+    /// Returns the number of frames.
+    ///
+    /// This is the same as the number of cols of a 1D or 2D HArray.
+    ///
+    /// The number of frames is equivalent to the number of samples divided by the number of channels.
     ///
     /// #### Returns
     ///
-    /// An `integer`. \
+    /// An `integer`.
     ///
     /// #### Examples
     ///
@@ -78,20 +81,27 @@ impl HAudioOp {
     /// HAudioOp
     /// ## db_to_amplitude
     ///
-    /// `db_to_amplitude(harray: HArray, reference: double)` \
+    /// `db_to_amplitude(harray: HArray, reference: double)`
     ///
-    /// Converts the `HArray` input from dB to amplitude. \
-    /// $db_to_amplitude(x) = reference * (10.0**(x * 0.1))**power$ \
-    /// The operation is done in-place. \
+    /// Converts the `HArray` input from dB to amplitude.
+    ///
+    /// $db_to_amplitude(x) = reference * (10.0**(x * 0.1))**power$
+    ///
+    /// The operation is done in-place.
     ///
     /// #### Arguments
     ///
-    /// * `harray` \
-    /// A 1D or 2D float `HArray`. \
-    /// * `reference` \
-    /// A double that scales the output. \
-    /// * `power` \
-    /// A double. If 1.0, will compute DB to power. If 0.5, will compute DB to amplitude. \
+    /// - `harray`
+    ///
+    /// A 1D or 2D float `HArray`.
+    ///
+    /// - `reference`
+    ///
+    /// A double that scales the output.
+    ///
+    /// - `power`
+    ///
+    /// A double. If 1.0, will compute DB to power. If 0.5, will compute DB to amplitude.
     ///
     /// #### Examples
     ///
@@ -115,14 +125,16 @@ impl HAudioOp {
     /// HAudioOp
     /// ## to_mono
     ///
-    /// `to_mono(harray: HArray)` \
+    /// `to_mono(harray: HArray)`
     ///
-    /// Convert to 1 channel by taking the average across channels. \
-    /// The operation is done in-place. A new inner array is created. \
+    /// Convert to 1 channel by taking the average across channels.
+    ///
+    /// The operation is done in-place. A new inner array is created.
     ///
     /// #### Arguments
     ///
-    /// * `harray` \
+    /// - `harray`
+    ///
     /// A 2D float `HArray`.
     ///
     /// #### Examples
