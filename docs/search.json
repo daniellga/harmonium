@@ -352,6 +352,17 @@
     ]
   },
   {
+    "objectID": "contents/harray.html#is_standard_layout",
+    "href": "contents/harray.html#is_standard_layout",
+    "title": "HArray",
+    "section": "is_standard_layout",
+    "text": "is_standard_layout\nis_standard_layout() -&gt; bool source \n\nReturns true if the array data is laid out in contiguous “C order” in memory (where the last index is the most rapidly varying).\nReturns false otherwise, i.e. the array is possibly not contiguous in memory, it has custom strides, etc.\nThis function is useful mainly to check if an HArray is contiguous after some operation as, for example, slice().\n\nReturns\nA bool.\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nharray$is_standard_layout() # TRUE, contiguous data\nsliced_harray = harray$slice(list(c(0L, 2L, 1L), c(1L, 3L, 1L)))\nsliced_harray$is_standard_layout() # FALSE, non contiguous data",
+    "crumbs": [
+      "Classes",
+      "HArray"
+    ]
+  },
+  {
     "objectID": "contents/harray.html#invalidate",
     "href": "contents/harray.html#invalidate",
     "title": "HArray",

@@ -280,6 +280,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#dtype" id="toc-dtype" class="nav-link" data-scroll-target="#dtype">dtype</a></li>
   <li><a href="#is_shared" id="toc-is_shared" class="nav-link" data-scroll-target="#is_shared">is_shared</a></li>
   <li><a href="#mem_adress" id="toc-mem_adress" class="nav-link" data-scroll-target="#mem_adress">mem_adress</a></li>
+  <li><a href="#is_standard_layout" id="toc-is_standard_layout" class="nav-link" data-scroll-target="#is_standard_layout">is_standard_layout</a></li>
   <li><a href="#invalidate" id="toc-invalidate" class="nav-link" data-scroll-target="#invalidate">invalidate</a></li>
   </ul></li>
   </ul>
@@ -460,7 +461,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="returns-5" class="level4">
 <h4 class="anchored" data-anchor-id="returns-5">Returns</h4>
-<p>A <code>bool</code>.</p>
+<p>A bool.</p>
 </section>
 <section id="examples-6" class="level4">
 <h4 class="anchored" data-anchor-id="examples-6">Examples</h4>
@@ -495,7 +496,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="returns-6" class="level4">
 <h4 class="anchored" data-anchor-id="returns-6">Returns</h4>
-<p>A <code>bool</code>.</p>
+<p>A bool.</p>
 </section>
 <section id="examples-7" class="level4">
 <h4 class="anchored" data-anchor-id="examples-7">Examples</h4>
@@ -581,7 +582,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Since <code>HArray</code> has a COW (<a href="https://doc.rust-lang.org/std/borrow/enum.Cow.html">clone-on-write</a>) behaviour, this function is useful to check if a new object will be created or if the change will be done in-place.</p>
 <section id="returns-10" class="level4">
 <h4 class="anchored" data-anchor-id="returns-10">Returns</h4>
-<p>A <code>bool</code>.</p>
+<p>A bool.</p>
 </section>
 <section id="examples-11" class="level4">
 <h4 class="anchored" data-anchor-id="examples-11">Examples</h4>
@@ -604,7 +605,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>This is useful to check if different objects share the same underlying data.</p>
 <section id="returns-11" class="level4">
 <h4 class="anchored" data-anchor-id="returns-11">Returns</h4>
-<p>A <code>string</code>.</p>
+<p>A string.</p>
 </section>
 <section id="examples-12" class="level4">
 <h4 class="anchored" data-anchor-id="examples-12">Examples</h4>
@@ -616,18 +617,41 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <hr>
 </section>
 </section>
-<section id="invalidate" class="level2">
-<h2 class="anchored" data-anchor-id="invalidate">invalidate</h2>
-<p><code>invalidate()</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L551">source</a> </span><br>
+<section id="is_standard_layout" class="level2">
+<h2 class="anchored" data-anchor-id="is_standard_layout">is_standard_layout</h2>
+<p><code>is_standard_layout() -&gt; bool</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L560">source</a> </span><br>
 </p>
-<p>Replaces the inner value of the external pointer, invalidating it. This function is useful to remove one of the shared references of the inner pointer in rust.</p>
+<p>Returns true if the array data is laid out in contiguous “C order” in memory (where the last index is the most rapidly varying).</p>
+<p>Returns false otherwise, i.e.&nbsp;the array is possibly not contiguous in memory, it has custom strides, etc.</p>
+<p>This function is useful mainly to check if an <code>HArray</code> is contiguous after some operation as, for example, <code>slice()</code>.</p>
+<section id="returns-12" class="level4">
+<h4 class="anchored" data-anchor-id="returns-12">Returns</h4>
+<p>A bool.</p>
+</section>
 <section id="examples-13" class="level4">
 <h4 class="anchored" data-anchor-id="examples-13">Examples</h4>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>arr <span class="ot">=</span> <span class="fu">array</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>,<span class="dv">9</span>,<span class="dv">10</span>,<span class="dv">11</span>,<span class="dv">12</span>), <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">4</span>))</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>dtype <span class="ot">=</span> HDataType<span class="sc">$</span>Float32</span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>harray <span class="ot">=</span> HArray<span class="sc">$</span><span class="fu">new_from_values</span>(arr, dtype)</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>harray<span class="sc">$</span><span class="fu">invalidate</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>harray<span class="sc">$</span><span class="fu">is_standard_layout</span>() <span class="co"># TRUE, contiguous data</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>sliced_harray <span class="ot">=</span> harray<span class="sc">$</span><span class="fu">slice</span>(<span class="fu">list</span>(<span class="fu">c</span>(<span class="dv">0</span>L, <span class="dv">2</span>L, <span class="dv">1</span>L), <span class="fu">c</span>(<span class="dv">1</span>L, <span class="dv">3</span>L, <span class="dv">1</span>L)))</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>sliced_harray<span class="sc">$</span><span class="fu">is_standard_layout</span>() <span class="co"># FALSE, non contiguous data</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+</section>
+</section>
+<section id="invalidate" class="level2">
+<h2 class="anchored" data-anchor-id="invalidate">invalidate</h2>
+<p><code>invalidate()</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L584">source</a> </span><br>
+</p>
+<p>Replaces the inner value of the external pointer, invalidating it. This function is useful to remove one of the shared references of the inner pointer in rust.</p>
+<section id="examples-14" class="level4">
+<h4 class="anchored" data-anchor-id="examples-14">Examples</h4>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>arr <span class="ot">=</span> <span class="fu">array</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>,<span class="dv">9</span>,<span class="dv">10</span>,<span class="dv">11</span>,<span class="dv">12</span>), <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">4</span>))</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>dtype <span class="ot">=</span> HDataType<span class="sc">$</span>Float32</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>harray <span class="ot">=</span> HArray<span class="sc">$</span><span class="fu">new_from_values</span>(arr, dtype)</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>harray<span class="sc">$</span><span class="fu">invalidate</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 
 
