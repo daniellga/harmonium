@@ -14,6 +14,7 @@ SEXP savvy_HArray_collect__ffi(SEXP self__);
 SEXP savvy_HArray_dtype__ffi(SEXP self__);
 SEXP savvy_HArray_is_shared__ffi(SEXP self__);
 SEXP savvy_HArray_mem_adress__ffi(SEXP self__);
+SEXP savvy_HArray_is_standard_layout__ffi(SEXP self__);
 SEXP savvy_HArray_invalidate__ffi(SEXP self__);
 
 // methods and associated functions for HAudioOp

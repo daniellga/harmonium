@@ -100,6 +100,12 @@ HArray_mem_adress <- function(self) {
   }
 }
 
+HArray_is_standard_layout <- function(self) {
+  function() {
+  .Call(savvy_HArray_is_standard_layout__impl, self)
+  }
+}
+
 HArray_invalidate <- function(self) {
   function() {
   invisible(.Call(savvy_HArray_invalidate__impl, self))
@@ -121,6 +127,7 @@ HArray_invalidate <- function(self) {
   e$dtype <- HArray_dtype(ptr)
   e$is_shared <- HArray_is_shared(ptr)
   e$mem_adress <- HArray_mem_adress(ptr)
+  e$is_standard_layout <- HArray_is_standard_layout(ptr)
   e$invalidate <- HArray_invalidate(ptr)
   
   class(e) <- "HArray"
@@ -129,7 +136,7 @@ HArray_invalidate <- function(self) {
 
 
 #' HArray
-#' An array representation. \
+#' An array representation.
 #'
 #' # Methods
 #'
@@ -157,7 +164,7 @@ HArray$new_from_values <- function(arr, dtype) {
 
 
 #' HAudioOp
-#' A collection of methods that can be applied to float 1D or 2D `HArray`s which represents audio data. \
+#' A collection of methods that can be applied to float 1D or 2D `HArray`s which represents audio data.
 #'
 #' # Methods
 #'
@@ -311,7 +318,7 @@ HAudioSink_volume <- function(self) {
 
 
 #' HAudioSink
-#' Handle to a device that outputs sounds. \
+#' Handle to a device that outputs sounds.
 #'
 #' # Methods
 #'
@@ -371,8 +378,9 @@ HDataType_ne <- function(self) {
 
 
 #' HDataType
-#' A type representation. \
-#' Supports `Float32`, `Float64`, `Complex32` and `Complex64` types. \
+#' A type representation.
+#'
+#' Supports `Float32`, `Float64`, `Complex32` and `Complex64` types.
 #'
 #' # Methods
 #'
@@ -459,7 +467,7 @@ HDecoderStream_stream <- function(self) {
 
 
 #' HDecoderStream
-#' An iterator that decodes audio in streams. \
+#' An iterator that decodes audio in streams.
 #'
 #' # Methods
 #'
@@ -511,7 +519,7 @@ HFftPlanner_print <- function(self) {
 
 
 #' HFftPlanner
-#' A planner is used to create FFTs. It caches results internally, so when making more than one FFT it is advisable to reuse the same planner. \
+#' A planner is used to create FFTs. It caches results internally, so when making more than one FFT it is advisable to reuse the same planner.
 #'
 #' # Methods
 #'
@@ -539,7 +547,7 @@ HFftPlanner$new <- function(dtype) {
 
 
 #' HFile
-#' A collection of methods designed to streamline input and output operations. \
+#' A collection of methods designed to streamline input and output operations.
 #'
 #' # Methods
 #'
@@ -606,8 +614,9 @@ HInterpolationType_ne <- function(self) {
 
 
 #' HInterpolationType
-#' A interpolation type representation. \
-#' Supports `Cubic`, `Linear`, `Quadratic` and `Nearest`. \
+#' A interpolation type representation.
+#'
+#' Supports `Cubic`, `Linear`, `Quadratic` and `Nearest` types.
 #'
 #' # Methods
 #'
@@ -667,8 +676,9 @@ HMetadataType_ne <- function(self) {
 
 
 #' HMetadataType
-#' A metadata type representation. \
-#' Supports `All`, `Text` and `Visual` types. \
+#' A metadata type representation.
+#'
+#' Supports `All`, `Text` and `Visual` types.
 #'
 #' # Methods
 #'
@@ -727,22 +737,27 @@ HPolynomialDegree_ne <- function(self) {
 
 
 #' HPolynomialDegree
-#' Degree of the polynomial used for interpolation. A higher degree gives a higher quality result, while taking longer to compute. \
+#' Degree of the polynomial used for interpolation. A higher degree gives a higher quality result, while taking longer to compute.
 #'
-#' * `Septic` \
-#' Septic polynomial, fitted using 8 sample points. \
+#' - `Septic`
 #'
-#' * `Quintic`. \
-#' Quintic polynomial, fitted using 6 sample points. \
+#' Septic polynomial, fitted using 8 sample points.
 #'
-#' * `Cubic`. \
-#' Cubic polynomial, fitted using 4 sample points. \
+#' - `Quintic`.
 #'
-#' * `Linear`. \
-#' Linear polynomial, fitted using 2 sample points. \
+#' Quintic polynomial, fitted using 6 sample points.
 #'
-#' * `Nearest`. \
-#' Nearest, uses the nearest sample point without any fitting. \
+#' - `Cubic`.
+#'
+#' Cubic polynomial, fitted using 4 sample points.
+#'
+#' - `Linear`.
+#'
+#' Linear polynomial, fitted using 2 sample points.
+#'
+#' - `Nearest`.
+#'
+#' Nearest, uses the nearest sample point without any fitting.
 #'
 #' # Methods
 #'
@@ -810,8 +825,9 @@ HRealFftPlanner_print <- function(self) {
 
 
 #' HRealFftPlanner
-#' A planner is used to create FFTs. It caches results internally, so when making more than one FFT it is advisable to reuse the same planner. \
-#' This planner is used to calculate FFTs of real valued inputs and its inverse operation. \
+#' A planner is used to create FFTs. It caches results internally, so when making more than one FFT it is advisable to reuse the same planner.
+#'
+#' This planner is used to calculate FFTs of real valued inputs and its inverse operation.
 #'
 #' # Methods
 #'
@@ -887,32 +903,34 @@ HResampler_print <- function(self) {
 
 
 #' HResampler
-#' A resampler. \
+#' A resampler.
 #'
 #' #### Asynchronous Resamplers
 #'
-#' The resampling is based on band-limited interpolation using sinc interpolation filters. The sinc interpolation upsamples by an adjustable factor, \
-#' and then the new sample points are calculated by interpolating between these points. \
-#' The resampling ratio can be updated at any time. \
+#' The resampling is based on band-limited interpolation using sinc interpolation filters. The sinc interpolation upsamples by an adjustable factor,
+#' and then the new sample points are calculated by interpolating between these points.
 #'
-#' * `SincFixedIn` \
+#' The resampling ratio can be updated at any time.
 #'
-#' * `SincFixedOut` \
+#' - `SincFixedIn`
 #'
-#' * `FastFixedIn` \
+#' - `SincFixedOut`
 #'
-#' * `FastFixedOut` \
+#' - `FastFixedIn`
+#'
+#' - `FastFixedOut`
 #'
 #' #### Synchronous Resamplers
 #'
-#' Is implemented via FFT. The data is FFTed, the spectrum modified, and then inverse FFTed to get the resampled data. \
-#' This type of resampler is considerably faster but doesn’t support changing the resampling ratio. \
+#' Is implemented via FFT. The data is FFTed, the spectrum modified, and then inverse FFTed to get the resampled data.
 #'
-#' * `FftFixedIn` \
+#' This type of resampler is considerably faster but doesn’t support changing the resampling ratio.
 #'
-#' * `FftFixedInOut` \
+#' - `FftFixedIn`
 #'
-#' * `FftFixedOut` \
+#' - `FftFixedInOut`
+#'
+#' - `FftFixedOut`
 #'
 #' # Methods
 #'
@@ -976,9 +994,10 @@ HResamplerType_ne <- function(self) {
 
 
 #' HResamplerType
-#' A resampler type representation. \
+#' A resampler type representation.
+#'
 #' Supports `FftFixedIn`, `FftFixedInOut`, `FftFixedOut`, `SincFixedIn`, `SincFixedOut`,
-#' `FastFixedIn` and `FastFixedOut` types. \
+#' `FastFixedIn` and `FastFixedOut` types.
 #'
 #' # Methods
 #'
@@ -1025,7 +1044,7 @@ HSincInterpolationParameters_print <- function(self) {
 
 
 #' HSincInterpolationParameters
-#' Parameters to be used for sinc interpolation. \
+#' Parameters to be used for sinc interpolation.
 #'
 #' # Methods
 #'
@@ -1134,8 +1153,9 @@ HWindowType_ne <- function(self) {
 
 
 #' HWindowType
-#' A window type representation. \
-#' Supports `Blackman`, `Blackman2`, `BlackmanHarris`, `BlackmanHarris2`, `Hann` and `Hann2` types. \
+#' A window type representation.
+#'
+#' Supports `Blackman`, `Blackman2`, `BlackmanHarris`, `BlackmanHarris2`, `Hann` and `Hann2` types.
 #'
 #' # Methods
 #'

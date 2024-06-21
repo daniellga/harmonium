@@ -100,6 +100,11 @@ SEXP savvy_HArray_mem_adress__impl(SEXP self__) {
     return handle_result(res);
 }
 
+SEXP savvy_HArray_is_standard_layout__impl(SEXP self__) {
+    SEXP res = savvy_HArray_is_standard_layout__ffi(self__);
+    return handle_result(res);
+}
+
 SEXP savvy_HArray_invalidate__impl(SEXP self__) {
     SEXP res = savvy_HArray_invalidate__ffi(self__);
     return handle_result(res);
@@ -526,6 +531,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"savvy_HArray_dtype__impl", (DL_FUNC) &savvy_HArray_dtype__impl, 1},
     {"savvy_HArray_is_shared__impl", (DL_FUNC) &savvy_HArray_is_shared__impl, 1},
     {"savvy_HArray_mem_adress__impl", (DL_FUNC) &savvy_HArray_mem_adress__impl, 1},
+    {"savvy_HArray_is_standard_layout__impl", (DL_FUNC) &savvy_HArray_is_standard_layout__impl, 1},
     {"savvy_HArray_invalidate__impl", (DL_FUNC) &savvy_HArray_invalidate__impl, 1},
     {"savvy_HAudioOp_nchannels__impl", (DL_FUNC) &savvy_HAudioOp_nchannels__impl, 1},
     {"savvy_HAudioOp_nframes__impl", (DL_FUNC) &savvy_HAudioOp_nframes__impl, 1},

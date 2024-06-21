@@ -307,7 +307,7 @@ impl HArray {
     ///
     /// #### Returns
     ///
-    /// A `bool`.
+    /// A bool.
     ///
     /// #### Examples
     ///
@@ -353,7 +353,7 @@ impl HArray {
     ///
     /// #### Returns
     ///
-    /// A `bool`.
+    /// A bool.
     ///
     /// #### Examples
     ///
@@ -475,7 +475,7 @@ impl HArray {
     ///
     /// #### Returns
     ///
-    /// A `bool`.
+    /// A bool.
     ///
     /// #### Examples
     ///
@@ -509,7 +509,7 @@ impl HArray {
     ///
     /// #### Returns
     ///
-    /// A `string`.
+    /// A string.
     ///
     /// #### Examples
     ///
@@ -526,6 +526,39 @@ impl HArray {
     pub fn mem_adress(&self) -> savvy::Result<Sexp> {
         let string_sexp: OwnedStringSexp = self.0.mem_adress().try_into()?;
         string_sexp.into()
+    }
+
+    /// HArray
+    /// ## is_standard_layout
+    ///
+    /// `is_standard_layout() -> bool`
+    ///
+    /// Returns true if the array data is laid out in contiguous “C order” in memory (where the last index is the most rapidly varying).
+    ///
+    /// Returns false otherwise, i.e. the array is possibly not contiguous in memory, it has custom strides, etc.
+    ///
+    /// This function is useful mainly to check if an `HArray` is contiguous after some operation as, for example, `slice()`.
+    ///
+    /// #### Returns
+    ///
+    /// A bool.
+    ///
+    /// #### Examples
+    ///
+    /// ```r
+    /// library(harmonium)
+    /// arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
+    /// dtype = HDataType$Float32
+    /// harray = HArray$new_from_values(arr, dtype)
+    /// harray$is_standard_layout() # TRUE, contiguous data
+    /// sliced_harray = harray$slice(list(c(0L, 2L, 1L), c(1L, 3L, 1L)))
+    /// sliced_harray$is_standard_layout() # FALSE, non contiguous data
+    /// ```
+    ///
+    /// _________
+    ///
+    pub fn is_standard_layout(&self) -> savvy::Result<Sexp> {
+        self.0.is_standard_layout()
     }
 
     /// HArray

@@ -2,7 +2,7 @@ use crate::{errors::HErrorR, hdatatype::HDataType};
 use harmonium_core::audioop::AudioOp;
 use ndarray::{IxDyn, SliceInfo, SliceInfoElem};
 use num_complex::Complex;
-use savvy::{r_println, OwnedComplexSexp, OwnedIntegerSexp, OwnedRealSexp, Sexp};
+use savvy::{r_println, OwnedComplexSexp, OwnedIntegerSexp, OwnedLogicalSexp, OwnedRealSexp, Sexp};
 use std::{any::Any, sync::Arc};
 
 pub trait HArrayR: Send + Sync {
@@ -16,6 +16,7 @@ pub trait HArrayR: Send + Sync {
     fn collect(&self) -> savvy::Result<Sexp>;
     fn dtype(&self) -> HDataType;
     fn mem_adress(&self) -> String;
+    fn is_standard_layout(&self) -> savvy::Result<Sexp>;
     fn clone_inner(&self) -> Arc<dyn HArrayR>;
     fn nchannels(&self) -> savvy::Result<usize>;
     fn nframes(&self) -> savvy::Result<usize>;
@@ -81,6 +82,12 @@ impl HArrayR for harmonium_core::array::HArray<f32, IxDyn> {
     fn mem_adress(&self) -> String {
         let s = format!("{:p}", self.0.as_ptr());
         s.to_string()
+    }
+
+    fn is_standard_layout(&self) -> savvy::Result<Sexp> {
+        let is_standard_layout = self.0.is_standard_layout();
+        let logical_sexp: OwnedLogicalSexp = is_standard_layout.try_into()?;
+        logical_sexp.into()
     }
 
     fn clone_inner(&self) -> Arc<dyn HArrayR> {
@@ -165,6 +172,12 @@ impl HArrayR for harmonium_core::array::HArray<f64, IxDyn> {
         s.to_string()
     }
 
+    fn is_standard_layout(&self) -> savvy::Result<Sexp> {
+        let is_standard_layout = self.0.is_standard_layout();
+        let logical_sexp: OwnedLogicalSexp = is_standard_layout.try_into()?;
+        logical_sexp.into()
+    }
+
     fn clone_inner(&self) -> Arc<dyn HArrayR> {
         Arc::new(self.clone())
     }
@@ -247,6 +260,12 @@ impl HArrayR for harmonium_core::array::HArray<Complex<f32>, IxDyn> {
         s.to_string()
     }
 
+    fn is_standard_layout(&self) -> savvy::Result<Sexp> {
+        let is_standard_layout = self.0.is_standard_layout();
+        let logical_sexp: OwnedLogicalSexp = is_standard_layout.try_into()?;
+        logical_sexp.into()
+    }
+
     fn clone_inner(&self) -> Arc<dyn HArrayR> {
         Arc::new(self.clone())
     }
@@ -325,6 +344,12 @@ impl HArrayR for harmonium_core::array::HArray<Complex<f64>, IxDyn> {
     fn mem_adress(&self) -> String {
         let s = format!("{:p}", self.0.as_ptr());
         s.to_string()
+    }
+
+    fn is_standard_layout(&self) -> savvy::Result<Sexp> {
+        let is_standard_layout = self.0.is_standard_layout();
+        let logical_sexp: OwnedLogicalSexp = is_standard_layout.try_into()?;
+        logical_sexp.into()
     }
 
     fn clone_inner(&self) -> Arc<dyn HArrayR> {
