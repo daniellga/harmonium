@@ -21,7 +21,10 @@ print(harray)
 
 Or decode from an existing audio file.
 ```r
-decoded_audio = HFile$decode("file.wav", dtype)
+harmonium_path = system.file(package = "harmonium")
+filepath = file.path(harmonium_path, "testfiles", "gs-16b-2c-44100hz.flac")
+dtype = HDataType$Float64
+decoded_audio = HFile$decode(filepath, dtype)
 harray = decoded_audio$harray()
 sr = decoded_audio$sr() # sampling rate
 print(harray)
@@ -68,8 +71,10 @@ hresampler$process(harray)
 
 Play the haudio.
 ```r
+harmonium_path = system.file(package = "harmonium")
+filepath = file.path(harmonium_path, "testfiles", "gs-16b-2c-44100hz.flac")
 dtype = HDataType$Float32
-decoded_audio = HFile$decode("file.wav", dtype)
+decoded_audio = HFile$decode(filepath, dtype)
 harray = decoded_audio$harray()
 sr = decoded_audio$sr() # sampling rate
 haudiosink = HAudioSink$new()
@@ -78,8 +83,10 @@ haudiosink$append_from_harray(harray, sr)
 
 Or play directly from the file.
 ```r
+harmonium_path = system.file(package = "harmonium")
+filepath = file.path(harmonium_path, "testfiles", "gs-16b-2c-44100hz.flac")
 haudiosink = HAudioSink$new()
-haudiosink$append_from_file("file.wav")
+haudiosink$append_from_file(filepath)
 ```
 
 Get the number of audios to be played.
@@ -101,13 +108,17 @@ haudiosink$is_paused()
 
 It is also possible to get metadata from an audio file.
 ```r
+harmonium_path = system.file(package = "harmonium")
+filepath = file.path(harmonium_path, "testfiles", "gs-16b-2c-44100hz.flac")
 metatadatype = HMetadataType$Text
-HFile$metadata("file.wav", metatadatype)
+HFile$metadata(filepath, metatadatype)
 ```
 
 And to get some audio parameters directly from a file.
 ```r
-params = HFile$params("file.wav")
+harmonium_path = system.file(package = "harmonium")
+filepath = file.path(harmonium_path, "testfiles", "gs-16b-2c-44100hz.flac")
+params = HFile$params(filepath)
 sr = params[[1]]
 nframes = params[[2]]
 nchannels = params[[3]]
