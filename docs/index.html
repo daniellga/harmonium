@@ -295,53 +295,64 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </p>
 <section id="basic-usage" class="level1">
 <h1>Basic usage</h1>
-<p>Load the library</p>
+<p>Load the library.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Create an <code>HArray</code> from an existing array</p>
+<p>Create an <code>HArray</code> from an existing array.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>arr <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>,<span class="dv">9</span>,<span class="dv">10</span>,<span class="dv">11</span>,<span class="dv">12</span>), <span class="at">ncol =</span> <span class="dv">2</span>)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>dtype <span class="ot">=</span> HDataType<span class="sc">$</span>float64</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>harray <span class="ot">=</span> HArray<span class="sc">$</span><span class="fu">new_from_values</span>(arr, <span class="at">dtype =</span> dtype)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>dtype <span class="ot">=</span> HDataType<span class="sc">$</span>Float64</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>harray <span class="ot">=</span> HArray<span class="sc">$</span><span class="fu">new_from_values</span>(arr, dtype)</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(harray)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Or decode from an existing audio file</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>l <span class="ot">=</span> HFile<span class="sc">$</span><span class="fu">decode</span>(<span class="st">"file.wav"</span>, dtype)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>harray <span class="ot">=</span> l[[<span class="dv">0</span>]]</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>sr <span class="ot">=</span> l[[<span class="dv">1</span>]] <span class="co"># sampling rate</span></span>
+<p>Or decode from an existing audio file.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>decoded_audio <span class="ot">=</span> HFile<span class="sc">$</span><span class="fu">decode</span>(<span class="st">"file.wav"</span>, dtype)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>harray <span class="ot">=</span> decoded_audio<span class="sc">$</span><span class="fu">harray</span>()</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>sr <span class="ot">=</span> decoded_audio<span class="sc">$</span><span class="fu">sr</span>() <span class="co"># sampling rate</span></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(harray)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Verify the dimensions</p>
+<p>Verify the dimensions.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>harray<span class="sc">$</span><span class="fu">len</span>()</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>HAudioOp<span class="sc">$</span><span class="fu">nchannels</span>(harray)</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>HAudioOp<span class="sc">$</span><span class="fu">nframes</span>(harray)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Verify the data type</p>
+<p>Verify the data type.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>harray<span class="sc">$</span><span class="fu">dtype</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Convert to an R array</p>
+<p>Convert to an R array.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>harray<span class="sc">$</span><span class="fu">collect</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Convert to mono</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>HAudioOp<span class="sc">$</span><span class="fu">to_mono</span>(harray)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Resample the haudio</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>sr_in <span class="ot">=</span> <span class="dv">48000</span>L</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>sr_out <span class="ot">=</span> <span class="dv">22050</span>L</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>nbr_channels <span class="ot">=</span> HAudioOp<span class="sc">$</span><span class="fu">nchannels</span>(harray)</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>dtype <span class="ot">=</span> HDataType<span class="sc">$</span>float64</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>res_type <span class="ot">=</span> HResamplerType<span class="sc">$</span>fft_fixed_in</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>resampler <span class="ot">=</span> HResampler<span class="sc">$</span><span class="fu">new_fft</span>(sr_in, sr_out, nbr_channels, res_type)</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>hresampler<span class="sc">$</span><span class="fu">process</span>(harray)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Play the haudio</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>haudiosink <span class="ot">=</span> HAudioSink<span class="sc">$</span><span class="fu">new</span>()</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">append_from_harray</span>(harray)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Or play directly from the file</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">append_from_file</span>(<span class="st">"file.wav"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Get the number of audios to be played</p>
+<p>Convert to mono.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>HAudioOp<span class="sc">$</span><span class="fu">to_mono</span>(harray)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(harray)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Resample the haudio.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>arr <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">as.double</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">8192</span>), <span class="at">ncol =</span> <span class="dv">2</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>dtype <span class="ot">=</span> HDataType<span class="sc">$</span>Float64</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>harray <span class="ot">=</span> HArray<span class="sc">$</span><span class="fu">new_from_values</span>(arr, dtype)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>sr_in <span class="ot">=</span> <span class="dv">48000</span>L</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>sr_out <span class="ot">=</span> <span class="dv">44100</span>L</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>chunk_size <span class="ot">=</span> <span class="dv">1024</span>L</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>sub_chunks <span class="ot">=</span> <span class="dv">2</span>L</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>nbr_channels <span class="ot">=</span> <span class="dv">2</span>L</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>res_type <span class="ot">=</span> HResamplerType<span class="sc">$</span>FftFixedIn</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>dtype <span class="ot">=</span> HDataType<span class="sc">$</span>Float64</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>hresampler <span class="ot">=</span> HResampler<span class="sc">$</span><span class="fu">new_fft</span>(sr_in, sr_out, chunk_size, sub_chunks, nbr_channels, res_type, dtype)</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>hresampler<span class="sc">$</span><span class="fu">process</span>(harray)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Play the haudio.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>dtype <span class="ot">=</span> HDataType<span class="sc">$</span>Float32</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>decoded_audio <span class="ot">=</span> HFile<span class="sc">$</span><span class="fu">decode</span>(<span class="st">"file.wav"</span>, dtype)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>harray <span class="ot">=</span> decoded_audio<span class="sc">$</span><span class="fu">harray</span>()</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>sr <span class="ot">=</span> decoded_audio<span class="sc">$</span><span class="fu">sr</span>() <span class="co"># sampling rate</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>haudiosink <span class="ot">=</span> HAudioSink<span class="sc">$</span><span class="fu">new</span>()</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">append_from_harray</span>(harray, sr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Or play directly from the file.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>haudiosink <span class="ot">=</span> HAudioSink<span class="sc">$</span><span class="fu">new</span>()</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">append_from_file</span>(<span class="st">"file.wav"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Get the number of audios to be played.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">len</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Double the audio volume and the playback speed</p>
+<p>Double the audio volume and the playback speed.</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">set_volume</span>(<span class="dv">2</span>)</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">set_speed</span>(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Pause the playback and confirms it is paused</p>
+<p>Pause the playback and confirms it is paused.</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">pause</span>()</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">is_paused</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>It is also possible to get metadata from an audio file</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>metatadatype <span class="ot">=</span> HMetadataType<span class="sc">$</span>text</span>
+<p>It is also possible to get metadata from an audio file.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>metatadatype <span class="ot">=</span> HMetadataType<span class="sc">$</span>Text</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>HFile<span class="sc">$</span><span class="fu">metadata</span>(<span class="st">"file.wav"</span>, metatadatype)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>And to get some audio parameters directly from a file</p>
+<p>And to get some audio parameters directly from a file.</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>params <span class="ot">=</span> HFile<span class="sc">$</span><span class="fu">params</span>(<span class="st">"file.wav"</span>)</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>sr <span class="ot">=</span> params[[<span class="dv">1</span>]]</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>nframes <span class="ot">=</span> params[[<span class="dv">2</span>]]</span>
