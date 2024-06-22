@@ -1,5 +1,5 @@
 use crate::{
-    conversions::AsScalar, hinterpolationtype::HInterpolationType, hwindowtype::HWindowType,
+    conversions::ToScalar, hinterpolationtype::HInterpolationType, hwindowtype::HWindowType,
 };
 use rubato::{SincInterpolationParameters, SincInterpolationType, WindowFunction};
 use savvy::{r_println, savvy, Sexp};
@@ -80,9 +80,9 @@ impl HSincInterpolationParameters {
         interpolation: &HInterpolationType,
         window: &HWindowType,
     ) -> savvy::Result<HSincInterpolationParameters> {
-        let sinc_len: i32 = sinc_len.as_scalar()?;
-        let f_cutoff: f64 = f_cutoff.as_scalar()?;
-        let oversampling_factor: i32 = oversampling_factor.as_scalar()?;
+        let sinc_len: i32 = sinc_len.to_scalar()?;
+        let f_cutoff: f64 = f_cutoff.to_scalar()?;
+        let oversampling_factor: i32 = oversampling_factor.to_scalar()?;
         let interpolation = interpolation.clone();
         let window = window.clone();
 

@@ -1,11 +1,11 @@
 use savvy::{OwnedIntegerSexp, Sexp, TypedSexp};
 
-pub(crate) trait AsScalar<T> {
-    fn as_scalar(self) -> savvy::Result<T>;
+pub(crate) trait ToScalar<T> {
+    fn to_scalar(self) -> savvy::Result<T>;
 }
 
-impl AsScalar<&'static str> for Sexp {
-    fn as_scalar(self) -> savvy::Result<&'static str> {
+impl ToScalar<&'static str> for Sexp {
+    fn to_scalar(self) -> savvy::Result<&'static str> {
         match self.into_typed() {
             TypedSexp::String(string_sexp) if string_sexp.len() == 1 => unsafe {
                 Ok(string_sexp
@@ -22,8 +22,8 @@ impl AsScalar<&'static str> for Sexp {
     }
 }
 
-impl AsScalar<i32> for Sexp {
-    fn as_scalar(self) -> savvy::Result<i32> {
+impl ToScalar<i32> for Sexp {
+    fn to_scalar(self) -> savvy::Result<i32> {
         match self.into_typed() {
             TypedSexp::Integer(integer_sexp) if integer_sexp.len() == 1 => {
                 Ok(integer_sexp.as_slice()[0])
@@ -36,8 +36,8 @@ impl AsScalar<i32> for Sexp {
     }
 }
 
-impl AsScalar<f64> for Sexp {
-    fn as_scalar(self) -> savvy::Result<f64> {
+impl ToScalar<f64> for Sexp {
+    fn to_scalar(self) -> savvy::Result<f64> {
         match self.into_typed() {
             TypedSexp::Real(real_sexp) if real_sexp.len() == 1 => Ok(real_sexp.as_slice()[0]),
             _ => {
@@ -48,8 +48,8 @@ impl AsScalar<f64> for Sexp {
     }
 }
 
-impl AsScalar<bool> for Sexp {
-    fn as_scalar(self) -> savvy::Result<bool> {
+impl ToScalar<bool> for Sexp {
+    fn to_scalar(self) -> savvy::Result<bool> {
         match self.into_typed() {
             TypedSexp::Logical(logical_sexp) if logical_sexp.len() == 1 => {
                 Ok(logical_sexp.as_slice_raw()[0] == 1)

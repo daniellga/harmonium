@@ -52,24 +52,24 @@ test_that(
     }
 
     check_rfft_1d = function() {
-        x = as.array(as.double(1:6))
-	dtype = HDataType$Float64
-        harray = HArray$new_from_values(x, dtype)
-	real_fft_planner = HRealFftPlanner$new(dtype)
-        real_fft_planner$rfft(harray)
-        result = as.array(c(21+0i, -3+5.196152i, -3+1.732051i, -3+0i))
-        expect_equal(harray$collect(), result, tolerance = 1.0e-06)
+      x = as.array(as.double(1:6))
+      dtype = HDataType$Float64
+      harray = HArray$new_from_values(x, dtype)
+      real_fft_planner = HRealFftPlanner$new(dtype)
+      real_fft_planner$rfft(harray)
+      result = as.array(c(21+0i, -3+5.196152i, -3+1.732051i, -3+0i))
+      expect_equal(harray$collect(), result, tolerance = 1.0e-06)
     }
 
     check_rfft_2d = function() {
-        x = as.double(1:12)
-    	x = matrix(x, ncol = 3)
-	dtype = HDataType$Float64
-        harray = HArray$new_from_values(x, dtype)
-	real_fft_planner = HRealFftPlanner$new(dtype)
-        real_fft_planner$rfft(harray)
-        result = matrix(c(10+0i, -2+2i, -2+0i, 26+0i, -2+2i, -2+0i, 42+0i, -2+2i, -2+0i), ncol = 3)
-        expect_equal(harray$collect(), result, tolerance = 1.0e-06)
+      x = as.double(1:12)
+      x = matrix(x, ncol = 3)
+      dtype = HDataType$Float64
+      harray = HArray$new_from_values(x, dtype)
+      real_fft_planner = HRealFftPlanner$new(dtype)
+      real_fft_planner$rfft(harray)
+      result = matrix(c(10+0i, -2+2i, -2+0i, 26+0i, -2+2i, -2+0i, 42+0i, -2+2i, -2+0i), ncol = 3)
+      expect_equal(harray$collect(), result, tolerance = 1.0e-06)
     }
 
     check_fft_1d()

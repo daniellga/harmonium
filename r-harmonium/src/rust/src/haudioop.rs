@@ -1,5 +1,5 @@
 use crate::{
-    conversions::{try_from_usize_to_int_sexp, AsScalar},
+    conversions::{try_from_usize_to_int_sexp, ToScalar},
     harray::HArray,
 };
 use savvy::{savvy, Sexp};
@@ -117,8 +117,8 @@ impl HAudioOp {
     ///
     fn db_to_amplitude(harray: &mut HArray, reference: Sexp, power: Sexp) -> savvy::Result<()> {
         let inner_mut = harray.get_inner_mut();
-        let reference: f64 = reference.as_scalar()?;
-        let power: f64 = power.as_scalar()?;
+        let reference: f64 = reference.to_scalar()?;
+        let power: f64 = power.to_scalar()?;
         inner_mut.db_to_amplitude(reference, power)
     }
 

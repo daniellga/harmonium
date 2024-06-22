@@ -6,95 +6,106 @@ Harmonium is an audio interface inspired by Python's [librosa](https://github.co
 
 # Basic usage
 
-Load the library
+Load the library.
 ```r
 library(harmonium)
 ```
 
-Create an `HArray` from an existing array
+Create an `HArray` from an existing array.
 ```r
 arr = matrix(c(1,2,3,4,5,6,7,8,9,10,11,12), ncol = 2)
-dtype = HDataType$float64
-harray = HArray$new_from_values(arr, dtype = dtype)
+dtype = HDataType$Float64
+harray = HArray$new_from_values(arr, dtype)
 print(harray)
 ```
 
-Or decode from an existing audio file
+Or decode from an existing audio file.
 ```r
-l = HFile$decode("file.wav", dtype)
-harray = l[[0]]
-sr = l[[1]] # sampling rate
+decoded_audio = HFile$decode("file.wav", dtype)
+harray = decoded_audio$harray()
+sr = decoded_audio$sr() # sampling rate
 print(harray)
 ```
 
-Verify the dimensions
+Verify the dimensions.
 ```r
 harray$len()
 HAudioOp$nchannels(harray)
 HAudioOp$nframes(harray)
 ```
 
-Verify the data type
+Verify the data type.
 ```r
 harray$dtype()
 ```
 
-Convert to an R array
+Convert to an R array.
 ```r
 harray$collect()
 ```
 
-Convert to mono
+Convert to mono.
 ```r
 HAudioOp$to_mono(harray)
+print(harray)
 ```
 
-Resample the haudio
+Resample the haudio.
 ```r
+arr = matrix(as.double(1:8192), ncol = 2)
+dtype = HDataType$Float64
+harray = HArray$new_from_values(arr, dtype)
 sr_in = 48000L
-sr_out = 22050L
-nbr_channels = HAudioOp$nchannels(harray)
-dtype = HDataType$float64
-res_type = HResamplerType$fft_fixed_in
-resampler = HResampler$new_fft(sr_in, sr_out, nbr_channels, res_type)
+sr_out = 44100L
+chunk_size = 1024L
+sub_chunks = 2L
+nbr_channels = 2L
+res_type = HResamplerType$FftFixedIn
+dtype = HDataType$Float64
+hresampler = HResampler$new_fft(sr_in, sr_out, chunk_size, sub_chunks, nbr_channels, res_type, dtype)
 hresampler$process(harray)
 ```
 
-Play the haudio
+Play the haudio.
 ```r
+dtype = HDataType$Float32
+decoded_audio = HFile$decode("file.wav", dtype)
+harray = decoded_audio$harray()
+sr = decoded_audio$sr() # sampling rate
 haudiosink = HAudioSink$new()
-haudiosink$append_from_harray(harray)
+haudiosink$append_from_harray(harray, sr)
 ```
 
-Or play directly from the file
+Or play directly from the file.
 ```r
+haudiosink = HAudioSink$new()
 haudiosink$append_from_file("file.wav")
 ```
 
-Get the number of audios to be played
+Get the number of audios to be played.
 ```r
 haudiosink$len()
 ```
 
-Double the audio volume and the playback speed
+Double the audio volume and the playback speed.
 ```r
 haudiosink$set_volume(2)
 haudiosink$set_speed(2)
 ```
 
-Pause the playback and confirms it is paused
+Pause the playback and confirms it is paused.
 ```r
 haudiosink$pause()
 haudiosink$is_paused()
 ```
 
-It is also possible to get metadata from an audio file
+It is also possible to get metadata from an audio file.
 ```r
-metatadatype = HMetadataType$text
+metatadatype = HMetadataType$Text
 HFile$metadata("file.wav", metatadatype)
 ```
 
-And to get some audio parameters directly from a file
+And to get some audio parameters directly from a file.
 ```r
 params = HFile$params("file.wav")
 sr = params[[1]]

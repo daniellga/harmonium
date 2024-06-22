@@ -1,4 +1,4 @@
-use crate::{conversions::AsScalar, harray::HArray, hdatatype::HDataType};
+use crate::{conversions::ToScalar, harray::HArray, hdatatype::HDataType};
 use harmonium_core::conversions::IntoDynamic;
 use harmonium_window::windows::*;
 use savvy::{savvy, Sexp};
@@ -55,9 +55,9 @@ impl HWindow {
     /// ```
     ///
     fn barthann(npoints: Sexp, sym: Sexp, dtype: &HDataType) -> savvy::Result<HArray> {
-        let npoints: i32 = npoints.as_scalar()?;
+        let npoints: i32 = npoints.to_scalar()?;
         let npoints = npoints.try_into().unwrap();
-        let sym: bool = sym.as_scalar()?;
+        let sym: bool = sym.to_scalar()?;
 
         let window_type = if sym {
             WindowType::Symmetric
@@ -127,10 +127,10 @@ impl HWindow {
     /// ```
     ///
     fn bartlett(npoints: Sexp, sym: Sexp, dtype: &HDataType) -> savvy::Result<HArray> {
-        let npoints: i32 = npoints.as_scalar()?;
+        let npoints: i32 = npoints.to_scalar()?;
         let npoints = npoints.try_into().unwrap();
 
-        let sym: bool = sym.as_scalar()?;
+        let sym: bool = sym.to_scalar()?;
 
         let window_type = if sym {
             WindowType::Symmetric
@@ -216,10 +216,10 @@ impl HWindow {
     /// ```
     ///
     fn blackman(npoints: Sexp, sym: Sexp, dtype: &HDataType) -> savvy::Result<HArray> {
-        let npoints: i32 = npoints.as_scalar()?;
+        let npoints: i32 = npoints.to_scalar()?;
         let npoints = npoints.try_into().unwrap();
 
-        let sym: bool = sym.as_scalar()?;
+        let sym: bool = sym.to_scalar()?;
 
         let window_type = if sym {
             WindowType::Symmetric
@@ -284,10 +284,10 @@ impl HWindow {
     /// ```
     ///
     fn blackmanharris(npoints: Sexp, sym: Sexp, dtype: &HDataType) -> savvy::Result<HArray> {
-        let npoints: i32 = npoints.as_scalar()?;
+        let npoints: i32 = npoints.to_scalar()?;
         let npoints = npoints.try_into().unwrap();
 
-        let sym: bool = sym.as_scalar()?;
+        let sym: bool = sym.to_scalar()?;
 
         let window_type = if sym {
             WindowType::Symmetric
@@ -352,10 +352,10 @@ impl HWindow {
     /// ```
     ///
     fn bohman(npoints: Sexp, sym: Sexp, dtype: &HDataType) -> savvy::Result<HArray> {
-        let npoints: i32 = npoints.as_scalar()?;
+        let npoints: i32 = npoints.to_scalar()?;
         let npoints = npoints.try_into().unwrap();
 
-        let sym: bool = sym.as_scalar()?;
+        let sym: bool = sym.to_scalar()?;
 
         let window_type = if sym {
             WindowType::Symmetric
@@ -411,7 +411,7 @@ impl HWindow {
     /// ```
     ///
     fn boxcar(npoints: Sexp, dtype: &HDataType) -> savvy::Result<HArray> {
-        let npoints: i32 = npoints.as_scalar()?;
+        let npoints: i32 = npoints.to_scalar()?;
         let npoints = npoints.try_into().unwrap();
 
         match dtype {
@@ -471,10 +471,10 @@ impl HWindow {
     /// ```
     ///
     fn cosine(npoints: Sexp, sym: Sexp, dtype: &HDataType) -> savvy::Result<HArray> {
-        let npoints: i32 = npoints.as_scalar()?;
+        let npoints: i32 = npoints.to_scalar()?;
         let npoints = npoints.try_into().unwrap();
 
-        let sym: bool = sym.as_scalar()?;
+        let sym: bool = sym.to_scalar()?;
 
         let window_type = if sym {
             WindowType::Symmetric
@@ -544,10 +544,10 @@ impl HWindow {
     /// ```
     ///
     fn hann(npoints: Sexp, sym: Sexp, dtype: &HDataType) -> savvy::Result<HArray> {
-        let npoints: i32 = npoints.as_scalar()?;
+        let npoints: i32 = npoints.to_scalar()?;
         let npoints = npoints.try_into().unwrap();
 
-        let sym: bool = sym.as_scalar()?;
+        let sym: bool = sym.to_scalar()?;
 
         let window_type = if sym {
             WindowType::Symmetric

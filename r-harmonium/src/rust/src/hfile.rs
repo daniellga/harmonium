@@ -1,5 +1,5 @@
 use crate::{
-    conversions::AsScalar, errors::HErrorR, harray::HArray, hdatatype::HDataType,
+    conversions::ToScalar, errors::HErrorR, harray::HArray, hdatatype::HDataType,
     hmetadatatype::HMetadataType,
 };
 use harmonium_core::conversions::IntoDynamic;
@@ -55,7 +55,6 @@ impl HDecodedAudio {
     /// dtype = HDataType$Float32
     /// hdecodedaudio = HFile$decode(fpath, dtype)
     /// hdecodedaudio$harray()
-    ///
     /// ```
     ///
     /// _________
@@ -82,7 +81,6 @@ impl HDecodedAudio {
     /// dtype = HDataType$Float32
     /// hdecodedaudio = HFile$decode(fpath, dtype)
     /// hdecodedaudio$sr()
-    ///
     /// ```
     ///
     /// _________
@@ -164,7 +162,7 @@ impl HFile {
     /// _________
     ///
     fn decode(fpath: Sexp, dtype: &HDataType) -> savvy::Result<HDecodedAudio> {
-        let fpath: &str = fpath.as_scalar()?;
+        let fpath: &str = fpath.to_scalar()?;
         match dtype {
             HDataType::Float32 => {
                 let (harray, sr) =
@@ -226,8 +224,8 @@ impl HFile {
         frames: Sexp,
         dtype: &HDataType,
     ) -> savvy::Result<HDecoderStream> {
-        let fpath: &str = fpath.as_scalar()?;
-        let frames: i32 = frames.as_scalar()?;
+        let fpath: &str = fpath.to_scalar()?;
+        let frames: i32 = frames.to_scalar()?;
         let frames = usize::try_from(frames)
             .map_err(|_| savvy::Error::new("Cannot convert i32 to usize."))?;
         match dtype {
@@ -364,7 +362,7 @@ impl HFile {
     /// _________
     ///
     fn metadata(fpath: Sexp, metadata_type: &HMetadataType) -> savvy::Result<Sexp> {
-        let fpath: &str = fpath.as_scalar()?;
+        let fpath: &str = fpath.to_scalar()?;
         let metadata_type = match metadata_type {
             HMetadataType::All => decode::HMetadataType::All,
             HMetadataType::Text => decode::HMetadataType::Text,
@@ -439,7 +437,7 @@ impl HFile {
     /// _________
     ///
     fn params(fpath: Sexp) -> savvy::Result<Sexp> {
-        let fpath: &str = fpath.as_scalar()?;
+        let fpath: &str = fpath.to_scalar()?;
         let (sr, nframes, nchannels, duration) =
             decode::get_params_from_file(fpath).map_err(HErrorR::from)?;
         let arr = [sr as f64, nframes as f64, nchannels as f64, duration];
@@ -479,7 +477,7 @@ impl HFile {
     /// _________
     ///
     fn verify(fpath: Sexp) -> savvy::Result<Sexp> {
-        let fpath: &str = fpath.as_scalar()?;
+        let fpath: &str = fpath.to_scalar()?;
         let verified = match decode::verify_file(fpath).map_err(HErrorR::from)? {
             decode::HVerifyDecode::Passed => "passed",
             decode::HVerifyDecode::Failed => "failed",

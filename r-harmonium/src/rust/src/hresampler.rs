@@ -1,5 +1,5 @@
 use crate::{
-    conversions::AsScalar, errors::HErrorR, harray::HArray, hdatatype::HDataType,
+    conversions::ToScalar, errors::HErrorR, harray::HArray, hdatatype::HDataType,
     hpolynomialdegree::HPolynomialDegree, hresamplertype::HResamplerType,
     hsincinterpolationparameters::HSincInterpolationParameters,
 };
@@ -148,26 +148,26 @@ impl HResampler {
         res_type: &HResamplerType,
         dtype: &HDataType,
     ) -> savvy::Result<HResampler> {
-        let sr_in: i32 = sr_in.as_scalar()?;
+        let sr_in: i32 = sr_in.to_scalar()?;
         let sr_in = sr_in
             .try_into()
             .map_err(|_| savvy::Error::new("Cannot convert i32 to usize."))?;
-        let sr_out: i32 = sr_out.as_scalar()?;
+        let sr_out: i32 = sr_out.to_scalar()?;
         let sr_out = sr_out
             .try_into()
             .map_err(|_| savvy::Error::new("Cannot convert i32 to usize."))?;
-        let chunk_size: i32 = chunk_size.as_scalar()?;
+        let chunk_size: i32 = chunk_size.to_scalar()?;
         let chunk_size = chunk_size
             .try_into()
             .map_err(|_| savvy::Error::new("Cannot convert i32 to usize."))?;
-        let nchannels: i32 = nchannels.as_scalar()?;
+        let nchannels: i32 = nchannels.to_scalar()?;
         let nchannels = nchannels
             .try_into()
             .map_err(|_| savvy::Error::new("Cannot convert i32 to usize."))?;
 
         match (res_type, dtype) {
             (HResamplerType::FftFixedIn, HDataType::Float32) => {
-                let sub_chunks: i32 = sub_chunks.as_scalar()?;
+                let sub_chunks: i32 = sub_chunks.to_scalar()?;
                 let sub_chunks = sub_chunks
                     .try_into()
                     .map_err(|_| savvy::Error::new("Cannot convert i32 to usize."))?;
@@ -177,7 +177,7 @@ impl HResampler {
                 Ok(HResampler(Box::new(resampler)))
             }
             (HResamplerType::FftFixedIn, HDataType::Float64) => {
-                let sub_chunks: i32 = sub_chunks.as_scalar()?;
+                let sub_chunks: i32 = sub_chunks.to_scalar()?;
                 let sub_chunks = sub_chunks
                     .try_into()
                     .map_err(|_| savvy::Error::new("Cannot convert i32 to usize."))?;
@@ -197,7 +197,7 @@ impl HResampler {
                 Ok(HResampler(Box::new(resampler)))
             }
             (HResamplerType::FftFixedOut, HDataType::Float32) => {
-                let sub_chunks: i32 = sub_chunks.as_scalar()?;
+                let sub_chunks: i32 = sub_chunks.to_scalar()?;
                 let sub_chunks = sub_chunks
                     .try_into()
                     .map_err(|_| savvy::Error::new("Cannot convert i32 to usize."))?;
@@ -207,7 +207,7 @@ impl HResampler {
                 Ok(HResampler(Box::new(resampler)))
             }
             (HResamplerType::FftFixedOut, HDataType::Float64) => {
-                let sub_chunks: i32 = sub_chunks.as_scalar()?;
+                let sub_chunks: i32 = sub_chunks.to_scalar()?;
                 let sub_chunks = sub_chunks
                     .try_into()
                     .map_err(|_| savvy::Error::new("Cannot convert i32 to usize."))?;
@@ -308,14 +308,14 @@ impl HResampler {
         res_type: &HResamplerType,
         dtype: &HDataType,
     ) -> savvy::Result<HResampler> {
-        let resample_ratio: f64 = resample_ratio.as_scalar()?;
-        let max_resample_ratio_relative: f64 = max_resample_ratio_relative.as_scalar()?;
+        let resample_ratio: f64 = resample_ratio.to_scalar()?;
+        let max_resample_ratio_relative: f64 = max_resample_ratio_relative.to_scalar()?;
         let parameters = parameters.try_into()?;
-        let chunk_size: i32 = chunk_size.as_scalar()?;
+        let chunk_size: i32 = chunk_size.to_scalar()?;
         let chunk_size = chunk_size
             .try_into()
             .map_err(|_| savvy::Error::new("Cannot convert i32 to usize."))?;
-        let nchannels: i32 = nchannels.as_scalar()?;
+        let nchannels: i32 = nchannels.to_scalar()?;
         let nchannels = nchannels
             .try_into()
             .map_err(|_| savvy::Error::new("Cannot convert i32 to usize."))?;
@@ -459,10 +459,10 @@ impl HResampler {
         res_type: &HResamplerType,
         dtype: &HDataType,
     ) -> savvy::Result<HResampler> {
-        let resample_ratio: f64 = resample_ratio.as_scalar()?;
-        let max_resample_ratio_relative: f64 = max_resample_ratio_relative.as_scalar()?;
-        let chunk_size: i32 = chunk_size.as_scalar()?;
-        let nchannels: i32 = nchannels.as_scalar()?;
+        let resample_ratio: f64 = resample_ratio.to_scalar()?;
+        let max_resample_ratio_relative: f64 = max_resample_ratio_relative.to_scalar()?;
+        let chunk_size: i32 = chunk_size.to_scalar()?;
+        let nchannels: i32 = nchannels.to_scalar()?;
 
         match (res_type, dtype) {
             (HResamplerType::FastFixedIn, HDataType::Float32) => {
@@ -580,8 +580,8 @@ impl HResampler {
     /// _________
     ///
     fn set_resample_ratio(&mut self, new_ratio: Sexp, ramp: Sexp) -> savvy::Result<()> {
-        let new_ratio: f64 = new_ratio.as_scalar()?;
-        let ramp: bool = ramp.as_scalar()?;
+        let new_ratio: f64 = new_ratio.to_scalar()?;
+        let ramp: bool = ramp.to_scalar()?;
         self.0.set_resample_ratio(new_ratio, ramp)
     }
 
@@ -623,8 +623,8 @@ impl HResampler {
     /// _________
     ///
     fn set_resample_ratio_relative(&mut self, rel_ratio: Sexp, ramp: Sexp) -> savvy::Result<()> {
-        let rel_ratio: f64 = rel_ratio.as_scalar()?;
-        let ramp: bool = ramp.as_scalar()?;
+        let rel_ratio: f64 = rel_ratio.to_scalar()?;
+        let ramp: bool = ramp.to_scalar()?;
         self.0.set_resample_ratio_relative(rel_ratio, ramp)
     }
 

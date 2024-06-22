@@ -1,5 +1,5 @@
 use crate::{
-    conversions::{try_from_usize_to_int_sexp, AsScalar},
+    conversions::{try_from_usize_to_int_sexp, ToScalar},
     errors::HErrorR,
     harray::HArray,
     hdatatype::HDataType,
@@ -76,7 +76,7 @@ impl HAudioSink {
     /// _________
     ///
     fn append_from_harray(&self, harray: &HArray, sr: Sexp) -> savvy::Result<()> {
-        let sr: i32 = sr.as_scalar()?;
+        let sr: i32 = sr.to_scalar()?;
         let sr = sr
             .try_into()
             .map_err(|_| savvy::Error::new("Cannot convert i32 to u32."))?;
@@ -136,7 +136,7 @@ impl HAudioSink {
     /// _________
     ///
     fn append_from_file(&self, fpath: Sexp) -> savvy::Result<()> {
-        let fpath: &str = fpath.as_scalar()?;
+        let fpath: &str = fpath.to_scalar()?;
 
         let (harray, sr) = decode::<f32>(fpath).map_err(HErrorR::from)?;
         let audio = Audio::D2(&harray);
@@ -430,7 +430,7 @@ impl HAudioSink {
     /// _________
     ///
     fn set_speed(&self, value: Sexp) -> savvy::Result<()> {
-        let value: f64 = value.as_scalar()?;
+        let value: f64 = value.to_scalar()?;
         self.0.set_speed(value as f32);
         Ok(())
     }
@@ -463,7 +463,7 @@ impl HAudioSink {
     /// _________
     ///
     fn set_volume(&self, value: Sexp) -> savvy::Result<()> {
-        let value: f64 = value.as_scalar()?;
+        let value: f64 = value.to_scalar()?;
         self.0.set_volume(value as f32);
         Ok(())
     }
@@ -617,7 +617,7 @@ impl HAudioSink {
     /// _________
     ///
     fn try_seek(&self, pos: Sexp) -> savvy::Result<()> {
-        let pos: f64 = pos.as_scalar()?;
+        let pos: f64 = pos.to_scalar()?;
         let pos = std::time::Duration::from_secs_f64(pos);
         self.0.try_seek(pos).map_err(HErrorR::from)?;
         Ok(())
