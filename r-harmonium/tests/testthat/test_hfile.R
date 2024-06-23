@@ -1,9 +1,9 @@
+# The CI may not have audio support available.
+skip_on_ci()
+
 test_that(
   "hfile works.",
   {
-    # The CI may not have audio support available.
-    skip_on_ci()
-
     harmonium_path = system.file(package = "harmonium")
     filepath = file.path(harmonium_path, "testfiles", "gs-16b-2c-44100hz.flac")
     expect_equal(HFile$params(filepath), c(44100.00000,698194.00000,2.00000,15.8320635))

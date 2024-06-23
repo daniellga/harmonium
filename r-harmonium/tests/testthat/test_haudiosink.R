@@ -1,9 +1,9 @@
+# The CI may not have audio support available.
+skip_on_ci()
+
 test_that(
   "haudiosink works.",
   {
-    # The CI may not have audio support available.
-    skip_on_ci()
-
     harmonium_path = system.file(package = "harmonium")
     filepath = file.path(harmonium_path, "testfiles", "gs-16b-2c-44100hz.wav")
     
