@@ -1,3 +1,6 @@
+# The CI may not have audio support available.
+skip_on_ci()
+
 test_that(
   "haudiosink works.",
   {
