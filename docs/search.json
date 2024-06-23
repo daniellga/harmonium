@@ -971,6 +971,17 @@
     ]
   },
   {
+    "objectID": "contents/haudiosink.html#invalidate",
+    "href": "contents/haudiosink.html#invalidate",
+    "title": "HAudioSink",
+    "section": "invalidate",
+    "text": "invalidate\ninvalidate() source \n\nReplaces the inner value of the external pointer, invalidating it. This function is useful to drop the HAudioSink without having to calling rm() and gc().\n\nExamples\nlibrary(harmonium)\nhaudiosink = HAudioSink$new()\nhaudiosink$append_from_file(fpath = \"./r-harmonium/testfiles/gs-16b-2c-44100hz.wav\")\nhaudiosink$invalidate()",
+    "crumbs": [
+      "Classes",
+      "HAudioSink"
+    ]
+  },
+  {
     "objectID": "contents/hpolynomialdegree.html",
     "href": "contents/hpolynomialdegree.html",
     "title": "HPolynomialDegree",

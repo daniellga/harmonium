@@ -287,6 +287,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#stop" id="toc-stop" class="nav-link" data-scroll-target="#stop">stop</a></li>
   <li><a href="#try_seek" id="toc-try_seek" class="nav-link" data-scroll-target="#try_seek">try_seek</a></li>
   <li><a href="#volume" id="toc-volume" class="nav-link" data-scroll-target="#volume">volume</a></li>
+  <li><a href="#invalidate" id="toc-invalidate" class="nav-link" data-scroll-target="#invalidate">invalidate</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -706,6 +707,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>haudiosink <span class="ot">=</span> HAudioSink<span class="sc">$</span><span class="fu">new</span>()</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">append_from_file</span>(<span class="at">fpath =</span> <span class="st">"./r-harmonium/testfiles/gs-16b-2c-44100hz.wav"</span>)</span>
 <span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">volume</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+</section>
+</section>
+<section id="invalidate" class="level2">
+<h2 class="anchored" data-anchor-id="invalidate">invalidate</h2>
+<p><code>invalidate()</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L675">source</a> </span><br>
+</p>
+<p>Replaces the inner value of the external pointer, invalidating it. This function is useful to drop the <code>HAudioSink</code> without having to calling <code>rm()</code> and <code>gc()</code>.</p>
+<section id="examples-20" class="level4">
+<h4 class="anchored" data-anchor-id="examples-20">Examples</h4>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>haudiosink <span class="ot">=</span> HAudioSink<span class="sc">$</span><span class="fu">new</span>()</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">append_from_file</span>(<span class="at">fpath =</span> <span class="st">"./r-harmonium/testfiles/gs-16b-2c-44100hz.wav"</span>)</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">invalidate</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 
 
