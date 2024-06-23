@@ -652,4 +652,27 @@ impl HAudioSink {
         let real_sexp: OwnedRealSexp = volume.try_into()?;
         real_sexp.into()
     }
+
+    /// HAudioSink
+    /// ## invalidate
+    ///
+    /// `invalidate()`
+    ///
+    /// Replaces the inner value of the external pointer, invalidating it.
+    /// This function is useful to drop the `HAudioSink` without having to calling `rm()` and `gc()`.
+    ///
+    /// #### Examples
+    ///
+    /// ```r
+    /// library(harmonium)
+    /// haudiosink = HAudioSink$new()
+    /// haudiosink$append_from_file(fpath = "./r-harmonium/testfiles/gs-16b-2c-44100hz.wav")
+    /// haudiosink$invalidate()
+    /// ```
+    ///
+    /// _________
+    ///
+    pub fn invalidate(self) -> savvy::Result<()> {
+        Ok(())
+    }
 }

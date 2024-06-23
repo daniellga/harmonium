@@ -44,6 +44,7 @@ SEXP savvy_HAudioSink_speed__ffi(SEXP self__);
 SEXP savvy_HAudioSink_stop__ffi(SEXP self__);
 SEXP savvy_HAudioSink_try_seek__ffi(SEXP self__, SEXP pos);
 SEXP savvy_HAudioSink_volume__ffi(SEXP self__);
+SEXP savvy_HAudioSink_invalidate__ffi(SEXP self__);
 
 // methods and associated functions for HDataType
 SEXP savvy_HDataType_print__ffi(SEXP self__);

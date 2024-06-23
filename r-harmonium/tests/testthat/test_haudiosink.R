@@ -13,6 +13,7 @@ test_that(
       l = HFile$decode(filepath, dtype = HDataType$Float32)
       expect_silent(haudiosink$append_from_harray(l$harray(), l$sr()))
       expect_false(haudiosink$is_empty())
+      expect_no_error(haudiosink$invalidate())
     }
 
     haudiosink_from_file = function() {
@@ -45,6 +46,7 @@ test_that(
       expect_true(haudiosink$is_paused())
       haudiosink$append_from_file(filepath)
       expect_equal(haudiosink$len(), 1)
+      expect_no_error(haudiosink$invalidate())
     }
 
     haudiosink_from_harray()

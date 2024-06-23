@@ -230,6 +230,11 @@ SEXP savvy_HAudioSink_volume__impl(SEXP self__) {
     return handle_result(res);
 }
 
+SEXP savvy_HAudioSink_invalidate__impl(SEXP self__) {
+    SEXP res = savvy_HAudioSink_invalidate__ffi(self__);
+    return handle_result(res);
+}
+
 SEXP savvy_HDataType_print__impl(SEXP self__) {
     SEXP res = savvy_HDataType_print__ffi(self__);
     return handle_result(res);
@@ -557,6 +562,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"savvy_HAudioSink_stop__impl", (DL_FUNC) &savvy_HAudioSink_stop__impl, 1},
     {"savvy_HAudioSink_try_seek__impl", (DL_FUNC) &savvy_HAudioSink_try_seek__impl, 2},
     {"savvy_HAudioSink_volume__impl", (DL_FUNC) &savvy_HAudioSink_volume__impl, 1},
+    {"savvy_HAudioSink_invalidate__impl", (DL_FUNC) &savvy_HAudioSink_invalidate__impl, 1},
     {"savvy_HDataType_print__impl", (DL_FUNC) &savvy_HDataType_print__impl, 1},
     {"savvy_HDataType_eq__impl", (DL_FUNC) &savvy_HDataType_eq__impl, 2},
     {"savvy_HDataType_ne__impl", (DL_FUNC) &savvy_HDataType_ne__impl, 2},

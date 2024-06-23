@@ -292,6 +292,12 @@ HAudioSink_volume <- function(self) {
   }
 }
 
+HAudioSink_invalidate <- function(self) {
+  function() {
+  invisible(.Call(savvy_HAudioSink_invalidate__impl, self))
+  }
+}
+
 .savvy_wrap_HAudioSink <- function(ptr) {
   e <- new.env(parent = emptyenv())
   e$.ptr <- ptr
@@ -311,6 +317,7 @@ HAudioSink_volume <- function(self) {
   e$stop <- HAudioSink_stop(ptr)
   e$try_seek <- HAudioSink_try_seek(ptr)
   e$volume <- HAudioSink_volume(ptr)
+  e$invalidate <- HAudioSink_invalidate(ptr)
   
   class(e) <- "HAudioSink"
   e
