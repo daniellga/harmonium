@@ -1,4 +1,4 @@
-skip_if(Sys.getenv("MY_UNIVERSE") = "https://daniellga.r-universe.dev", message = "Test skipped for R-universe.")
+skip_if(Sys.getenv("MY_UNIVERSE") == "https://daniellga.r-universe.dev", message = "Test skipped for R-universe.")
 
 test_that(
   "haudiosink works.",
