@@ -1,5 +1,4 @@
-# The CI may not have audio support available.
-skip_on_ci()
+skip_if(Sys.getenv("MY_UNIVERSE") = "https://daniellga.r-universe.dev", message = "Test skipped for R-universe.")
 
 test_that(
   "hfile works.",
