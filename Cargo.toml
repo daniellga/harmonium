@@ -15,7 +15,7 @@ realfft = "3.3"
 rubato = "0.15.0"
 ndarray = "0.15.6"
 symphonia = { version = "0.5.4", default-features = false }
-rodio = { version = "0.18.1", default-features = false }
+rodio = { version = "0.19.0", default-features = false }
 num-complex = { version = "0.4" }
 
 harmonium-core = { path = "harmonium-core", default-features = false }
