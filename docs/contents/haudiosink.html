@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.557">
+<meta name="generator" content="quarto-1.5.53">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Harmonium - HAudioSink</title>
+<title>HAudioSink – Harmonium</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -127,11 +127,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </nav>
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
         <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../contents/harray.html">Classes</a></li><li class="breadcrumb-item"><a href="../contents/haudiosink.html">HAudioSink</a></li></ol></nav>
-        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
   </nav>
@@ -144,9 +144,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
  <span class="menu-text">Classes</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -274,6 +274,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#audio_output_devices" id="toc-audio_output_devices" class="nav-link" data-scroll-target="#audio_output_devices">audio_output_devices</a></li>
   <li><a href="#audio_supported_configs" id="toc-audio_supported_configs" class="nav-link" data-scroll-target="#audio_supported_configs">audio_supported_configs</a></li>
   <li><a href="#clear" id="toc-clear" class="nav-link" data-scroll-target="#clear">clear</a></li>
+  <li><a href="#get_pos" id="toc-get_pos" class="nav-link" data-scroll-target="#get_pos">get_pos</a></li>
   <li><a href="#is_empty" id="toc-is_empty" class="nav-link" data-scroll-target="#is_empty">is_empty</a></li>
   <li><a href="#is_paused" id="toc-is_paused" class="nav-link" data-scroll-target="#is_paused">is_paused</a></li>
   <li><a href="#len" id="toc-len" class="nav-link" data-scroll-target="#len">len</a></li>
@@ -452,29 +453,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <hr>
 </section>
 </section>
-<section id="is_empty" class="level2">
-<h2 class="anchored" data-anchor-id="is_empty">is_empty</h2>
-<p><code>is_empty() -&gt; bool</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L281">source</a> </span><br>
+<section id="get_pos" class="level2">
+<h2 class="anchored" data-anchor-id="get_pos">get_pos</h2>
+<p><code>get_pos() -&gt; double</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L284">source</a> </span><br>
 </p>
-<p>Returns true if this sink has no more sounds to play.</p>
+<p>Returns the position of the sound that’s being played. This takes into account any speedup or delay applied. Example: if you apply a speedup of 2 to an mp3 decoder source and get_pos() returns 5s then the position in the mp3 recording is 10s from its start.</p>
 <section id="returns-4" class="level4">
 <h4 class="anchored" data-anchor-id="returns-4">Returns</h4>
-<p>A <code>bool</code>.</p>
+<p>A <code>double</code>.</p>
 </section>
 <section id="examples-7" class="level4">
 <h4 class="anchored" data-anchor-id="examples-7">Examples</h4>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>haudiosink <span class="ot">=</span> HAudioSink<span class="sc">$</span><span class="fu">new</span>()</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">is_empty</span>() <span class="co"># TRUE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">append_from_file</span>(<span class="at">fpath =</span> <span class="st">"./r-harmonium/testfiles/gs-16b-2c-44100hz.wav"</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">get_pos</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 </section>
 </section>
-<section id="is_paused" class="level2">
-<h2 class="anchored" data-anchor-id="is_paused">is_paused</h2>
-<p><code>is_paused() -&gt; bool</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L313">source</a> </span><br>
+<section id="is_empty" class="level2">
+<h2 class="anchored" data-anchor-id="is_empty">is_empty</h2>
+<p><code>is_empty() -&gt; bool</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L310">source</a> </span><br>
 </p>
-<p>Gets if a sink is paused.</p>
-<p>Sinks can be paused and resumed using pause() and play(). This returns true if the sink is paused .</p>
+<p>Returns true if this sink has no more sounds to play.</p>
 <section id="returns-5" class="level4">
 <h4 class="anchored" data-anchor-id="returns-5">Returns</h4>
 <p>A <code>bool</code>.</p>
@@ -483,72 +484,90 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h4 class="anchored" data-anchor-id="examples-8">Examples</h4>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>haudiosink <span class="ot">=</span> HAudioSink<span class="sc">$</span><span class="fu">new</span>()</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">append_from_file</span>(<span class="at">fpath =</span> <span class="st">"./r-harmonium/testfiles/gs-16b-2c-44100hz.wav"</span>)</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">is_paused</span>() <span class="co"># FALSE</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">pause</span>()</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">is_paused</span>() <span class="co"># TRUE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">is_empty</span>() <span class="co"># TRUE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 </section>
 </section>
-<section id="len" class="level2">
-<h2 class="anchored" data-anchor-id="len">len</h2>
-<p><code>len() -&gt; integer</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L343">source</a> </span><br>
+<section id="is_paused" class="level2">
+<h2 class="anchored" data-anchor-id="is_paused">is_paused</h2>
+<p><code>is_paused() -&gt; bool</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L342">source</a> </span><br>
 </p>
-<p>Returns the number of sounds currently in the queue.</p>
+<p>Gets if a sink is paused.</p>
+<p>Sinks can be paused and resumed using pause() and play(). This returns true if the sink is paused .</p>
 <section id="returns-6" class="level4">
 <h4 class="anchored" data-anchor-id="returns-6">Returns</h4>
-<p>An <code>integer</code>.</p>
+<p>A <code>bool</code>.</p>
 </section>
 <section id="examples-9" class="level4">
 <h4 class="anchored" data-anchor-id="examples-9">Examples</h4>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>haudiosink <span class="ot">=</span> HAudioSink<span class="sc">$</span><span class="fu">new</span>()</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">len</span>() <span class="sc">==</span> <span class="dv">0</span> <span class="co"># TRUE</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">append_from_file</span>(<span class="at">fpath =</span> <span class="st">"./r-harmonium/testfiles/gs-16b-2c-44100hz.wav"</span>)</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">append_from_file</span>(<span class="at">fpath =</span> <span class="st">"./r-harmonium/testfiles/gs-16b-2c-44100hz.wav"</span>)</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">len</span>() <span class="sc">==</span> <span class="dv">2</span> <span class="co"># TRUE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">append_from_file</span>(<span class="at">fpath =</span> <span class="st">"./r-harmonium/testfiles/gs-16b-2c-44100hz.wav"</span>)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">is_paused</span>() <span class="co"># FALSE</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">pause</span>()</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">is_paused</span>() <span class="co"># TRUE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+</section>
+</section>
+<section id="len" class="level2">
+<h2 class="anchored" data-anchor-id="len">len</h2>
+<p><code>len() -&gt; integer</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L372">source</a> </span><br>
+</p>
+<p>Returns the number of sounds currently in the queue.</p>
+<section id="returns-7" class="level4">
+<h4 class="anchored" data-anchor-id="returns-7">Returns</h4>
+<p>An <code>integer</code>.</p>
+</section>
+<section id="examples-10" class="level4">
+<h4 class="anchored" data-anchor-id="examples-10">Examples</h4>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>haudiosink <span class="ot">=</span> HAudioSink<span class="sc">$</span><span class="fu">new</span>()</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">len</span>() <span class="sc">==</span> <span class="dv">0</span> <span class="co"># TRUE</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">append_from_file</span>(<span class="at">fpath =</span> <span class="st">"./r-harmonium/testfiles/gs-16b-2c-44100hz.wav"</span>)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">append_from_file</span>(<span class="at">fpath =</span> <span class="st">"./r-harmonium/testfiles/gs-16b-2c-44100hz.wav"</span>)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">len</span>() <span class="sc">==</span> <span class="dv">2</span> <span class="co"># TRUE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 </section>
 </section>
 <section id="pause" class="level2">
 <h2 class="anchored" data-anchor-id="pause">pause</h2>
-<p><code>pause()</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L372">source</a> </span><br>
+<p><code>pause()</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L401">source</a> </span><br>
 </p>
 <p>Pauses playback of this sink.</p>
 <p>No effect if already paused.</p>
 <p>A paused sink can be resumed with play().</p>
-<section id="examples-10" class="level4">
-<h4 class="anchored" data-anchor-id="examples-10">Examples</h4>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>haudiosink <span class="ot">=</span> HAudioSink<span class="sc">$</span><span class="fu">new</span>()</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">append_from_file</span>(<span class="at">fpath =</span> <span class="st">"./r-harmonium/testfiles/gs-16b-2c-44100hz.wav"</span>)</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">is_paused</span>() <span class="co"># FALSE</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">pause</span>()</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">is_paused</span>() <span class="co"># TRUE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<hr>
-</section>
-</section>
-<section id="play" class="level2">
-<h2 class="anchored" data-anchor-id="play">play</h2>
-<p><code>play()</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L400">source</a> </span><br>
-</p>
-<p>Resumes playback of a paused sink.</p>
-<p>No effect if not paused.</p>
 <section id="examples-11" class="level4">
 <h4 class="anchored" data-anchor-id="examples-11">Examples</h4>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>haudiosink <span class="ot">=</span> HAudioSink<span class="sc">$</span><span class="fu">new</span>()</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">append_from_file</span>(<span class="at">fpath =</span> <span class="st">"./r-harmonium/testfiles/gs-16b-2c-44100hz.wav"</span>)</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">pause</span>()</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">is_paused</span>() <span class="co"># TRUE</span></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">play</span>()</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">is_paused</span>() <span class="co"># FALSE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">is_paused</span>() <span class="co"># FALSE</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">pause</span>()</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">is_paused</span>() <span class="co"># TRUE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+</section>
+</section>
+<section id="play" class="level2">
+<h2 class="anchored" data-anchor-id="play">play</h2>
+<p><code>play()</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L429">source</a> </span><br>
+</p>
+<p>Resumes playback of a paused sink.</p>
+<p>No effect if not paused.</p>
+<section id="examples-12" class="level4">
+<h4 class="anchored" data-anchor-id="examples-12">Examples</h4>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>haudiosink <span class="ot">=</span> HAudioSink<span class="sc">$</span><span class="fu">new</span>()</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">append_from_file</span>(<span class="at">fpath =</span> <span class="st">"./r-harmonium/testfiles/gs-16b-2c-44100hz.wav"</span>)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">pause</span>()</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">is_paused</span>() <span class="co"># TRUE</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">play</span>()</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">is_paused</span>() <span class="co"># FALSE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 </section>
 </section>
 <section id="set_speed" class="level2">
 <h2 class="anchored" data-anchor-id="set_speed">set_speed</h2>
-<p><code>set_speed(value: double)</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L432">source</a> </span><br>
+<p><code>set_speed(value: double)</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L461">source</a> </span><br>
 </p>
 <p>Changes the speed of the sound.</p>
 <p>The value 1.0 is the “normal” speed (unfiltered input). Any value other than 1.0 will change the play speed of the sound.</p>
@@ -559,19 +578,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p>A <code>double</code>.</p>
 </section>
-<section id="examples-12" class="level4">
-<h4 class="anchored" data-anchor-id="examples-12">Examples</h4>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>haudiosink <span class="ot">=</span> HAudioSink<span class="sc">$</span><span class="fu">new</span>()</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">append_from_file</span>(<span class="at">fpath =</span> <span class="st">"./r-harmonium/testfiles/gs-16b-2c-44100hz.wav"</span>)</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">set_speed</span>(<span class="dv">2</span>)</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">speed</span>() <span class="sc">==</span> <span class="dv">2</span> <span class="co"># TRUE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="examples-13" class="level4">
+<h4 class="anchored" data-anchor-id="examples-13">Examples</h4>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>haudiosink <span class="ot">=</span> HAudioSink<span class="sc">$</span><span class="fu">new</span>()</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">append_from_file</span>(<span class="at">fpath =</span> <span class="st">"./r-harmonium/testfiles/gs-16b-2c-44100hz.wav"</span>)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">set_speed</span>(<span class="dv">2</span>)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">speed</span>() <span class="sc">==</span> <span class="dv">2</span> <span class="co"># TRUE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 </section>
 </section>
 <section id="set_volume" class="level2">
 <h2 class="anchored" data-anchor-id="set_volume">set_volume</h2>
-<p><code>set_volume(value: double)</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L465">source</a> </span><br>
+<p><code>set_volume(value: double)</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L494">source</a> </span><br>
 </p>
 <p>Changes the volume of the sound.</p>
 <p>The value 1.0 is the “normal” volume (unfiltered input). Any value other than 1.0 will multiply each sample by this value.</p>
@@ -582,89 +601,89 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p>A <code>double</code>.</p>
 </section>
-<section id="examples-13" class="level4">
-<h4 class="anchored" data-anchor-id="examples-13">Examples</h4>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>haudiosink <span class="ot">=</span> HAudioSink<span class="sc">$</span><span class="fu">new</span>()</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">append_from_file</span>(<span class="at">fpath =</span> <span class="st">"./r-harmonium/testfiles/gs-16b-2c-44100hz.wav"</span>)</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">set_volume</span>(<span class="dv">2</span>)</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">volume</span>() <span class="sc">==</span> <span class="dv">2</span> <span class="co"># TRUE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<hr>
-</section>
-</section>
-<section id="skip_one" class="level2">
-<h2 class="anchored" data-anchor-id="skip_one">skip_one</h2>
-<p><code>skip_one()</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L495">source</a> </span><br>
-</p>
-<p>Skips to the next <code>Source</code> in the <code>Sink</code>.</p>
-<p>If there are more <code>Source</code>s appended to the <code>Sink</code> at the time, it will play the next one. Otherwise, the <code>Sink</code> will finish as if it had finished playing a <code>Source</code> all the way through.</p>
 <section id="examples-14" class="level4">
 <h4 class="anchored" data-anchor-id="examples-14">Examples</h4>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>haudiosink <span class="ot">=</span> HAudioSink<span class="sc">$</span><span class="fu">new</span>()</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">append_from_file</span>(<span class="at">fpath =</span> <span class="st">"./r-harmonium/testfiles/gs-16b-2c-44100hz.wav"</span>)</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">append_from_file</span>(<span class="at">fpath =</span> <span class="st">"./r-harmonium/testfiles/gs-16b-2c-44100hz.wav"</span>)</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">len</span>() <span class="sc">==</span> <span class="dv">2</span> <span class="co"># TRUE</span></span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">skip_one</span>()</span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">len</span>() <span class="sc">==</span> <span class="dv">1</span> <span class="co"># TRUE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">set_volume</span>(<span class="dv">2</span>)</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">volume</span>() <span class="sc">==</span> <span class="dv">2</span> <span class="co"># TRUE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 </section>
 </section>
-<section id="sleep_until_end" class="level2">
-<h2 class="anchored" data-anchor-id="sleep_until_end">sleep_until_end</h2>
-<p><code>sleep_until_end()</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L518">source</a> </span><br>
+<section id="skip_one" class="level2">
+<h2 class="anchored" data-anchor-id="skip_one">skip_one</h2>
+<p><code>skip_one()</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L524">source</a> </span><br>
 </p>
-<p>Sleeps the current thread until the sound ends.</p>
+<p>Skips to the next <code>Source</code> in the <code>Sink</code>.</p>
+<p>If there are more <code>Source</code>s appended to the <code>Sink</code> at the time, it will play the next one. Otherwise, the <code>Sink</code> will finish as if it had finished playing a <code>Source</code> all the way through.</p>
 <section id="examples-15" class="level4">
 <h4 class="anchored" data-anchor-id="examples-15">Examples</h4>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>haudiosink <span class="ot">=</span> HAudioSink<span class="sc">$</span><span class="fu">new</span>()</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">append_from_file</span>(<span class="at">fpath =</span> <span class="st">"./r-harmonium/testfiles/gs-16b-2c-44100hz.wav"</span>)</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">sleep_until_end</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">append_from_file</span>(<span class="at">fpath =</span> <span class="st">"./r-harmonium/testfiles/gs-16b-2c-44100hz.wav"</span>)</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">len</span>() <span class="sc">==</span> <span class="dv">2</span> <span class="co"># TRUE</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">skip_one</span>()</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">len</span>() <span class="sc">==</span> <span class="dv">1</span> <span class="co"># TRUE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 </section>
 </section>
-<section id="speed" class="level2">
-<h2 class="anchored" data-anchor-id="speed">speed</h2>
-<p><code>speed() -&gt; double</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L547">source</a> </span><br>
+<section id="sleep_until_end" class="level2">
+<h2 class="anchored" data-anchor-id="sleep_until_end">sleep_until_end</h2>
+<p><code>sleep_until_end()</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L547">source</a> </span><br>
 </p>
-<p>Gets the speed of the sound.</p>
-<p>The value 1.0 is the “normal” speed (unfiltered input). Any value other than 1.0 will change the play speed of the sound.</p>
-<section id="returns-7" class="level4">
-<h4 class="anchored" data-anchor-id="returns-7">Returns</h4>
-<p>A <code>double</code>.</p>
-</section>
+<p>Sleeps the current thread until the sound ends.</p>
 <section id="examples-16" class="level4">
 <h4 class="anchored" data-anchor-id="examples-16">Examples</h4>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>haudiosink <span class="ot">=</span> HAudioSink<span class="sc">$</span><span class="fu">new</span>()</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">append_from_file</span>(<span class="at">fpath =</span> <span class="st">"./r-harmonium/testfiles/gs-16b-2c-44100hz.wav"</span>)</span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">speed</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">sleep_until_end</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 </section>
 </section>
-<section id="stop" class="level2">
-<h2 class="anchored" data-anchor-id="stop">stop</h2>
-<p><code>stop()</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L577">source</a> </span><br>
+<section id="speed" class="level2">
+<h2 class="anchored" data-anchor-id="speed">speed</h2>
+<p><code>speed() -&gt; double</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L576">source</a> </span><br>
 </p>
-<p>Stops the sink by emptying the queue.</p>
-<p>The sink will keep its previous state (play or pause).</p>
+<p>Gets the speed of the sound.</p>
+<p>The value 1.0 is the “normal” speed (unfiltered input). Any value other than 1.0 will change the play speed of the sound.</p>
+<section id="returns-8" class="level4">
+<h4 class="anchored" data-anchor-id="returns-8">Returns</h4>
+<p>A <code>double</code>.</p>
+</section>
 <section id="examples-17" class="level4">
 <h4 class="anchored" data-anchor-id="examples-17">Examples</h4>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>haudiosink <span class="ot">=</span> HAudioSink<span class="sc">$</span><span class="fu">new</span>()</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">append_from_file</span>(<span class="at">fpath =</span> <span class="st">"./r-harmonium/testfiles/gs-16b-2c-44100hz.wav"</span>)</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">append_from_file</span>(<span class="at">fpath =</span> <span class="st">"./r-harmonium/testfiles/gs-16b-2c-44100hz.wav"</span>)</span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">len</span>() <span class="sc">==</span> <span class="dv">2</span> <span class="co"># TRUE</span></span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">stop</span>()</span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">len</span>() <span class="sc">==</span> <span class="dv">0</span> <span class="co"># TRUE</span></span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">is_paused</span>() <span class="co"># FALSE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">speed</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+</section>
+</section>
+<section id="stop" class="level2">
+<h2 class="anchored" data-anchor-id="stop">stop</h2>
+<p><code>stop()</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L606">source</a> </span><br>
+</p>
+<p>Stops the sink by emptying the queue.</p>
+<p>The sink will keep its previous state (play or pause).</p>
+<section id="examples-18" class="level4">
+<h4 class="anchored" data-anchor-id="examples-18">Examples</h4>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>haudiosink <span class="ot">=</span> HAudioSink<span class="sc">$</span><span class="fu">new</span>()</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">append_from_file</span>(<span class="at">fpath =</span> <span class="st">"./r-harmonium/testfiles/gs-16b-2c-44100hz.wav"</span>)</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">append_from_file</span>(<span class="at">fpath =</span> <span class="st">"./r-harmonium/testfiles/gs-16b-2c-44100hz.wav"</span>)</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">len</span>() <span class="sc">==</span> <span class="dv">2</span> <span class="co"># TRUE</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">stop</span>()</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">len</span>() <span class="sc">==</span> <span class="dv">0</span> <span class="co"># TRUE</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">is_paused</span>() <span class="co"># FALSE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 </section>
 </section>
 <section id="try_seek" class="level2">
 <h2 class="anchored" data-anchor-id="try_seek">try_seek</h2>
-<p><code>try_seek(pos: f64)</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L619">source</a> </span><br>
+<p><code>try_seek(pos: f64)</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L648">source</a> </span><br>
 </p>
 <p>Attempts to seek to a given position in the current source.</p>
 <p>This blocks between 0 and ~5 milliseconds.</p>
@@ -682,45 +701,45 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p>A <code>double</code>. The time to seek to in seconds.</p>
 </section>
-<section id="examples-18" class="level4">
-<h4 class="anchored" data-anchor-id="examples-18">Examples</h4>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>haudiosink <span class="ot">=</span> HAudioSink<span class="sc">$</span><span class="fu">new</span>()</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">append_from_file</span>(<span class="at">fpath =</span> <span class="st">"./r-harmonium/testfiles/gs-16b-2c-44100hz.wav"</span>)</span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">try_seek</span>(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<hr>
-</section>
-</section>
-<section id="volume" class="level2">
-<h2 class="anchored" data-anchor-id="volume">volume</h2>
-<p><code>volume() -&gt; double</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L650">source</a> </span><br>
-</p>
-<p>Gets the volume of the sound.</p>
-<p>The value 1.0 is the “normal” volume (unfiltered input). Any value other than 1.0 will multiply each sample by this value.</p>
-<section id="returns-8" class="level4">
-<h4 class="anchored" data-anchor-id="returns-8">Returns</h4>
-<p>A <code>double</code>.</p>
-</section>
 <section id="examples-19" class="level4">
 <h4 class="anchored" data-anchor-id="examples-19">Examples</h4>
 <div class="sourceCode" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>haudiosink <span class="ot">=</span> HAudioSink<span class="sc">$</span><span class="fu">new</span>()</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">append_from_file</span>(<span class="at">fpath =</span> <span class="st">"./r-harmonium/testfiles/gs-16b-2c-44100hz.wav"</span>)</span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">volume</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">try_seek</span>(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 </section>
 </section>
-<section id="invalidate" class="level2">
-<h2 class="anchored" data-anchor-id="invalidate">invalidate</h2>
-<p><code>invalidate()</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L675">source</a> </span><br>
+<section id="volume" class="level2">
+<h2 class="anchored" data-anchor-id="volume">volume</h2>
+<p><code>volume() -&gt; double</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L679">source</a> </span><br>
 </p>
-<p>Replaces the inner value of the external pointer, invalidating it. This function is useful to drop the <code>HAudioSink</code> without having to calling <code>rm()</code> and <code>gc()</code>.</p>
+<p>Gets the volume of the sound.</p>
+<p>The value 1.0 is the “normal” volume (unfiltered input). Any value other than 1.0 will multiply each sample by this value.</p>
+<section id="returns-9" class="level4">
+<h4 class="anchored" data-anchor-id="returns-9">Returns</h4>
+<p>A <code>double</code>.</p>
+</section>
 <section id="examples-20" class="level4">
 <h4 class="anchored" data-anchor-id="examples-20">Examples</h4>
 <div class="sourceCode" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>haudiosink <span class="ot">=</span> HAudioSink<span class="sc">$</span><span class="fu">new</span>()</span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">append_from_file</span>(<span class="at">fpath =</span> <span class="st">"./r-harmonium/testfiles/gs-16b-2c-44100hz.wav"</span>)</span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">invalidate</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">volume</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+</section>
+</section>
+<section id="invalidate" class="level2">
+<h2 class="anchored" data-anchor-id="invalidate">invalidate</h2>
+<p><code>invalidate()</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L704">source</a> </span><br>
+</p>
+<p>Replaces the inner value of the external pointer, invalidating it. This function is useful to drop the <code>HAudioSink</code> without having to calling <code>rm()</code> and <code>gc()</code>.</p>
+<section id="examples-21" class="level4">
+<h4 class="anchored" data-anchor-id="examples-21">Examples</h4>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>haudiosink <span class="ot">=</span> HAudioSink<span class="sc">$</span><span class="fu">new</span>()</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">append_from_file</span>(<span class="at">fpath =</span> <span class="st">"./r-harmonium/testfiles/gs-16b-2c-44100hz.wav"</span>)</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>haudiosink<span class="sc">$</span><span class="fu">invalidate</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 
 
@@ -908,18 +927,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -951,7 +959,29 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
       var filterRegex = new RegExp('/' + window.location.host + '/');
@@ -959,7 +989,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
     // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
     for (var i=0; i<links.length; i++) {
       const link = links[i];
       if (!isInternal(link.href)) {

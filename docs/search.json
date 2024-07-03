@@ -828,6 +828,17 @@
     ]
   },
   {
+    "objectID": "contents/haudiosink.html#get_pos",
+    "href": "contents/haudiosink.html#get_pos",
+    "title": "HAudioSink",
+    "section": "get_pos",
+    "text": "get_pos\nget_pos() -&gt; double source \n\nReturns the position of the sound that’s being played. This takes into account any speedup or delay applied. Example: if you apply a speedup of 2 to an mp3 decoder source and get_pos() returns 5s then the position in the mp3 recording is 10s from its start.\n\nReturns\nA double.\n\n\nExamples\nlibrary(harmonium)\nhaudiosink = HAudioSink$new()\nhaudiosink$append_from_file(fpath = \"./r-harmonium/testfiles/gs-16b-2c-44100hz.wav\")\nhaudiosink$get_pos()",
+    "crumbs": [
+      "Classes",
+      "HAudioSink"
+    ]
+  },
+  {
     "objectID": "contents/haudiosink.html#is_empty",
     "href": "contents/haudiosink.html#is_empty",
     "title": "HAudioSink",

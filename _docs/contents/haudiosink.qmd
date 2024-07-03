@@ -164,9 +164,32 @@ haudiosink$is_paused() # TRUE
 
 _________
 
+## get_pos
+
+`get_pos() -> double`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L284) </span> \
+
+Returns the position of the sound that’s being played.
+This takes into account any speedup or delay applied.
+Example: if you apply a speedup of 2 to an mp3 decoder source and get_pos() returns 5s then the position in the mp3 recording is 10s from its start.
+
+#### Returns
+
+A `double`.
+
+#### Examples
+
+```r
+library(harmonium)
+haudiosink = HAudioSink$new()
+haudiosink$append_from_file(fpath = "./r-harmonium/testfiles/gs-16b-2c-44100hz.wav")
+haudiosink$get_pos()
+```
+
+_________
+
 ## is_empty
 
-`is_empty() -> bool`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L281) </span> \
+`is_empty() -> bool`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L310) </span> \
 
 Returns true if this sink has no more sounds to play.
 
@@ -186,7 +209,7 @@ _________
 
 ## is_paused
 
-`is_paused() -> bool`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L313) </span> \
+`is_paused() -> bool`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L342) </span> \
 
 Gets if a sink is paused.
 
@@ -211,7 +234,7 @@ _________
 
 ## len
 
-`len() -> integer`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L343) </span> \
+`len() -> integer`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L372) </span> \
 
 Returns the number of sounds currently in the queue.
 
@@ -234,7 +257,7 @@ _________
 
 ## pause
 
-`pause()`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L372) </span> \
+`pause()`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L401) </span> \
 
 Pauses playback of this sink.
 
@@ -257,7 +280,7 @@ _________
 
 ## play
 
-`play()`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L400) </span> \
+`play()`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L429) </span> \
 
 Resumes playback of a paused sink.
 
@@ -279,7 +302,7 @@ _________
 
 ## set_speed
 
-`set_speed(value: double)`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L432) </span> \
+`set_speed(value: double)`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L461) </span> \
 
 Changes the speed of the sound.
 
@@ -305,7 +328,7 @@ _________
 
 ## set_volume
 
-`set_volume(value: double)`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L465) </span> \
+`set_volume(value: double)`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L494) </span> \
 
 Changes the volume of the sound.
 
@@ -331,7 +354,7 @@ _________
 
 ## skip_one
 
-`skip_one()`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L495) </span> \
+`skip_one()`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L524) </span> \
 
 Skips to the next `Source` in the `Sink`.
 
@@ -354,7 +377,7 @@ _________
 
 ## sleep_until_end
 
-`sleep_until_end()`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L518) </span> \
+`sleep_until_end()`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L547) </span> \
 
 Sleeps the current thread until the sound ends.
 
@@ -371,7 +394,7 @@ _________
 
 ## speed
 
-`speed() -> double`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L547) </span> \
+`speed() -> double`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L576) </span> \
 
 Gets the speed of the sound.
 
@@ -394,7 +417,7 @@ _________
 
 ## stop
 
-`stop()`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L577) </span> \
+`stop()`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L606) </span> \
 
 Stops the sink by emptying the queue.
 
@@ -417,7 +440,7 @@ _________
 
 ## try_seek
 
-`try_seek(pos: f64)`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L619) </span> \
+`try_seek(pos: f64)`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L648) </span> \
 
 Attempts to seek to a given position in the current source.
 
@@ -453,7 +476,7 @@ _________
 
 ## volume
 
-`volume() -> double`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L650) </span> \
+`volume() -> double`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L679) </span> \
 
 Gets the volume of the sound.
 
@@ -476,7 +499,7 @@ _________
 
 ## invalidate
 
-`invalidate()`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L675) </span> \
+`invalidate()`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudiosink.rs#L704) </span> \
 
 Replaces the inner value of the external pointer, invalidating it.
 This function is useful to drop the `HAudioSink` without having to calling `rm()` and `gc()`.
