@@ -26,113 +26,119 @@ NULL
 
 ### wrapper functions for HArray
 
-HArray_len <- function(self) {
+`HArray_len` <- function(self) {
   function() {
-  .Call(savvy_HArray_len__impl, self)
+    .Call(savvy_HArray_len__impl, `self`)
   }
 }
 
-HArray_shape <- function(self) {
+`HArray_shape` <- function(self) {
   function() {
-  .Call(savvy_HArray_shape__impl, self)
+    .Call(savvy_HArray_shape__impl, `self`)
   }
 }
 
-HArray_ndim <- function(self) {
+`HArray_ndim` <- function(self) {
   function() {
-  .Call(savvy_HArray_ndim__impl, self)
+    .Call(savvy_HArray_ndim__impl, `self`)
   }
 }
 
-HArray_slice <- function(self) {
-  function(range) {
-    .savvy_wrap_HArray(.Call(savvy_HArray_slice__impl, self, range))
+`HArray_slice` <- function(self) {
+  function(`range`) {
+    .savvy_wrap_HArray(.Call(savvy_HArray_slice__impl, `self`, `range`))
   }
 }
 
-HArray_print <- function(self) {
+`HArray_print` <- function(self) {
   function() {
-  invisible(.Call(savvy_HArray_print__impl, self))
+    invisible(.Call(savvy_HArray_print__impl, `self`))
   }
 }
 
-HArray_eq <- function(self) {
-  function(other) {
-    other <- .savvy_extract_ptr(other, "HArray")
-.Call(savvy_HArray_eq__impl, self, other)
+`HArray_eq` <- function(self) {
+  function(`other`) {
+    `other` <- .savvy_extract_ptr(`other`, "HArray")
+    .Call(savvy_HArray_eq__impl, `self`, `other`)
   }
 }
 
-HArray_ne <- function(self) {
-  function(other) {
-    other <- .savvy_extract_ptr(other, "HArray")
-.Call(savvy_HArray_ne__impl, self, other)
+`HArray_ne` <- function(self) {
+  function(`other`) {
+    `other` <- .savvy_extract_ptr(`other`, "HArray")
+    .Call(savvy_HArray_ne__impl, `self`, `other`)
   }
 }
 
-HArray_clone <- function(self) {
+`HArray_clone` <- function(self) {
   function() {
-    .savvy_wrap_HArray(.Call(savvy_HArray_clone__impl, self))
+    .savvy_wrap_HArray(.Call(savvy_HArray_clone__impl, `self`))
   }
 }
 
-HArray_collect <- function(self) {
+`HArray_collect` <- function(self) {
   function() {
-  .Call(savvy_HArray_collect__impl, self)
+    .Call(savvy_HArray_collect__impl, `self`)
   }
 }
 
-HArray_dtype <- function(self) {
+`HArray_dtype` <- function(self) {
   function() {
-    .savvy_wrap_HDataType(.Call(savvy_HArray_dtype__impl, self))
+    .savvy_wrap_HDataType(.Call(savvy_HArray_dtype__impl, `self`))
   }
 }
 
-HArray_is_shared <- function(self) {
+`HArray_is_shared` <- function(self) {
   function() {
-  .Call(savvy_HArray_is_shared__impl, self)
+    .Call(savvy_HArray_is_shared__impl, `self`)
   }
 }
 
-HArray_mem_adress <- function(self) {
+`HArray_mem_adress` <- function(self) {
   function() {
-  .Call(savvy_HArray_mem_adress__impl, self)
+    .Call(savvy_HArray_mem_adress__impl, `self`)
   }
 }
 
-HArray_is_standard_layout <- function(self) {
+`HArray_is_standard_layout` <- function(self) {
   function() {
-  .Call(savvy_HArray_is_standard_layout__impl, self)
+    .Call(savvy_HArray_is_standard_layout__impl, `self`)
   }
 }
 
-HArray_invalidate <- function(self) {
+`HArray_invalidate` <- function(self) {
   function() {
-  invisible(.Call(savvy_HArray_invalidate__impl, self))
+    invisible(.Call(savvy_HArray_invalidate__impl, `self`))
   }
 }
 
-.savvy_wrap_HArray <- function(ptr) {
+`.savvy_wrap_HArray` <- function(ptr) {
   e <- new.env(parent = emptyenv())
   e$.ptr <- ptr
-    e$len <- HArray_len(ptr)
-  e$shape <- HArray_shape(ptr)
-  e$ndim <- HArray_ndim(ptr)
-  e$slice <- HArray_slice(ptr)
-  e$print <- HArray_print(ptr)
-  e$eq <- HArray_eq(ptr)
-  e$ne <- HArray_ne(ptr)
-  e$clone <- HArray_clone(ptr)
-  e$collect <- HArray_collect(ptr)
-  e$dtype <- HArray_dtype(ptr)
-  e$is_shared <- HArray_is_shared(ptr)
-  e$mem_adress <- HArray_mem_adress(ptr)
-  e$is_standard_layout <- HArray_is_standard_layout(ptr)
-  e$invalidate <- HArray_invalidate(ptr)
-  
+  e$`len` <- `HArray_len`(ptr)
+  e$`shape` <- `HArray_shape`(ptr)
+  e$`ndim` <- `HArray_ndim`(ptr)
+  e$`slice` <- `HArray_slice`(ptr)
+  e$`print` <- `HArray_print`(ptr)
+  e$`eq` <- `HArray_eq`(ptr)
+  e$`ne` <- `HArray_ne`(ptr)
+  e$`clone` <- `HArray_clone`(ptr)
+  e$`collect` <- `HArray_collect`(ptr)
+  e$`dtype` <- `HArray_dtype`(ptr)
+  e$`is_shared` <- `HArray_is_shared`(ptr)
+  e$`mem_adress` <- `HArray_mem_adress`(ptr)
+  e$`is_standard_layout` <- `HArray_is_standard_layout`(ptr)
+  e$`invalidate` <- `HArray_invalidate`(ptr)
+
   class(e) <- "HArray"
   e
 }
+
+#' @export
+`$<-.HArray` <- function(x, name, value) stop("HArray cannot be modified", call. = FALSE)
+
+#' @export
+`[[<-.HArray` <- function(x, i, value) stop("HArray cannot be modified", call. = FALSE)
 
 
 #' HArray
@@ -140,27 +146,52 @@ HArray_invalidate <- function(self) {
 #'
 #' # Methods
 #'
-HArray <- new.env(parent = emptyenv())
+`HArray` <- new.env(parent = emptyenv())
+
+#' @export
+`$<-.HArray` <- function(x, name, value) stop("HArray cannot be modified", call. = FALSE)
+
+#' @export
+`[[<-.HArray` <- function(x, i, value) stop("HArray cannot be modified", call. = FALSE)
 
 ### associated functions for HArray
 
-HArray$new_from_values <- function(arr, dtype) {
-  dtype <- .savvy_extract_ptr(dtype, "HDataType")
-  .savvy_wrap_HArray(.Call(savvy_HArray_new_from_values__impl, arr, dtype))
+`HArray`$`new_from_values` <- function(`arr`, `dtype`) {
+  `dtype` <- .savvy_extract_ptr(`dtype`, "HDataType")
+  .savvy_wrap_HArray(.Call(savvy_HArray_new_from_values__impl, `arr`, `dtype`))
 }
 
+
+class(`HArray`) <- "HArray__bundle"
+
+#' @export
+`print.HArray__bundle` <- function(x, ...) {
+  cat('HArray')
+}
+
+#' @export
+`$<-.HArray__bundle` <- function(x, name, value) stop("HArray cannot be modified", call. = FALSE)
+
+#' @export
+`[[<-.HArray__bundle` <- function(x, i, value) stop("HArray cannot be modified", call. = FALSE)
 
 ### wrapper functions for HAudioOp
 
 
-.savvy_wrap_HAudioOp <- function(ptr) {
+`.savvy_wrap_HAudioOp` <- function(ptr) {
   e <- new.env(parent = emptyenv())
   e$.ptr <- ptr
-  
-  
+
+
   class(e) <- "HAudioOp"
   e
 }
+
+#' @export
+`$<-.HAudioOp` <- function(x, name, value) stop("HAudioOp cannot be modified", call. = FALSE)
+
+#' @export
+`[[<-.HAudioOp` <- function(x, i, value) stop("HAudioOp cannot be modified", call. = FALSE)
 
 
 #' HAudioOp
@@ -168,167 +199,192 @@ HArray$new_from_values <- function(arr, dtype) {
 #'
 #' # Methods
 #'
-HAudioOp <- new.env(parent = emptyenv())
+`HAudioOp` <- new.env(parent = emptyenv())
+
+#' @export
+`$<-.HAudioOp` <- function(x, name, value) stop("HAudioOp cannot be modified", call. = FALSE)
+
+#' @export
+`[[<-.HAudioOp` <- function(x, i, value) stop("HAudioOp cannot be modified", call. = FALSE)
 
 ### associated functions for HAudioOp
 
-HAudioOp$nchannels <- function(harray) {
-  harray <- .savvy_extract_ptr(harray, "HArray")
-.Call(savvy_HAudioOp_nchannels__impl, harray)
+`HAudioOp`$`nchannels` <- function(`harray`) {
+  `harray` <- .savvy_extract_ptr(`harray`, "HArray")
+  .Call(savvy_HAudioOp_nchannels__impl, `harray`)
 }
 
-HAudioOp$nframes <- function(harray) {
-  harray <- .savvy_extract_ptr(harray, "HArray")
-.Call(savvy_HAudioOp_nframes__impl, harray)
+`HAudioOp`$`nframes` <- function(`harray`) {
+  `harray` <- .savvy_extract_ptr(`harray`, "HArray")
+  .Call(savvy_HAudioOp_nframes__impl, `harray`)
 }
 
-HAudioOp$db_to_amplitude <- function(harray, reference, power) {
-  harray <- .savvy_extract_ptr(harray, "HArray")
-invisible(.Call(savvy_HAudioOp_db_to_amplitude__impl, harray, reference, power))
+`HAudioOp`$`db_to_amplitude` <- function(`harray`, `reference`, `power`) {
+  `harray` <- .savvy_extract_ptr(`harray`, "HArray")
+  invisible(.Call(savvy_HAudioOp_db_to_amplitude__impl, `harray`, `reference`, `power`))
 }
 
-HAudioOp$to_mono <- function(harray) {
-  harray <- .savvy_extract_ptr(harray, "HArray")
-invisible(.Call(savvy_HAudioOp_to_mono__impl, harray))
+`HAudioOp`$`to_mono` <- function(`harray`) {
+  `harray` <- .savvy_extract_ptr(`harray`, "HArray")
+  invisible(.Call(savvy_HAudioOp_to_mono__impl, `harray`))
 }
 
+
+class(`HAudioOp`) <- "HAudioOp__bundle"
+
+#' @export
+`print.HAudioOp__bundle` <- function(x, ...) {
+  cat('HAudioOp')
+}
+
+#' @export
+`$<-.HAudioOp__bundle` <- function(x, name, value) stop("HAudioOp cannot be modified", call. = FALSE)
+
+#' @export
+`[[<-.HAudioOp__bundle` <- function(x, i, value) stop("HAudioOp cannot be modified", call. = FALSE)
 
 ### wrapper functions for HAudioSink
 
-HAudioSink_append_from_harray <- function(self) {
-  function(harray, sr) {
-    harray <- .savvy_extract_ptr(harray, "HArray")
-invisible(.Call(savvy_HAudioSink_append_from_harray__impl, self, harray, sr))
+`HAudioSink_append_from_harray` <- function(self) {
+  function(`harray`, `sr`) {
+    `harray` <- .savvy_extract_ptr(`harray`, "HArray")
+    invisible(.Call(savvy_HAudioSink_append_from_harray__impl, `self`, `harray`, `sr`))
   }
 }
 
-HAudioSink_append_from_file <- function(self) {
-  function(fpath) {
-  invisible(.Call(savvy_HAudioSink_append_from_file__impl, self, fpath))
+`HAudioSink_append_from_file` <- function(self) {
+  function(`fpath`) {
+    invisible(.Call(savvy_HAudioSink_append_from_file__impl, `self`, `fpath`))
   }
 }
 
-HAudioSink_clear <- function(self) {
+`HAudioSink_clear` <- function(self) {
   function() {
-  invisible(.Call(savvy_HAudioSink_clear__impl, self))
+    invisible(.Call(savvy_HAudioSink_clear__impl, `self`))
   }
 }
 
-HAudioSink_get_pos <- function(self) {
+`HAudioSink_get_pos` <- function(self) {
   function() {
-  .Call(savvy_HAudioSink_get_pos__impl, self)
+    .Call(savvy_HAudioSink_get_pos__impl, `self`)
   }
 }
 
-HAudioSink_is_empty <- function(self) {
+`HAudioSink_is_empty` <- function(self) {
   function() {
-  .Call(savvy_HAudioSink_is_empty__impl, self)
+    .Call(savvy_HAudioSink_is_empty__impl, `self`)
   }
 }
 
-HAudioSink_is_paused <- function(self) {
+`HAudioSink_is_paused` <- function(self) {
   function() {
-  .Call(savvy_HAudioSink_is_paused__impl, self)
+    .Call(savvy_HAudioSink_is_paused__impl, `self`)
   }
 }
 
-HAudioSink_len <- function(self) {
+`HAudioSink_len` <- function(self) {
   function() {
-  .Call(savvy_HAudioSink_len__impl, self)
+    .Call(savvy_HAudioSink_len__impl, `self`)
   }
 }
 
-HAudioSink_pause <- function(self) {
+`HAudioSink_pause` <- function(self) {
   function() {
-  invisible(.Call(savvy_HAudioSink_pause__impl, self))
+    invisible(.Call(savvy_HAudioSink_pause__impl, `self`))
   }
 }
 
-HAudioSink_play <- function(self) {
+`HAudioSink_play` <- function(self) {
   function() {
-  invisible(.Call(savvy_HAudioSink_play__impl, self))
+    invisible(.Call(savvy_HAudioSink_play__impl, `self`))
   }
 }
 
-HAudioSink_set_speed <- function(self) {
-  function(value) {
-  invisible(.Call(savvy_HAudioSink_set_speed__impl, self, value))
+`HAudioSink_set_speed` <- function(self) {
+  function(`value`) {
+    invisible(.Call(savvy_HAudioSink_set_speed__impl, `self`, `value`))
   }
 }
 
-HAudioSink_set_volume <- function(self) {
-  function(value) {
-  invisible(.Call(savvy_HAudioSink_set_volume__impl, self, value))
+`HAudioSink_set_volume` <- function(self) {
+  function(`value`) {
+    invisible(.Call(savvy_HAudioSink_set_volume__impl, `self`, `value`))
   }
 }
 
-HAudioSink_skip_one <- function(self) {
+`HAudioSink_skip_one` <- function(self) {
   function() {
-  invisible(.Call(savvy_HAudioSink_skip_one__impl, self))
+    invisible(.Call(savvy_HAudioSink_skip_one__impl, `self`))
   }
 }
 
-HAudioSink_sleep_until_end <- function(self) {
+`HAudioSink_sleep_until_end` <- function(self) {
   function() {
-  invisible(.Call(savvy_HAudioSink_sleep_until_end__impl, self))
+    invisible(.Call(savvy_HAudioSink_sleep_until_end__impl, `self`))
   }
 }
 
-HAudioSink_speed <- function(self) {
+`HAudioSink_speed` <- function(self) {
   function() {
-  .Call(savvy_HAudioSink_speed__impl, self)
+    .Call(savvy_HAudioSink_speed__impl, `self`)
   }
 }
 
-HAudioSink_stop <- function(self) {
+`HAudioSink_stop` <- function(self) {
   function() {
-  invisible(.Call(savvy_HAudioSink_stop__impl, self))
+    invisible(.Call(savvy_HAudioSink_stop__impl, `self`))
   }
 }
 
-HAudioSink_try_seek <- function(self) {
-  function(pos) {
-  invisible(.Call(savvy_HAudioSink_try_seek__impl, self, pos))
+`HAudioSink_try_seek` <- function(self) {
+  function(`pos`) {
+    invisible(.Call(savvy_HAudioSink_try_seek__impl, `self`, `pos`))
   }
 }
 
-HAudioSink_volume <- function(self) {
+`HAudioSink_volume` <- function(self) {
   function() {
-  .Call(savvy_HAudioSink_volume__impl, self)
+    .Call(savvy_HAudioSink_volume__impl, `self`)
   }
 }
 
-HAudioSink_invalidate <- function(self) {
+`HAudioSink_invalidate` <- function(self) {
   function() {
-  invisible(.Call(savvy_HAudioSink_invalidate__impl, self))
+    invisible(.Call(savvy_HAudioSink_invalidate__impl, `self`))
   }
 }
 
-.savvy_wrap_HAudioSink <- function(ptr) {
+`.savvy_wrap_HAudioSink` <- function(ptr) {
   e <- new.env(parent = emptyenv())
   e$.ptr <- ptr
-    e$append_from_harray <- HAudioSink_append_from_harray(ptr)
-  e$append_from_file <- HAudioSink_append_from_file(ptr)
-  e$clear <- HAudioSink_clear(ptr)
-  e$get_pos <- HAudioSink_get_pos(ptr)
-  e$is_empty <- HAudioSink_is_empty(ptr)
-  e$is_paused <- HAudioSink_is_paused(ptr)
-  e$len <- HAudioSink_len(ptr)
-  e$pause <- HAudioSink_pause(ptr)
-  e$play <- HAudioSink_play(ptr)
-  e$set_speed <- HAudioSink_set_speed(ptr)
-  e$set_volume <- HAudioSink_set_volume(ptr)
-  e$skip_one <- HAudioSink_skip_one(ptr)
-  e$sleep_until_end <- HAudioSink_sleep_until_end(ptr)
-  e$speed <- HAudioSink_speed(ptr)
-  e$stop <- HAudioSink_stop(ptr)
-  e$try_seek <- HAudioSink_try_seek(ptr)
-  e$volume <- HAudioSink_volume(ptr)
-  e$invalidate <- HAudioSink_invalidate(ptr)
-  
+  e$`append_from_harray` <- `HAudioSink_append_from_harray`(ptr)
+  e$`append_from_file` <- `HAudioSink_append_from_file`(ptr)
+  e$`clear` <- `HAudioSink_clear`(ptr)
+  e$`get_pos` <- `HAudioSink_get_pos`(ptr)
+  e$`is_empty` <- `HAudioSink_is_empty`(ptr)
+  e$`is_paused` <- `HAudioSink_is_paused`(ptr)
+  e$`len` <- `HAudioSink_len`(ptr)
+  e$`pause` <- `HAudioSink_pause`(ptr)
+  e$`play` <- `HAudioSink_play`(ptr)
+  e$`set_speed` <- `HAudioSink_set_speed`(ptr)
+  e$`set_volume` <- `HAudioSink_set_volume`(ptr)
+  e$`skip_one` <- `HAudioSink_skip_one`(ptr)
+  e$`sleep_until_end` <- `HAudioSink_sleep_until_end`(ptr)
+  e$`speed` <- `HAudioSink_speed`(ptr)
+  e$`stop` <- `HAudioSink_stop`(ptr)
+  e$`try_seek` <- `HAudioSink_try_seek`(ptr)
+  e$`volume` <- `HAudioSink_volume`(ptr)
+  e$`invalidate` <- `HAudioSink_invalidate`(ptr)
+
   class(e) <- "HAudioSink"
   e
 }
+
+#' @export
+`$<-.HAudioSink` <- function(x, name, value) stop("HAudioSink cannot be modified", call. = FALSE)
+
+#' @export
+`[[<-.HAudioSink` <- function(x, i, value) stop("HAudioSink cannot be modified", call. = FALSE)
 
 
 #' HAudioSink
@@ -336,59 +392,84 @@ HAudioSink_invalidate <- function(self) {
 #'
 #' # Methods
 #'
-HAudioSink <- new.env(parent = emptyenv())
+`HAudioSink` <- new.env(parent = emptyenv())
+
+#' @export
+`$<-.HAudioSink` <- function(x, name, value) stop("HAudioSink cannot be modified", call. = FALSE)
+
+#' @export
+`[[<-.HAudioSink` <- function(x, i, value) stop("HAudioSink cannot be modified", call. = FALSE)
 
 ### associated functions for HAudioSink
 
-HAudioSink$new <- function() {
+`HAudioSink`$`new` <- function() {
   .savvy_wrap_HAudioSink(.Call(savvy_HAudioSink_new__impl))
 }
 
-HAudioSink$audio_default_device <- function() {
-.Call(savvy_HAudioSink_audio_default_device__impl)
+`HAudioSink`$`audio_default_device` <- function() {
+  .Call(savvy_HAudioSink_audio_default_device__impl)
 }
 
-HAudioSink$audio_output_devices <- function() {
-.Call(savvy_HAudioSink_audio_output_devices__impl)
+`HAudioSink`$`audio_output_devices` <- function() {
+  .Call(savvy_HAudioSink_audio_output_devices__impl)
 }
 
-HAudioSink$audio_supported_configs <- function() {
-.Call(savvy_HAudioSink_audio_supported_configs__impl)
+`HAudioSink`$`audio_supported_configs` <- function() {
+  .Call(savvy_HAudioSink_audio_supported_configs__impl)
 }
 
+
+class(`HAudioSink`) <- "HAudioSink__bundle"
+
+#' @export
+`print.HAudioSink__bundle` <- function(x, ...) {
+  cat('HAudioSink')
+}
+
+#' @export
+`$<-.HAudioSink__bundle` <- function(x, name, value) stop("HAudioSink cannot be modified", call. = FALSE)
+
+#' @export
+`[[<-.HAudioSink__bundle` <- function(x, i, value) stop("HAudioSink cannot be modified", call. = FALSE)
 
 ### wrapper functions for HDataType
 
-HDataType_print <- function(self) {
+`HDataType_print` <- function(self) {
   function() {
-  invisible(.Call(savvy_HDataType_print__impl, self))
+    invisible(.Call(savvy_HDataType_print__impl, `self`))
   }
 }
 
-HDataType_eq <- function(self) {
-  function(other) {
-    other <- .savvy_extract_ptr(other, "HDataType")
-.Call(savvy_HDataType_eq__impl, self, other)
+`HDataType_eq` <- function(self) {
+  function(`other`) {
+    `other` <- .savvy_extract_ptr(`other`, "HDataType")
+    .Call(savvy_HDataType_eq__impl, `self`, `other`)
   }
 }
 
-HDataType_ne <- function(self) {
-  function(other) {
-    other <- .savvy_extract_ptr(other, "HDataType")
-.Call(savvy_HDataType_ne__impl, self, other)
+`HDataType_ne` <- function(self) {
+  function(`other`) {
+    `other` <- .savvy_extract_ptr(`other`, "HDataType")
+    .Call(savvy_HDataType_ne__impl, `self`, `other`)
   }
 }
 
-.savvy_wrap_HDataType <- function(ptr) {
+`.savvy_wrap_HDataType` <- function(ptr) {
   e <- new.env(parent = emptyenv())
   e$.ptr <- ptr
-    e$print <- HDataType_print(ptr)
-  e$eq <- HDataType_eq(ptr)
-  e$ne <- HDataType_ne(ptr)
-  
+  e$`print` <- `HDataType_print`(ptr)
+  e$`eq` <- `HDataType_eq`(ptr)
+  e$`ne` <- `HDataType_ne`(ptr)
+
   class(e) <- "HDataType"
   e
 }
+
+#' @export
+`$<-.HDataType` <- function(x, name, value) stop("HDataType cannot be modified", call. = FALSE)
+
+#' @export
+`[[<-.HDataType` <- function(x, i, value) stop("HDataType cannot be modified", call. = FALSE)
 
 
 #' HDataType
@@ -398,14 +479,36 @@ HDataType_ne <- function(self) {
 #'
 #' # Methods
 #'
-HDataType <- new.env(parent = emptyenv())
-HDataType$Float32 <- .savvy_wrap_HDataType(0L)
-HDataType$Float64 <- .savvy_wrap_HDataType(1L)
-HDataType$Complex32 <- .savvy_wrap_HDataType(2L)
-HDataType$Complex64 <- .savvy_wrap_HDataType(3L)
+`HDataType` <- new.env(parent = emptyenv())
+`HDataType`$`Float32` <- .savvy_wrap_HDataType(0L)
+`HDataType`$`Float64` <- .savvy_wrap_HDataType(1L)
+`HDataType`$`Complex32` <- .savvy_wrap_HDataType(2L)
+`HDataType`$`Complex64` <- .savvy_wrap_HDataType(3L)
 
 #' @export
-print.HDataType <- function(x, ...) {
+`$.HDataType__bundle` <- function(x, name) {
+  if (!name %in% c("Float32", "Float64", "Complex32", "Complex64")) {
+    stop(paste0("Unknown variant: ", name), call. = FALSE)
+  }
+
+  NextMethod()
+}
+
+#' @export
+`[[.HDataType__bundle` <- function(x, i) {
+  if (is.numeric(i)) {
+    stop("HDataType cannot be subset by index", call. = FALSE)
+  }
+
+  if (!i %in% c("Float32", "Float64", "Complex32", "Complex64")) {
+    stop(paste0("Unknown variant: ", i), call. = FALSE)
+  }
+
+  NextMethod()
+}
+
+#' @export
+`print.HDataType` <- function(x, ...) {
   idx <- x$.ptr + 1L
   label <- c("Float32", "Float64", "Complex32", "Complex64")[idx]
   if (is.na(label)) {
@@ -415,40 +518,65 @@ print.HDataType <- function(x, ...) {
 }
 
 
+#' @export
+`$<-.HDataType` <- function(x, name, value) stop("HDataType cannot be modified", call. = FALSE)
+
+#' @export
+`[[<-.HDataType` <- function(x, i, value) stop("HDataType cannot be modified", call. = FALSE)
+
 ### associated functions for HDataType
 
 
 
+class(`HDataType`) <- "HDataType__bundle"
+
+#' @export
+`print.HDataType__bundle` <- function(x, ...) {
+  cat('HDataType')
+}
+
+#' @export
+`$<-.HDataType__bundle` <- function(x, name, value) stop("HDataType cannot be modified", call. = FALSE)
+
+#' @export
+`[[<-.HDataType__bundle` <- function(x, i, value) stop("HDataType cannot be modified", call. = FALSE)
+
 ### wrapper functions for HDecodedAudio
 
-HDecodedAudio_harray <- function(self) {
+`HDecodedAudio_harray` <- function(self) {
   function() {
-    .savvy_wrap_HArray(.Call(savvy_HDecodedAudio_harray__impl, self))
+    .savvy_wrap_HArray(.Call(savvy_HDecodedAudio_harray__impl, `self`))
   }
 }
 
-HDecodedAudio_sr <- function(self) {
+`HDecodedAudio_sr` <- function(self) {
   function() {
-  .Call(savvy_HDecodedAudio_sr__impl, self)
+    .Call(savvy_HDecodedAudio_sr__impl, `self`)
   }
 }
 
-HDecodedAudio_invalidate <- function(self) {
+`HDecodedAudio_invalidate` <- function(self) {
   function() {
-  invisible(.Call(savvy_HDecodedAudio_invalidate__impl, self))
+    invisible(.Call(savvy_HDecodedAudio_invalidate__impl, `self`))
   }
 }
 
-.savvy_wrap_HDecodedAudio <- function(ptr) {
+`.savvy_wrap_HDecodedAudio` <- function(ptr) {
   e <- new.env(parent = emptyenv())
   e$.ptr <- ptr
-    e$harray <- HDecodedAudio_harray(ptr)
-  e$sr <- HDecodedAudio_sr(ptr)
-  e$invalidate <- HDecodedAudio_invalidate(ptr)
-  
+  e$`harray` <- `HDecodedAudio_harray`(ptr)
+  e$`sr` <- `HDecodedAudio_sr`(ptr)
+  e$`invalidate` <- `HDecodedAudio_invalidate`(ptr)
+
   class(e) <- "HDecodedAudio"
   e
 }
+
+#' @export
+`$<-.HDecodedAudio` <- function(x, name, value) stop("HDecodedAudio cannot be modified", call. = FALSE)
+
+#' @export
+`[[<-.HDecodedAudio` <- function(x, i, value) stop("HDecodedAudio cannot be modified", call. = FALSE)
 
 
 #' HDecodedAudio
@@ -456,28 +584,53 @@ HDecodedAudio_invalidate <- function(self) {
 #'
 #' # Methods
 #'
-HDecodedAudio <- new.env(parent = emptyenv())
+`HDecodedAudio` <- new.env(parent = emptyenv())
+
+#' @export
+`$<-.HDecodedAudio` <- function(x, name, value) stop("HDecodedAudio cannot be modified", call. = FALSE)
+
+#' @export
+`[[<-.HDecodedAudio` <- function(x, i, value) stop("HDecodedAudio cannot be modified", call. = FALSE)
 
 ### associated functions for HDecodedAudio
 
 
 
+class(`HDecodedAudio`) <- "HDecodedAudio__bundle"
+
+#' @export
+`print.HDecodedAudio__bundle` <- function(x, ...) {
+  cat('HDecodedAudio')
+}
+
+#' @export
+`$<-.HDecodedAudio__bundle` <- function(x, name, value) stop("HDecodedAudio cannot be modified", call. = FALSE)
+
+#' @export
+`[[<-.HDecodedAudio__bundle` <- function(x, i, value) stop("HDecodedAudio cannot be modified", call. = FALSE)
+
 ### wrapper functions for HDecoderStream
 
-HDecoderStream_stream <- function(self) {
+`HDecoderStream_stream` <- function(self) {
   function() {
-    .savvy_wrap_HArray(.Call(savvy_HDecoderStream_stream__impl, self))
+    .savvy_wrap_HArray(.Call(savvy_HDecoderStream_stream__impl, `self`))
   }
 }
 
-.savvy_wrap_HDecoderStream <- function(ptr) {
+`.savvy_wrap_HDecoderStream` <- function(ptr) {
   e <- new.env(parent = emptyenv())
   e$.ptr <- ptr
-    e$stream <- HDecoderStream_stream(ptr)
-  
+  e$`stream` <- `HDecoderStream_stream`(ptr)
+
   class(e) <- "HDecoderStream"
   e
 }
+
+#' @export
+`$<-.HDecoderStream` <- function(x, name, value) stop("HDecoderStream cannot be modified", call. = FALSE)
+
+#' @export
+`[[<-.HDecoderStream` <- function(x, i, value) stop("HDecoderStream cannot be modified", call. = FALSE)
 
 
 #' HDecoderStream
@@ -485,51 +638,76 @@ HDecoderStream_stream <- function(self) {
 #'
 #' # Methods
 #'
-HDecoderStream <- new.env(parent = emptyenv())
+`HDecoderStream` <- new.env(parent = emptyenv())
+
+#' @export
+`$<-.HDecoderStream` <- function(x, name, value) stop("HDecoderStream cannot be modified", call. = FALSE)
+
+#' @export
+`[[<-.HDecoderStream` <- function(x, i, value) stop("HDecoderStream cannot be modified", call. = FALSE)
 
 ### associated functions for HDecoderStream
 
 
 
+class(`HDecoderStream`) <- "HDecoderStream__bundle"
+
+#' @export
+`print.HDecoderStream__bundle` <- function(x, ...) {
+  cat('HDecoderStream')
+}
+
+#' @export
+`$<-.HDecoderStream__bundle` <- function(x, name, value) stop("HDecoderStream cannot be modified", call. = FALSE)
+
+#' @export
+`[[<-.HDecoderStream__bundle` <- function(x, i, value) stop("HDecoderStream cannot be modified", call. = FALSE)
+
 ### wrapper functions for HFftPlanner
 
-HFftPlanner_fft <- function(self) {
-  function(harray) {
-    harray <- .savvy_extract_ptr(harray, "HArray")
-invisible(.Call(savvy_HFftPlanner_fft__impl, self, harray))
+`HFftPlanner_fft` <- function(self) {
+  function(`harray`) {
+    `harray` <- .savvy_extract_ptr(`harray`, "HArray")
+    invisible(.Call(savvy_HFftPlanner_fft__impl, `self`, `harray`))
   }
 }
 
-HFftPlanner_ifft <- function(self) {
-  function(harray) {
-    harray <- .savvy_extract_ptr(harray, "HArray")
-invisible(.Call(savvy_HFftPlanner_ifft__impl, self, harray))
+`HFftPlanner_ifft` <- function(self) {
+  function(`harray`) {
+    `harray` <- .savvy_extract_ptr(`harray`, "HArray")
+    invisible(.Call(savvy_HFftPlanner_ifft__impl, `self`, `harray`))
   }
 }
 
-HFftPlanner_dtype <- function(self) {
+`HFftPlanner_dtype` <- function(self) {
   function() {
-    .savvy_wrap_HDataType(.Call(savvy_HFftPlanner_dtype__impl, self))
+    .savvy_wrap_HDataType(.Call(savvy_HFftPlanner_dtype__impl, `self`))
   }
 }
 
-HFftPlanner_print <- function(self) {
+`HFftPlanner_print` <- function(self) {
   function() {
-  invisible(.Call(savvy_HFftPlanner_print__impl, self))
+    invisible(.Call(savvy_HFftPlanner_print__impl, `self`))
   }
 }
 
-.savvy_wrap_HFftPlanner <- function(ptr) {
+`.savvy_wrap_HFftPlanner` <- function(ptr) {
   e <- new.env(parent = emptyenv())
   e$.ptr <- ptr
-    e$fft <- HFftPlanner_fft(ptr)
-  e$ifft <- HFftPlanner_ifft(ptr)
-  e$dtype <- HFftPlanner_dtype(ptr)
-  e$print <- HFftPlanner_print(ptr)
-  
+  e$`fft` <- `HFftPlanner_fft`(ptr)
+  e$`ifft` <- `HFftPlanner_ifft`(ptr)
+  e$`dtype` <- `HFftPlanner_dtype`(ptr)
+  e$`print` <- `HFftPlanner_print`(ptr)
+
   class(e) <- "HFftPlanner"
   e
 }
+
+#' @export
+`$<-.HFftPlanner` <- function(x, name, value) stop("HFftPlanner cannot be modified", call. = FALSE)
+
+#' @export
+`[[<-.HFftPlanner` <- function(x, i, value) stop("HFftPlanner cannot be modified", call. = FALSE)
 
 
 #' HFftPlanner
@@ -537,27 +715,52 @@ HFftPlanner_print <- function(self) {
 #'
 #' # Methods
 #'
-HFftPlanner <- new.env(parent = emptyenv())
+`HFftPlanner` <- new.env(parent = emptyenv())
+
+#' @export
+`$<-.HFftPlanner` <- function(x, name, value) stop("HFftPlanner cannot be modified", call. = FALSE)
+
+#' @export
+`[[<-.HFftPlanner` <- function(x, i, value) stop("HFftPlanner cannot be modified", call. = FALSE)
 
 ### associated functions for HFftPlanner
 
-HFftPlanner$new <- function(dtype) {
-  dtype <- .savvy_extract_ptr(dtype, "HDataType")
-  .savvy_wrap_HFftPlanner(.Call(savvy_HFftPlanner_new__impl, dtype))
+`HFftPlanner`$`new` <- function(`dtype`) {
+  `dtype` <- .savvy_extract_ptr(`dtype`, "HDataType")
+  .savvy_wrap_HFftPlanner(.Call(savvy_HFftPlanner_new__impl, `dtype`))
 }
 
+
+class(`HFftPlanner`) <- "HFftPlanner__bundle"
+
+#' @export
+`print.HFftPlanner__bundle` <- function(x, ...) {
+  cat('HFftPlanner')
+}
+
+#' @export
+`$<-.HFftPlanner__bundle` <- function(x, name, value) stop("HFftPlanner cannot be modified", call. = FALSE)
+
+#' @export
+`[[<-.HFftPlanner__bundle` <- function(x, i, value) stop("HFftPlanner cannot be modified", call. = FALSE)
 
 ### wrapper functions for HFile
 
 
-.savvy_wrap_HFile <- function(ptr) {
+`.savvy_wrap_HFile` <- function(ptr) {
   e <- new.env(parent = emptyenv())
   e$.ptr <- ptr
-  
-  
+
+
   class(e) <- "HFile"
   e
 }
+
+#' @export
+`$<-.HFile` <- function(x, name, value) stop("HFile cannot be modified", call. = FALSE)
+
+#' @export
+`[[<-.HFile` <- function(x, i, value) stop("HFile cannot be modified", call. = FALSE)
 
 
 #' HFile
@@ -565,66 +768,91 @@ HFftPlanner$new <- function(dtype) {
 #'
 #' # Methods
 #'
-HFile <- new.env(parent = emptyenv())
+`HFile` <- new.env(parent = emptyenv())
+
+#' @export
+`$<-.HFile` <- function(x, name, value) stop("HFile cannot be modified", call. = FALSE)
+
+#' @export
+`[[<-.HFile` <- function(x, i, value) stop("HFile cannot be modified", call. = FALSE)
 
 ### associated functions for HFile
 
-HFile$decode <- function(fpath, dtype) {
-  dtype <- .savvy_extract_ptr(dtype, "HDataType")
-  .savvy_wrap_HDecodedAudio(.Call(savvy_HFile_decode__impl, fpath, dtype))
+`HFile`$`decode` <- function(`fpath`, `dtype`) {
+  `dtype` <- .savvy_extract_ptr(`dtype`, "HDataType")
+  .savvy_wrap_HDecodedAudio(.Call(savvy_HFile_decode__impl, `fpath`, `dtype`))
 }
 
-HFile$decode_stream <- function(fpath, frames, dtype) {
-  dtype <- .savvy_extract_ptr(dtype, "HDataType")
-  .savvy_wrap_HDecoderStream(.Call(savvy_HFile_decode_stream__impl, fpath, frames, dtype))
+`HFile`$`decode_stream` <- function(`fpath`, `frames`, `dtype`) {
+  `dtype` <- .savvy_extract_ptr(`dtype`, "HDataType")
+  .savvy_wrap_HDecoderStream(.Call(savvy_HFile_decode_stream__impl, `fpath`, `frames`, `dtype`))
 }
 
-HFile$metadata <- function(fpath, metadata_type) {
-  metadata_type <- .savvy_extract_ptr(metadata_type, "HMetadataType")
-.Call(savvy_HFile_metadata__impl, fpath, metadata_type)
+`HFile`$`metadata` <- function(`fpath`, `metadata_type`) {
+  `metadata_type` <- .savvy_extract_ptr(`metadata_type`, "HMetadataType")
+  .Call(savvy_HFile_metadata__impl, `fpath`, `metadata_type`)
 }
 
-HFile$params <- function(fpath) {
-.Call(savvy_HFile_params__impl, fpath)
+`HFile`$`params` <- function(`fpath`) {
+  .Call(savvy_HFile_params__impl, `fpath`)
 }
 
-HFile$verify <- function(fpath) {
-.Call(savvy_HFile_verify__impl, fpath)
+`HFile`$`verify` <- function(`fpath`) {
+  .Call(savvy_HFile_verify__impl, `fpath`)
 }
 
+
+class(`HFile`) <- "HFile__bundle"
+
+#' @export
+`print.HFile__bundle` <- function(x, ...) {
+  cat('HFile')
+}
+
+#' @export
+`$<-.HFile__bundle` <- function(x, name, value) stop("HFile cannot be modified", call. = FALSE)
+
+#' @export
+`[[<-.HFile__bundle` <- function(x, i, value) stop("HFile cannot be modified", call. = FALSE)
 
 ### wrapper functions for HInterpolationType
 
-HInterpolationType_print <- function(self) {
+`HInterpolationType_print` <- function(self) {
   function() {
-  invisible(.Call(savvy_HInterpolationType_print__impl, self))
+    invisible(.Call(savvy_HInterpolationType_print__impl, `self`))
   }
 }
 
-HInterpolationType_eq <- function(self) {
-  function(other) {
-    other <- .savvy_extract_ptr(other, "HInterpolationType")
-.Call(savvy_HInterpolationType_eq__impl, self, other)
+`HInterpolationType_eq` <- function(self) {
+  function(`other`) {
+    `other` <- .savvy_extract_ptr(`other`, "HInterpolationType")
+    .Call(savvy_HInterpolationType_eq__impl, `self`, `other`)
   }
 }
 
-HInterpolationType_ne <- function(self) {
-  function(other) {
-    other <- .savvy_extract_ptr(other, "HInterpolationType")
-.Call(savvy_HInterpolationType_ne__impl, self, other)
+`HInterpolationType_ne` <- function(self) {
+  function(`other`) {
+    `other` <- .savvy_extract_ptr(`other`, "HInterpolationType")
+    .Call(savvy_HInterpolationType_ne__impl, `self`, `other`)
   }
 }
 
-.savvy_wrap_HInterpolationType <- function(ptr) {
+`.savvy_wrap_HInterpolationType` <- function(ptr) {
   e <- new.env(parent = emptyenv())
   e$.ptr <- ptr
-    e$print <- HInterpolationType_print(ptr)
-  e$eq <- HInterpolationType_eq(ptr)
-  e$ne <- HInterpolationType_ne(ptr)
-  
+  e$`print` <- `HInterpolationType_print`(ptr)
+  e$`eq` <- `HInterpolationType_eq`(ptr)
+  e$`ne` <- `HInterpolationType_ne`(ptr)
+
   class(e) <- "HInterpolationType"
   e
 }
+
+#' @export
+`$<-.HInterpolationType` <- function(x, name, value) stop("HInterpolationType cannot be modified", call. = FALSE)
+
+#' @export
+`[[<-.HInterpolationType` <- function(x, i, value) stop("HInterpolationType cannot be modified", call. = FALSE)
 
 
 #' HInterpolationType
@@ -634,14 +862,36 @@ HInterpolationType_ne <- function(self) {
 #'
 #' # Methods
 #'
-HInterpolationType <- new.env(parent = emptyenv())
-HInterpolationType$Cubic <- .savvy_wrap_HInterpolationType(0L)
-HInterpolationType$Linear <- .savvy_wrap_HInterpolationType(1L)
-HInterpolationType$Quadratic <- .savvy_wrap_HInterpolationType(2L)
-HInterpolationType$Nearest <- .savvy_wrap_HInterpolationType(3L)
+`HInterpolationType` <- new.env(parent = emptyenv())
+`HInterpolationType`$`Cubic` <- .savvy_wrap_HInterpolationType(0L)
+`HInterpolationType`$`Linear` <- .savvy_wrap_HInterpolationType(1L)
+`HInterpolationType`$`Quadratic` <- .savvy_wrap_HInterpolationType(2L)
+`HInterpolationType`$`Nearest` <- .savvy_wrap_HInterpolationType(3L)
 
 #' @export
-print.HInterpolationType <- function(x, ...) {
+`$.HInterpolationType__bundle` <- function(x, name) {
+  if (!name %in% c("Cubic", "Linear", "Quadratic", "Nearest")) {
+    stop(paste0("Unknown variant: ", name), call. = FALSE)
+  }
+
+  NextMethod()
+}
+
+#' @export
+`[[.HInterpolationType__bundle` <- function(x, i) {
+  if (is.numeric(i)) {
+    stop("HInterpolationType cannot be subset by index", call. = FALSE)
+  }
+
+  if (!i %in% c("Cubic", "Linear", "Quadratic", "Nearest")) {
+    stop(paste0("Unknown variant: ", i), call. = FALSE)
+  }
+
+  NextMethod()
+}
+
+#' @export
+`print.HInterpolationType` <- function(x, ...) {
   idx <- x$.ptr + 1L
   label <- c("Cubic", "Linear", "Quadratic", "Nearest")[idx]
   if (is.na(label)) {
@@ -651,42 +901,67 @@ print.HInterpolationType <- function(x, ...) {
 }
 
 
+#' @export
+`$<-.HInterpolationType` <- function(x, name, value) stop("HInterpolationType cannot be modified", call. = FALSE)
+
+#' @export
+`[[<-.HInterpolationType` <- function(x, i, value) stop("HInterpolationType cannot be modified", call. = FALSE)
+
 ### associated functions for HInterpolationType
 
 
 
+class(`HInterpolationType`) <- "HInterpolationType__bundle"
+
+#' @export
+`print.HInterpolationType__bundle` <- function(x, ...) {
+  cat('HInterpolationType')
+}
+
+#' @export
+`$<-.HInterpolationType__bundle` <- function(x, name, value) stop("HInterpolationType cannot be modified", call. = FALSE)
+
+#' @export
+`[[<-.HInterpolationType__bundle` <- function(x, i, value) stop("HInterpolationType cannot be modified", call. = FALSE)
+
 ### wrapper functions for HMetadataType
 
-HMetadataType_print <- function(self) {
+`HMetadataType_print` <- function(self) {
   function() {
-  invisible(.Call(savvy_HMetadataType_print__impl, self))
+    invisible(.Call(savvy_HMetadataType_print__impl, `self`))
   }
 }
 
-HMetadataType_eq <- function(self) {
-  function(other) {
-    other <- .savvy_extract_ptr(other, "HMetadataType")
-.Call(savvy_HMetadataType_eq__impl, self, other)
+`HMetadataType_eq` <- function(self) {
+  function(`other`) {
+    `other` <- .savvy_extract_ptr(`other`, "HMetadataType")
+    .Call(savvy_HMetadataType_eq__impl, `self`, `other`)
   }
 }
 
-HMetadataType_ne <- function(self) {
-  function(other) {
-    other <- .savvy_extract_ptr(other, "HMetadataType")
-.Call(savvy_HMetadataType_ne__impl, self, other)
+`HMetadataType_ne` <- function(self) {
+  function(`other`) {
+    `other` <- .savvy_extract_ptr(`other`, "HMetadataType")
+    .Call(savvy_HMetadataType_ne__impl, `self`, `other`)
   }
 }
 
-.savvy_wrap_HMetadataType <- function(ptr) {
+`.savvy_wrap_HMetadataType` <- function(ptr) {
   e <- new.env(parent = emptyenv())
   e$.ptr <- ptr
-    e$print <- HMetadataType_print(ptr)
-  e$eq <- HMetadataType_eq(ptr)
-  e$ne <- HMetadataType_ne(ptr)
-  
+  e$`print` <- `HMetadataType_print`(ptr)
+  e$`eq` <- `HMetadataType_eq`(ptr)
+  e$`ne` <- `HMetadataType_ne`(ptr)
+
   class(e) <- "HMetadataType"
   e
 }
+
+#' @export
+`$<-.HMetadataType` <- function(x, name, value) stop("HMetadataType cannot be modified", call. = FALSE)
+
+#' @export
+`[[<-.HMetadataType` <- function(x, i, value) stop("HMetadataType cannot be modified", call. = FALSE)
 
 
 #' HMetadataType
@@ -696,13 +971,35 @@ HMetadataType_ne <- function(self) {
 #'
 #' # Methods
 #'
-HMetadataType <- new.env(parent = emptyenv())
-HMetadataType$All <- .savvy_wrap_HMetadataType(0L)
-HMetadataType$Text <- .savvy_wrap_HMetadataType(1L)
-HMetadataType$Visual <- .savvy_wrap_HMetadataType(2L)
+`HMetadataType` <- new.env(parent = emptyenv())
+`HMetadataType`$`All` <- .savvy_wrap_HMetadataType(0L)
+`HMetadataType`$`Text` <- .savvy_wrap_HMetadataType(1L)
+`HMetadataType`$`Visual` <- .savvy_wrap_HMetadataType(2L)
 
 #' @export
-print.HMetadataType <- function(x, ...) {
+`$.HMetadataType__bundle` <- function(x, name) {
+  if (!name %in% c("All", "Text", "Visual")) {
+    stop(paste0("Unknown variant: ", name), call. = FALSE)
+  }
+
+  NextMethod()
+}
+
+#' @export
+`[[.HMetadataType__bundle` <- function(x, i) {
+  if (is.numeric(i)) {
+    stop("HMetadataType cannot be subset by index", call. = FALSE)
+  }
+
+  if (!i %in% c("All", "Text", "Visual")) {
+    stop(paste0("Unknown variant: ", i), call. = FALSE)
+  }
+
+  NextMethod()
+}
+
+#' @export
+`print.HMetadataType` <- function(x, ...) {
   idx <- x$.ptr + 1L
   label <- c("All", "Text", "Visual")[idx]
   if (is.na(label)) {
@@ -712,42 +1009,67 @@ print.HMetadataType <- function(x, ...) {
 }
 
 
+#' @export
+`$<-.HMetadataType` <- function(x, name, value) stop("HMetadataType cannot be modified", call. = FALSE)
+
+#' @export
+`[[<-.HMetadataType` <- function(x, i, value) stop("HMetadataType cannot be modified", call. = FALSE)
+
 ### associated functions for HMetadataType
 
 
 
+class(`HMetadataType`) <- "HMetadataType__bundle"
+
+#' @export
+`print.HMetadataType__bundle` <- function(x, ...) {
+  cat('HMetadataType')
+}
+
+#' @export
+`$<-.HMetadataType__bundle` <- function(x, name, value) stop("HMetadataType cannot be modified", call. = FALSE)
+
+#' @export
+`[[<-.HMetadataType__bundle` <- function(x, i, value) stop("HMetadataType cannot be modified", call. = FALSE)
+
 ### wrapper functions for HPolynomialDegree
 
-HPolynomialDegree_print <- function(self) {
+`HPolynomialDegree_print` <- function(self) {
   function() {
-  invisible(.Call(savvy_HPolynomialDegree_print__impl, self))
+    invisible(.Call(savvy_HPolynomialDegree_print__impl, `self`))
   }
 }
 
-HPolynomialDegree_eq <- function(self) {
-  function(other) {
-    other <- .savvy_extract_ptr(other, "HPolynomialDegree")
-.Call(savvy_HPolynomialDegree_eq__impl, self, other)
+`HPolynomialDegree_eq` <- function(self) {
+  function(`other`) {
+    `other` <- .savvy_extract_ptr(`other`, "HPolynomialDegree")
+    .Call(savvy_HPolynomialDegree_eq__impl, `self`, `other`)
   }
 }
 
-HPolynomialDegree_ne <- function(self) {
-  function(other) {
-    other <- .savvy_extract_ptr(other, "HPolynomialDegree")
-.Call(savvy_HPolynomialDegree_ne__impl, self, other)
+`HPolynomialDegree_ne` <- function(self) {
+  function(`other`) {
+    `other` <- .savvy_extract_ptr(`other`, "HPolynomialDegree")
+    .Call(savvy_HPolynomialDegree_ne__impl, `self`, `other`)
   }
 }
 
-.savvy_wrap_HPolynomialDegree <- function(ptr) {
+`.savvy_wrap_HPolynomialDegree` <- function(ptr) {
   e <- new.env(parent = emptyenv())
   e$.ptr <- ptr
-    e$print <- HPolynomialDegree_print(ptr)
-  e$eq <- HPolynomialDegree_eq(ptr)
-  e$ne <- HPolynomialDegree_ne(ptr)
-  
+  e$`print` <- `HPolynomialDegree_print`(ptr)
+  e$`eq` <- `HPolynomialDegree_eq`(ptr)
+  e$`ne` <- `HPolynomialDegree_ne`(ptr)
+
   class(e) <- "HPolynomialDegree"
   e
 }
+
+#' @export
+`$<-.HPolynomialDegree` <- function(x, name, value) stop("HPolynomialDegree cannot be modified", call. = FALSE)
+
+#' @export
+`[[<-.HPolynomialDegree` <- function(x, i, value) stop("HPolynomialDegree cannot be modified", call. = FALSE)
 
 
 #' HPolynomialDegree
@@ -775,15 +1097,37 @@ HPolynomialDegree_ne <- function(self) {
 #'
 #' # Methods
 #'
-HPolynomialDegree <- new.env(parent = emptyenv())
-HPolynomialDegree$Septic <- .savvy_wrap_HPolynomialDegree(0L)
-HPolynomialDegree$Quintic <- .savvy_wrap_HPolynomialDegree(1L)
-HPolynomialDegree$Cubic <- .savvy_wrap_HPolynomialDegree(2L)
-HPolynomialDegree$Linear <- .savvy_wrap_HPolynomialDegree(3L)
-HPolynomialDegree$Nearest <- .savvy_wrap_HPolynomialDegree(4L)
+`HPolynomialDegree` <- new.env(parent = emptyenv())
+`HPolynomialDegree`$`Septic` <- .savvy_wrap_HPolynomialDegree(0L)
+`HPolynomialDegree`$`Quintic` <- .savvy_wrap_HPolynomialDegree(1L)
+`HPolynomialDegree`$`Cubic` <- .savvy_wrap_HPolynomialDegree(2L)
+`HPolynomialDegree`$`Linear` <- .savvy_wrap_HPolynomialDegree(3L)
+`HPolynomialDegree`$`Nearest` <- .savvy_wrap_HPolynomialDegree(4L)
 
 #' @export
-print.HPolynomialDegree <- function(x, ...) {
+`$.HPolynomialDegree__bundle` <- function(x, name) {
+  if (!name %in% c("Septic", "Quintic", "Cubic", "Linear", "Nearest")) {
+    stop(paste0("Unknown variant: ", name), call. = FALSE)
+  }
+
+  NextMethod()
+}
+
+#' @export
+`[[.HPolynomialDegree__bundle` <- function(x, i) {
+  if (is.numeric(i)) {
+    stop("HPolynomialDegree cannot be subset by index", call. = FALSE)
+  }
+
+  if (!i %in% c("Septic", "Quintic", "Cubic", "Linear", "Nearest")) {
+    stop(paste0("Unknown variant: ", i), call. = FALSE)
+  }
+
+  NextMethod()
+}
+
+#' @export
+`print.HPolynomialDegree` <- function(x, ...) {
   idx <- x$.ptr + 1L
   label <- c("Septic", "Quintic", "Cubic", "Linear", "Nearest")[idx]
   if (is.na(label)) {
@@ -793,49 +1137,74 @@ print.HPolynomialDegree <- function(x, ...) {
 }
 
 
+#' @export
+`$<-.HPolynomialDegree` <- function(x, name, value) stop("HPolynomialDegree cannot be modified", call. = FALSE)
+
+#' @export
+`[[<-.HPolynomialDegree` <- function(x, i, value) stop("HPolynomialDegree cannot be modified", call. = FALSE)
+
 ### associated functions for HPolynomialDegree
 
 
 
+class(`HPolynomialDegree`) <- "HPolynomialDegree__bundle"
+
+#' @export
+`print.HPolynomialDegree__bundle` <- function(x, ...) {
+  cat('HPolynomialDegree')
+}
+
+#' @export
+`$<-.HPolynomialDegree__bundle` <- function(x, name, value) stop("HPolynomialDegree cannot be modified", call. = FALSE)
+
+#' @export
+`[[<-.HPolynomialDegree__bundle` <- function(x, i, value) stop("HPolynomialDegree cannot be modified", call. = FALSE)
+
 ### wrapper functions for HRealFftPlanner
 
-HRealFftPlanner_rfft <- function(self) {
-  function(harray) {
-    harray <- .savvy_extract_ptr(harray, "HArray")
-invisible(.Call(savvy_HRealFftPlanner_rfft__impl, self, harray))
+`HRealFftPlanner_rfft` <- function(self) {
+  function(`harray`) {
+    `harray` <- .savvy_extract_ptr(`harray`, "HArray")
+    invisible(.Call(savvy_HRealFftPlanner_rfft__impl, `self`, `harray`))
   }
 }
 
-HRealFftPlanner_irfft <- function(self) {
-  function(harray, length) {
-    harray <- .savvy_extract_ptr(harray, "HArray")
-invisible(.Call(savvy_HRealFftPlanner_irfft__impl, self, harray, length))
+`HRealFftPlanner_irfft` <- function(self) {
+  function(`harray`, `length`) {
+    `harray` <- .savvy_extract_ptr(`harray`, "HArray")
+    invisible(.Call(savvy_HRealFftPlanner_irfft__impl, `self`, `harray`, `length`))
   }
 }
 
-HRealFftPlanner_dtype <- function(self) {
+`HRealFftPlanner_dtype` <- function(self) {
   function() {
-    .savvy_wrap_HDataType(.Call(savvy_HRealFftPlanner_dtype__impl, self))
+    .savvy_wrap_HDataType(.Call(savvy_HRealFftPlanner_dtype__impl, `self`))
   }
 }
 
-HRealFftPlanner_print <- function(self) {
+`HRealFftPlanner_print` <- function(self) {
   function() {
-  invisible(.Call(savvy_HRealFftPlanner_print__impl, self))
+    invisible(.Call(savvy_HRealFftPlanner_print__impl, `self`))
   }
 }
 
-.savvy_wrap_HRealFftPlanner <- function(ptr) {
+`.savvy_wrap_HRealFftPlanner` <- function(ptr) {
   e <- new.env(parent = emptyenv())
   e$.ptr <- ptr
-    e$rfft <- HRealFftPlanner_rfft(ptr)
-  e$irfft <- HRealFftPlanner_irfft(ptr)
-  e$dtype <- HRealFftPlanner_dtype(ptr)
-  e$print <- HRealFftPlanner_print(ptr)
-  
+  e$`rfft` <- `HRealFftPlanner_rfft`(ptr)
+  e$`irfft` <- `HRealFftPlanner_irfft`(ptr)
+  e$`dtype` <- `HRealFftPlanner_dtype`(ptr)
+  e$`print` <- `HRealFftPlanner_print`(ptr)
+
   class(e) <- "HRealFftPlanner"
   e
 }
+
+#' @export
+`$<-.HRealFftPlanner` <- function(x, name, value) stop("HRealFftPlanner cannot be modified", call. = FALSE)
+
+#' @export
+`[[<-.HRealFftPlanner` <- function(x, i, value) stop("HRealFftPlanner cannot be modified", call. = FALSE)
 
 
 #' HRealFftPlanner
@@ -845,75 +1214,100 @@ HRealFftPlanner_print <- function(self) {
 #'
 #' # Methods
 #'
-HRealFftPlanner <- new.env(parent = emptyenv())
+`HRealFftPlanner` <- new.env(parent = emptyenv())
+
+#' @export
+`$<-.HRealFftPlanner` <- function(x, name, value) stop("HRealFftPlanner cannot be modified", call. = FALSE)
+
+#' @export
+`[[<-.HRealFftPlanner` <- function(x, i, value) stop("HRealFftPlanner cannot be modified", call. = FALSE)
 
 ### associated functions for HRealFftPlanner
 
-HRealFftPlanner$new <- function(dtype) {
-  dtype <- .savvy_extract_ptr(dtype, "HDataType")
-  .savvy_wrap_HRealFftPlanner(.Call(savvy_HRealFftPlanner_new__impl, dtype))
+`HRealFftPlanner`$`new` <- function(`dtype`) {
+  `dtype` <- .savvy_extract_ptr(`dtype`, "HDataType")
+  .savvy_wrap_HRealFftPlanner(.Call(savvy_HRealFftPlanner_new__impl, `dtype`))
 }
 
+
+class(`HRealFftPlanner`) <- "HRealFftPlanner__bundle"
+
+#' @export
+`print.HRealFftPlanner__bundle` <- function(x, ...) {
+  cat('HRealFftPlanner')
+}
+
+#' @export
+`$<-.HRealFftPlanner__bundle` <- function(x, name, value) stop("HRealFftPlanner cannot be modified", call. = FALSE)
+
+#' @export
+`[[<-.HRealFftPlanner__bundle` <- function(x, i, value) stop("HRealFftPlanner cannot be modified", call. = FALSE)
 
 ### wrapper functions for HResampler
 
-HResampler_process <- function(self) {
-  function(harray) {
-    harray <- .savvy_extract_ptr(harray, "HArray")
-invisible(.Call(savvy_HResampler_process__impl, self, harray))
+`HResampler_process` <- function(self) {
+  function(`harray`) {
+    `harray` <- .savvy_extract_ptr(`harray`, "HArray")
+    invisible(.Call(savvy_HResampler_process__impl, `self`, `harray`))
   }
 }
 
-HResampler_set_resample_ratio <- function(self) {
-  function(new_ratio, ramp) {
-  invisible(.Call(savvy_HResampler_set_resample_ratio__impl, self, new_ratio, ramp))
+`HResampler_set_resample_ratio` <- function(self) {
+  function(`new_ratio`, `ramp`) {
+    invisible(.Call(savvy_HResampler_set_resample_ratio__impl, `self`, `new_ratio`, `ramp`))
   }
 }
 
-HResampler_set_resample_ratio_relative <- function(self) {
-  function(rel_ratio, ramp) {
-  invisible(.Call(savvy_HResampler_set_resample_ratio_relative__impl, self, rel_ratio, ramp))
+`HResampler_set_resample_ratio_relative` <- function(self) {
+  function(`rel_ratio`, `ramp`) {
+    invisible(.Call(savvy_HResampler_set_resample_ratio_relative__impl, `self`, `rel_ratio`, `ramp`))
   }
 }
 
-HResampler_reset <- function(self) {
+`HResampler_reset` <- function(self) {
   function() {
-  invisible(.Call(savvy_HResampler_reset__impl, self))
+    invisible(.Call(savvy_HResampler_reset__impl, `self`))
   }
 }
 
-HResampler_res_type <- function(self) {
+`HResampler_res_type` <- function(self) {
   function() {
-    .savvy_wrap_HResamplerType(.Call(savvy_HResampler_res_type__impl, self))
+    .savvy_wrap_HResamplerType(.Call(savvy_HResampler_res_type__impl, `self`))
   }
 }
 
-HResampler_dtype <- function(self) {
+`HResampler_dtype` <- function(self) {
   function() {
-    .savvy_wrap_HDataType(.Call(savvy_HResampler_dtype__impl, self))
+    .savvy_wrap_HDataType(.Call(savvy_HResampler_dtype__impl, `self`))
   }
 }
 
-HResampler_print <- function(self) {
+`HResampler_print` <- function(self) {
   function() {
-  invisible(.Call(savvy_HResampler_print__impl, self))
+    invisible(.Call(savvy_HResampler_print__impl, `self`))
   }
 }
 
-.savvy_wrap_HResampler <- function(ptr) {
+`.savvy_wrap_HResampler` <- function(ptr) {
   e <- new.env(parent = emptyenv())
   e$.ptr <- ptr
-    e$process <- HResampler_process(ptr)
-  e$set_resample_ratio <- HResampler_set_resample_ratio(ptr)
-  e$set_resample_ratio_relative <- HResampler_set_resample_ratio_relative(ptr)
-  e$reset <- HResampler_reset(ptr)
-  e$res_type <- HResampler_res_type(ptr)
-  e$dtype <- HResampler_dtype(ptr)
-  e$print <- HResampler_print(ptr)
-  
+  e$`process` <- `HResampler_process`(ptr)
+  e$`set_resample_ratio` <- `HResampler_set_resample_ratio`(ptr)
+  e$`set_resample_ratio_relative` <- `HResampler_set_resample_ratio_relative`(ptr)
+  e$`reset` <- `HResampler_reset`(ptr)
+  e$`res_type` <- `HResampler_res_type`(ptr)
+  e$`dtype` <- `HResampler_dtype`(ptr)
+  e$`print` <- `HResampler_print`(ptr)
+
   class(e) <- "HResampler"
   e
 }
+
+#' @export
+`$<-.HResampler` <- function(x, name, value) stop("HResampler cannot be modified", call. = FALSE)
+
+#' @export
+`[[<-.HResampler` <- function(x, i, value) stop("HResampler cannot be modified", call. = FALSE)
 
 
 #' HResampler
@@ -948,63 +1342,88 @@ HResampler_print <- function(self) {
 #'
 #' # Methods
 #'
-HResampler <- new.env(parent = emptyenv())
+`HResampler` <- new.env(parent = emptyenv())
+
+#' @export
+`$<-.HResampler` <- function(x, name, value) stop("HResampler cannot be modified", call. = FALSE)
+
+#' @export
+`[[<-.HResampler` <- function(x, i, value) stop("HResampler cannot be modified", call. = FALSE)
 
 ### associated functions for HResampler
 
-HResampler$new_fft <- function(sr_in, sr_out, chunk_size, sub_chunks, nchannels, res_type, dtype) {
-  res_type <- .savvy_extract_ptr(res_type, "HResamplerType")
-  dtype <- .savvy_extract_ptr(dtype, "HDataType")
-  .savvy_wrap_HResampler(.Call(savvy_HResampler_new_fft__impl, sr_in, sr_out, chunk_size, sub_chunks, nchannels, res_type, dtype))
+`HResampler`$`new_fft` <- function(`sr_in`, `sr_out`, `chunk_size`, `sub_chunks`, `nchannels`, `res_type`, `dtype`) {
+  `res_type` <- .savvy_extract_ptr(`res_type`, "HResamplerType")
+  `dtype` <- .savvy_extract_ptr(`dtype`, "HDataType")
+  .savvy_wrap_HResampler(.Call(savvy_HResampler_new_fft__impl, `sr_in`, `sr_out`, `chunk_size`, `sub_chunks`, `nchannels`, `res_type`, `dtype`))
 }
 
-HResampler$new_sinc <- function(resample_ratio, max_resample_ratio_relative, parameters, chunk_size, nchannels, res_type, dtype) {
-  parameters <- .savvy_extract_ptr(parameters, "HSincInterpolationParameters")
-  res_type <- .savvy_extract_ptr(res_type, "HResamplerType")
-  dtype <- .savvy_extract_ptr(dtype, "HDataType")
-  .savvy_wrap_HResampler(.Call(savvy_HResampler_new_sinc__impl, resample_ratio, max_resample_ratio_relative, parameters, chunk_size, nchannels, res_type, dtype))
+`HResampler`$`new_sinc` <- function(`resample_ratio`, `max_resample_ratio_relative`, `parameters`, `chunk_size`, `nchannels`, `res_type`, `dtype`) {
+  `parameters` <- .savvy_extract_ptr(`parameters`, "HSincInterpolationParameters")
+  `res_type` <- .savvy_extract_ptr(`res_type`, "HResamplerType")
+  `dtype` <- .savvy_extract_ptr(`dtype`, "HDataType")
+  .savvy_wrap_HResampler(.Call(savvy_HResampler_new_sinc__impl, `resample_ratio`, `max_resample_ratio_relative`, `parameters`, `chunk_size`, `nchannels`, `res_type`, `dtype`))
 }
 
-HResampler$new_fast <- function(resample_ratio, max_resample_ratio_relative, pol_deg, chunk_size, nchannels, res_type, dtype) {
-  pol_deg <- .savvy_extract_ptr(pol_deg, "HPolynomialDegree")
-  res_type <- .savvy_extract_ptr(res_type, "HResamplerType")
-  dtype <- .savvy_extract_ptr(dtype, "HDataType")
-  .savvy_wrap_HResampler(.Call(savvy_HResampler_new_fast__impl, resample_ratio, max_resample_ratio_relative, pol_deg, chunk_size, nchannels, res_type, dtype))
+`HResampler`$`new_fast` <- function(`resample_ratio`, `max_resample_ratio_relative`, `pol_deg`, `chunk_size`, `nchannels`, `res_type`, `dtype`) {
+  `pol_deg` <- .savvy_extract_ptr(`pol_deg`, "HPolynomialDegree")
+  `res_type` <- .savvy_extract_ptr(`res_type`, "HResamplerType")
+  `dtype` <- .savvy_extract_ptr(`dtype`, "HDataType")
+  .savvy_wrap_HResampler(.Call(savvy_HResampler_new_fast__impl, `resample_ratio`, `max_resample_ratio_relative`, `pol_deg`, `chunk_size`, `nchannels`, `res_type`, `dtype`))
 }
 
+
+class(`HResampler`) <- "HResampler__bundle"
+
+#' @export
+`print.HResampler__bundle` <- function(x, ...) {
+  cat('HResampler')
+}
+
+#' @export
+`$<-.HResampler__bundle` <- function(x, name, value) stop("HResampler cannot be modified", call. = FALSE)
+
+#' @export
+`[[<-.HResampler__bundle` <- function(x, i, value) stop("HResampler cannot be modified", call. = FALSE)
 
 ### wrapper functions for HResamplerType
 
-HResamplerType_print <- function(self) {
+`HResamplerType_print` <- function(self) {
   function() {
-  invisible(.Call(savvy_HResamplerType_print__impl, self))
+    invisible(.Call(savvy_HResamplerType_print__impl, `self`))
   }
 }
 
-HResamplerType_eq <- function(self) {
-  function(other) {
-    other <- .savvy_extract_ptr(other, "HResamplerType")
-.Call(savvy_HResamplerType_eq__impl, self, other)
+`HResamplerType_eq` <- function(self) {
+  function(`other`) {
+    `other` <- .savvy_extract_ptr(`other`, "HResamplerType")
+    .Call(savvy_HResamplerType_eq__impl, `self`, `other`)
   }
 }
 
-HResamplerType_ne <- function(self) {
-  function(other) {
-    other <- .savvy_extract_ptr(other, "HResamplerType")
-.Call(savvy_HResamplerType_ne__impl, self, other)
+`HResamplerType_ne` <- function(self) {
+  function(`other`) {
+    `other` <- .savvy_extract_ptr(`other`, "HResamplerType")
+    .Call(savvy_HResamplerType_ne__impl, `self`, `other`)
   }
 }
 
-.savvy_wrap_HResamplerType <- function(ptr) {
+`.savvy_wrap_HResamplerType` <- function(ptr) {
   e <- new.env(parent = emptyenv())
   e$.ptr <- ptr
-    e$print <- HResamplerType_print(ptr)
-  e$eq <- HResamplerType_eq(ptr)
-  e$ne <- HResamplerType_ne(ptr)
-  
+  e$`print` <- `HResamplerType_print`(ptr)
+  e$`eq` <- `HResamplerType_eq`(ptr)
+  e$`ne` <- `HResamplerType_ne`(ptr)
+
   class(e) <- "HResamplerType"
   e
 }
+
+#' @export
+`$<-.HResamplerType` <- function(x, name, value) stop("HResamplerType cannot be modified", call. = FALSE)
+
+#' @export
+`[[<-.HResamplerType` <- function(x, i, value) stop("HResamplerType cannot be modified", call. = FALSE)
 
 
 #' HResamplerType
@@ -1015,17 +1434,39 @@ HResamplerType_ne <- function(self) {
 #'
 #' # Methods
 #'
-HResamplerType <- new.env(parent = emptyenv())
-HResamplerType$FftFixedIn <- .savvy_wrap_HResamplerType(0L)
-HResamplerType$FftFixedInOut <- .savvy_wrap_HResamplerType(1L)
-HResamplerType$FftFixedOut <- .savvy_wrap_HResamplerType(2L)
-HResamplerType$SincFixedIn <- .savvy_wrap_HResamplerType(3L)
-HResamplerType$SincFixedOut <- .savvy_wrap_HResamplerType(4L)
-HResamplerType$FastFixedIn <- .savvy_wrap_HResamplerType(5L)
-HResamplerType$FastFixedOut <- .savvy_wrap_HResamplerType(6L)
+`HResamplerType` <- new.env(parent = emptyenv())
+`HResamplerType`$`FftFixedIn` <- .savvy_wrap_HResamplerType(0L)
+`HResamplerType`$`FftFixedInOut` <- .savvy_wrap_HResamplerType(1L)
+`HResamplerType`$`FftFixedOut` <- .savvy_wrap_HResamplerType(2L)
+`HResamplerType`$`SincFixedIn` <- .savvy_wrap_HResamplerType(3L)
+`HResamplerType`$`SincFixedOut` <- .savvy_wrap_HResamplerType(4L)
+`HResamplerType`$`FastFixedIn` <- .savvy_wrap_HResamplerType(5L)
+`HResamplerType`$`FastFixedOut` <- .savvy_wrap_HResamplerType(6L)
 
 #' @export
-print.HResamplerType <- function(x, ...) {
+`$.HResamplerType__bundle` <- function(x, name) {
+  if (!name %in% c("FftFixedIn", "FftFixedInOut", "FftFixedOut", "SincFixedIn", "SincFixedOut", "FastFixedIn", "FastFixedOut")) {
+    stop(paste0("Unknown variant: ", name), call. = FALSE)
+  }
+
+  NextMethod()
+}
+
+#' @export
+`[[.HResamplerType__bundle` <- function(x, i) {
+  if (is.numeric(i)) {
+    stop("HResamplerType cannot be subset by index", call. = FALSE)
+  }
+
+  if (!i %in% c("FftFixedIn", "FftFixedInOut", "FftFixedOut", "SincFixedIn", "SincFixedOut", "FastFixedIn", "FastFixedOut")) {
+    stop(paste0("Unknown variant: ", i), call. = FALSE)
+  }
+
+  NextMethod()
+}
+
+#' @export
+`print.HResamplerType` <- function(x, ...) {
   idx <- x$.ptr + 1L
   label <- c("FftFixedIn", "FftFixedInOut", "FftFixedOut", "SincFixedIn", "SincFixedOut", "FastFixedIn", "FastFixedOut")[idx]
   if (is.na(label)) {
@@ -1035,26 +1476,51 @@ print.HResamplerType <- function(x, ...) {
 }
 
 
+#' @export
+`$<-.HResamplerType` <- function(x, name, value) stop("HResamplerType cannot be modified", call. = FALSE)
+
+#' @export
+`[[<-.HResamplerType` <- function(x, i, value) stop("HResamplerType cannot be modified", call. = FALSE)
+
 ### associated functions for HResamplerType
 
 
 
+class(`HResamplerType`) <- "HResamplerType__bundle"
+
+#' @export
+`print.HResamplerType__bundle` <- function(x, ...) {
+  cat('HResamplerType')
+}
+
+#' @export
+`$<-.HResamplerType__bundle` <- function(x, name, value) stop("HResamplerType cannot be modified", call. = FALSE)
+
+#' @export
+`[[<-.HResamplerType__bundle` <- function(x, i, value) stop("HResamplerType cannot be modified", call. = FALSE)
+
 ### wrapper functions for HSincInterpolationParameters
 
-HSincInterpolationParameters_print <- function(self) {
+`HSincInterpolationParameters_print` <- function(self) {
   function() {
-  invisible(.Call(savvy_HSincInterpolationParameters_print__impl, self))
+    invisible(.Call(savvy_HSincInterpolationParameters_print__impl, `self`))
   }
 }
 
-.savvy_wrap_HSincInterpolationParameters <- function(ptr) {
+`.savvy_wrap_HSincInterpolationParameters` <- function(ptr) {
   e <- new.env(parent = emptyenv())
   e$.ptr <- ptr
-    e$print <- HSincInterpolationParameters_print(ptr)
-  
+  e$`print` <- `HSincInterpolationParameters_print`(ptr)
+
   class(e) <- "HSincInterpolationParameters"
   e
 }
+
+#' @export
+`$<-.HSincInterpolationParameters` <- function(x, name, value) stop("HSincInterpolationParameters cannot be modified", call. = FALSE)
+
+#' @export
+`[[<-.HSincInterpolationParameters` <- function(x, i, value) stop("HSincInterpolationParameters cannot be modified", call. = FALSE)
 
 
 #' HSincInterpolationParameters
@@ -1062,108 +1528,158 @@ HSincInterpolationParameters_print <- function(self) {
 #'
 #' # Methods
 #'
-HSincInterpolationParameters <- new.env(parent = emptyenv())
+`HSincInterpolationParameters` <- new.env(parent = emptyenv())
+
+#' @export
+`$<-.HSincInterpolationParameters` <- function(x, name, value) stop("HSincInterpolationParameters cannot be modified", call. = FALSE)
+
+#' @export
+`[[<-.HSincInterpolationParameters` <- function(x, i, value) stop("HSincInterpolationParameters cannot be modified", call. = FALSE)
 
 ### associated functions for HSincInterpolationParameters
 
-HSincInterpolationParameters$new <- function(sinc_len, f_cutoff, oversampling_factor, interpolation, window) {
-  interpolation <- .savvy_extract_ptr(interpolation, "HInterpolationType")
-  window <- .savvy_extract_ptr(window, "HWindowType")
-  .savvy_wrap_HSincInterpolationParameters(.Call(savvy_HSincInterpolationParameters_new__impl, sinc_len, f_cutoff, oversampling_factor, interpolation, window))
+`HSincInterpolationParameters`$`new` <- function(`sinc_len`, `f_cutoff`, `oversampling_factor`, `interpolation`, `window`) {
+  `interpolation` <- .savvy_extract_ptr(`interpolation`, "HInterpolationType")
+  `window` <- .savvy_extract_ptr(`window`, "HWindowType")
+  .savvy_wrap_HSincInterpolationParameters(.Call(savvy_HSincInterpolationParameters_new__impl, `sinc_len`, `f_cutoff`, `oversampling_factor`, `interpolation`, `window`))
 }
 
+
+class(`HSincInterpolationParameters`) <- "HSincInterpolationParameters__bundle"
+
+#' @export
+`print.HSincInterpolationParameters__bundle` <- function(x, ...) {
+  cat('HSincInterpolationParameters')
+}
+
+#' @export
+`$<-.HSincInterpolationParameters__bundle` <- function(x, name, value) stop("HSincInterpolationParameters cannot be modified", call. = FALSE)
+
+#' @export
+`[[<-.HSincInterpolationParameters__bundle` <- function(x, i, value) stop("HSincInterpolationParameters cannot be modified", call. = FALSE)
 
 ### wrapper functions for HWindow
 
 
-.savvy_wrap_HWindow <- function(ptr) {
+`.savvy_wrap_HWindow` <- function(ptr) {
   e <- new.env(parent = emptyenv())
   e$.ptr <- ptr
-  
-  
+
+
   class(e) <- "HWindow"
   e
 }
 
+#' @export
+`$<-.HWindow` <- function(x, name, value) stop("HWindow cannot be modified", call. = FALSE)
+
+#' @export
+`[[<-.HWindow` <- function(x, i, value) stop("HWindow cannot be modified", call. = FALSE)
 
 
-HWindow <- new.env(parent = emptyenv())
+
+`HWindow` <- new.env(parent = emptyenv())
+
+#' @export
+`$<-.HWindow` <- function(x, name, value) stop("HWindow cannot be modified", call. = FALSE)
+
+#' @export
+`[[<-.HWindow` <- function(x, i, value) stop("HWindow cannot be modified", call. = FALSE)
 
 ### associated functions for HWindow
 
-HWindow$barthann <- function(npoints, sym, dtype) {
-  dtype <- .savvy_extract_ptr(dtype, "HDataType")
-  .savvy_wrap_HArray(.Call(savvy_HWindow_barthann__impl, npoints, sym, dtype))
+`HWindow`$`barthann` <- function(`npoints`, `sym`, `dtype`) {
+  `dtype` <- .savvy_extract_ptr(`dtype`, "HDataType")
+  .savvy_wrap_HArray(.Call(savvy_HWindow_barthann__impl, `npoints`, `sym`, `dtype`))
 }
 
-HWindow$bartlett <- function(npoints, sym, dtype) {
-  dtype <- .savvy_extract_ptr(dtype, "HDataType")
-  .savvy_wrap_HArray(.Call(savvy_HWindow_bartlett__impl, npoints, sym, dtype))
+`HWindow`$`bartlett` <- function(`npoints`, `sym`, `dtype`) {
+  `dtype` <- .savvy_extract_ptr(`dtype`, "HDataType")
+  .savvy_wrap_HArray(.Call(savvy_HWindow_bartlett__impl, `npoints`, `sym`, `dtype`))
 }
 
-HWindow$blackman <- function(npoints, sym, dtype) {
-  dtype <- .savvy_extract_ptr(dtype, "HDataType")
-  .savvy_wrap_HArray(.Call(savvy_HWindow_blackman__impl, npoints, sym, dtype))
+`HWindow`$`blackman` <- function(`npoints`, `sym`, `dtype`) {
+  `dtype` <- .savvy_extract_ptr(`dtype`, "HDataType")
+  .savvy_wrap_HArray(.Call(savvy_HWindow_blackman__impl, `npoints`, `sym`, `dtype`))
 }
 
-HWindow$blackmanharris <- function(npoints, sym, dtype) {
-  dtype <- .savvy_extract_ptr(dtype, "HDataType")
-  .savvy_wrap_HArray(.Call(savvy_HWindow_blackmanharris__impl, npoints, sym, dtype))
+`HWindow`$`blackmanharris` <- function(`npoints`, `sym`, `dtype`) {
+  `dtype` <- .savvy_extract_ptr(`dtype`, "HDataType")
+  .savvy_wrap_HArray(.Call(savvy_HWindow_blackmanharris__impl, `npoints`, `sym`, `dtype`))
 }
 
-HWindow$bohman <- function(npoints, sym, dtype) {
-  dtype <- .savvy_extract_ptr(dtype, "HDataType")
-  .savvy_wrap_HArray(.Call(savvy_HWindow_bohman__impl, npoints, sym, dtype))
+`HWindow`$`bohman` <- function(`npoints`, `sym`, `dtype`) {
+  `dtype` <- .savvy_extract_ptr(`dtype`, "HDataType")
+  .savvy_wrap_HArray(.Call(savvy_HWindow_bohman__impl, `npoints`, `sym`, `dtype`))
 }
 
-HWindow$boxcar <- function(npoints, dtype) {
-  dtype <- .savvy_extract_ptr(dtype, "HDataType")
-  .savvy_wrap_HArray(.Call(savvy_HWindow_boxcar__impl, npoints, dtype))
+`HWindow`$`boxcar` <- function(`npoints`, `dtype`) {
+  `dtype` <- .savvy_extract_ptr(`dtype`, "HDataType")
+  .savvy_wrap_HArray(.Call(savvy_HWindow_boxcar__impl, `npoints`, `dtype`))
 }
 
-HWindow$cosine <- function(npoints, sym, dtype) {
-  dtype <- .savvy_extract_ptr(dtype, "HDataType")
-  .savvy_wrap_HArray(.Call(savvy_HWindow_cosine__impl, npoints, sym, dtype))
+`HWindow`$`cosine` <- function(`npoints`, `sym`, `dtype`) {
+  `dtype` <- .savvy_extract_ptr(`dtype`, "HDataType")
+  .savvy_wrap_HArray(.Call(savvy_HWindow_cosine__impl, `npoints`, `sym`, `dtype`))
 }
 
-HWindow$hann <- function(npoints, sym, dtype) {
-  dtype <- .savvy_extract_ptr(dtype, "HDataType")
-  .savvy_wrap_HArray(.Call(savvy_HWindow_hann__impl, npoints, sym, dtype))
+`HWindow`$`hann` <- function(`npoints`, `sym`, `dtype`) {
+  `dtype` <- .savvy_extract_ptr(`dtype`, "HDataType")
+  .savvy_wrap_HArray(.Call(savvy_HWindow_hann__impl, `npoints`, `sym`, `dtype`))
 }
 
+
+class(`HWindow`) <- "HWindow__bundle"
+
+#' @export
+`print.HWindow__bundle` <- function(x, ...) {
+  cat('HWindow')
+}
+
+#' @export
+`$<-.HWindow__bundle` <- function(x, name, value) stop("HWindow cannot be modified", call. = FALSE)
+
+#' @export
+`[[<-.HWindow__bundle` <- function(x, i, value) stop("HWindow cannot be modified", call. = FALSE)
 
 ### wrapper functions for HWindowType
 
-HWindowType_print <- function(self) {
+`HWindowType_print` <- function(self) {
   function() {
-  invisible(.Call(savvy_HWindowType_print__impl, self))
+    invisible(.Call(savvy_HWindowType_print__impl, `self`))
   }
 }
 
-HWindowType_eq <- function(self) {
-  function(other) {
-    other <- .savvy_extract_ptr(other, "HWindowType")
-.Call(savvy_HWindowType_eq__impl, self, other)
+`HWindowType_eq` <- function(self) {
+  function(`other`) {
+    `other` <- .savvy_extract_ptr(`other`, "HWindowType")
+    .Call(savvy_HWindowType_eq__impl, `self`, `other`)
   }
 }
 
-HWindowType_ne <- function(self) {
-  function(other) {
-    other <- .savvy_extract_ptr(other, "HWindowType")
-.Call(savvy_HWindowType_ne__impl, self, other)
+`HWindowType_ne` <- function(self) {
+  function(`other`) {
+    `other` <- .savvy_extract_ptr(`other`, "HWindowType")
+    .Call(savvy_HWindowType_ne__impl, `self`, `other`)
   }
 }
 
-.savvy_wrap_HWindowType <- function(ptr) {
+`.savvy_wrap_HWindowType` <- function(ptr) {
   e <- new.env(parent = emptyenv())
   e$.ptr <- ptr
-    e$print <- HWindowType_print(ptr)
-  e$eq <- HWindowType_eq(ptr)
-  e$ne <- HWindowType_ne(ptr)
-  
+  e$`print` <- `HWindowType_print`(ptr)
+  e$`eq` <- `HWindowType_eq`(ptr)
+  e$`ne` <- `HWindowType_ne`(ptr)
+
   class(e) <- "HWindowType"
   e
 }
+
+#' @export
+`$<-.HWindowType` <- function(x, name, value) stop("HWindowType cannot be modified", call. = FALSE)
+
+#' @export
+`[[<-.HWindowType` <- function(x, i, value) stop("HWindowType cannot be modified", call. = FALSE)
 
 
 #' HWindowType
@@ -1173,16 +1689,38 @@ HWindowType_ne <- function(self) {
 #'
 #' # Methods
 #'
-HWindowType <- new.env(parent = emptyenv())
-HWindowType$Blackman <- .savvy_wrap_HWindowType(0L)
-HWindowType$Blackman2 <- .savvy_wrap_HWindowType(1L)
-HWindowType$BlackmanHarris <- .savvy_wrap_HWindowType(2L)
-HWindowType$BlackmanHarris2 <- .savvy_wrap_HWindowType(3L)
-HWindowType$Hann <- .savvy_wrap_HWindowType(4L)
-HWindowType$Hann2 <- .savvy_wrap_HWindowType(5L)
+`HWindowType` <- new.env(parent = emptyenv())
+`HWindowType`$`Blackman` <- .savvy_wrap_HWindowType(0L)
+`HWindowType`$`Blackman2` <- .savvy_wrap_HWindowType(1L)
+`HWindowType`$`BlackmanHarris` <- .savvy_wrap_HWindowType(2L)
+`HWindowType`$`BlackmanHarris2` <- .savvy_wrap_HWindowType(3L)
+`HWindowType`$`Hann` <- .savvy_wrap_HWindowType(4L)
+`HWindowType`$`Hann2` <- .savvy_wrap_HWindowType(5L)
 
 #' @export
-print.HWindowType <- function(x, ...) {
+`$.HWindowType__bundle` <- function(x, name) {
+  if (!name %in% c("Blackman", "Blackman2", "BlackmanHarris", "BlackmanHarris2", "Hann", "Hann2")) {
+    stop(paste0("Unknown variant: ", name), call. = FALSE)
+  }
+
+  NextMethod()
+}
+
+#' @export
+`[[.HWindowType__bundle` <- function(x, i) {
+  if (is.numeric(i)) {
+    stop("HWindowType cannot be subset by index", call. = FALSE)
+  }
+
+  if (!i %in% c("Blackman", "Blackman2", "BlackmanHarris", "BlackmanHarris2", "Hann", "Hann2")) {
+    stop(paste0("Unknown variant: ", i), call. = FALSE)
+  }
+
+  NextMethod()
+}
+
+#' @export
+`print.HWindowType` <- function(x, ...) {
   idx <- x$.ptr + 1L
   label <- c("Blackman", "Blackman2", "BlackmanHarris", "BlackmanHarris2", "Hann", "Hann2")[idx]
   if (is.na(label)) {
@@ -1192,7 +1730,26 @@ print.HWindowType <- function(x, ...) {
 }
 
 
+#' @export
+`$<-.HWindowType` <- function(x, name, value) stop("HWindowType cannot be modified", call. = FALSE)
+
+#' @export
+`[[<-.HWindowType` <- function(x, i, value) stop("HWindowType cannot be modified", call. = FALSE)
+
 ### associated functions for HWindowType
 
 
+
+class(`HWindowType`) <- "HWindowType__bundle"
+
+#' @export
+`print.HWindowType__bundle` <- function(x, ...) {
+  cat('HWindowType')
+}
+
+#' @export
+`$<-.HWindowType__bundle` <- function(x, name, value) stop("HWindowType cannot be modified", call. = FALSE)
+
+#' @export
+`[[<-.HWindowType__bundle` <- function(x, i, value) stop("HWindowType cannot be modified", call. = FALSE)
 
