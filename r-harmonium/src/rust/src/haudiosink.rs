@@ -258,6 +258,35 @@ impl HAudioSink {
     }
 
     /// HAudioSink
+    /// ## get_pos
+    ///
+    /// `get_pos() -> double`
+    ///
+    /// Returns the position of the sound that’s being played.
+    /// This takes into account any speedup or delay applied.
+    /// Example: if you apply a speedup of 2 to an mp3 decoder source and get_pos() returns 5s then the position in the mp3 recording is 10s from its start.
+    ///
+    /// #### Returns
+    ///
+    /// A `double`.
+    ///
+    /// #### Examples
+    ///
+    /// ```r
+    /// library(harmonium)
+    /// haudiosink = HAudioSink$new()
+    /// haudiosink$append_from_file(fpath = "./r-harmonium/testfiles/gs-16b-2c-44100hz.wav")
+    /// haudiosink$get_pos()
+    /// ```
+    ///
+    /// _________
+    ///
+    pub fn get_pos(&self) -> savvy::Result<Sexp> {
+        let duration = self.0.get_pos().as_secs_f64();
+        duration.try_into()
+    }
+
+    /// HAudioSink
     /// ## is_empty
     ///
     /// `is_empty() -> bool`

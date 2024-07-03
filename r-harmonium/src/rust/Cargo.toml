@@ -17,11 +17,11 @@ panic = "unwind" # otherwise savvy crashes R when panic.
 # prevents package from thinking it's in the workspace.
 
 [dependencies]
-#harmonium-core = { path = "../../../harmonium-core" }
-#harmonium-io = { path = "../../../harmonium-io" }
-#harmonium-resample = { path = "../../../harmonium-resample" }
-#harmonium-fft = { path = "../../../harmonium-fft" }
-#harmonium-window = { path = "../../../harmonium-window" }
+# harmonium-core = { path = "../../../harmonium-core" }
+# harmonium-io = { path = "../../../harmonium-io" }
+# harmonium-resample = { path = "../../../harmonium-resample" }
+# harmonium-fft = { path = "../../../harmonium-fft" }
+# harmonium-window = { path = "../../../harmonium-window" }
 harmonium-core = { git = "https://github.com/daniellga/harmonium.git" }
 harmonium-io = { git = "https://github.com/daniellga/harmonium.git", features = ["all", "opt-simd"] }
 harmonium-resample = { git = "https://github.com/daniellga/harmonium.git" }
@@ -32,7 +32,7 @@ rustfft = "6.2"
 realfft = "3.3"
 ndarray = "0.15.6"
 num-complex = "0.4"
-savvy = { git = "https://github.com/yutannihilation/savvy.git", features = ["complex"] }
+savvy = { version = "0.6.5", features = ["complex"] }
 
 [profile.dev]
 debug = 1 # less precise locations. Reduce size of target dir.

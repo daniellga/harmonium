@@ -31,6 +31,7 @@ SEXP savvy_HAudioSink_audio_default_device__ffi(void);
 SEXP savvy_HAudioSink_audio_output_devices__ffi(void);
 SEXP savvy_HAudioSink_audio_supported_configs__ffi(void);
 SEXP savvy_HAudioSink_clear__ffi(SEXP self__);
+SEXP savvy_HAudioSink_get_pos__ffi(SEXP self__);
 SEXP savvy_HAudioSink_is_empty__ffi(SEXP self__);
 SEXP savvy_HAudioSink_is_paused__ffi(SEXP self__);
 SEXP savvy_HAudioSink_len__ffi(SEXP self__);

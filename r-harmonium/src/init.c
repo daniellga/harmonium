@@ -165,6 +165,11 @@ SEXP savvy_HAudioSink_clear__impl(SEXP self__) {
     return handle_result(res);
 }
 
+SEXP savvy_HAudioSink_get_pos__impl(SEXP self__) {
+    SEXP res = savvy_HAudioSink_get_pos__ffi(self__);
+    return handle_result(res);
+}
+
 SEXP savvy_HAudioSink_is_empty__impl(SEXP self__) {
     SEXP res = savvy_HAudioSink_is_empty__ffi(self__);
     return handle_result(res);
@@ -549,6 +554,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"savvy_HAudioSink_audio_output_devices__impl", (DL_FUNC) &savvy_HAudioSink_audio_output_devices__impl, 0},
     {"savvy_HAudioSink_audio_supported_configs__impl", (DL_FUNC) &savvy_HAudioSink_audio_supported_configs__impl, 0},
     {"savvy_HAudioSink_clear__impl", (DL_FUNC) &savvy_HAudioSink_clear__impl, 1},
+    {"savvy_HAudioSink_get_pos__impl", (DL_FUNC) &savvy_HAudioSink_get_pos__impl, 1},
     {"savvy_HAudioSink_is_empty__impl", (DL_FUNC) &savvy_HAudioSink_is_empty__impl, 1},
     {"savvy_HAudioSink_is_paused__impl", (DL_FUNC) &savvy_HAudioSink_is_paused__impl, 1},
     {"savvy_HAudioSink_len__impl", (DL_FUNC) &savvy_HAudioSink_len__impl, 1},

@@ -214,6 +214,12 @@ HAudioSink_clear <- function(self) {
   }
 }
 
+HAudioSink_get_pos <- function(self) {
+  function() {
+  .Call(savvy_HAudioSink_get_pos__impl, self)
+  }
+}
+
 HAudioSink_is_empty <- function(self) {
   function() {
   .Call(savvy_HAudioSink_is_empty__impl, self)
@@ -304,6 +310,7 @@ HAudioSink_invalidate <- function(self) {
     e$append_from_harray <- HAudioSink_append_from_harray(ptr)
   e$append_from_file <- HAudioSink_append_from_file(ptr)
   e$clear <- HAudioSink_clear(ptr)
+  e$get_pos <- HAudioSink_get_pos(ptr)
   e$is_empty <- HAudioSink_is_empty(ptr)
   e$is_paused <- HAudioSink_is_paused(ptr)
   e$len <- HAudioSink_len(ptr)
