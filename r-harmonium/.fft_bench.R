@@ -5,18 +5,18 @@ devtools::load_all(".", export_all = FALSE)
 
 # fft_matrix with complexes
 results <- bench::press(
-  n = seq(30, 400000, 30000),
+  n = seq.int(30, 400000, 30000L),
   {
     r = as.double(sample(100, n, replace = TRUE))
     i = as.double(sample(100, n, replace = TRUE))
     x = complex(real=r, imaginary=i)
     x = matrix(x, ncol = 10)
-    fft_planner = HFftPlanner$new(HDataType$Complex64)
+    hfft = HFft$new_fft_forward(as.integer(n/10), HDataType$Complex64)
     mark(
       torch = as_array(torch::torch_fft_fft(torch_tensor(x, dtype = torch_cfloat64()), dim = 1)),
       harmonium_fft = {
         harray = HArray$new_from_values(x, HDataType$Complex64)
-        fft_planner$fft(harray)
+        hfft$process(harray)
         harray$collect()
       },
       base_r = stats::mvfft(x),
@@ -33,12 +33,12 @@ results <- bench::press(
   {
     x = as.double(sample(100, n, replace = TRUE))
     x = matrix(x, ncol = 10)
-    real_fft_planner = HRealFftPlanner$new(HDataType$Float64)
+    hfft = HRealFft$new_real_fft(as.integer(n/10), HDataType$Float64)
     mark(
       torch = as_array(torch::torch_fft_rfft(torch_tensor(x, dtype = torch_float64()), dim = 1)),
       harmonium_fft = {
         harray = HArray$new_from_values(x, HDataType$Float64)
-        real_fft_planner$rfft(harray)
+        hfft$process(harray)
         harray$collect()
       },
       iterations = 50,

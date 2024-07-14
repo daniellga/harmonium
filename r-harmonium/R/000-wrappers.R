@@ -663,86 +663,104 @@ class(`HDecoderStream`) <- "HDecoderStream__bundle"
 #' @export
 `[[<-.HDecoderStream__bundle` <- function(x, i, value) stop("HDecoderStream cannot be modified", call. = FALSE)
 
-### wrapper functions for HFftPlanner
+### wrapper functions for HFft
 
-`HFftPlanner_fft` <- function(self) {
+`HFft_process` <- function(self) {
   function(`harray`) {
     `harray` <- .savvy_extract_ptr(`harray`, "HArray")
-    invisible(.Call(savvy_HFftPlanner_fft__impl, `self`, `harray`))
+    invisible(.Call(savvy_HFft_process__impl, `self`, `harray`))
   }
 }
 
-`HFftPlanner_ifft` <- function(self) {
-  function(`harray`) {
-    `harray` <- .savvy_extract_ptr(`harray`, "HArray")
-    invisible(.Call(savvy_HFftPlanner_ifft__impl, `self`, `harray`))
-  }
-}
-
-`HFftPlanner_dtype` <- function(self) {
+`HFft_dtype` <- function(self) {
   function() {
-    .savvy_wrap_HDataType(.Call(savvy_HFftPlanner_dtype__impl, `self`))
+    .savvy_wrap_HDataType(.Call(savvy_HFft_dtype__impl, `self`))
   }
 }
 
-`HFftPlanner_print` <- function(self) {
+`HFft_print` <- function(self) {
   function() {
-    invisible(.Call(savvy_HFftPlanner_print__impl, `self`))
+    invisible(.Call(savvy_HFft_print__impl, `self`))
   }
 }
 
-`.savvy_wrap_HFftPlanner` <- function(ptr) {
+`HFft_clone` <- function(self) {
+  function() {
+    .savvy_wrap_HFft(.Call(savvy_HFft_clone__impl, `self`))
+  }
+}
+
+`HFft_is_shared` <- function(self) {
+  function() {
+    .Call(savvy_HFft_is_shared__impl, `self`)
+  }
+}
+
+`HFft_invalidate` <- function(self) {
+  function() {
+    invisible(.Call(savvy_HFft_invalidate__impl, `self`))
+  }
+}
+
+`.savvy_wrap_HFft` <- function(ptr) {
   e <- new.env(parent = emptyenv())
   e$.ptr <- ptr
-  e$`fft` <- `HFftPlanner_fft`(ptr)
-  e$`ifft` <- `HFftPlanner_ifft`(ptr)
-  e$`dtype` <- `HFftPlanner_dtype`(ptr)
-  e$`print` <- `HFftPlanner_print`(ptr)
+  e$`process` <- `HFft_process`(ptr)
+  e$`dtype` <- `HFft_dtype`(ptr)
+  e$`print` <- `HFft_print`(ptr)
+  e$`clone` <- `HFft_clone`(ptr)
+  e$`is_shared` <- `HFft_is_shared`(ptr)
+  e$`invalidate` <- `HFft_invalidate`(ptr)
 
-  class(e) <- "HFftPlanner"
+  class(e) <- "HFft"
   e
 }
 
 #' @export
-`$<-.HFftPlanner` <- function(x, name, value) stop("HFftPlanner cannot be modified", call. = FALSE)
+`$<-.HFft` <- function(x, name, value) stop("HFft cannot be modified", call. = FALSE)
 
 #' @export
-`[[<-.HFftPlanner` <- function(x, i, value) stop("HFftPlanner cannot be modified", call. = FALSE)
+`[[<-.HFft` <- function(x, i, value) stop("HFft cannot be modified", call. = FALSE)
 
 
-#' HFftPlanner
-#' A planner is used to create FFTs. It caches results internally, so when making more than one FFT it is advisable to reuse the same planner.
+#' HFft
+#' An `HFft` is used to create FFTs. It caches results internally, so when making more than one FFT it is advisable to reuse the same `HFft` instance.
 #'
 #' # Methods
 #'
-`HFftPlanner` <- new.env(parent = emptyenv())
+`HFft` <- new.env(parent = emptyenv())
 
 #' @export
-`$<-.HFftPlanner` <- function(x, name, value) stop("HFftPlanner cannot be modified", call. = FALSE)
+`$<-.HFft` <- function(x, name, value) stop("HFft cannot be modified", call. = FALSE)
 
 #' @export
-`[[<-.HFftPlanner` <- function(x, i, value) stop("HFftPlanner cannot be modified", call. = FALSE)
+`[[<-.HFft` <- function(x, i, value) stop("HFft cannot be modified", call. = FALSE)
 
-### associated functions for HFftPlanner
+### associated functions for HFft
 
-`HFftPlanner`$`new` <- function(`dtype`) {
+`HFft`$`new_fft_forward` <- function(`length`, `dtype`) {
   `dtype` <- .savvy_extract_ptr(`dtype`, "HDataType")
-  .savvy_wrap_HFftPlanner(.Call(savvy_HFftPlanner_new__impl, `dtype`))
+  .savvy_wrap_HFft(.Call(savvy_HFft_new_fft_forward__impl, `length`, `dtype`))
+}
+
+`HFft`$`new_fft_inverse` <- function(`length`, `dtype`) {
+  `dtype` <- .savvy_extract_ptr(`dtype`, "HDataType")
+  .savvy_wrap_HFft(.Call(savvy_HFft_new_fft_inverse__impl, `length`, `dtype`))
 }
 
 
-class(`HFftPlanner`) <- "HFftPlanner__bundle"
+class(`HFft`) <- "HFft__bundle"
 
 #' @export
-`print.HFftPlanner__bundle` <- function(x, ...) {
-  cat('HFftPlanner')
+`print.HFft__bundle` <- function(x, ...) {
+  cat('HFft')
 }
 
 #' @export
-`$<-.HFftPlanner__bundle` <- function(x, name, value) stop("HFftPlanner cannot be modified", call. = FALSE)
+`$<-.HFft__bundle` <- function(x, name, value) stop("HFft cannot be modified", call. = FALSE)
 
 #' @export
-`[[<-.HFftPlanner__bundle` <- function(x, i, value) stop("HFftPlanner cannot be modified", call. = FALSE)
+`[[<-.HFft__bundle` <- function(x, i, value) stop("HFft cannot be modified", call. = FALSE)
 
 ### wrapper functions for HFile
 
@@ -1160,88 +1178,95 @@ class(`HPolynomialDegree`) <- "HPolynomialDegree__bundle"
 #' @export
 `[[<-.HPolynomialDegree__bundle` <- function(x, i, value) stop("HPolynomialDegree cannot be modified", call. = FALSE)
 
-### wrapper functions for HRealFftPlanner
+### wrapper functions for HRealFft
 
-`HRealFftPlanner_rfft` <- function(self) {
+`HRealFft_process` <- function(self) {
   function(`harray`) {
     `harray` <- .savvy_extract_ptr(`harray`, "HArray")
-    invisible(.Call(savvy_HRealFftPlanner_rfft__impl, `self`, `harray`))
+    invisible(.Call(savvy_HRealFft_process__impl, `self`, `harray`))
   }
 }
 
-`HRealFftPlanner_irfft` <- function(self) {
-  function(`harray`, `length`) {
-    `harray` <- .savvy_extract_ptr(`harray`, "HArray")
-    invisible(.Call(savvy_HRealFftPlanner_irfft__impl, `self`, `harray`, `length`))
-  }
-}
-
-`HRealFftPlanner_dtype` <- function(self) {
+`HRealFft_dtype` <- function(self) {
   function() {
-    .savvy_wrap_HDataType(.Call(savvy_HRealFftPlanner_dtype__impl, `self`))
+    .savvy_wrap_HDataType(.Call(savvy_HRealFft_dtype__impl, `self`))
   }
 }
 
-`HRealFftPlanner_print` <- function(self) {
+`HRealFft_print` <- function(self) {
   function() {
-    invisible(.Call(savvy_HRealFftPlanner_print__impl, `self`))
+    invisible(.Call(savvy_HRealFft_print__impl, `self`))
   }
 }
 
-`.savvy_wrap_HRealFftPlanner` <- function(ptr) {
+`HRealFft_clone` <- function(self) {
+  function() {
+    .savvy_wrap_HRealFft(.Call(savvy_HRealFft_clone__impl, `self`))
+  }
+}
+
+`HRealFft_is_shared` <- function(self) {
+  function() {
+    .Call(savvy_HRealFft_is_shared__impl, `self`)
+  }
+}
+
+`HRealFft_invalidate` <- function(self) {
+  function() {
+    invisible(.Call(savvy_HRealFft_invalidate__impl, `self`))
+  }
+}
+
+`.savvy_wrap_HRealFft` <- function(ptr) {
   e <- new.env(parent = emptyenv())
   e$.ptr <- ptr
-  e$`rfft` <- `HRealFftPlanner_rfft`(ptr)
-  e$`irfft` <- `HRealFftPlanner_irfft`(ptr)
-  e$`dtype` <- `HRealFftPlanner_dtype`(ptr)
-  e$`print` <- `HRealFftPlanner_print`(ptr)
+  e$`process` <- `HRealFft_process`(ptr)
+  e$`dtype` <- `HRealFft_dtype`(ptr)
+  e$`print` <- `HRealFft_print`(ptr)
+  e$`clone` <- `HRealFft_clone`(ptr)
+  e$`is_shared` <- `HRealFft_is_shared`(ptr)
+  e$`invalidate` <- `HRealFft_invalidate`(ptr)
 
-  class(e) <- "HRealFftPlanner"
+  class(e) <- "HRealFft"
   e
 }
 
 #' @export
-`$<-.HRealFftPlanner` <- function(x, name, value) stop("HRealFftPlanner cannot be modified", call. = FALSE)
+`$<-.HRealFft` <- function(x, name, value) stop("HRealFft cannot be modified", call. = FALSE)
 
 #' @export
-`[[<-.HRealFftPlanner` <- function(x, i, value) stop("HRealFftPlanner cannot be modified", call. = FALSE)
+`[[<-.HRealFft` <- function(x, i, value) stop("HRealFft cannot be modified", call. = FALSE)
 
 
-#' HRealFftPlanner
-#' A planner is used to create FFTs. It caches results internally, so when making more than one FFT it is advisable to reuse the same planner.
-#'
-#' This planner is used to calculate FFTs of real valued inputs and its inverse operation.
-#'
-#' # Methods
-#'
-`HRealFftPlanner` <- new.env(parent = emptyenv())
+
+`HRealFft` <- new.env(parent = emptyenv())
 
 #' @export
-`$<-.HRealFftPlanner` <- function(x, name, value) stop("HRealFftPlanner cannot be modified", call. = FALSE)
+`$<-.HRealFft` <- function(x, name, value) stop("HRealFft cannot be modified", call. = FALSE)
 
 #' @export
-`[[<-.HRealFftPlanner` <- function(x, i, value) stop("HRealFftPlanner cannot be modified", call. = FALSE)
+`[[<-.HRealFft` <- function(x, i, value) stop("HRealFft cannot be modified", call. = FALSE)
 
-### associated functions for HRealFftPlanner
+### associated functions for HRealFft
 
-`HRealFftPlanner`$`new` <- function(`dtype`) {
+`HRealFft`$`new_real_fft` <- function(`length`, `dtype`) {
   `dtype` <- .savvy_extract_ptr(`dtype`, "HDataType")
-  .savvy_wrap_HRealFftPlanner(.Call(savvy_HRealFftPlanner_new__impl, `dtype`))
+  .savvy_wrap_HRealFft(.Call(savvy_HRealFft_new_real_fft__impl, `length`, `dtype`))
 }
 
 
-class(`HRealFftPlanner`) <- "HRealFftPlanner__bundle"
+class(`HRealFft`) <- "HRealFft__bundle"
 
 #' @export
-`print.HRealFftPlanner__bundle` <- function(x, ...) {
-  cat('HRealFftPlanner')
+`print.HRealFft__bundle` <- function(x, ...) {
+  cat('HRealFft')
 }
 
 #' @export
-`$<-.HRealFftPlanner__bundle` <- function(x, name, value) stop("HRealFftPlanner cannot be modified", call. = FALSE)
+`$<-.HRealFft__bundle` <- function(x, name, value) stop("HRealFft cannot be modified", call. = FALSE)
 
 #' @export
-`[[<-.HRealFftPlanner__bundle` <- function(x, i, value) stop("HRealFftPlanner cannot be modified", call. = FALSE)
+`[[<-.HRealFft__bundle` <- function(x, i, value) stop("HRealFft cannot be modified", call. = FALSE)
 
 ### wrapper functions for HResampler
 

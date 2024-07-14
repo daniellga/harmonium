@@ -50,10 +50,11 @@ print.HInterpolationType = function(x, ...) {
 "==.HInterpolationType" <- function(e1,e2) e1$eq(e2)
 "!=.HInterpolationType" <- function(e1,e2) e1$ne(e2)
 
-print.HFftPlanner = function(x, ...) {
+print.HFft = function(x, ...) {
   x$print()
 }
 
-print.HRealFftPlanner = function(x, ...) {
+print.HRealFft = function(x, ...) {
   x$print()
 }
+

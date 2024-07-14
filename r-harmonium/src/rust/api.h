@@ -60,12 +60,15 @@ SEXP savvy_HDecodedAudio_invalidate__ffi(SEXP self__);
 // methods and associated functions for HDecoderStream
 SEXP savvy_HDecoderStream_stream__ffi(SEXP self__);
 
-// methods and associated functions for HFftPlanner
-SEXP savvy_HFftPlanner_new__ffi(SEXP dtype);
-SEXP savvy_HFftPlanner_fft__ffi(SEXP self__, SEXP harray);
-SEXP savvy_HFftPlanner_ifft__ffi(SEXP self__, SEXP harray);
-SEXP savvy_HFftPlanner_dtype__ffi(SEXP self__);
-SEXP savvy_HFftPlanner_print__ffi(SEXP self__);
+// methods and associated functions for HFft
+SEXP savvy_HFft_new_fft_forward__ffi(SEXP length, SEXP dtype);
+SEXP savvy_HFft_new_fft_inverse__ffi(SEXP length, SEXP dtype);
+SEXP savvy_HFft_process__ffi(SEXP self__, SEXP harray);
+SEXP savvy_HFft_dtype__ffi(SEXP self__);
+SEXP savvy_HFft_print__ffi(SEXP self__);
+SEXP savvy_HFft_clone__ffi(SEXP self__);
+SEXP savvy_HFft_is_shared__ffi(SEXP self__);
+SEXP savvy_HFft_invalidate__ffi(SEXP self__);
 
 // methods and associated functions for HFile
 SEXP savvy_HFile_decode__ffi(SEXP fpath, SEXP dtype);
@@ -89,12 +92,14 @@ SEXP savvy_HPolynomialDegree_print__ffi(SEXP self__);
 SEXP savvy_HPolynomialDegree_eq__ffi(SEXP self__, SEXP other);
 SEXP savvy_HPolynomialDegree_ne__ffi(SEXP self__, SEXP other);
 
-// methods and associated functions for HRealFftPlanner
-SEXP savvy_HRealFftPlanner_new__ffi(SEXP dtype);
-SEXP savvy_HRealFftPlanner_rfft__ffi(SEXP self__, SEXP harray);
-SEXP savvy_HRealFftPlanner_irfft__ffi(SEXP self__, SEXP harray, SEXP length);
-SEXP savvy_HRealFftPlanner_dtype__ffi(SEXP self__);
-SEXP savvy_HRealFftPlanner_print__ffi(SEXP self__);
+// methods and associated functions for HRealFft
+SEXP savvy_HRealFft_new_real_fft__ffi(SEXP length, SEXP dtype);
+SEXP savvy_HRealFft_process__ffi(SEXP self__, SEXP harray);
+SEXP savvy_HRealFft_dtype__ffi(SEXP self__);
+SEXP savvy_HRealFft_print__ffi(SEXP self__);
+SEXP savvy_HRealFft_clone__ffi(SEXP self__);
+SEXP savvy_HRealFft_is_shared__ffi(SEXP self__);
+SEXP savvy_HRealFft_invalidate__ffi(SEXP self__);
 
 // methods and associated functions for HResampler
 SEXP savvy_HResampler_new_fft__ffi(SEXP sr_in, SEXP sr_out, SEXP chunk_size, SEXP sub_chunks, SEXP nchannels, SEXP res_type, SEXP dtype);

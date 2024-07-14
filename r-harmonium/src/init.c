@@ -275,28 +275,43 @@ SEXP savvy_HDecoderStream_stream__impl(SEXP self__) {
     return handle_result(res);
 }
 
-SEXP savvy_HFftPlanner_new__impl(SEXP dtype) {
-    SEXP res = savvy_HFftPlanner_new__ffi(dtype);
+SEXP savvy_HFft_new_fft_forward__impl(SEXP length, SEXP dtype) {
+    SEXP res = savvy_HFft_new_fft_forward__ffi(length, dtype);
     return handle_result(res);
 }
 
-SEXP savvy_HFftPlanner_fft__impl(SEXP self__, SEXP harray) {
-    SEXP res = savvy_HFftPlanner_fft__ffi(self__, harray);
+SEXP savvy_HFft_new_fft_inverse__impl(SEXP length, SEXP dtype) {
+    SEXP res = savvy_HFft_new_fft_inverse__ffi(length, dtype);
     return handle_result(res);
 }
 
-SEXP savvy_HFftPlanner_ifft__impl(SEXP self__, SEXP harray) {
-    SEXP res = savvy_HFftPlanner_ifft__ffi(self__, harray);
+SEXP savvy_HFft_process__impl(SEXP self__, SEXP harray) {
+    SEXP res = savvy_HFft_process__ffi(self__, harray);
     return handle_result(res);
 }
 
-SEXP savvy_HFftPlanner_dtype__impl(SEXP self__) {
-    SEXP res = savvy_HFftPlanner_dtype__ffi(self__);
+SEXP savvy_HFft_dtype__impl(SEXP self__) {
+    SEXP res = savvy_HFft_dtype__ffi(self__);
     return handle_result(res);
 }
 
-SEXP savvy_HFftPlanner_print__impl(SEXP self__) {
-    SEXP res = savvy_HFftPlanner_print__ffi(self__);
+SEXP savvy_HFft_print__impl(SEXP self__) {
+    SEXP res = savvy_HFft_print__ffi(self__);
+    return handle_result(res);
+}
+
+SEXP savvy_HFft_clone__impl(SEXP self__) {
+    SEXP res = savvy_HFft_clone__ffi(self__);
+    return handle_result(res);
+}
+
+SEXP savvy_HFft_is_shared__impl(SEXP self__) {
+    SEXP res = savvy_HFft_is_shared__ffi(self__);
+    return handle_result(res);
+}
+
+SEXP savvy_HFft_invalidate__impl(SEXP self__) {
+    SEXP res = savvy_HFft_invalidate__ffi(self__);
     return handle_result(res);
 }
 
@@ -370,28 +385,38 @@ SEXP savvy_HPolynomialDegree_ne__impl(SEXP self__, SEXP other) {
     return handle_result(res);
 }
 
-SEXP savvy_HRealFftPlanner_new__impl(SEXP dtype) {
-    SEXP res = savvy_HRealFftPlanner_new__ffi(dtype);
+SEXP savvy_HRealFft_new_real_fft__impl(SEXP length, SEXP dtype) {
+    SEXP res = savvy_HRealFft_new_real_fft__ffi(length, dtype);
     return handle_result(res);
 }
 
-SEXP savvy_HRealFftPlanner_rfft__impl(SEXP self__, SEXP harray) {
-    SEXP res = savvy_HRealFftPlanner_rfft__ffi(self__, harray);
+SEXP savvy_HRealFft_process__impl(SEXP self__, SEXP harray) {
+    SEXP res = savvy_HRealFft_process__ffi(self__, harray);
     return handle_result(res);
 }
 
-SEXP savvy_HRealFftPlanner_irfft__impl(SEXP self__, SEXP harray, SEXP length) {
-    SEXP res = savvy_HRealFftPlanner_irfft__ffi(self__, harray, length);
+SEXP savvy_HRealFft_dtype__impl(SEXP self__) {
+    SEXP res = savvy_HRealFft_dtype__ffi(self__);
     return handle_result(res);
 }
 
-SEXP savvy_HRealFftPlanner_dtype__impl(SEXP self__) {
-    SEXP res = savvy_HRealFftPlanner_dtype__ffi(self__);
+SEXP savvy_HRealFft_print__impl(SEXP self__) {
+    SEXP res = savvy_HRealFft_print__ffi(self__);
     return handle_result(res);
 }
 
-SEXP savvy_HRealFftPlanner_print__impl(SEXP self__) {
-    SEXP res = savvy_HRealFftPlanner_print__ffi(self__);
+SEXP savvy_HRealFft_clone__impl(SEXP self__) {
+    SEXP res = savvy_HRealFft_clone__ffi(self__);
+    return handle_result(res);
+}
+
+SEXP savvy_HRealFft_is_shared__impl(SEXP self__) {
+    SEXP res = savvy_HRealFft_is_shared__ffi(self__);
+    return handle_result(res);
+}
+
+SEXP savvy_HRealFft_invalidate__impl(SEXP self__) {
+    SEXP res = savvy_HRealFft_invalidate__ffi(self__);
     return handle_result(res);
 }
 
@@ -576,11 +601,14 @@ static const R_CallMethodDef CallEntries[] = {
     {"savvy_HDecodedAudio_sr__impl", (DL_FUNC) &savvy_HDecodedAudio_sr__impl, 1},
     {"savvy_HDecodedAudio_invalidate__impl", (DL_FUNC) &savvy_HDecodedAudio_invalidate__impl, 1},
     {"savvy_HDecoderStream_stream__impl", (DL_FUNC) &savvy_HDecoderStream_stream__impl, 1},
-    {"savvy_HFftPlanner_new__impl", (DL_FUNC) &savvy_HFftPlanner_new__impl, 1},
-    {"savvy_HFftPlanner_fft__impl", (DL_FUNC) &savvy_HFftPlanner_fft__impl, 2},
-    {"savvy_HFftPlanner_ifft__impl", (DL_FUNC) &savvy_HFftPlanner_ifft__impl, 2},
-    {"savvy_HFftPlanner_dtype__impl", (DL_FUNC) &savvy_HFftPlanner_dtype__impl, 1},
-    {"savvy_HFftPlanner_print__impl", (DL_FUNC) &savvy_HFftPlanner_print__impl, 1},
+    {"savvy_HFft_new_fft_forward__impl", (DL_FUNC) &savvy_HFft_new_fft_forward__impl, 2},
+    {"savvy_HFft_new_fft_inverse__impl", (DL_FUNC) &savvy_HFft_new_fft_inverse__impl, 2},
+    {"savvy_HFft_process__impl", (DL_FUNC) &savvy_HFft_process__impl, 2},
+    {"savvy_HFft_dtype__impl", (DL_FUNC) &savvy_HFft_dtype__impl, 1},
+    {"savvy_HFft_print__impl", (DL_FUNC) &savvy_HFft_print__impl, 1},
+    {"savvy_HFft_clone__impl", (DL_FUNC) &savvy_HFft_clone__impl, 1},
+    {"savvy_HFft_is_shared__impl", (DL_FUNC) &savvy_HFft_is_shared__impl, 1},
+    {"savvy_HFft_invalidate__impl", (DL_FUNC) &savvy_HFft_invalidate__impl, 1},
     {"savvy_HFile_decode__impl", (DL_FUNC) &savvy_HFile_decode__impl, 2},
     {"savvy_HFile_decode_stream__impl", (DL_FUNC) &savvy_HFile_decode_stream__impl, 3},
     {"savvy_HFile_metadata__impl", (DL_FUNC) &savvy_HFile_metadata__impl, 2},
@@ -595,11 +623,13 @@ static const R_CallMethodDef CallEntries[] = {
     {"savvy_HPolynomialDegree_print__impl", (DL_FUNC) &savvy_HPolynomialDegree_print__impl, 1},
     {"savvy_HPolynomialDegree_eq__impl", (DL_FUNC) &savvy_HPolynomialDegree_eq__impl, 2},
     {"savvy_HPolynomialDegree_ne__impl", (DL_FUNC) &savvy_HPolynomialDegree_ne__impl, 2},
-    {"savvy_HRealFftPlanner_new__impl", (DL_FUNC) &savvy_HRealFftPlanner_new__impl, 1},
-    {"savvy_HRealFftPlanner_rfft__impl", (DL_FUNC) &savvy_HRealFftPlanner_rfft__impl, 2},
-    {"savvy_HRealFftPlanner_irfft__impl", (DL_FUNC) &savvy_HRealFftPlanner_irfft__impl, 3},
-    {"savvy_HRealFftPlanner_dtype__impl", (DL_FUNC) &savvy_HRealFftPlanner_dtype__impl, 1},
-    {"savvy_HRealFftPlanner_print__impl", (DL_FUNC) &savvy_HRealFftPlanner_print__impl, 1},
+    {"savvy_HRealFft_new_real_fft__impl", (DL_FUNC) &savvy_HRealFft_new_real_fft__impl, 2},
+    {"savvy_HRealFft_process__impl", (DL_FUNC) &savvy_HRealFft_process__impl, 2},
+    {"savvy_HRealFft_dtype__impl", (DL_FUNC) &savvy_HRealFft_dtype__impl, 1},
+    {"savvy_HRealFft_print__impl", (DL_FUNC) &savvy_HRealFft_print__impl, 1},
+    {"savvy_HRealFft_clone__impl", (DL_FUNC) &savvy_HRealFft_clone__impl, 1},
+    {"savvy_HRealFft_is_shared__impl", (DL_FUNC) &savvy_HRealFft_is_shared__impl, 1},
+    {"savvy_HRealFft_invalidate__impl", (DL_FUNC) &savvy_HRealFft_invalidate__impl, 1},
     {"savvy_HResampler_new_fft__impl", (DL_FUNC) &savvy_HResampler_new_fft__impl, 7},
     {"savvy_HResampler_new_sinc__impl", (DL_FUNC) &savvy_HResampler_new_sinc__impl, 7},
     {"savvy_HResampler_new_fast__impl", (DL_FUNC) &savvy_HResampler_new_fast__impl, 7},

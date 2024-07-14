@@ -487,7 +487,7 @@ impl HArray {
     /// harray1$is_shared() # FALSE.
     ///
     /// harray2 = harray1$clone()
-    /// harray$is_shared() # TRUE, HArray object shared with harray2.
+    /// harray1$is_shared() # TRUE, HArray object shared with harray2.
     /// ```
     ///
     /// _________

@@ -14,8 +14,13 @@ where
     where
         Sh: Into<StrideShape<D>>,
     {
-        let ndarray =
-            ArcArray::from_shape_vec(shape, v).map_err(|_| HError::OutOfSpecError("shape does not correspond to the number of elements in v or if the shape/strides would result in overflowing isize".to_string()))?;
+        let ndarray = ArcArray::from_shape_vec(shape, v).map_err(|_| {
+            HError::OutOfSpecError(
+                "shape does not correspond to the number of elements
+                    in v or if the shape/strides would result in overflowing isize"
+                    .to_string(),
+            )
+        })?;
         Ok(HArray(ndarray))
     }
 

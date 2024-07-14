@@ -225,7 +225,7 @@ where
 
     let pi = T::PI();
     let zero = T::zero();
-    let one = T::from(1.0).unwrap();
+    let one = T::one();
     let two = T::from(2.0).unwrap();
     let step = two / (np_f);
     let mut fac = -one;
@@ -255,7 +255,7 @@ pub fn boxcar<T>(npoints: usize) -> HArray<T, Ix1>
 where
     T: Float + FloatConst,
 {
-    let one = T::from(1.0).unwrap();
+    let one = T::one();
     let window: Vec<T> = (0..npoints).map(|_| one).collect();
 
     HArray::new_from_shape_vec(npoints, window).unwrap()
@@ -336,7 +336,7 @@ where
 
     let pi = T::PI();
     let zero = T::zero();
-    let one = T::from(1.0).unwrap();
+    let one = T::one();
     let two = T::from(2.0).unwrap();
     let ten = T::from(10.0).unwrap();
     let twenty = ten + ten;
@@ -512,7 +512,7 @@ where
     T: Float + FloatConst,
 {
     let np_f = T::from(npoints).unwrap();
-    let one = T::from(1.0).unwrap();
+    let one = T::one();
     let two = T::from(2.0).unwrap();
 
     let mut window: Vec<T> = Vec::with_capacity(npoints);

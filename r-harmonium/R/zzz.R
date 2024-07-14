@@ -10,8 +10,8 @@
   lockEnvironment(HWindow, bindings = TRUE)
   lockEnvironment(HFile, bindings = TRUE)
   lockEnvironment(HResampler, bindings = TRUE)
-  lockEnvironment(HFftPlanner, bindings = TRUE)
-  lockEnvironment(HRealFftPlanner, bindings = TRUE)
+  lockEnvironment(HFft, bindings = TRUE)
+  lockEnvironment(HRealFft, bindings = TRUE)
   lockEnvironment(HDecoderStream, bindings = TRUE)
 }
 

@@ -2,19 +2,18 @@ use crate::{
     array::HArray,
     errors::{HError, HResult},
 };
-use ndarray::{Axis, Dimension, Ix1, Ix2, IxDyn};
+use ndarray::{Axis, Dimension, Ix0, Ix1, Ix2, IxDyn};
 use num_traits::{Float, FloatConst, FromPrimitive};
 
-pub trait AudioOp<T, D, U>
+pub trait AudioOp<T, D>
 where
     T: Float + FloatConst + FromPrimitive,
     D: Dimension,
-    U: Dimension,
 {
     fn nchannels(&self) -> usize;
     fn nframes(&self) -> usize;
     fn db_to_amplitude(&mut self, reference: T, power: T);
-    fn to_mono(&self) -> HResult<HArray<T, U>>;
+    fn to_mono(&self) -> HResult<HArray<T, D::Smaller>>;
 }
 
 pub enum Audio<'a, T>
@@ -26,7 +25,7 @@ where
     Dyn(&'a HArray<T, IxDyn>),
 }
 
-impl<T> AudioOp<T, Ix1, Ix1> for HArray<T, Ix1>
+impl<T> AudioOp<T, Ix1> for HArray<T, Ix1>
 where
     T: Float + FloatConst + FromPrimitive,
 {
@@ -50,7 +49,7 @@ where
             .mapv_inplace(|x| reference * a.powf(b * x).powf(power));
     }
 
-    fn to_mono(&self) -> HResult<HArray<T, Ix1>> {
+    fn to_mono(&self) -> HResult<HArray<T, Ix0>> {
         // To return an error is a design choice. This wasn't supposed to error.
         Err(HError::OutOfSpecError(
             "The length of the axis is zero.".into(),
@@ -58,7 +57,7 @@ where
     }
 }
 
-impl<T> AudioOp<T, Ix2, Ix1> for HArray<T, Ix2>
+impl<T> AudioOp<T, Ix2> for HArray<T, Ix2>
 where
     T: Float + FloatConst + FromPrimitive,
 {
@@ -89,7 +88,7 @@ where
     }
 }
 
-impl<T> AudioOp<T, IxDyn, IxDyn> for HArray<T, IxDyn>
+impl<T> AudioOp<T, IxDyn> for HArray<T, IxDyn>
 where
     T: Float + FloatConst + FromPrimitive,
 {

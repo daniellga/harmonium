@@ -6,6 +6,7 @@ members = [
 	"harmonium-fft",
 	"harmonium-resample",
 	"harmonium-window",
+	"harmonium-stft",
 ]
 
 [workspace.dependencies]
@@ -23,6 +24,7 @@ harmonium-io = { path = "harmonium-io", default-features = false }
 harmonium-fft = { path = "harmonium-fft", default-features = false }
 harmonium-resample = { path = "harmonium-resample", default-features = false }
 harmonium-window = { path = "harmonium-window", default-features = false }
+harmonium-stft = { path = "harmonium-stft", default-features = false }
 
 [profile.release]
 opt-level = 3
