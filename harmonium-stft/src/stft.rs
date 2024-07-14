@@ -61,7 +61,7 @@ where
 
         let fft_length = self.len();
         let n_fft = (harray.len() - window_length) / hop_length + 1;
-        let stft_ndarray = ArcArray2::zeros((fft_length, n_fft));
+        //let stft_ndarray = ArcArray2::zeros((fft_length, n_fft));
         todo!()
     }
 }
