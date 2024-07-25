@@ -5,7 +5,8 @@ use crate::{
 use ndarray::{IxDyn, ShapeError, SliceInfo, SliceInfoElem};
 use num_complex::Complex;
 use savvy::{
-    savvy, ListSexp, OwnedIntegerSexp, OwnedLogicalSexp, OwnedStringSexp, Sexp, TypedSexp,
+    savvy, IntegerSexp, ListSexp, NotAvailableValue, OwnedIntegerSexp, OwnedLogicalSexp,
+    OwnedStringSexp, Sexp, TypedSexp,
 };
 use std::sync::Arc;
 
@@ -207,7 +208,13 @@ impl HArray {
     ///
     /// The number of vectors in the list must be equal to the number of dimensions in the original HArray as they represent the slice information for each axis.
     ///
-    /// Each vector must be composed of 3 elements: [start, end, step]. All 3 values can be positive or negative, although step can't be 0.
+    /// Each vector must be composed of 1 or 3 elements
+    ///
+    /// For 1 element: A single index. An index to use for taking a subview with respect to that axis. The index is selected, then the axis is removed.
+    ///
+    /// For 3 elements: [start, end, step]. All 3 values can be positive or negative, although step can't be 0.
+    /// Negative start or end indexes are counted from the back of the axis. If end is None, the slice extends to the end of the axis.
+    /// A `c(NA_integer_, NA_integer_, NA_integer_)` value for start will mean start = 0, end = axis_length, step = 1.
     ///
     /// #### Returns
     ///
@@ -217,10 +224,15 @@ impl HArray {
     ///
     /// ```r
     /// library(harmonium)
-    /// arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
+    /// arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20), c(4,5))
     /// dtype = HDataType$Float32
     /// harray = HArray$new_from_values(arr, dtype)
     /// harray$slice(list(c(0L, 2L, 1L), c(1L, 3L, 1L)))
+    /// harray$slice(list(c(0L, 4L, 1L), c(1L, NA, 1L)))
+    /// harray$slice(list(c(0L, NA, 1L), c(1L, 3L, 1L)))
+    /// harray$slice(list(0L, c(NA_integer_, NA, NA))) # using index
+    /// x = c(NA_integer_, NA_integer_, NA_integer_)
+    /// harray$slice(list(x, x)) == harray # TRUE
     /// ```
     ///
     /// _________
@@ -236,20 +248,33 @@ impl HArray {
 
         let mut vec_ranges: Vec<SliceInfoElem> = Vec::with_capacity(list_len);
         for obj in range.values_iter() {
-            match obj.into_typed() {
-                TypedSexp::Integer(integer_sexp) => {
-                    if integer_sexp.len() != 3 {
-                        return Err("Each element must have a length of 3.".into());
-                    }
-                    let slice: &[i32] = integer_sexp.as_slice();
-                    let slice_info_elem = SliceInfoElem::Slice {
-                        start: slice[0] as isize,
-                        end: Some(slice[1] as isize),
-                        step: slice[2] as isize,
-                    };
-                    vec_ranges.push(slice_info_elem);
-                }
-                _ => return Err("Each element in the list must be a vector of integers.".into()),
+            let integer_sexp = IntegerSexp::try_from(obj)?;
+            let slice: &[i32] = integer_sexp.as_slice();
+            if slice.len() == 1 {
+                // Safety: the vector is checked to be length 1.
+                let index = unsafe { *slice.get_unchecked(0) as isize };
+                let slice_info_elem = SliceInfoElem::Index(index);
+                vec_ranges.push(slice_info_elem);
+            } else if slice.len() == 3 {
+                // Safety: the vector is checked to be length 3.
+                let (start, end, step) = (
+                    unsafe { *slice.get_unchecked(0) },
+                    unsafe { *slice.get_unchecked(1) },
+                    unsafe { *slice.get_unchecked(2) },
+                );
+
+                let start = if start.is_na() { 0 } else { start as isize };
+                let end = if end.is_na() {
+                    None
+                } else {
+                    Some(end as isize)
+                };
+                let step = if step.is_na() { 1 } else { step as isize };
+
+                let slice_info_elem = SliceInfoElem::Slice { start, end, step };
+                vec_ranges.push(slice_info_elem);
+            } else {
+                return Err("Each element must have a length of 1 or 3.".into());
             }
         }
 
@@ -589,9 +614,12 @@ impl HArray {
 impl HArray {
     #[doc(hidden)]
     pub fn get_inner_mut(&mut self) -> &mut dyn HArrayR {
-        if Arc::weak_count(&self.0) + Arc::strong_count(&self.0) != 1 {
+        // Weak references are never used.
+        if Arc::strong_count(&self.0) != 1 {
             self.0 = self.0.clone_inner();
         }
-        Arc::get_mut(&mut self.0).expect("implementation error")
+        // Safety: reference count was checked.
+        // Use get_mut_unchecked when stable.
+        unsafe { Arc::get_mut(&mut self.0).unwrap_unchecked() }
     }
 }

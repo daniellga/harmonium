@@ -5,5 +5,8 @@ edition = "2021"
 
 [dependencies]
 harmonium-core = { workspace = true }
+harmonium-fft = { workspace = true }
 rustfft = { workspace = true }
+realfft = { workspace = true }
 ndarray = { workspace = true }
+

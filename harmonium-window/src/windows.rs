@@ -3,7 +3,7 @@ use harmonium_core::{
     errors::{HError, HResult},
 };
 use ndarray::Ix1;
-use num_traits::{Float, FloatConst};
+use num_traits::{ConstOne, ConstZero, Float, FloatConst};
 use realfft::{num_complex::Complex, FftNum, RealFftPlanner};
 use rustfft::FftPlanner;
 
@@ -216,7 +216,7 @@ where
 ///                 When `WindowType::Periodic`, generates a periodic window, for use in spectral analysis.
 pub fn bohman<T>(npoints: usize, window_type: WindowType) -> HArray<T, Ix1>
 where
-    T: Float + FloatConst,
+    T: Float + FloatConst + ConstZero + ConstOne,
 {
     let np_f = match window_type {
         WindowType::Symmetric => T::from(npoints - 1).unwrap(),
@@ -224,9 +224,9 @@ where
     };
 
     let pi = T::PI();
-    let zero = T::zero();
-    let one = T::one();
-    let two = T::from(2.0).unwrap();
+    let zero = T::ZERO;
+    let one = T::ONE;
+    let two = one + one;
     let step = two / (np_f);
     let mut fac = -one;
 
@@ -253,9 +253,9 @@ where
 /// `npoints` - Number of points in the output window.
 pub fn boxcar<T>(npoints: usize) -> HArray<T, Ix1>
 where
-    T: Float + FloatConst,
+    T: Float + FloatConst + ConstOne,
 {
-    let one = T::one();
+    let one = T::ONE;
     let window: Vec<T> = (0..npoints).map(|_| one).collect();
 
     HArray::new_from_shape_vec(npoints, window).unwrap()
@@ -326,7 +326,7 @@ where
 ///                 When `WindowType::Periodic`, generates a periodic window, for use in spectral analysis.
 pub fn chebwin<T>(npoints: usize, at: T, window_type: WindowType) -> HArray<T, Ix1>
 where
-    T: Float + FloatConst + FftNum,
+    T: Float + FloatConst + FftNum + ConstZero + ConstOne,
 {
     let np_f = match window_type {
         WindowType::Symmetric => T::from(npoints).unwrap(),
@@ -335,9 +335,9 @@ where
     let np = np_f.to_usize().unwrap();
 
     let pi = T::PI();
-    let zero = T::zero();
-    let one = T::one();
-    let two = T::from(2.0).unwrap();
+    let zero = T::ZERO;
+    let one = T::ONE;
+    let two = one + one;
     let ten = T::from(10.0).unwrap();
     let twenty = ten + ten;
     let expr = T::from(two * T::from(np % 2).unwrap() - one).unwrap();
@@ -445,7 +445,7 @@ where
         WindowType::Symmetric if center.is_none() => T::from(npoints - 1).unwrap(),
         WindowType::Symmetric => {
             return Err(HError::OutOfSpecError(
-                "center must be none for symmetric windows".into(),
+                "center must be None for symmetric windows".into(),
             ));
         }
         WindowType::Periodic => T::from(npoints).unwrap(),
@@ -509,11 +509,11 @@ where
 ///                 When `WindowType::Periodic`, generates a periodic window, for use in spectral analysis.
 pub fn triangle<T>(npoints: usize, window_type: WindowType) -> HArray<T, Ix1>
 where
-    T: Float + FloatConst,
+    T: Float + FloatConst + ConstOne,
 {
     let np_f = T::from(npoints).unwrap();
-    let one = T::one();
-    let two = T::from(2.0).unwrap();
+    let one = T::ONE;
+    let two = one + one;
 
     let mut window: Vec<T> = Vec::with_capacity(npoints);
 

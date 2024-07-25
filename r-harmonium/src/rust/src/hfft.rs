@@ -752,10 +752,12 @@ impl_hrealfftinverse!(
 impl HFft {
     #[doc(hidden)]
     pub fn get_inner_mut(&mut self) -> &mut dyn HFftR {
-        if Arc::get_mut(&mut self.0).is_none() {
+        // Weak references are never used.
+        if Arc::strong_count(&self.0) != 1 {
             self.0 = self.0.clone_inner();
         }
-        // Safe to unwrap_unchecked since get_mut was checked above.
+        // Safety: reference count was checked.
+        // Use get_mut_unchecked when stable.
         unsafe { Arc::get_mut(&mut self.0).unwrap_unchecked() }
     }
 }
@@ -763,10 +765,12 @@ impl HFft {
 impl HRealFft {
     #[doc(hidden)]
     pub fn get_inner_mut(&mut self) -> &mut dyn HRealFftR {
-        if Arc::get_mut(&mut self.0).is_none() {
+        // Weak references are never used.
+        if Arc::strong_count(&self.0) != 1 {
             self.0 = self.0.clone_inner();
         }
-        // Safe to unwrap_unchecked since get_mut was checked above.
+        // Safety: reference count was checked.
+        // Use get_mut_unchecked when stable.
         unsafe { Arc::get_mut(&mut self.0).unwrap_unchecked() }
     }
 }

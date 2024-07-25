@@ -59,6 +59,11 @@ where
     pub fn as_slice_mut(&mut self) -> Option<&mut [T]> {
         self.0.as_slice_mut()
     }
+
+    /// Returns `true` if the `HArray` shares the inner arc with another one.
+    pub fn is_shared(&self) -> bool {
+        todo!()
+    }
 }
 
 #[cfg(test)]
