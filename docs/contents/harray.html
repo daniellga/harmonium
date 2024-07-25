@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.54">
+<meta name="generator" content="quarto-1.5.55">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -313,7 +313,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h1>Methods</h1>
 <section id="new_from_values" class="level2">
 <h2 class="anchored" data-anchor-id="new_from_values">new_from_values</h2>
-<p><code>new_from_values(arr: array, dtype: HDataType) -&gt; HArray</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L57">source</a> </span><br>
+<p><code>new_from_values(arr: array, dtype: HDataType) -&gt; HArray</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L58">source</a> </span><br>
 </p>
 <p>Creates a new <code>HArray</code> from an R array.</p>
 <section id="arguments" class="level4">
@@ -343,7 +343,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="len" class="level2">
 <h2 class="anchored" data-anchor-id="len">len</h2>
-<p><code>len() -&gt; integer</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L125">source</a> </span><br>
+<p><code>len() -&gt; integer</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L126">source</a> </span><br>
 </p>
 <p>Returns the number of elements of this <code>Harray</code>.</p>
 <section id="returns-1" class="level4">
@@ -362,7 +362,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="shape" class="level2">
 <h2 class="anchored" data-anchor-id="shape">shape</h2>
-<p><code>shape() -&gt; integeratomicvector</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L153">source</a> </span><br>
+<p><code>shape() -&gt; integeratomicvector</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L154">source</a> </span><br>
 </p>
 <p>Returns the shape of this <code>HArray</code>.</p>
 <section id="returns-2" class="level4">
@@ -381,7 +381,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="ndim" class="level2">
 <h2 class="anchored" data-anchor-id="ndim">ndim</h2>
-<p><code>ndim() -&gt; integer</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L187">source</a> </span><br>
+<p><code>ndim() -&gt; integer</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L188">source</a> </span><br>
 </p>
 <p>Returns the number of dimensions of this <code>HArray</code>.</p>
 <section id="returns-3" class="level4">
@@ -400,7 +400,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="slice" class="level2">
 <h2 class="anchored" data-anchor-id="slice">slice</h2>
-<p><code>slice(range: list[atomicvector]) -&gt; HArray</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L228">source</a> </span><br>
+<p><code>slice(range: list[atomicvector]) -&gt; HArray</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L240">source</a> </span><br>
 </p>
 <p>Slices the HArray.</p>
 <p>This operation has a COW (<a href="https://doc.rust-lang.org/std/borrow/enum.Cow.html">clone-on-write</a>) behaviour. The created slice shares the inner data with the original array until one of them is modified.</p>
@@ -411,7 +411,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p>A list of vectors of integers.</p>
 <p>The number of vectors in the list must be equal to the number of dimensions in the original HArray as they represent the slice information for each axis.</p>
-<p>Each vector must be composed of 3 elements: [start, end, step]. All 3 values can be positive or negative, although step can’t be 0.</p>
+<p>Each vector must be composed of 1 or 3 elements</p>
+<p>For 1 element: A single index. An index to use for taking a subview with respect to that axis. The index is selected, then the axis is removed.</p>
+<p>For 3 elements: [start, end, step]. All 3 values can be positive or negative, although step can’t be 0. Negative start or end indexes are counted from the back of the axis. If end is None, the slice extends to the end of the axis. A <code>c(NA_integer_, NA_integer_, NA_integer_)</code> value for start will mean start = 0, end = axis_length, step = 1.</p>
 </section>
 <section id="returns-4" class="level4">
 <h4 class="anchored" data-anchor-id="returns-4">Returns</h4>
@@ -420,16 +422,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="examples-4" class="level4">
 <h4 class="anchored" data-anchor-id="examples-4">Examples</h4>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>arr <span class="ot">=</span> <span class="fu">array</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>,<span class="dv">9</span>,<span class="dv">10</span>,<span class="dv">11</span>,<span class="dv">12</span>), <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">4</span>))</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>arr <span class="ot">=</span> <span class="fu">array</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>,<span class="dv">9</span>,<span class="dv">10</span>,<span class="dv">11</span>,<span class="dv">12</span>,<span class="dv">13</span>,<span class="dv">14</span>,<span class="dv">15</span>,<span class="dv">16</span>,<span class="dv">17</span>,<span class="dv">18</span>,<span class="dv">19</span>,<span class="dv">20</span>), <span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">5</span>))</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>dtype <span class="ot">=</span> HDataType<span class="sc">$</span>Float32</span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>harray <span class="ot">=</span> HArray<span class="sc">$</span><span class="fu">new_from_values</span>(arr, dtype)</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>harray<span class="sc">$</span><span class="fu">slice</span>(<span class="fu">list</span>(<span class="fu">c</span>(<span class="dv">0</span>L, <span class="dv">2</span>L, <span class="dv">1</span>L), <span class="fu">c</span>(<span class="dv">1</span>L, <span class="dv">3</span>L, <span class="dv">1</span>L)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>harray<span class="sc">$</span><span class="fu">slice</span>(<span class="fu">list</span>(<span class="fu">c</span>(<span class="dv">0</span>L, <span class="dv">2</span>L, <span class="dv">1</span>L), <span class="fu">c</span>(<span class="dv">1</span>L, <span class="dv">3</span>L, <span class="dv">1</span>L)))</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>harray<span class="sc">$</span><span class="fu">slice</span>(<span class="fu">list</span>(<span class="fu">c</span>(<span class="dv">0</span>L, <span class="dv">4</span>L, <span class="dv">1</span>L), <span class="fu">c</span>(<span class="dv">1</span>L, <span class="cn">NA</span>, <span class="dv">1</span>L)))</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>harray<span class="sc">$</span><span class="fu">slice</span>(<span class="fu">list</span>(<span class="fu">c</span>(<span class="dv">0</span>L, <span class="cn">NA</span>, <span class="dv">1</span>L), <span class="fu">c</span>(<span class="dv">1</span>L, <span class="dv">3</span>L, <span class="dv">1</span>L)))</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>harray<span class="sc">$</span><span class="fu">slice</span>(<span class="fu">list</span>(<span class="dv">0</span>L, <span class="fu">c</span>(<span class="cn">NA_integer_</span>, <span class="cn">NA</span>, <span class="cn">NA</span>))) <span class="co"># using index</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>x <span class="ot">=</span> <span class="fu">c</span>(<span class="cn">NA_integer_</span>, <span class="cn">NA_integer_</span>, <span class="cn">NA_integer_</span>)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>harray<span class="sc">$</span><span class="fu">slice</span>(<span class="fu">list</span>(x, x)) <span class="sc">==</span> harray <span class="co"># TRUE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 </section>
 </section>
 <section id="print" class="level2">
 <h2 class="anchored" data-anchor-id="print">print</h2>
-<p><code>print()</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L287">source</a> </span><br>
+<p><code>print()</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L312">source</a> </span><br>
 </p>
 <p>Prints the <code>HArray</code>.</p>
 <p>Differently from R’s normal behaviour, <code>print</code> doesn’t return the value invisibly.</p>
@@ -448,7 +455,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="eq" class="level2">
 <h2 class="anchored" data-anchor-id="eq">eq</h2>
-<p><code>eq(other: HArray) -&gt; bool</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L332">source</a> </span><br>
+<p><code>eq(other: HArray) -&gt; bool</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L357">source</a> </span><br>
 </p>
 <p>Equality with another <code>HArray</code>.</p>
 <p>The comparison only checks if the dtype and the values are the same. To compare if the underlying data is the same in memory, check <code>mem_adress</code>.</p>
@@ -483,7 +490,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="ne" class="level2">
 <h2 class="anchored" data-anchor-id="ne">ne</h2>
-<p><code>ne(other: HArray) -&gt; bool</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L378">source</a> </span><br>
+<p><code>ne(other: HArray) -&gt; bool</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L403">source</a> </span><br>
 </p>
 <p>Difference with another <code>HArray</code>.</p>
 <p>The comparison only checks if the dtype and the values are the same. To compare if the underlying data is the same in memory, check <code>mem_adress</code>.</p>
@@ -518,7 +525,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="clone" class="level2">
 <h2 class="anchored" data-anchor-id="clone">clone</h2>
-<p><code>clone() -&gt; HArray</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L408">source</a> </span><br>
+<p><code>clone() -&gt; HArray</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L433">source</a> </span><br>
 </p>
 <p>Creates a new <code>HArray</code>, with the underlying data pointing to the same place in memory.</p>
 <section id="returns-7" class="level4">
@@ -538,7 +545,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="collect" class="level2">
 <h2 class="anchored" data-anchor-id="collect">collect</h2>
-<p><code>collect() -&gt; array</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L435">source</a> </span><br>
+<p><code>collect() -&gt; array</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L460">source</a> </span><br>
 </p>
 <p>Creates an R array from an <code>HArray</code>. The type of the array created (<code>double</code> or <code>complex</code>) will depend on the <code>HArray</code>’s dtype.</p>
 <section id="returns-8" class="level4">
@@ -557,7 +564,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="dtype" class="level2">
 <h2 class="anchored" data-anchor-id="dtype">dtype</h2>
-<p><code>dtype() -&gt; HDataType</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L462">source</a> </span><br>
+<p><code>dtype() -&gt; HDataType</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L487">source</a> </span><br>
 </p>
 <p>Gets the <code>HArray</code>’s dtype as an <code>HDataType</code>.</p>
 <section id="returns-9" class="level4">
@@ -576,7 +583,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="is_shared" class="level2">
 <h2 class="anchored" data-anchor-id="is_shared">is_shared</h2>
-<p><code>is_shared() -&gt; bool</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L495">source</a> </span><br>
+<p><code>is_shared() -&gt; bool</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L520">source</a> </span><br>
 </p>
 <p>Checks if the object is shared.</p>
 <p>Since <code>HArray</code> has a COW (<a href="https://doc.rust-lang.org/std/borrow/enum.Cow.html">clone-on-write</a>) behaviour, this function is useful to check if a new object will be created or if the change will be done in-place.</p>
@@ -599,7 +606,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="mem_adress" class="level2">
 <h2 class="anchored" data-anchor-id="mem_adress">mem_adress</h2>
-<p><code>mem_adress() -&gt; string</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L526">source</a> </span><br>
+<p><code>mem_adress() -&gt; string</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L551">source</a> </span><br>
 </p>
 <p>The memory adress of the first element of the inner array.</p>
 <p>This is useful to check if different objects share the same underlying data.</p>
@@ -619,7 +626,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="is_standard_layout" class="level2">
 <h2 class="anchored" data-anchor-id="is_standard_layout">is_standard_layout</h2>
-<p><code>is_standard_layout() -&gt; bool</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L560">source</a> </span><br>
+<p><code>is_standard_layout() -&gt; bool</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L585">source</a> </span><br>
 </p>
 <p>Returns true if the array data is laid out in contiguous “C order” in memory (where the last index is the most rapidly varying).</p>
 <p>Returns false otherwise, i.e.&nbsp;the array is possibly not contiguous in memory, it has custom strides, etc.</p>
@@ -642,7 +649,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="invalidate" class="level2">
 <h2 class="anchored" data-anchor-id="invalidate">invalidate</h2>
-<p><code>invalidate()</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L584">source</a> </span><br>
+<p><code>invalidate()</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L609">source</a> </span><br>
 </p>
 <p>Replaces the inner value of the external pointer, invalidating it. This function is useful to remove one of the shared references of the inner pointer in rust.</p>
 <section id="examples-14" class="level4">

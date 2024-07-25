@@ -8,7 +8,7 @@ An array representation.
 
 ## new_from_values
 
-`new_from_values(arr: array, dtype: HDataType) -> HArray`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L57) </span> \
+`new_from_values(arr: array, dtype: HDataType) -> HArray`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L58) </span> \
 
 Creates a new `HArray` from an R array.
 
@@ -41,7 +41,7 @@ _________
 
 ## len
 
-`len() -> integer`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L125) </span> \
+`len() -> integer`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L126) </span> \
 
 Returns the number of elements of this `Harray`.
 
@@ -63,7 +63,7 @@ _________
 
 ## shape
 
-`shape() -> integeratomicvector`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L153) </span> \
+`shape() -> integeratomicvector`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L154) </span> \
 
 Returns the shape of this `HArray`.
 
@@ -85,7 +85,7 @@ _________
 
 ## ndim
 
-`ndim() -> integer`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L187) </span> \
+`ndim() -> integer`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L188) </span> \
 
 Returns the number of dimensions of this `HArray`.
 
@@ -107,7 +107,7 @@ _________
 
 ## slice
 
-`slice(range: list[atomicvector]) -> HArray`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L228) </span> \
+`slice(range: list[atomicvector]) -> HArray`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L240) </span> \
 
 Slices the HArray.
 
@@ -122,7 +122,13 @@ A list of vectors of integers.
 
 The number of vectors in the list must be equal to the number of dimensions in the original HArray as they represent the slice information for each axis.
 
-Each vector must be composed of 3 elements: [start, end, step]. All 3 values can be positive or negative, although step can't be 0.
+Each vector must be composed of 1 or 3 elements
+
+For 1 element: A single index. An index to use for taking a subview with respect to that axis. The index is selected, then the axis is removed.
+
+For 3 elements: [start, end, step]. All 3 values can be positive or negative, although step can't be 0.
+Negative start or end indexes are counted from the back of the axis. If end is None, the slice extends to the end of the axis.
+A `c(NA_integer_, NA_integer_, NA_integer_)` value for start will mean start = 0, end = axis_length, step = 1.
 
 #### Returns
 
@@ -132,17 +138,22 @@ An `HArray`.
 
 ```r
 library(harmonium)
-arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
+arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20), c(4,5))
 dtype = HDataType$Float32
 harray = HArray$new_from_values(arr, dtype)
 harray$slice(list(c(0L, 2L, 1L), c(1L, 3L, 1L)))
+harray$slice(list(c(0L, 4L, 1L), c(1L, NA, 1L)))
+harray$slice(list(c(0L, NA, 1L), c(1L, 3L, 1L)))
+harray$slice(list(0L, c(NA_integer_, NA, NA))) # using index
+x = c(NA_integer_, NA_integer_, NA_integer_)
+harray$slice(list(x, x)) == harray # TRUE
 ```
 
 _________
 
 ## print
 
-`print()`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L287) </span> \
+`print()`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L312) </span> \
 
 Prints the `HArray`.
 
@@ -165,7 +176,7 @@ _________
 
 ## eq
 
-`eq(other: HArray) -> bool`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L332) </span> \
+`eq(other: HArray) -> bool`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L357) </span> \
 
 Equality with another `HArray`.
 
@@ -204,7 +215,7 @@ _________
 
 ## ne
 
-`ne(other: HArray) -> bool`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L378) </span> \
+`ne(other: HArray) -> bool`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L403) </span> \
 
 Difference with another `HArray`.
 
@@ -243,7 +254,7 @@ _________
 
 ## clone
 
-`clone() -> HArray`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L408) </span> \
+`clone() -> HArray`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L433) </span> \
 
 Creates a new `HArray`, with the underlying data pointing to the same place in memory.
 
@@ -266,7 +277,7 @@ _________
 
 ## collect
 
-`collect() -> array`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L435) </span> \
+`collect() -> array`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L460) </span> \
 
 Creates an R array from an `HArray`. The type of the array created (`double` or `complex`) will depend on the `HArray`'s dtype.
 
@@ -288,7 +299,7 @@ _________
 
 ## dtype
 
-`dtype() -> HDataType`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L462) </span> \
+`dtype() -> HDataType`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L487) </span> \
 
 Gets the `HArray`'s dtype as an `HDataType`.
 
@@ -310,7 +321,7 @@ _________
 
 ## is_shared
 
-`is_shared() -> bool`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L495) </span> \
+`is_shared() -> bool`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L520) </span> \
 
 Checks if the object is shared.
 
@@ -338,7 +349,7 @@ _________
 
 ## mem_adress
 
-`mem_adress() -> string`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L526) </span> \
+`mem_adress() -> string`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L551) </span> \
 
 The memory adress of the first element of the inner array.
 
@@ -362,7 +373,7 @@ _________
 
 ## is_standard_layout
 
-`is_standard_layout() -> bool`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L560) </span> \
+`is_standard_layout() -> bool`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L585) </span> \
 
 Returns true if the array data is laid out in contiguous “C order” in memory (where the last index is the most rapidly varying).
 
@@ -390,7 +401,7 @@ _________
 
 ## invalidate
 
-`invalidate()`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L584) </span> \
+`invalidate()`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L609) </span> \
 
 Replaces the inner value of the external pointer, invalidating it.
 This function is useful to remove one of the shared references of the inner pointer in rust.
