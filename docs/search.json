@@ -7,509 +7,47 @@
     "text": "Harmonium is an audio interface inspired by Python’s librosa.\n\n\nBasic usage\nLoad the library.\nlibrary(harmonium)\nCreate an HArray from an existing array.\narr = matrix(c(1,2,3,4,5,6,7,8,9,10,11,12), ncol = 2)\ndtype = HDataType$Float64\nharray = HArray$new_from_values(arr, dtype)\nprint(harray)\nOr decode from an existing audio file.\nharmonium_path = system.file(package = \"harmonium\")\nfilepath = file.path(harmonium_path, \"testfiles\", \"gs-16b-2c-44100hz.flac\")\ndtype = HDataType$Float64\ndecoded_audio = HFile$decode(filepath, dtype)\nharray = decoded_audio$harray()\nsr = decoded_audio$sr() # sampling rate\nprint(harray)\nVerify the dimensions.\nharray$len()\nHAudioOp$nchannels(harray)\nHAudioOp$nframes(harray)\nVerify the data type.\nharray$dtype()\nConvert to an R array.\nharray$collect()\nConvert to mono.\nHAudioOp$to_mono(harray)\nprint(harray)\nResample the haudio.\narr = matrix(as.double(1:8192), ncol = 2)\ndtype = HDataType$Float64\nharray = HArray$new_from_values(arr, dtype)\nsr_in = 48000L\nsr_out = 44100L\nchunk_size = 1024L\nsub_chunks = 2L\nnbr_channels = 2L\nres_type = HResamplerType$FftFixedIn\ndtype = HDataType$Float64\nhresampler = HResampler$new_fft(sr_in, sr_out, chunk_size, sub_chunks, nbr_channels, res_type, dtype)\nhresampler$process(harray)\nPlay the haudio.\nharmonium_path = system.file(package = \"harmonium\")\nfilepath = file.path(harmonium_path, \"testfiles\", \"gs-16b-2c-44100hz.flac\")\ndtype = HDataType$Float32\ndecoded_audio = HFile$decode(filepath, dtype)\nharray = decoded_audio$harray()\nsr = decoded_audio$sr() # sampling rate\nhaudiosink = HAudioSink$new()\nhaudiosink$append_from_harray(harray, sr)\nOr play directly from the file.\nharmonium_path = system.file(package = \"harmonium\")\nfilepath = file.path(harmonium_path, \"testfiles\", \"gs-16b-2c-44100hz.flac\")\nhaudiosink = HAudioSink$new()\nhaudiosink$append_from_file(filepath)\nGet the number of audios to be played.\nhaudiosink$len()\nDouble the audio volume and the playback speed.\nhaudiosink$set_volume(2)\nhaudiosink$set_speed(2)\nPause the playback and confirms it is paused.\nhaudiosink$pause()\nhaudiosink$is_paused()\nIt is also possible to get metadata from an audio file.\nharmonium_path = system.file(package = \"harmonium\")\nfilepath = file.path(harmonium_path, \"testfiles\", \"gs-16b-2c-44100hz.flac\")\nmetatadatype = HMetadataType$Text\nHFile$metadata(filepath, metatadatype)\nAnd to get some audio parameters directly from a file.\nharmonium_path = system.file(package = \"harmonium\")\nfilepath = file.path(harmonium_path, \"testfiles\", \"gs-16b-2c-44100hz.flac\")\nparams = HFile$params(filepath)\nsr = params[[1]]\nnframes = params[[2]]\nnchannels = params[[3]]\nduration = params[[4]]"
   },
   {
-    "objectID": "contents/hresampler.html",
-    "href": "contents/hresampler.html",
-    "title": "HResampler",
+    "objectID": "contents/hmetadatatype.html",
+    "href": "contents/hmetadatatype.html",
+    "title": "HMetadataType",
     "section": "",
-    "text": "A resampler.",
+    "text": "A metadata type representation.\nSupports All, Text and Visual types.",
     "crumbs": [
       "Classes",
-      "HResampler"
+      "HMetadataType"
     ]
   },
   {
-    "objectID": "contents/hresampler.html#new_fft",
-    "href": "contents/hresampler.html#new_fft",
-    "title": "HResampler",
-    "section": "new_fft",
-    "text": "new_fft\nnew_fft(sr_in: integer, sr_out: integer, chunk_size: integer, sub_chunks: integer, nbr_channels: integer, res_type: HResamplerType, dtype: HDataType) -&gt; HResampler source \n\nCreates a new FFT type HResampler.\nSupports any of [FftFixedIn, FftFixedInOut, FftFixedOut] HResamplerType.\nThe resampling is done by FFTing the input data. The spectrum is then extended or truncated as well as multiplied with an antialiasing filter before it’s inverse transformed to get the resampled waveforms.\n\nFftFixedIn\n\nA synchronous resampler that needs a fixed number of audio frames for input and returns a variable number of frames.\n\nFftFixedInOut\n\nA synchronous resampler that accepts a fixed number of audio frames for input and returns a fixed number of frames.\n\nFftFixedOut\n\nA synchronous resampler that needs a fixed number of audio frames for input and returns a variable number of frames.\n\nArguments\n\nsr_in\n\nThe input sampling rate in hz.\n\nsr_out\n\nThe output sampling rate in hz.\n\nchunk_size\n\nChunks size of input or output data in frames.\nIt can be used as input or output, depending on HResamplerType.\n\nsub_chunks\n\nDesired number of subchunks for processing, actual number may be different.\n\nnbr_channels\n\nNumber of channels in input and output.\nMust be the same number of channels as the HAudio that will be processed by the HResampler.\n\nres_type\n\nAn HResamplerType to indicate which type of HResampler to be created.\n\ndtype\n\nA float HDataType to indicate the dtype that the HResampler will be working with.\nMust be the same as the HAudio’s dtype that will be processed by the HResampler.\n\n\nReturns\nA FFT type HResampler.\n\n\nExamples\nlibrary(harmonium)\nsr_in = 48000L\nsr_out = 44100L\nchunk_size = 1024L\nsub_chunks = 2L\nnbr_channels = 2L\nres_type = HResamplerType$FftFixedIn\ndtype = HDataType$Float32\n\nhresampler = HResampler$new_fft(sr_in, sr_out, chunk_size, sub_chunks, nbr_channels, res_type, dtype)",
-    "crumbs": [
-      "Classes",
-      "HResampler"
-    ]
-  },
-  {
-    "objectID": "contents/hresampler.html#new_sinc",
-    "href": "contents/hresampler.html#new_sinc",
-    "title": "HResampler",
-    "section": "new_sinc",
-    "text": "new_sinc\nnew_sinc(resample_ratio: double, max_resample_ratio_relative: double, parameters: HSincInterpolationParameters, chunk_size: integer, nchannels: integer, res_type: HResamplerType, dtype: HDataType) -&gt; HResampler source \n\nCreates a new Sinc type HResampler.\nSupports any of [SincFixedIn, SincFixedOut] HResamplerType.\nThe resampling is done by creating a number of intermediate points (defined by oversampling_factor) by sinc interpolation. The new samples are then calculated by interpolating between these points.\n\nSincFixedIn\n\nAn asynchronous resampler that accepts a fixed number of audio frames for input and returns a variable number of frames.\n\nSincFixedOut\n\nAn asynchronous resampler that accepts a variable number of audio frames for input nad returns a fixed number of frames.\n\nArguments\n\nresample_ratio\n\nThe output’s sampling rate divided by the input’s sampling rate.\n\nmax_resample_ratio_relative\n\nMaximum ratio that can be set with set_resample_ratio relative to resample_ratio, must be &gt;= 1.0. The minimum relative ratio is the reciprocal of the maximum. For example, with max_resample_ratio_relative of 10.0, the ratio can be set between resample_ratio * 10.0 and resample_ratio / 10.0.\n\nparameters\n\nAn HSincInterpolationParameters. Parameters for interpolation.\n\nchunk_size\n\nChunks size of input or output data in frames.\n\nnchannels\n\nNumber of channels in input and output.\nMust be the same number of channels as the HAudio that will be processed by the HResampler.\n\nres_type\n\nAn HResamplerType. Indicates which type of HResampler to be created.\n\ndtype\n\nA float HDataType to indicate the dtype that the HResampler will be working with.\nMust be the same as the HAudio’s dtype that will be processed by the HResampler.\n\n\nReturns\nA Sinc type HResampler.\n\n\nExamples\nlibrary(harmonium)\nsr_in = 44100L\nsr_out = 48000L\nresample_ratio = sr_out / sr_in\nmax_resample_ratio_relative = 2\nhparams = HSincInterpolationParameters$new(256, 0.95, 256, \"linear\", \"blackmanharris2\")\nchunk_size = 512L\nnchannels = 2L\nres_type = HResamplerType$SincFixedOut\ndtype = HDataType$Float32\n\nres = HResampler$new_sinc(resample_ratio, max_resample_ratio_relative, hparams, chunk_size, nchannels, res_type, dtype)",
-    "crumbs": [
-      "Classes",
-      "HResampler"
-    ]
-  },
-  {
-    "objectID": "contents/hresampler.html#new_fast",
-    "href": "contents/hresampler.html#new_fast",
-    "title": "HResampler",
-    "section": "new_fast",
-    "text": "new_fast\nnew_sinc(resample_ratio: double, max_resample_ratio_relative: double, pol_deg: HPolynomialDegree, chunk_size: integer, nchannels: integer, res_type: HResamplerType, dtype: HDataType) -&gt; HResampler source \n\nCreates a new Fast type HResampler.\nSupports any of [FastFixedIn, FastFixedOut] HResamplerType.\nThe resampling is done by interpolating between the input samples by fitting polynomials.\nNote that no anti-aliasing filter is used. This makes it run considerably faster than the corresponding SincFixedIn, which performs anti-aliasing filtering. The price is that the resampling creates some artefacts in the output, mainly at higher frequencies. Use SincFixedIn if this can not be tolerated.\n\nFastFixedIn\n\nAn asynchronous resampler that accepts a fixed number of audio frames for input and returns a variable number of frames.\n\nFastFixedOut\n\nAn asynchronous resampler that accepts a variable number of audio frames for input nad returns a fixed number of frames.\n\nArguments\n\nresample_ratio\n\nThe output’s sampling rate divided by the input’s sampling rate.\n\nmax_resample_ratio_relative\n\nMaximum ratio that can be set with set_resample_ratio relative to resample_ratio, must be &gt;= 1.0. The minimum relative ratio is the reciprocal of the maximum. For example, with max_resample_ratio_relative of 10.0, the ratio can be set between resample_ratio * 10.0 and resample_ratio / 10.0.\n\npol_deg\n\nAn HPolynomialDegree. Used to select the polynomial degree for interpolation.\n\nchunk_size\n\nChunks size of input or output data in frames.\n\nnchannels\n\nNumber of channels in input and output.\nMust be the same number of channels as the HAudio that will be processed by the HResampler.\n\nres_type\n\nAn HResamplerType. Indicates which type of HResampler to be created.\n\ndtype\n\nA float HDataType to indicate the dtype that the HResampler will be working with.\nMust be the same as the HAudio’s dtype that will be processed by the HResampler.\n\n\nReturns\nA Fast type HResampler.\n\n\nExamples\nlibrary(harmonium)\nsr_in = 44100L\nsr_out = 48000L\nresample_ratio = sr_out / sr_in\nmax_resample_ratio_relative = 2\npol_deg = HPolynomialDegree$linear\nchunk_size = 512L\nnchannels = 2L\nres_type = HResamplerType$FastFixedOut\ndtype = HDataType$Float32\n\nres = HResampler$new_fast(resample_ratio, max_resample_ratio_relative, pol_deg, chunk_size, nchannels, res_type, dtype)",
-    "crumbs": [
-      "Classes",
-      "HResampler"
-    ]
-  },
-  {
-    "objectID": "contents/hresampler.html#process",
-    "href": "contents/hresampler.html#process",
-    "title": "HResampler",
-    "section": "process",
-    "text": "process\nprocess(harray: HArray) source \n\nProcess the resampler, changing the HArray’s sampling rate.\n\nArguments\n\nharray\n\nAn HArray that will have it’s sampling rate converted.\n\n\nExamples\nlibrary(harmonium)\narr = matrix(0, nrow = 512, ncol = 2)\nharray = HArray$new_from_values(arr, dtype = HDataType$Float64)\nhparams = HSincInterpolationParameters$new(256L, 0.95, 256L, \"linear\", \"blackmanharris2\")\nres = HResampler$new_sinc(48000L / 44100L, 2, hparams, 512L, 2L, HResamplerType$SincFixedIn, HDataType$Float64)\nres$process(harray)",
-    "crumbs": [
-      "Classes",
-      "HResampler"
-    ]
-  },
-  {
-    "objectID": "contents/hresampler.html#set_resample_ratio",
-    "href": "contents/hresampler.html#set_resample_ratio",
-    "title": "HResampler",
-    "section": "set_resample_ratio",
-    "text": "set_resample_ratio\nset_resample_ratio(new_ratio: double, ramp: bool) source \n\nUpdate the resample ratio.\nFor asynchronous resamplers, the ratio must be within original / maximum to original * maximum, where original and maximum are the resampling ratios that were provided to the constructor. Trying to set the ratio outside these bounds will return an error.\nFor synchronous resamplers, this will always return an error.\n\nArguments\n\nnew_ratio\n\nThe new resample_ratio to be set.\n\nramp\n\nIf TRUE, the ratio will be ramped from the old to the new value during processing of the next chunk. This allows smooth transitions from one ratio to another. If FALSE, the new ratio will be applied from the start of the next chunk.\n\n\nExamples\nlibrary(harmonium)\ndata = matrix(0, nrow = 512, ncol = 2)\nhaudio = HAudio$new_from_values(data, 44100, dtype = HDataType$Float64)\nhparams = HSincInterpolationParameters$new(256L, 0.95, 256L, \"linear\", \"blackmanharris2\")\nres = HResampler$new_sinc(48000L / 44100L, 2, hparams, 512L, 2L, HResamplerType$SincFixedIn, HDataType$Float64)\nres$set_resample_ratio(1, FALSE)",
-    "crumbs": [
-      "Classes",
-      "HResampler"
-    ]
-  },
-  {
-    "objectID": "contents/hresampler.html#set_resample_ratio_relative",
-    "href": "contents/hresampler.html#set_resample_ratio_relative",
-    "title": "HResampler",
-    "section": "set_resample_ratio_relative",
-    "text": "set_resample_ratio_relative\nset_resample_ratio_relative(rel_ratio: double, ramp: bool) source \n\nUpdate the resample ratio as a factor relative to the original one.\nFor asynchronous resamplers, the relative ratio must be within 1 / maximum to maximum, where maximum is the maximum resampling ratio that was provided to the constructor. Trying to set the ratio outside these bounds will return an error. Higher ratios above 1.0 slow down the output and lower the pitch. Lower ratios below 1.0 speed up the output and raise the pitch.\nFor synchronous resamplers, this will always return an error.\n\nArguments\n\nrel_ratio\n\nA factor to update the resample_ratio relative to the original one.\n\nramp\n\nIf TRUE, the ratio will be ramped from the old to the new value during processing of the next chunk. This allows smooth transitions from one ratio to another. If ramp is false, the new ratio will be applied from the start of the next chunk.\n\n\nExamples\nlibrary(harmonium)\ndata = matrix(0, nrow = 512, ncol = 2)\nhaudio = HAudio$new_from_values(data, 44100, dtype = HDataType$Float64)\nhparams = HSincInterpolationParameters$new(256L, 0.95, 256L, \"linear\", \"blackmanharris2\")\nres = HResampler$new_sinc(48000L / 44100L, 2, hparams, 512L, 2L, HResamplerType$SincFixedIn, HDataType$Float64)\nres$set_resample_ratio_relative(0.5, FALSE)",
-    "crumbs": [
-      "Classes",
-      "HResampler"
-    ]
-  },
-  {
-    "objectID": "contents/hresampler.html#reset",
-    "href": "contents/hresampler.html#reset",
-    "title": "HResampler",
-    "section": "reset",
-    "text": "reset\nreset() source \n\nReset the resampler state and clear all internal buffers.\n\nExamples\nlibrary(harmonium)\nsr_in = 44100L\nsr_out = 48000L\nresample_ratio = sr_out / sr_in\nmax_resample_ratio_relative = 2\npol_deg = HPolynomialDegree$linear\nchunk_size = 512L\nnchannels = 2L\nres_type = HResamplerType$FastFixedOut\ndtype = HDataType$Float32\n\nres = HResampler$new_fast(resample_ratio, max_resample_ratio_relative, pol_deg, chunk_size, nchannels, res_type, dtype)\nres$reset()",
-    "crumbs": [
-      "Classes",
-      "HResampler"
-    ]
-  },
-  {
-    "objectID": "contents/hresampler.html#res_type",
-    "href": "contents/hresampler.html#res_type",
-    "title": "HResampler",
-    "section": "res_type",
-    "text": "res_type\nres_type() -&gt; HResamplerType source \n\nGets the HResampler’s type.\n\nReturns\nAn HResamplerType.\n\n\nExamples\nlibrary(harmonium)\nsr_in = 44100L\nsr_out = 48000L\nresample_ratio = sr_out / sr_in\nmax_resample_ratio_relative = 2\npol_deg = HPolynomialDegree$linear\nchunk_size = 512L\nnchannels = 2L\nres_type = HResamplerType$FastFixedOut\ndtype = HDataType$Float32\n\nres = HResampler$new_fast(resample_ratio, max_resample_ratio_relative, pol_deg, chunk_size, nchannels, res_type, dtype)\nres$res_type()",
-    "crumbs": [
-      "Classes",
-      "HResampler"
-    ]
-  },
-  {
-    "objectID": "contents/hresampler.html#dtype",
-    "href": "contents/hresampler.html#dtype",
-    "title": "HResampler",
-    "section": "dtype",
-    "text": "dtype\ndtype() -&gt; HDataType source \n\nGets the HResampler’s dtype.\n\nReturns\nAn HDataType.\n\n\nExamples\nlibrary(harmonium)\nsr_in = 44100L\nsr_out = 48000L\nresample_ratio = sr_out / sr_in\nmax_resample_ratio_relative = 2\npol_deg = HPolynomialDegree$linear\nchunk_size = 512L\nnchannels = 2L\nres_type = HResamplerType$FastFixedOut\ndtype = HDataType$Float32\n\nres = HResampler$new_fast(resample_ratio, max_resample_ratio_relative, pol_deg, chunk_size, nchannels, res_type, dtype)\nres$dtype()",
-    "crumbs": [
-      "Classes",
-      "HResampler"
-    ]
-  },
-  {
-    "objectID": "contents/hresampler.html#print",
-    "href": "contents/hresampler.html#print",
-    "title": "HResampler",
+    "objectID": "contents/hmetadatatype.html#print",
+    "href": "contents/hmetadatatype.html#print",
+    "title": "HMetadataType",
     "section": "print",
-    "text": "print\nprint() source \n\nPrints the HResampler.\nDifferently from R’s normal behaviour, print doesn’t return the value invisibly.\n\nExamples\nlibrary(harmonium)\nsr_in = 44100L\nsr_out = 48000L\nresample_ratio = sr_out / sr_in\nmax_resample_ratio_relative = 2\npol_deg = HPolynomialDegree$linear\nchunk_size = 512L\nnchannels = 2L\nres_type = HResamplerType$FastFixedOut\ndtype = HDataType$Float32\n\nres = HResampler$new_fast(resample_ratio, max_resample_ratio_relative, pol_deg, chunk_size, nchannels, res_type, dtype)\nres$print()\n\n# or similarly:\nprint(res)",
+    "text": "print\nprint() source \n\nPrints the HMetadataType.\nDifferently from R’s behaviour, print doesn’t return the value invisibly.\n\nExamples\nlibrary(harmonium)\nmetadatatype = HMetadataType$All\nmetadatatype$print()\n\n# or similarly:\nprint(metadatatype)",
     "crumbs": [
       "Classes",
-      "HResampler"
+      "HMetadataType"
     ]
   },
   {
-    "objectID": "contents/hresamplertype.html",
-    "href": "contents/hresamplertype.html",
-    "title": "HResamplerType",
-    "section": "",
-    "text": "A resampler type representation.\nSupports FftFixedIn, FftFixedInOut, FftFixedOut, SincFixedIn, SincFixedOut, FastFixedIn and FastFixedOut types.",
-    "crumbs": [
-      "Classes",
-      "HResamplerType"
-    ]
-  },
-  {
-    "objectID": "contents/hresamplertype.html#print",
-    "href": "contents/hresamplertype.html#print",
-    "title": "HResamplerType",
-    "section": "print",
-    "text": "print\nprint() source \n\nPrints the HResamplerType.\nDifferently from R’s behaviour, print doesn’t return the value invisibly.\n\nExamples\nlibrary(harmonium)\nhresamplertype = HResamplerType$SincFixedIn\nhresamplertype$print()\n\n# or similarly:\nprint(hresamplertype)",
-    "crumbs": [
-      "Classes",
-      "HResamplerType"
-    ]
-  },
-  {
-    "objectID": "contents/hresamplertype.html#eq",
-    "href": "contents/hresamplertype.html#eq",
-    "title": "HResamplerType",
+    "objectID": "contents/hmetadatatype.html#eq",
+    "href": "contents/hmetadatatype.html#eq",
+    "title": "HMetadataType",
     "section": "eq",
-    "text": "eq\neq(other: HResamplerType) -&gt; bool source \n\nEquality with another HResamplerType.\n\nArguments\n\nother\n\nAn HResamplerType.\n\n\nReturns\nA bool.\n\n\nExamples\nlibrary(harmonium)\nhresamplertype1 = HResamplerType$SincFixedIn\nhresamplertype2 = HResamplerType$SincFixedIn\nhresamplertype1$eq(hresamplertype2) # TRUE\n\n# or similarly:\nhresamplertype1 == hresamplertype2",
+    "text": "eq\neq(other: HMetadataType) -&gt; bool source \n\nEquality with another HMetadataType.\n\nArguments\n\nother\n\nAn HMetadataType.\n\n\nReturns\nA bool.\n\n\nExamples\nlibrary(harmonium)\nmetadatatype1 = HMetadataType$All\nmetadatatype2 = HMetadataType$All\nmetadatatype1$eq(metadatatype2) # TRUE\n\n# or similarly:\nmetadatatype1 == metadatatype2",
     "crumbs": [
       "Classes",
-      "HResamplerType"
+      "HMetadataType"
     ]
   },
   {
-    "objectID": "contents/hresamplertype.html#ne",
-    "href": "contents/hresamplertype.html#ne",
-    "title": "HResamplerType",
+    "objectID": "contents/hmetadatatype.html#ne",
+    "href": "contents/hmetadatatype.html#ne",
+    "title": "HMetadataType",
     "section": "ne",
-    "text": "ne\nne(other: HResamplerType) -&gt; bool source \n\nDifference with another HResamplerType.\n\nArguments\n\nother\n\nAn HResamplerType.\n\n\nReturns\nA bool.\n\n\nExamples\nlibrary(harmonium)\nhresamplertype1 = HResamplerType$SincFixedIn\nhresamplertype2 = HResamplerType$SincFixedIn\nhresamplertype1$ne(hresamplertype2) # FALSE\n\n# or similarly:\nhresamplertype1 != hresamplertype2",
+    "text": "ne\nne(other: HMetadataType) -&gt; bool source \n\nDifference with another HMetadataType.\n\nArguments\n\nother\n\nAn HMetadataType.\n\n\nReturns\nA bool.\n\n\nExamples\nlibrary(harmonium)\nmetadatatype1 = HMetadataType$All\nmetadatatype2 = HMetadataType$All\nmetadatatype1$ne(metadatatype2) # FALSE\n\n# or similarly:\nmetadatatype1 != metadatatype2",
     "crumbs": [
       "Classes",
-      "HResamplerType"
-    ]
-  },
-  {
-    "objectID": "contents/hdecodedaudio.html",
-    "href": "contents/hdecodedaudio.html",
-    "title": "HDecodedAudio",
-    "section": "",
-    "text": "An audio represented by an HArray of samples and its corresponding sampling rate.",
-    "crumbs": [
-      "Classes",
-      "HDecodedAudio"
-    ]
-  },
-  {
-    "objectID": "contents/hdecodedaudio.html#harray",
-    "href": "contents/hdecodedaudio.html#harray",
-    "title": "HDecodedAudio",
-    "section": "harray",
-    "text": "harray\nharray() -&gt; HArray source \n\nGet the decoded HArray.\n\nReturns\nA float HArray.\n\n\nExamples\nlibrary(harmonium)\nfpath = \"../../../testfiles/gs-16b-2c-44100hz.flac\"\ndtype = HDataType$Float32\nhdecodedaudio = HFile$decode(fpath, dtype)\nhdecodedaudio$harray()",
-    "crumbs": [
-      "Classes",
-      "HDecodedAudio"
-    ]
-  },
-  {
-    "objectID": "contents/hdecodedaudio.html#sr",
-    "href": "contents/hdecodedaudio.html#sr",
-    "title": "HDecodedAudio",
-    "section": "sr",
-    "text": "sr\nsr() -&gt; integer source \n\nGet the sampling rate of the decoded audio.\n\nReturns\nAn integer.\n\n\nExamples\nlibrary(harmonium)\nfpath = \"../../../testfiles/gs-16b-2c-44100hz.flac\"\ndtype = HDataType$Float32\nhdecodedaudio = HFile$decode(fpath, dtype)\nhdecodedaudio$sr()",
-    "crumbs": [
-      "Classes",
-      "HDecodedAudio"
-    ]
-  },
-  {
-    "objectID": "contents/hdecodedaudio.html#invalidate",
-    "href": "contents/hdecodedaudio.html#invalidate",
-    "title": "HDecodedAudio",
-    "section": "invalidate",
-    "text": "invalidate\ninvalidate() source \n\nReplaces the inner value of the external pointer, invalidating it.\nThis function is useful to remove one of the shared references of the inner pointer in rust.\n\nExamples\nlibrary(harmonium)\nfpath = \"../../../testfiles/gs-16b-2c-44100hz.flac\"\ndtype = HDataType$Float32\nhdecodedaudio = HFile$decode(fpath, dtype)\nharray = hdecodedaudio$harray() # now the inner HArray struct has 2 references.\nhdecodedaudio$invalidate() # back to 1 reference.",
-    "crumbs": [
-      "Classes",
-      "HDecodedAudio"
-    ]
-  },
-  {
-    "objectID": "contents/hpolynomialdegree.html",
-    "href": "contents/hpolynomialdegree.html",
-    "title": "HPolynomialDegree",
-    "section": "",
-    "text": "Degree of the polynomial used for interpolation. A higher degree gives a higher quality result, while taking longer to compute.\nSeptic polynomial, fitted using 8 sample points.\nQuintic polynomial, fitted using 6 sample points.\nCubic polynomial, fitted using 4 sample points.\nLinear polynomial, fitted using 2 sample points.\nNearest, uses the nearest sample point without any fitting.",
-    "crumbs": [
-      "Classes",
-      "HPolynomialDegree"
-    ]
-  },
-  {
-    "objectID": "contents/hpolynomialdegree.html#print",
-    "href": "contents/hpolynomialdegree.html#print",
-    "title": "HPolynomialDegree",
-    "section": "print",
-    "text": "print\nprint() source \n\nPrints the HPolynomialDegree.\nDifferently from R’s behaviour, print doesn’t return the value invisibly.\n\nExamples\nlibrary(harmonium)\npol_deg = HPolynomialDegree$Complex64\npol_deg$print()\n\n# or similarly:\nprint(pol_deg)",
-    "crumbs": [
-      "Classes",
-      "HPolynomialDegree"
-    ]
-  },
-  {
-    "objectID": "contents/hpolynomialdegree.html#eq",
-    "href": "contents/hpolynomialdegree.html#eq",
-    "title": "HPolynomialDegree",
-    "section": "eq",
-    "text": "eq\neq(other: HPolynomialDegree) -&gt; bool source \n\nEquality with another HPolynomialDegree.\n\nArguments\n\nother\n\nAn HPolynomialDegree.\n\n\nReturns\nA bool.\n\n\nExamples\nlibrary(harmonium)\npol_deg1 = HPolynomialDegree$quintic\npol_deg2 = HPolynomialDegree$quintic\npol_deg1$eq(pol_deg2) # TRUE\n\n# or similarly:\npol_deg1 == pol_deg2",
-    "crumbs": [
-      "Classes",
-      "HPolynomialDegree"
-    ]
-  },
-  {
-    "objectID": "contents/hpolynomialdegree.html#ne",
-    "href": "contents/hpolynomialdegree.html#ne",
-    "title": "HPolynomialDegree",
-    "section": "ne",
-    "text": "ne\nne(other: HPolynomialDegree) -&gt; bool source \n\nDifference with another HPolynomialDegree.\n\nArguments\n\nother\n\nAn HPolynomialDegree.\n\n\nReturns\nA bool.\n\n\nExamples\nlibrary(harmonium)\npol_deg1 = HPolynomialDegree$quintic\npol_deg2 = HPolynomialDegree$nearest\npol_deg1$ne(pol_deg2) # TRUE\n\n# or similarly:\npol_deg1 != pol_deg2",
-    "crumbs": [
-      "Classes",
-      "HPolynomialDegree"
-    ]
-  },
-  {
-    "objectID": "contents/haudioop.html",
-    "href": "contents/haudioop.html",
-    "title": "HAudioOp",
-    "section": "",
-    "text": "A collection of methods that can be applied to float 1D or 2D HArrays which represents audio data.",
-    "crumbs": [
-      "Classes",
-      "HAudioOp"
-    ]
-  },
-  {
-    "objectID": "contents/haudioop.html#nchannels",
-    "href": "contents/haudioop.html#nchannels",
-    "title": "HAudioOp",
-    "section": "nchannels",
-    "text": "nchannels\nnchannels() -&gt; integer source \n\nReturns the number of channels.\nThis is the same as the number of rows of a 1D or 2D HArray.\n\nReturns\nAn integer.\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nHAudioOp$nchannels(harray)",
-    "crumbs": [
-      "Classes",
-      "HAudioOp"
-    ]
-  },
-  {
-    "objectID": "contents/haudioop.html#nframes",
-    "href": "contents/haudioop.html#nframes",
-    "title": "HAudioOp",
-    "section": "nframes",
-    "text": "nframes\nnframes() -&gt; integer source \n\nReturns the number of frames.\nThis is the same as the number of cols of a 1D or 2D HArray.\nThe number of frames is equivalent to the number of samples divided by the number of channels.\n\nReturns\nAn integer.\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nHAudioOp$nframes(harray)",
-    "crumbs": [
-      "Classes",
-      "HAudioOp"
-    ]
-  },
-  {
-    "objectID": "contents/haudioop.html#db_to_amplitude",
-    "href": "contents/haudioop.html#db_to_amplitude",
-    "title": "HAudioOp",
-    "section": "db_to_amplitude",
-    "text": "db_to_amplitude\ndb_to_amplitude(harray: HArray, reference: double) source \n\nConverts the HArray input from dB to amplitude.\n\\(db_to_amplitude(x) = reference * (10.0**(x * 0.1))**power\\)\nThe operation is done in-place.\n\nArguments\n\nharray\n\nA 1D or 2D float HArray.\n\nreference\n\nA double that scales the output.\n\npower\n\nA double. If 1.0, will compute DB to power. If 0.5, will compute DB to amplitude.\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nHAudioOp$db_to_amplitude(harray, 2, 1)",
-    "crumbs": [
-      "Classes",
-      "HAudioOp"
-    ]
-  },
-  {
-    "objectID": "contents/haudioop.html#to_mono",
-    "href": "contents/haudioop.html#to_mono",
-    "title": "HAudioOp",
-    "section": "to_mono",
-    "text": "to_mono\nto_mono(harray: HArray) source \n\nConvert to 1 channel by taking the average across channels.\nThe operation is done in-place. A new inner array is created.\n\nArguments\n\nharray\n\nA 2D float HArray.\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nHAudioOp$to_mono(harray)",
-    "crumbs": [
-      "Classes",
-      "HAudioOp"
-    ]
-  },
-  {
-    "objectID": "contents/hfft.html",
-    "href": "contents/hfft.html",
-    "title": "HFft",
-    "section": "",
-    "text": "An HFft is used to create FFTs. It caches results internally, so when making more than one FFT it is advisable to reuse the same HFft instance.",
-    "crumbs": [
-      "Classes",
-      "HFft"
-    ]
-  },
-  {
-    "objectID": "contents/hfft.html#new_fft_forward",
-    "href": "contents/hfft.html#new_fft_forward",
-    "title": "HFft",
-    "section": "new_fft_forward",
-    "text": "new_fft_forward\nnew_fft_forward(length: integer, dtype: HDataType) -&gt; HFft source \n\nCreates a new HFft instance which will be used to calculate forward FFTs.\nIf you plan on creating multiple FFT instances, it is recommended to reuse the same planner for all of them. This is because the planner re-uses internal data across FFT instances wherever possible, saving memory and reducing setup time (FFT instances created with one planner will never re-use data and buffers with FFT instances created by a different planner).\nIn the constructor, the FftPlanner will detect available CPU features. If AVX, SSE, Neon, or WASM SIMD are available, it will set itself up to plan FFTs with the fastest available instruction set. If no SIMD instruction sets are available, the planner will seamlessly fall back to planning non-SIMD FFTs.\n\nArguments\n\nlength\n\nAn integer denoting the length of the input. For 2D HArray’s, nrows must be provided.\n\ndtype\n\nA complex HDataType to indicate the dtype that the HFft will be working with.\n\n\nReturns\nAn HFft.\nWill return an error if dtype is of a float type.\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1+1i,2+2i,3+3i,4+4i,5+5i,6+6i), c(3,2))\ndtype = HDataType$Complex32\nharray = HArray$new_from_values(arr, dtype)\nhfft = HFft$new_fft_forward(3L, harray$dtype())",
-    "crumbs": [
-      "Classes",
-      "HFft"
-    ]
-  },
-  {
-    "objectID": "contents/hfft.html#new_fft_inverse",
-    "href": "contents/hfft.html#new_fft_inverse",
-    "title": "HFft",
-    "section": "new_fft_inverse",
-    "text": "new_fft_inverse\nnew_fft_inverse(length: integer, dtype: HDataType) -&gt; HFft source \n\nCreates a new HFft instance which will be used to calculate inverse FFTs.\nIf you plan on creating multiple FFT instances, it is recommended to reuse the same planner for all of them. This is because the planner re-uses internal data across FFT instances wherever possible, saving memory and reducing setup time (FFT instances created with one planner will never re-use data and buffers with FFT instances created by a different planner).\nIn the constructor, the FftPlanner will detect available CPU features. If AVX, SSE, Neon, or WASM SIMD are available, it will set itself up to plan FFTs with the fastest available instruction set. If no SIMD instruction sets are available, the planner will seamlessly fall back to planning non-SIMD FFTs.\n\nArguments\n\nlength\n\nAn integer denoting the length of the input. For 2D HArray’s, nrows must be provided.\n\ndtype\n\nA complex HDataType to indicate the dtype that the HFft will be working with.\n\n\nReturns\nAn HFft.\nWill return an error if dtype is of a float type.\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1+1i,2+2i,3+3i,4+4i,5+5i,6+6i), c(3,2))\ndtype = HDataType$Complex32\nharray = HArray$new_from_values(arr, dtype)\nhfft = HFft$new_fft_inverse(3L, harray$dtype())",
-    "crumbs": [
-      "Classes",
-      "HFft"
-    ]
-  },
-  {
-    "objectID": "contents/hfft.html#process",
-    "href": "contents/hfft.html#process",
-    "title": "HFft",
-    "section": "process",
-    "text": "process\nprocess(harray: HArray) source \n\nComputes the fast fourier transform of a complex HArray. The FFT computed may be forward or inverse, depending on the HFFT created.\nThe operation is done in-place.\nFFT (Fast Fourier Transform) refers to a way the discrete Fourier Transform (DFT) can be calculated efficiently, by using symmetries in the calculated terms. The symmetry is highest when n is a power of 2, and the transform is therefore most efficient for these sizes.\nThe function does not normalize outputs. Callers must manually normalize the results by scaling each element by 1/sqrt(n). Multiple normalization steps can be merged into one via pairwise multiplication, so when doing a forward FFT followed by an inverse callers can normalize once by scaling each element by 1/n.\nElements in the output are ordered by ascending frequency, with the first element corresponding to frequency 0.\n\nArguments\n\nharray\n\nA complex HArray.\n\n\nReturns\nWill return an error if:\n\nThe HArray’s dtype is incompatible with the HFft’s dtype.\nThe HArray’s ndim is greater than 2.\n\n\n\nExamples\n# Forward FFT.\nlibrary(harmonium)\narr = array(c(1+1i,2+2i,3+3i,4+4i,5+5i,6+6i), c(3,2))\ndtype = HDataType$Complex32\nharray = HArray$new_from_values(arr, dtype)\nhfft = HFft$new_fft_forward(3L, harray$dtype())\nhfft$process(harray)\n\n# Inverse FFT.\narr = array(c(1+1i,2+2i,3+3i,4+4i,5+5i,6+6i), c(3,2))\ndtype = HDataType$Complex32\nharray = HArray$new_from_values(arr, dtype)\nhfft = HFft$new_fft_inverse(3L, harray$dtype())\nhfft$process(harray)",
-    "crumbs": [
-      "Classes",
-      "HFft"
-    ]
-  },
-  {
-    "objectID": "contents/hfft.html#dtype",
-    "href": "contents/hfft.html#dtype",
-    "title": "HFft",
-    "section": "dtype",
-    "text": "dtype\ndtype() -&gt; HDataType source \n\nGets the HFft’s dtype.\n\nReturns\nAn HDataType.\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1+1i,2+2i,3+3i,4+4i,5+5i,6+6i), c(3,2))\ndtype = HDataType$Complex32\nharray = HArray$new_from_values(arr, dtype)\nhfft = HFft$new_fft_forward(3L, harray$dtype())\nhfft$dtype()",
-    "crumbs": [
-      "Classes",
-      "HFft"
-    ]
-  },
-  {
-    "objectID": "contents/hfft.html#print",
-    "href": "contents/hfft.html#print",
-    "title": "HFft",
-    "section": "print",
-    "text": "print\nprint() source \n\nPrints the HFft.\nDifferently from R’s normal behaviour, print doesn’t return the value invisibly.\n\nExamples\nlibrary(harmonium)\narr = array(c(1+1i,2+2i,3+3i,4+4i,5+5i,6+6i), c(3,2))\ndtype = HDataType$Complex32\nharray = HArray$new_from_values(arr, dtype)\nhfft = HFft$new_fft_forward(3L, harray$dtype())\nhfft$print()\n\n# or similarly:\nprint(hfft)",
-    "crumbs": [
-      "Classes",
-      "HFft"
-    ]
-  },
-  {
-    "objectID": "contents/hfft.html#clone",
-    "href": "contents/hfft.html#clone",
-    "title": "HFft",
-    "section": "clone",
-    "text": "clone\nclone() -&gt; HFft source \n\nClones the HFft.\nCreates a new HFft, with the underlying data pointing to the same place in memory. When HFFT is cloned, thus having more than one reference to the same internal struct, and process is run, it uses the same cached Fft instance, but a new scratch buffer will have to be allocated.\n\nReturns\nAn HFft.\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1+1i,2+2i,3+3i,4+4i,5+5i,6+6i), c(3,2))\ndtype = HDataType$Complex32\nharray = HArray$new_from_values(arr, dtype)\nhfft = HFft$new_fft_forward(3L, harray$dtype())\nhfft$clone()",
-    "crumbs": [
-      "Classes",
-      "HFft"
-    ]
-  },
-  {
-    "objectID": "contents/hfft.html#is_shared",
-    "href": "contents/hfft.html#is_shared",
-    "title": "HFft",
-    "section": "is_shared",
-    "text": "is_shared\nis_shared() -&gt; bool source \n\nChecks if the object is shared.\nSince HFft has a COW (clone-on-write) behaviour, this function is useful to check if a new object will be created or if the change will be done in-place.\n\nReturns\nA bool.\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1+1i,2+2i,3+3i,4+4i,5+5i,6+6i), c(3,2))\ndtype = HDataType$Complex32\nharray = HArray$new_from_values(arr, dtype)\nhfft = HFft$new_fft_forward(3L, harray$dtype())\nhfft$is_shared() # FALSE.\n\nhfft2 = hfft$clone()\nhfft$is_shared() # TRUE, hfft shares the same inner object with hfft2.",
-    "crumbs": [
-      "Classes",
-      "HFft"
-    ]
-  },
-  {
-    "objectID": "contents/hfft.html#invalidate",
-    "href": "contents/hfft.html#invalidate",
-    "title": "HFft",
-    "section": "invalidate",
-    "text": "invalidate\ninvalidate() source \n\nReplaces the inner value of the external pointer, invalidating it. This function is useful to remove one of the shared references of the inner pointer in rust.\n\nExamples\nlibrary(harmonium)\narr = array(c(1+1i,2+2i,3+3i,4+4i,5+5i,6+6i), c(3,2))\ndtype = HDataType$Complex32\nharray = HArray$new_from_values(arr, dtype)\nhfft = HFft$new_fft_forward(3L, harray$dtype())\nhfft$invalidate()",
-    "crumbs": [
-      "Classes",
-      "HFft"
-    ]
-  },
-  {
-    "objectID": "contents/hwindow.html",
-    "href": "contents/hwindow.html",
-    "title": "HWindow",
-    "section": "",
-    "text": "A collection of window functions.",
-    "crumbs": [
-      "Classes",
-      "HWindow"
-    ]
-  },
-  {
-    "objectID": "contents/hwindow.html#barthann",
-    "href": "contents/hwindow.html#barthann",
-    "title": "HWindow",
-    "section": "barthann",
-    "text": "barthann\nbarthann(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray source \n\nReturns a modified Bartlett-Hann window.\nThe maximum value is normalized to 1 (though the value 1 does not appear if npoints is even and window_type is symmetric).\n\nArguments\n\nnpoints\n\nAn integer. Number of points in the output window.\n\nsym\n\nA bool.\nWhen TRUE, generates a symmetric window, for use in filter design.\nWhen FALSE, generates a periodic window, for use in spectral analysis.\n\ndtype\n\nAn HDataType to indicate which type of HArray to be created.\nMust be a float dtype.\n\n\nReturns\nAn HArray.\n\n\nExamples\nlibrary(harmnonium)\nHWindow$barthann(npoints = 10L, sym = TRUE, dtype = HDataType$Float64)",
-    "crumbs": [
-      "Classes",
-      "HWindow"
-    ]
-  },
-  {
-    "objectID": "contents/hwindow.html#bartlett",
-    "href": "contents/hwindow.html#bartlett",
-    "title": "HWindow",
-    "section": "bartlett",
-    "text": "bartlett\nbartlett(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray source \n\n\\(w(n) = \\frac{2}{npoints-1} (\\frac{npoints-1}{2} - |n - \\frac{npoints-1}{2}|)\\)\nThe Bartlett window is very similar to a triangular window, except that the end points are at zero. It is often used in signal processing for tapering a signal, without generating too much ripple in the frequency domain.\nThe maximum value is normalized to 1 (though the value 1 does not appear if npoints is even and window_type is symmetric.\n\nArguments\n\nnpoints\n\nAn integer. Number of points in the output window.\n\nsym\n\nA bool.\nWhen TRUE, generates a symmetric window, for use in filter design.\nWhen FALSE, generates a periodic window, for use in spectral analysis.\n\ndtype\n\nAn HDataType to indicate which type of HArray to be created.\nMust be a float dtype.\n\n\nReturns\nAn HArray.\n\n\nExamples\nlibrary(harmnonium)\nHWindow$bartlett(npoints = 10L, sym = TRUE, dtype = HDataType$Float64)",
-    "crumbs": [
-      "Classes",
-      "HWindow"
-    ]
-  },
-  {
-    "objectID": "contents/hwindow.html#blackman",
-    "href": "contents/hwindow.html#blackman",
-    "title": "HWindow",
-    "section": "blackman",
-    "text": "blackman\nblackman(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray source \n\nReturns a Blackman window.\n\\(w(n) = 0.42 - 0.5 \\cos(2\\pi n/npoints) + 0.08 \\cos(4\\pi n/npoints)\\)\nThe Blackman window is a taper formed by using the first three terms of a summation of cosines. It was designed to have close to the minimal leakage possible. It is close to optimal, only slightly worse than a Kaiser window.\nThe maximum value is normalized to 1 (though the value 1 does not appear if npoints is even and sym is TRUE).\nThe “exact Blackman” window was designed to null out the third and fourth sidelobes, but has discontinuities at the boundaries, resulting in a 6 dB/oct fall-off. This window is an approximation of the “exact” window, which does not null the sidelobes as well, but is smooth at the edges, improving the fall-off rate to 18 dB/oct.\nMost references to the Blackman window come from the signal processing literature, where it is used as one of many windowing functions for smoothing values. It is also known as an apodization (which means “removing the foot”, i.e. smoothing discontinuities at the beginning and end of the sampled signal) or tapering function. It is known as a “near optimal” tapering function, almost as good (by some measures) as the Kaiser window.\n\nArguments\n\nnpoints\n\nAn integer. Number of points in the output window.\n\nsym\n\nA bool.\nWhen TRUE, generates a symmetric window, for use in filter design.\nWhen FALSE, generates a periodic window, for use in spectral analysis.\n\ndtype\n\nAn HDataType to indicate which type of HArray to be created.\nMust be a float dtype.\n\n\nReturns\nAn HArray.\n\n\nExamples\nlibrary(harmnonium)\nHWindow$blackman(npoints = 10L, sym = TRUE, dtype = HDataType$Float64)",
-    "crumbs": [
-      "Classes",
-      "HWindow"
-    ]
-  },
-  {
-    "objectID": "contents/hwindow.html#blackmanharris",
-    "href": "contents/hwindow.html#blackmanharris",
-    "title": "HWindow",
-    "section": "blackmanharris",
-    "text": "blackmanharris\nblackmanharris(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray source \n\nReturn a minimum 4-term Blackman-Harris window.\nThe maximum value is normalized to 1 (though the value 1 does not appear if npoints is even and window_type is symmetric.\n\nArguments\n\nnpoints\n\nAn integer. Number of points in the output window.\n\nsym\n\nA bool.\nWhen TRUE, generates a symmetric window, for use in filter design.\nWhen FALSE, generates a periodic window, for use in spectral analysis.\n\ndtype\n\nAn HDataType to indicate which type of HArray to be created.\nMust be a float dtype.\n\n\nReturns\nAn HArray.\n\n\nExamples\nlibrary(harmnonium)\nHWindow$blackmanharris(npoints = 10L, sym = TRUE, dtype = HDataType$Float64)",
-    "crumbs": [
-      "Classes",
-      "HWindow"
-    ]
-  },
-  {
-    "objectID": "contents/hwindow.html#bohman",
-    "href": "contents/hwindow.html#bohman",
-    "title": "HWindow",
-    "section": "bohman",
-    "text": "bohman\nbohman(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray source \n\nReturns a Bohman window.\nThe maximum value is normalized to 1 (though the value 1 does not appear if npoints is even and window_type is symmetric).\n\nArguments\n\nnpoints\n\nAn integer. Number of points in the output window.\n\nsym\n\nA bool.\nWhen TRUE, generates a symmetric window, for use in filter design.\nWhen FALSE, generates a periodic window, for use in spectral analysis.\n\ndtype\n\nAn HDataType to indicate which type of HArray to be created.\nMust be a float dtype.\n\n\nReturns\nAn HArray.\n\n\nExamples\nlibrary(harmnonium)\nHWindow$bohman(npoints = 10L, sym = TRUE, dtype = HDataType$Float64)",
-    "crumbs": [
-      "Classes",
-      "HWindow"
-    ]
-  },
-  {
-    "objectID": "contents/hwindow.html#boxcar",
-    "href": "contents/hwindow.html#boxcar",
-    "title": "HWindow",
-    "section": "boxcar",
-    "text": "boxcar\nboxcar(npoints: integer, dtype: HDataType) -&gt; HArray source \n\nReturns a boxcar or rectangular window.\nAlso known as a rectangular window or Dirichlet window, this is equivalent to no window at all.\n\nArguments\n\nnpoints\n\nAn integer. Number of points in the output window.\n\ndtype\n\nAn HDataType to indicate which type of HArray to be created.\nMust be a float dtype.\n\n\nReturns\nAn HArray.\n\n\nExamples\nlibrary(harmnonium)\nHWindow$boxcar(npoints = 10L, dtype = HDataType$Float64)",
-    "crumbs": [
-      "Classes",
-      "HWindow"
-    ]
-  },
-  {
-    "objectID": "contents/hwindow.html#cosine",
-    "href": "contents/hwindow.html#cosine",
-    "title": "HWindow",
-    "section": "cosine",
-    "text": "cosine\ncosine(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray source \n\nReturns a window with a simple cosine shape.\nThe maximum value is normalized to 1 (though the value 1 does not appear if npoints is even and window_type is symmetric).\n\nArguments\n\nnpoints\n\nAn integer. Number of points in the output window.\n\nsym\n\nA bool.\nWhen TRUE, generates a symmetric window, for use in filter design.\nWhen FALSE, generates a periodic window, for use in spectral analysis.\n\ndtype\n\nAn HDataType to indicate which type of HArray to be created.\nMust be a float dtype.\n\n\nReturns\nAn HArray.\n\n\nExamples\nlibrary(harmnonium)\nHWindow$cosine(npoints = 10L, sym = TRUE, dtype = HDataType$Float64)",
-    "crumbs": [
-      "Classes",
-      "HWindow"
-    ]
-  },
-  {
-    "objectID": "contents/hwindow.html#hann",
-    "href": "contents/hwindow.html#hann",
-    "title": "HWindow",
-    "section": "hann",
-    "text": "hann\nhann(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray source \n\nReturns a Hann window.\n\\(w(n) = 0.5 - 0.5 \\cos\\left(\\frac{2\\pi{n}}{npoints-1}\\right) \\qquad 0 \\leq n \\leq npoints-1\\)\nThe maximum value is normalized to 1 (though the value 1 does not appear if npoints is even and window_type is symmetric.\nThe Hann window is a taper formed by using a raised cosine or sine-squared with ends that touch zero.\n\nArguments\n\nnpoints\n\nAn integer. Number of points in the output window.\n\nsym\n\nA bool.\nWhen TRUE, generates a symmetric window, for use in filter design.\nWhen FALSE, generates a periodic window, for use in spectral analysis.\n\ndtype\n\nAn HDataType to indicate which type of HArray to be created.\nMust be a float dtype.\n\n\nReturns\nAn HArray.\n\n\nExamples\nlibrary(harmnonium)\nHWindow$hann(npoints = 10L, sym = TRUE, dtype = HDataType$Float64)",
-    "crumbs": [
-      "Classes",
-      "HWindow"
+      "HMetadataType"
     ]
   },
   {
@@ -766,32 +304,256 @@
     ]
   },
   {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
+    "objectID": "contents/haudioop.html",
+    "href": "contents/haudioop.html",
+    "title": "HAudioOp",
     "section": "",
-    "text": "About this site"
-  },
-  {
-    "objectID": "contents/hdecoderstream.html",
-    "href": "contents/hdecoderstream.html",
-    "title": "HDecoderStream",
-    "section": "",
-    "text": "An iterator that decodes audio in streams.",
+    "text": "A collection of methods that can be applied to float 1D or 2D HArrays which represents audio data.",
     "crumbs": [
       "Classes",
-      "HDecoderStream"
+      "HAudioOp"
     ]
   },
   {
-    "objectID": "contents/hdecoderstream.html#stream",
-    "href": "contents/hdecoderstream.html#stream",
-    "title": "HDecoderStream",
-    "section": "stream",
-    "text": "stream\nstream() -&gt; HArray source \n\nGets the next wave of frames as an HArray.\nReturns an error if it’s end of stream or if an error ocurred in the decoding process.\n\nReturns\nThe decoded audio as a float HArray.\nThe number of frames streamed is the one used as input in the creation of HDecoderStream.\n\n\nExamples\nlibrary(harmonium)\nfpath = \"../../../testfiles/gs-16b-2c-44100hz.flac\"\ndtype = HDataType$Float32\nframes = 1000L\nhdecoder_stream = HFile$decode_stream(fpath, frames, dtype)\nhdecoder_stream$stream()",
+    "objectID": "contents/haudioop.html#nchannels",
+    "href": "contents/haudioop.html#nchannels",
+    "title": "HAudioOp",
+    "section": "nchannels",
+    "text": "nchannels\nnchannels() -&gt; integer source \n\nReturns the number of channels.\nThis is the same as the number of rows of a 1D or 2D HArray.\n\nReturns\nAn integer.\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nHAudioOp$nchannels(harray)",
     "crumbs": [
       "Classes",
-      "HDecoderStream"
+      "HAudioOp"
+    ]
+  },
+  {
+    "objectID": "contents/haudioop.html#nframes",
+    "href": "contents/haudioop.html#nframes",
+    "title": "HAudioOp",
+    "section": "nframes",
+    "text": "nframes\nnframes() -&gt; integer source \n\nReturns the number of frames.\nThis is the same as the number of cols of a 1D or 2D HArray.\nThe number of frames is equivalent to the number of samples divided by the number of channels.\n\nReturns\nAn integer.\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nHAudioOp$nframes(harray)",
+    "crumbs": [
+      "Classes",
+      "HAudioOp"
+    ]
+  },
+  {
+    "objectID": "contents/haudioop.html#db_to_amplitude",
+    "href": "contents/haudioop.html#db_to_amplitude",
+    "title": "HAudioOp",
+    "section": "db_to_amplitude",
+    "text": "db_to_amplitude\ndb_to_amplitude(harray: HArray, reference: double) source \n\nConverts the HArray input from dB to amplitude.\n\\(db_to_amplitude(x) = reference * (10.0**(x * 0.1))**power\\)\nThe operation is done in-place.\n\nArguments\n\nharray\n\nA 1D or 2D float HArray.\n\nreference\n\nA double that scales the output.\n\npower\n\nA double. If 1.0, will compute DB to power. If 0.5, will compute DB to amplitude.\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nHAudioOp$db_to_amplitude(harray, 2, 1)",
+    "crumbs": [
+      "Classes",
+      "HAudioOp"
+    ]
+  },
+  {
+    "objectID": "contents/haudioop.html#to_mono",
+    "href": "contents/haudioop.html#to_mono",
+    "title": "HAudioOp",
+    "section": "to_mono",
+    "text": "to_mono\nto_mono(harray: HArray) source \n\nConvert to 1 channel by taking the average across channels.\nThe operation is done in-place. A new inner array is created.\n\nArguments\n\nharray\n\nA 2D float HArray.\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\ndtype = HDataType$Float32\nharray = HArray$new_from_values(arr, dtype)\nHAudioOp$to_mono(harray)",
+    "crumbs": [
+      "Classes",
+      "HAudioOp"
+    ]
+  },
+  {
+    "objectID": "contents/hresampler.html",
+    "href": "contents/hresampler.html",
+    "title": "HResampler",
+    "section": "",
+    "text": "A resampler.",
+    "crumbs": [
+      "Classes",
+      "HResampler"
+    ]
+  },
+  {
+    "objectID": "contents/hresampler.html#new_fft",
+    "href": "contents/hresampler.html#new_fft",
+    "title": "HResampler",
+    "section": "new_fft",
+    "text": "new_fft\nnew_fft(sr_in: integer, sr_out: integer, chunk_size: integer, sub_chunks: integer, nbr_channels: integer, res_type: HResamplerType, dtype: HDataType) -&gt; HResampler source \n\nCreates a new FFT type HResampler.\nSupports any of [FftFixedIn, FftFixedInOut, FftFixedOut] HResamplerType.\nThe resampling is done by FFTing the input data. The spectrum is then extended or truncated as well as multiplied with an antialiasing filter before it’s inverse transformed to get the resampled waveforms.\n\nFftFixedIn\n\nA synchronous resampler that needs a fixed number of audio frames for input and returns a variable number of frames.\n\nFftFixedInOut\n\nA synchronous resampler that accepts a fixed number of audio frames for input and returns a fixed number of frames.\n\nFftFixedOut\n\nA synchronous resampler that needs a fixed number of audio frames for input and returns a variable number of frames.\n\nArguments\n\nsr_in\n\nThe input sampling rate in hz.\n\nsr_out\n\nThe output sampling rate in hz.\n\nchunk_size\n\nChunks size of input or output data in frames.\nIt can be used as input or output, depending on HResamplerType.\n\nsub_chunks\n\nDesired number of subchunks for processing, actual number may be different.\n\nnbr_channels\n\nNumber of channels in input and output.\nMust be the same number of channels as the HAudio that will be processed by the HResampler.\n\nres_type\n\nAn HResamplerType to indicate which type of HResampler to be created.\n\ndtype\n\nA float HDataType to indicate the dtype that the HResampler will be working with.\nMust be the same as the HAudio’s dtype that will be processed by the HResampler.\n\n\nReturns\nA FFT type HResampler.\n\n\nExamples\nlibrary(harmonium)\nsr_in = 48000L\nsr_out = 44100L\nchunk_size = 1024L\nsub_chunks = 2L\nnbr_channels = 2L\nres_type = HResamplerType$FftFixedIn\ndtype = HDataType$Float32\n\nhresampler = HResampler$new_fft(sr_in, sr_out, chunk_size, sub_chunks, nbr_channels, res_type, dtype)",
+    "crumbs": [
+      "Classes",
+      "HResampler"
+    ]
+  },
+  {
+    "objectID": "contents/hresampler.html#new_sinc",
+    "href": "contents/hresampler.html#new_sinc",
+    "title": "HResampler",
+    "section": "new_sinc",
+    "text": "new_sinc\nnew_sinc(resample_ratio: double, max_resample_ratio_relative: double, parameters: HSincInterpolationParameters, chunk_size: integer, nchannels: integer, res_type: HResamplerType, dtype: HDataType) -&gt; HResampler source \n\nCreates a new Sinc type HResampler.\nSupports any of [SincFixedIn, SincFixedOut] HResamplerType.\nThe resampling is done by creating a number of intermediate points (defined by oversampling_factor) by sinc interpolation. The new samples are then calculated by interpolating between these points.\n\nSincFixedIn\n\nAn asynchronous resampler that accepts a fixed number of audio frames for input and returns a variable number of frames.\n\nSincFixedOut\n\nAn asynchronous resampler that accepts a variable number of audio frames for input nad returns a fixed number of frames.\n\nArguments\n\nresample_ratio\n\nThe output’s sampling rate divided by the input’s sampling rate.\n\nmax_resample_ratio_relative\n\nMaximum ratio that can be set with set_resample_ratio relative to resample_ratio, must be &gt;= 1.0. The minimum relative ratio is the reciprocal of the maximum. For example, with max_resample_ratio_relative of 10.0, the ratio can be set between resample_ratio * 10.0 and resample_ratio / 10.0.\n\nparameters\n\nAn HSincInterpolationParameters. Parameters for interpolation.\n\nchunk_size\n\nChunks size of input or output data in frames.\n\nnchannels\n\nNumber of channels in input and output.\nMust be the same number of channels as the HAudio that will be processed by the HResampler.\n\nres_type\n\nAn HResamplerType. Indicates which type of HResampler to be created.\n\ndtype\n\nA float HDataType to indicate the dtype that the HResampler will be working with.\nMust be the same as the HAudio’s dtype that will be processed by the HResampler.\n\n\nReturns\nA Sinc type HResampler.\n\n\nExamples\nlibrary(harmonium)\nsr_in = 44100L\nsr_out = 48000L\nresample_ratio = sr_out / sr_in\nmax_resample_ratio_relative = 2\nhparams = HSincInterpolationParameters$new(256, 0.95, 256, \"linear\", \"blackmanharris2\")\nchunk_size = 512L\nnchannels = 2L\nres_type = HResamplerType$SincFixedOut\ndtype = HDataType$Float32\n\nres = HResampler$new_sinc(resample_ratio, max_resample_ratio_relative, hparams, chunk_size, nchannels, res_type, dtype)",
+    "crumbs": [
+      "Classes",
+      "HResampler"
+    ]
+  },
+  {
+    "objectID": "contents/hresampler.html#new_fast",
+    "href": "contents/hresampler.html#new_fast",
+    "title": "HResampler",
+    "section": "new_fast",
+    "text": "new_fast\nnew_sinc(resample_ratio: double, max_resample_ratio_relative: double, pol_deg: HPolynomialDegree, chunk_size: integer, nchannels: integer, res_type: HResamplerType, dtype: HDataType) -&gt; HResampler source \n\nCreates a new Fast type HResampler.\nSupports any of [FastFixedIn, FastFixedOut] HResamplerType.\nThe resampling is done by interpolating between the input samples by fitting polynomials.\nNote that no anti-aliasing filter is used. This makes it run considerably faster than the corresponding SincFixedIn, which performs anti-aliasing filtering. The price is that the resampling creates some artefacts in the output, mainly at higher frequencies. Use SincFixedIn if this can not be tolerated.\n\nFastFixedIn\n\nAn asynchronous resampler that accepts a fixed number of audio frames for input and returns a variable number of frames.\n\nFastFixedOut\n\nAn asynchronous resampler that accepts a variable number of audio frames for input nad returns a fixed number of frames.\n\nArguments\n\nresample_ratio\n\nThe output’s sampling rate divided by the input’s sampling rate.\n\nmax_resample_ratio_relative\n\nMaximum ratio that can be set with set_resample_ratio relative to resample_ratio, must be &gt;= 1.0. The minimum relative ratio is the reciprocal of the maximum. For example, with max_resample_ratio_relative of 10.0, the ratio can be set between resample_ratio * 10.0 and resample_ratio / 10.0.\n\npol_deg\n\nAn HPolynomialDegree. Used to select the polynomial degree for interpolation.\n\nchunk_size\n\nChunks size of input or output data in frames.\n\nnchannels\n\nNumber of channels in input and output.\nMust be the same number of channels as the HAudio that will be processed by the HResampler.\n\nres_type\n\nAn HResamplerType. Indicates which type of HResampler to be created.\n\ndtype\n\nA float HDataType to indicate the dtype that the HResampler will be working with.\nMust be the same as the HAudio’s dtype that will be processed by the HResampler.\n\n\nReturns\nA Fast type HResampler.\n\n\nExamples\nlibrary(harmonium)\nsr_in = 44100L\nsr_out = 48000L\nresample_ratio = sr_out / sr_in\nmax_resample_ratio_relative = 2\npol_deg = HPolynomialDegree$linear\nchunk_size = 512L\nnchannels = 2L\nres_type = HResamplerType$FastFixedOut\ndtype = HDataType$Float32\n\nres = HResampler$new_fast(resample_ratio, max_resample_ratio_relative, pol_deg, chunk_size, nchannels, res_type, dtype)",
+    "crumbs": [
+      "Classes",
+      "HResampler"
+    ]
+  },
+  {
+    "objectID": "contents/hresampler.html#process",
+    "href": "contents/hresampler.html#process",
+    "title": "HResampler",
+    "section": "process",
+    "text": "process\nprocess(harray: HArray) source \n\nProcess the resampler, changing the HArray’s sampling rate.\n\nArguments\n\nharray\n\nAn HArray that will have it’s sampling rate converted.\n\n\nExamples\nlibrary(harmonium)\narr = matrix(0, nrow = 512, ncol = 2)\nharray = HArray$new_from_values(arr, dtype = HDataType$Float64)\nhparams = HSincInterpolationParameters$new(256L, 0.95, 256L, \"linear\", \"blackmanharris2\")\nres = HResampler$new_sinc(48000L / 44100L, 2, hparams, 512L, 2L, HResamplerType$SincFixedIn, HDataType$Float64)\nres$process(harray)",
+    "crumbs": [
+      "Classes",
+      "HResampler"
+    ]
+  },
+  {
+    "objectID": "contents/hresampler.html#set_resample_ratio",
+    "href": "contents/hresampler.html#set_resample_ratio",
+    "title": "HResampler",
+    "section": "set_resample_ratio",
+    "text": "set_resample_ratio\nset_resample_ratio(new_ratio: double, ramp: bool) source \n\nUpdate the resample ratio.\nFor asynchronous resamplers, the ratio must be within original / maximum to original * maximum, where original and maximum are the resampling ratios that were provided to the constructor. Trying to set the ratio outside these bounds will return an error.\nFor synchronous resamplers, this will always return an error.\n\nArguments\n\nnew_ratio\n\nThe new resample_ratio to be set.\n\nramp\n\nIf TRUE, the ratio will be ramped from the old to the new value during processing of the next chunk. This allows smooth transitions from one ratio to another. If FALSE, the new ratio will be applied from the start of the next chunk.\n\n\nExamples\nlibrary(harmonium)\ndata = matrix(0, nrow = 512, ncol = 2)\nhaudio = HAudio$new_from_values(data, 44100, dtype = HDataType$Float64)\nhparams = HSincInterpolationParameters$new(256L, 0.95, 256L, \"linear\", \"blackmanharris2\")\nres = HResampler$new_sinc(48000L / 44100L, 2, hparams, 512L, 2L, HResamplerType$SincFixedIn, HDataType$Float64)\nres$set_resample_ratio(1, FALSE)",
+    "crumbs": [
+      "Classes",
+      "HResampler"
+    ]
+  },
+  {
+    "objectID": "contents/hresampler.html#set_resample_ratio_relative",
+    "href": "contents/hresampler.html#set_resample_ratio_relative",
+    "title": "HResampler",
+    "section": "set_resample_ratio_relative",
+    "text": "set_resample_ratio_relative\nset_resample_ratio_relative(rel_ratio: double, ramp: bool) source \n\nUpdate the resample ratio as a factor relative to the original one.\nFor asynchronous resamplers, the relative ratio must be within 1 / maximum to maximum, where maximum is the maximum resampling ratio that was provided to the constructor. Trying to set the ratio outside these bounds will return an error. Higher ratios above 1.0 slow down the output and lower the pitch. Lower ratios below 1.0 speed up the output and raise the pitch.\nFor synchronous resamplers, this will always return an error.\n\nArguments\n\nrel_ratio\n\nA factor to update the resample_ratio relative to the original one.\n\nramp\n\nIf TRUE, the ratio will be ramped from the old to the new value during processing of the next chunk. This allows smooth transitions from one ratio to another. If ramp is false, the new ratio will be applied from the start of the next chunk.\n\n\nExamples\nlibrary(harmonium)\ndata = matrix(0, nrow = 512, ncol = 2)\nhaudio = HAudio$new_from_values(data, 44100, dtype = HDataType$Float64)\nhparams = HSincInterpolationParameters$new(256L, 0.95, 256L, \"linear\", \"blackmanharris2\")\nres = HResampler$new_sinc(48000L / 44100L, 2, hparams, 512L, 2L, HResamplerType$SincFixedIn, HDataType$Float64)\nres$set_resample_ratio_relative(0.5, FALSE)",
+    "crumbs": [
+      "Classes",
+      "HResampler"
+    ]
+  },
+  {
+    "objectID": "contents/hresampler.html#reset",
+    "href": "contents/hresampler.html#reset",
+    "title": "HResampler",
+    "section": "reset",
+    "text": "reset\nreset() source \n\nReset the resampler state and clear all internal buffers.\n\nExamples\nlibrary(harmonium)\nsr_in = 44100L\nsr_out = 48000L\nresample_ratio = sr_out / sr_in\nmax_resample_ratio_relative = 2\npol_deg = HPolynomialDegree$linear\nchunk_size = 512L\nnchannels = 2L\nres_type = HResamplerType$FastFixedOut\ndtype = HDataType$Float32\n\nres = HResampler$new_fast(resample_ratio, max_resample_ratio_relative, pol_deg, chunk_size, nchannels, res_type, dtype)\nres$reset()",
+    "crumbs": [
+      "Classes",
+      "HResampler"
+    ]
+  },
+  {
+    "objectID": "contents/hresampler.html#res_type",
+    "href": "contents/hresampler.html#res_type",
+    "title": "HResampler",
+    "section": "res_type",
+    "text": "res_type\nres_type() -&gt; HResamplerType source \n\nGets the HResampler’s type.\n\nReturns\nAn HResamplerType.\n\n\nExamples\nlibrary(harmonium)\nsr_in = 44100L\nsr_out = 48000L\nresample_ratio = sr_out / sr_in\nmax_resample_ratio_relative = 2\npol_deg = HPolynomialDegree$linear\nchunk_size = 512L\nnchannels = 2L\nres_type = HResamplerType$FastFixedOut\ndtype = HDataType$Float32\n\nres = HResampler$new_fast(resample_ratio, max_resample_ratio_relative, pol_deg, chunk_size, nchannels, res_type, dtype)\nres$res_type()",
+    "crumbs": [
+      "Classes",
+      "HResampler"
+    ]
+  },
+  {
+    "objectID": "contents/hresampler.html#dtype",
+    "href": "contents/hresampler.html#dtype",
+    "title": "HResampler",
+    "section": "dtype",
+    "text": "dtype\ndtype() -&gt; HDataType source \n\nGets the HResampler’s dtype.\n\nReturns\nAn HDataType.\n\n\nExamples\nlibrary(harmonium)\nsr_in = 44100L\nsr_out = 48000L\nresample_ratio = sr_out / sr_in\nmax_resample_ratio_relative = 2\npol_deg = HPolynomialDegree$linear\nchunk_size = 512L\nnchannels = 2L\nres_type = HResamplerType$FastFixedOut\ndtype = HDataType$Float32\n\nres = HResampler$new_fast(resample_ratio, max_resample_ratio_relative, pol_deg, chunk_size, nchannels, res_type, dtype)\nres$dtype()",
+    "crumbs": [
+      "Classes",
+      "HResampler"
+    ]
+  },
+  {
+    "objectID": "contents/hresampler.html#print",
+    "href": "contents/hresampler.html#print",
+    "title": "HResampler",
+    "section": "print",
+    "text": "print\nprint() source \n\nPrints the HResampler.\nDifferently from R’s normal behaviour, print doesn’t return the value invisibly.\n\nExamples\nlibrary(harmonium)\nsr_in = 44100L\nsr_out = 48000L\nresample_ratio = sr_out / sr_in\nmax_resample_ratio_relative = 2\npol_deg = HPolynomialDegree$linear\nchunk_size = 512L\nnchannels = 2L\nres_type = HResamplerType$FastFixedOut\ndtype = HDataType$Float32\n\nres = HResampler$new_fast(resample_ratio, max_resample_ratio_relative, pol_deg, chunk_size, nchannels, res_type, dtype)\nres$print()\n\n# or similarly:\nprint(res)",
+    "crumbs": [
+      "Classes",
+      "HResampler"
+    ]
+  },
+  {
+    "objectID": "contents/hsincinterpolationparameters.html",
+    "href": "contents/hsincinterpolationparameters.html",
+    "title": "HSincInterpolationParameters",
+    "section": "",
+    "text": "Parameters to be used for sinc interpolation.",
+    "crumbs": [
+      "Classes",
+      "HSincInterpolationParameters"
+    ]
+  },
+  {
+    "objectID": "contents/hsincinterpolationparameters.html#new",
+    "href": "contents/hsincinterpolationparameters.html#new",
+    "title": "HSincInterpolationParameters",
+    "section": "new",
+    "text": "new\nnew(sinc_len: integer, f_cutoff: double, oversampling_factor: integer, interpolation: HInterpolationType, window: HWindowType) -&gt; HSincInterpolationParameters source \n\nCreates a new HSincInterpolationParameters.\n\nArguments\n\nsinc_len\n\nAn integer. Length of the windowed sinc interpolation filter. Higher values can allow a higher cut-off frequency leading to less high frequency roll-off at the expense of higher cpu usage. A good starting point should be 256. The value will be rounded up to the nearest multiple of 8.\n\nf_cutoff\n\nA double. Relative cutoff frequency of the sinc interpolation filter (relative to the lowest one of fs_in/2 or fs_out/2). Start at 0.95, and increase if needed.\n\noversampling_factor\n\nAn integer. The number of intermediate points to use for interpolation. Higher values use more memory for storing the sinc filters. Only the points actually needed are calculated during processing so a larger number does not directly lead to higher cpu usage. A lower value helps in keeping the sincs in the cpu cache. A good starting point should be 128.\n\ninterpolation\n\nAn HInterpolationType. The interpolation type.\n\nwindow\n\nAn HWindowType. The window function to use.\n\n\nReturns\nAn HSincInterpolationParameters.\n\n\nExamples\nlibrary(harmonium)\nsinc_len = 256L\nf_cutoff = 0.95\noversampling_factor = 128L\ninterpolation = HInterpolationType$Linear\nwindow = HWindowType$Blackman\n\nhsincinterpolationparameters = HSincInterpolationParameters$new(sinc_len, f_cutoff, oversampling_factor, interpolation, window)",
+    "crumbs": [
+      "Classes",
+      "HSincInterpolationParameters"
+    ]
+  },
+  {
+    "objectID": "contents/hsincinterpolationparameters.html#print",
+    "href": "contents/hsincinterpolationparameters.html#print",
+    "title": "HSincInterpolationParameters",
+    "section": "print",
+    "text": "print\nprint() source \n\nPrints the HSincInterpolationParameters.\nDifferently from R’s behaviour, print doesn’t return the value invisibly.\n\nExamples\nlibrary(harmonium)\nsinc_len = 256L\nf_cutoff = 0.95\noversampling_factor = 128L\ninterpolation = HInterpolationType$Linear\nwindow = HWindowType$Blackman\n\nhsincinterpolationparameters = HSincInterpolationParameters$new(sinc_len, f_cutoff, oversampling_factor, interpolation, window)\nhsincinterpolationparameters$print()\n\n# or similarly:\nprint(hsincinterpolationparameters)",
+    "crumbs": [
+      "Classes",
+      "HSincInterpolationParameters"
+    ]
+  },
+  {
+    "objectID": "contents/hpolynomialdegree.html",
+    "href": "contents/hpolynomialdegree.html",
+    "title": "HPolynomialDegree",
+    "section": "",
+    "text": "Degree of the polynomial used for interpolation. A higher degree gives a higher quality result, while taking longer to compute.\nSeptic polynomial, fitted using 8 sample points.\nQuintic polynomial, fitted using 6 sample points.\nCubic polynomial, fitted using 4 sample points.\nLinear polynomial, fitted using 2 sample points.\nNearest, uses the nearest sample point without any fitting.",
+    "crumbs": [
+      "Classes",
+      "HPolynomialDegree"
+    ]
+  },
+  {
+    "objectID": "contents/hpolynomialdegree.html#print",
+    "href": "contents/hpolynomialdegree.html#print",
+    "title": "HPolynomialDegree",
+    "section": "print",
+    "text": "print\nprint() source \n\nPrints the HPolynomialDegree.\nDifferently from R’s behaviour, print doesn’t return the value invisibly.\n\nExamples\nlibrary(harmonium)\npol_deg = HPolynomialDegree$Complex64\npol_deg$print()\n\n# or similarly:\nprint(pol_deg)",
+    "crumbs": [
+      "Classes",
+      "HPolynomialDegree"
+    ]
+  },
+  {
+    "objectID": "contents/hpolynomialdegree.html#eq",
+    "href": "contents/hpolynomialdegree.html#eq",
+    "title": "HPolynomialDegree",
+    "section": "eq",
+    "text": "eq\neq(other: HPolynomialDegree) -&gt; bool source \n\nEquality with another HPolynomialDegree.\n\nArguments\n\nother\n\nAn HPolynomialDegree.\n\n\nReturns\nA bool.\n\n\nExamples\nlibrary(harmonium)\npol_deg1 = HPolynomialDegree$quintic\npol_deg2 = HPolynomialDegree$quintic\npol_deg1$eq(pol_deg2) # TRUE\n\n# or similarly:\npol_deg1 == pol_deg2",
+    "crumbs": [
+      "Classes",
+      "HPolynomialDegree"
+    ]
+  },
+  {
+    "objectID": "contents/hpolynomialdegree.html#ne",
+    "href": "contents/hpolynomialdegree.html#ne",
+    "title": "HPolynomialDegree",
+    "section": "ne",
+    "text": "ne\nne(other: HPolynomialDegree) -&gt; bool source \n\nDifference with another HPolynomialDegree.\n\nArguments\n\nother\n\nAn HPolynomialDegree.\n\n\nReturns\nA bool.\n\n\nExamples\nlibrary(harmonium)\npol_deg1 = HPolynomialDegree$quintic\npol_deg2 = HPolynomialDegree$nearest\npol_deg1$ne(pol_deg2) # TRUE\n\n# or similarly:\npol_deg1 != pol_deg2",
+    "crumbs": [
+      "Classes",
+      "HPolynomialDegree"
     ]
   },
   {
@@ -858,83 +620,6 @@
     "crumbs": [
       "Classes",
       "HFile"
-    ]
-  },
-  {
-    "objectID": "contents/hsincinterpolationparameters.html",
-    "href": "contents/hsincinterpolationparameters.html",
-    "title": "HSincInterpolationParameters",
-    "section": "",
-    "text": "Parameters to be used for sinc interpolation.",
-    "crumbs": [
-      "Classes",
-      "HSincInterpolationParameters"
-    ]
-  },
-  {
-    "objectID": "contents/hsincinterpolationparameters.html#new",
-    "href": "contents/hsincinterpolationparameters.html#new",
-    "title": "HSincInterpolationParameters",
-    "section": "new",
-    "text": "new\nnew(sinc_len: integer, f_cutoff: double, oversampling_factor: integer, interpolation: HInterpolationType, window: HWindowType) -&gt; HSincInterpolationParameters source \n\nCreates a new HSincInterpolationParameters.\n\nArguments\n\nsinc_len\n\nAn integer. Length of the windowed sinc interpolation filter. Higher values can allow a higher cut-off frequency leading to less high frequency roll-off at the expense of higher cpu usage. A good starting point should be 256. The value will be rounded up to the nearest multiple of 8.\n\nf_cutoff\n\nA double. Relative cutoff frequency of the sinc interpolation filter (relative to the lowest one of fs_in/2 or fs_out/2). Start at 0.95, and increase if needed.\n\noversampling_factor\n\nAn integer. The number of intermediate points to use for interpolation. Higher values use more memory for storing the sinc filters. Only the points actually needed are calculated during processing so a larger number does not directly lead to higher cpu usage. A lower value helps in keeping the sincs in the cpu cache. A good starting point should be 128.\n\ninterpolation\n\nAn HInterpolationType. The interpolation type.\n\nwindow\n\nAn HWindowType. The window function to use.\n\n\nReturns\nAn HSincInterpolationParameters.\n\n\nExamples\nlibrary(harmonium)\nsinc_len = 256L\nf_cutoff = 0.95\noversampling_factor = 128L\ninterpolation = HInterpolationType$Linear\nwindow = HWindowType$Blackman\n\nhsincinterpolationparameters = HSincInterpolationParameters$new(sinc_len, f_cutoff, oversampling_factor, interpolation, window)",
-    "crumbs": [
-      "Classes",
-      "HSincInterpolationParameters"
-    ]
-  },
-  {
-    "objectID": "contents/hsincinterpolationparameters.html#print",
-    "href": "contents/hsincinterpolationparameters.html#print",
-    "title": "HSincInterpolationParameters",
-    "section": "print",
-    "text": "print\nprint() source \n\nPrints the HSincInterpolationParameters.\nDifferently from R’s behaviour, print doesn’t return the value invisibly.\n\nExamples\nlibrary(harmonium)\nsinc_len = 256L\nf_cutoff = 0.95\noversampling_factor = 128L\ninterpolation = HInterpolationType$Linear\nwindow = HWindowType$Blackman\n\nhsincinterpolationparameters = HSincInterpolationParameters$new(sinc_len, f_cutoff, oversampling_factor, interpolation, window)\nhsincinterpolationparameters$print()\n\n# or similarly:\nprint(hsincinterpolationparameters)",
-    "crumbs": [
-      "Classes",
-      "HSincInterpolationParameters"
-    ]
-  },
-  {
-    "objectID": "contents/hmetadatatype.html",
-    "href": "contents/hmetadatatype.html",
-    "title": "HMetadataType",
-    "section": "",
-    "text": "A metadata type representation.\nSupports All, Text and Visual types.",
-    "crumbs": [
-      "Classes",
-      "HMetadataType"
-    ]
-  },
-  {
-    "objectID": "contents/hmetadatatype.html#print",
-    "href": "contents/hmetadatatype.html#print",
-    "title": "HMetadataType",
-    "section": "print",
-    "text": "print\nprint() source \n\nPrints the HMetadataType.\nDifferently from R’s behaviour, print doesn’t return the value invisibly.\n\nExamples\nlibrary(harmonium)\nmetadatatype = HMetadataType$All\nmetadatatype$print()\n\n# or similarly:\nprint(metadatatype)",
-    "crumbs": [
-      "Classes",
-      "HMetadataType"
-    ]
-  },
-  {
-    "objectID": "contents/hmetadatatype.html#eq",
-    "href": "contents/hmetadatatype.html#eq",
-    "title": "HMetadataType",
-    "section": "eq",
-    "text": "eq\neq(other: HMetadataType) -&gt; bool source \n\nEquality with another HMetadataType.\n\nArguments\n\nother\n\nAn HMetadataType.\n\n\nReturns\nA bool.\n\n\nExamples\nlibrary(harmonium)\nmetadatatype1 = HMetadataType$All\nmetadatatype2 = HMetadataType$All\nmetadatatype1$eq(metadatatype2) # TRUE\n\n# or similarly:\nmetadatatype1 == metadatatype2",
-    "crumbs": [
-      "Classes",
-      "HMetadataType"
-    ]
-  },
-  {
-    "objectID": "contents/hmetadatatype.html#ne",
-    "href": "contents/hmetadatatype.html#ne",
-    "title": "HMetadataType",
-    "section": "ne",
-    "text": "ne\nne(other: HMetadataType) -&gt; bool source \n\nDifference with another HMetadataType.\n\nArguments\n\nother\n\nAn HMetadataType.\n\n\nReturns\nA bool.\n\n\nExamples\nlibrary(harmonium)\nmetadatatype1 = HMetadataType$All\nmetadatatype2 = HMetadataType$All\nmetadatatype1$ne(metadatatype2) # FALSE\n\n# or similarly:\nmetadatatype1 != metadatatype2",
-    "crumbs": [
-      "Classes",
-      "HMetadataType"
     ]
   },
   {
@@ -1114,91 +799,274 @@
     ]
   },
   {
-    "objectID": "contents/hwindowtype.html",
-    "href": "contents/hwindowtype.html",
-    "title": "HWindowType",
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
     "section": "",
-    "text": "A window type representation.\nSupports Blackman, Blackman2, BlackmanHarris, BlackmanHarris2, Hann and Hann2 types.",
-    "crumbs": [
-      "Classes",
-      "HWindowType"
-    ]
+    "text": "About this site"
   },
   {
-    "objectID": "contents/hwindowtype.html#print",
-    "href": "contents/hwindowtype.html#print",
-    "title": "HWindowType",
-    "section": "print",
-    "text": "print\nprint() source \n\nPrints the HWindowType.\nDifferently from R’s behaviour, print doesn’t return the value invisibly.\n\nExamples\nlibrary(harmonium)\nwindowtype = HWindowType$Blackman\nwindowtype$print()\n\n# or similarly:\nprint(windowtype)",
-    "crumbs": [
-      "Classes",
-      "HWindowType"
-    ]
-  },
-  {
-    "objectID": "contents/hwindowtype.html#eq",
-    "href": "contents/hwindowtype.html#eq",
-    "title": "HWindowType",
-    "section": "eq",
-    "text": "eq\neq(other: HWindowType) -&gt; bool source \n\nEquality with another HWindowType.\n\nArguments\n\nother\n\nAn HWindowType.\n\n\nReturns\nA bool.\n\n\nExamples\nlibrary(harmonium)\nwindowtype1 = HWindowType$Blackman\nwindowtype2 = HWindowType$Blackman\nwindowtype1$eq(windowtype2) # TRUE\n\n# or similarly:\nwindowtype1 == windowtype2",
-    "crumbs": [
-      "Classes",
-      "HWindowType"
-    ]
-  },
-  {
-    "objectID": "contents/hwindowtype.html#ne",
-    "href": "contents/hwindowtype.html#ne",
-    "title": "HWindowType",
-    "section": "ne",
-    "text": "ne\nne(other: HWindowType) -&gt; bool source \n\nDifference with another HWindowType.\n\nArguments\n\nother\n\nAn HWindowType.\n\n\nReturns\nA bool.\n\n\nExamples\nlibrary(harmonium)\nwindowtype1 = HWindowType$Blackman\nwindowtype2 = HWindowType$Blackman\nwindowtype1$ne(windowtype2) # FALSE\n\n# or similarly:\nwindowtype1 != windowtype2",
-    "crumbs": [
-      "Classes",
-      "HWindowType"
-    ]
-  },
-  {
-    "objectID": "contents/hinterpolationtype.html",
-    "href": "contents/hinterpolationtype.html",
-    "title": "HInterpolationType",
+    "objectID": "contents/hdecodedaudio.html",
+    "href": "contents/hdecodedaudio.html",
+    "title": "HDecodedAudio",
     "section": "",
-    "text": "A interpolation type representation.\nSupports Cubic, Linear, Quadratic and Nearest types.",
+    "text": "An audio represented by an HArray of samples and its corresponding sampling rate.",
     "crumbs": [
       "Classes",
-      "HInterpolationType"
+      "HDecodedAudio"
     ]
   },
   {
-    "objectID": "contents/hinterpolationtype.html#print",
-    "href": "contents/hinterpolationtype.html#print",
-    "title": "HInterpolationType",
+    "objectID": "contents/hdecodedaudio.html#harray",
+    "href": "contents/hdecodedaudio.html#harray",
+    "title": "HDecodedAudio",
+    "section": "harray",
+    "text": "harray\nharray() -&gt; HArray source \n\nGet the decoded HArray.\n\nReturns\nA float HArray.\n\n\nExamples\nlibrary(harmonium)\nfpath = \"../../../testfiles/gs-16b-2c-44100hz.flac\"\ndtype = HDataType$Float32\nhdecodedaudio = HFile$decode(fpath, dtype)\nhdecodedaudio$harray()",
+    "crumbs": [
+      "Classes",
+      "HDecodedAudio"
+    ]
+  },
+  {
+    "objectID": "contents/hdecodedaudio.html#sr",
+    "href": "contents/hdecodedaudio.html#sr",
+    "title": "HDecodedAudio",
+    "section": "sr",
+    "text": "sr\nsr() -&gt; integer source \n\nGet the sampling rate of the decoded audio.\n\nReturns\nAn integer.\n\n\nExamples\nlibrary(harmonium)\nfpath = \"../../../testfiles/gs-16b-2c-44100hz.flac\"\ndtype = HDataType$Float32\nhdecodedaudio = HFile$decode(fpath, dtype)\nhdecodedaudio$sr()",
+    "crumbs": [
+      "Classes",
+      "HDecodedAudio"
+    ]
+  },
+  {
+    "objectID": "contents/hdecodedaudio.html#invalidate",
+    "href": "contents/hdecodedaudio.html#invalidate",
+    "title": "HDecodedAudio",
+    "section": "invalidate",
+    "text": "invalidate\ninvalidate() source \n\nReplaces the inner value of the external pointer, invalidating it.\nThis function is useful to remove one of the shared references of the inner pointer in rust.\n\nExamples\nlibrary(harmonium)\nfpath = \"../../../testfiles/gs-16b-2c-44100hz.flac\"\ndtype = HDataType$Float32\nhdecodedaudio = HFile$decode(fpath, dtype)\nharray = hdecodedaudio$harray() # now the inner HArray struct has 2 references.\nhdecodedaudio$invalidate() # back to 1 reference.",
+    "crumbs": [
+      "Classes",
+      "HDecodedAudio"
+    ]
+  },
+  {
+    "objectID": "contents/hwindow.html",
+    "href": "contents/hwindow.html",
+    "title": "HWindow",
+    "section": "",
+    "text": "A collection of window functions.",
+    "crumbs": [
+      "Classes",
+      "HWindow"
+    ]
+  },
+  {
+    "objectID": "contents/hwindow.html#barthann",
+    "href": "contents/hwindow.html#barthann",
+    "title": "HWindow",
+    "section": "barthann",
+    "text": "barthann\nbarthann(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray source \n\nReturns a modified Bartlett-Hann window.\nThe maximum value is normalized to 1 (though the value 1 does not appear if npoints is even and window_type is symmetric).\n\nArguments\n\nnpoints\n\nAn integer. Number of points in the output window.\n\nsym\n\nA bool.\nWhen TRUE, generates a symmetric window, for use in filter design.\nWhen FALSE, generates a periodic window, for use in spectral analysis.\n\ndtype\n\nAn HDataType to indicate which type of HArray to be created.\nMust be a float dtype.\n\n\nReturns\nAn HArray.\n\n\nExamples\nlibrary(harmnonium)\nHWindow$barthann(npoints = 10L, sym = TRUE, dtype = HDataType$Float64)",
+    "crumbs": [
+      "Classes",
+      "HWindow"
+    ]
+  },
+  {
+    "objectID": "contents/hwindow.html#bartlett",
+    "href": "contents/hwindow.html#bartlett",
+    "title": "HWindow",
+    "section": "bartlett",
+    "text": "bartlett\nbartlett(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray source \n\n\\(w(n) = \\frac{2}{npoints-1} (\\frac{npoints-1}{2} - |n - \\frac{npoints-1}{2}|)\\)\nThe Bartlett window is very similar to a triangular window, except that the end points are at zero. It is often used in signal processing for tapering a signal, without generating too much ripple in the frequency domain.\nThe maximum value is normalized to 1 (though the value 1 does not appear if npoints is even and window_type is symmetric.\n\nArguments\n\nnpoints\n\nAn integer. Number of points in the output window.\n\nsym\n\nA bool.\nWhen TRUE, generates a symmetric window, for use in filter design.\nWhen FALSE, generates a periodic window, for use in spectral analysis.\n\ndtype\n\nAn HDataType to indicate which type of HArray to be created.\nMust be a float dtype.\n\n\nReturns\nAn HArray.\n\n\nExamples\nlibrary(harmnonium)\nHWindow$bartlett(npoints = 10L, sym = TRUE, dtype = HDataType$Float64)",
+    "crumbs": [
+      "Classes",
+      "HWindow"
+    ]
+  },
+  {
+    "objectID": "contents/hwindow.html#blackman",
+    "href": "contents/hwindow.html#blackman",
+    "title": "HWindow",
+    "section": "blackman",
+    "text": "blackman\nblackman(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray source \n\nReturns a Blackman window.\n\\(w(n) = 0.42 - 0.5 \\cos(2\\pi n/npoints) + 0.08 \\cos(4\\pi n/npoints)\\)\nThe Blackman window is a taper formed by using the first three terms of a summation of cosines. It was designed to have close to the minimal leakage possible. It is close to optimal, only slightly worse than a Kaiser window.\nThe maximum value is normalized to 1 (though the value 1 does not appear if npoints is even and sym is TRUE).\nThe “exact Blackman” window was designed to null out the third and fourth sidelobes, but has discontinuities at the boundaries, resulting in a 6 dB/oct fall-off. This window is an approximation of the “exact” window, which does not null the sidelobes as well, but is smooth at the edges, improving the fall-off rate to 18 dB/oct.\nMost references to the Blackman window come from the signal processing literature, where it is used as one of many windowing functions for smoothing values. It is also known as an apodization (which means “removing the foot”, i.e. smoothing discontinuities at the beginning and end of the sampled signal) or tapering function. It is known as a “near optimal” tapering function, almost as good (by some measures) as the Kaiser window.\n\nArguments\n\nnpoints\n\nAn integer. Number of points in the output window.\n\nsym\n\nA bool.\nWhen TRUE, generates a symmetric window, for use in filter design.\nWhen FALSE, generates a periodic window, for use in spectral analysis.\n\ndtype\n\nAn HDataType to indicate which type of HArray to be created.\nMust be a float dtype.\n\n\nReturns\nAn HArray.\n\n\nExamples\nlibrary(harmnonium)\nHWindow$blackman(npoints = 10L, sym = TRUE, dtype = HDataType$Float64)",
+    "crumbs": [
+      "Classes",
+      "HWindow"
+    ]
+  },
+  {
+    "objectID": "contents/hwindow.html#blackmanharris",
+    "href": "contents/hwindow.html#blackmanharris",
+    "title": "HWindow",
+    "section": "blackmanharris",
+    "text": "blackmanharris\nblackmanharris(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray source \n\nReturn a minimum 4-term Blackman-Harris window.\nThe maximum value is normalized to 1 (though the value 1 does not appear if npoints is even and window_type is symmetric.\n\nArguments\n\nnpoints\n\nAn integer. Number of points in the output window.\n\nsym\n\nA bool.\nWhen TRUE, generates a symmetric window, for use in filter design.\nWhen FALSE, generates a periodic window, for use in spectral analysis.\n\ndtype\n\nAn HDataType to indicate which type of HArray to be created.\nMust be a float dtype.\n\n\nReturns\nAn HArray.\n\n\nExamples\nlibrary(harmnonium)\nHWindow$blackmanharris(npoints = 10L, sym = TRUE, dtype = HDataType$Float64)",
+    "crumbs": [
+      "Classes",
+      "HWindow"
+    ]
+  },
+  {
+    "objectID": "contents/hwindow.html#bohman",
+    "href": "contents/hwindow.html#bohman",
+    "title": "HWindow",
+    "section": "bohman",
+    "text": "bohman\nbohman(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray source \n\nReturns a Bohman window.\nThe maximum value is normalized to 1 (though the value 1 does not appear if npoints is even and window_type is symmetric).\n\nArguments\n\nnpoints\n\nAn integer. Number of points in the output window.\n\nsym\n\nA bool.\nWhen TRUE, generates a symmetric window, for use in filter design.\nWhen FALSE, generates a periodic window, for use in spectral analysis.\n\ndtype\n\nAn HDataType to indicate which type of HArray to be created.\nMust be a float dtype.\n\n\nReturns\nAn HArray.\n\n\nExamples\nlibrary(harmnonium)\nHWindow$bohman(npoints = 10L, sym = TRUE, dtype = HDataType$Float64)",
+    "crumbs": [
+      "Classes",
+      "HWindow"
+    ]
+  },
+  {
+    "objectID": "contents/hwindow.html#boxcar",
+    "href": "contents/hwindow.html#boxcar",
+    "title": "HWindow",
+    "section": "boxcar",
+    "text": "boxcar\nboxcar(npoints: integer, dtype: HDataType) -&gt; HArray source \n\nReturns a boxcar or rectangular window.\nAlso known as a rectangular window or Dirichlet window, this is equivalent to no window at all.\n\nArguments\n\nnpoints\n\nAn integer. Number of points in the output window.\n\ndtype\n\nAn HDataType to indicate which type of HArray to be created.\nMust be a float dtype.\n\n\nReturns\nAn HArray.\n\n\nExamples\nlibrary(harmnonium)\nHWindow$boxcar(npoints = 10L, dtype = HDataType$Float64)",
+    "crumbs": [
+      "Classes",
+      "HWindow"
+    ]
+  },
+  {
+    "objectID": "contents/hwindow.html#cosine",
+    "href": "contents/hwindow.html#cosine",
+    "title": "HWindow",
+    "section": "cosine",
+    "text": "cosine\ncosine(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray source \n\nReturns a window with a simple cosine shape.\nThe maximum value is normalized to 1 (though the value 1 does not appear if npoints is even and window_type is symmetric).\n\nArguments\n\nnpoints\n\nAn integer. Number of points in the output window.\n\nsym\n\nA bool.\nWhen TRUE, generates a symmetric window, for use in filter design.\nWhen FALSE, generates a periodic window, for use in spectral analysis.\n\ndtype\n\nAn HDataType to indicate which type of HArray to be created.\nMust be a float dtype.\n\n\nReturns\nAn HArray.\n\n\nExamples\nlibrary(harmnonium)\nHWindow$cosine(npoints = 10L, sym = TRUE, dtype = HDataType$Float64)",
+    "crumbs": [
+      "Classes",
+      "HWindow"
+    ]
+  },
+  {
+    "objectID": "contents/hwindow.html#hann",
+    "href": "contents/hwindow.html#hann",
+    "title": "HWindow",
+    "section": "hann",
+    "text": "hann\nhann(npoints: integer, sym: bool, dtype: HDataType) -&gt; HArray source \n\nReturns a Hann window.\n\\(w(n) = 0.5 - 0.5 \\cos\\left(\\frac{2\\pi{n}}{npoints-1}\\right) \\qquad 0 \\leq n \\leq npoints-1\\)\nThe maximum value is normalized to 1 (though the value 1 does not appear if npoints is even and window_type is symmetric.\nThe Hann window is a taper formed by using a raised cosine or sine-squared with ends that touch zero.\n\nArguments\n\nnpoints\n\nAn integer. Number of points in the output window.\n\nsym\n\nA bool.\nWhen TRUE, generates a symmetric window, for use in filter design.\nWhen FALSE, generates a periodic window, for use in spectral analysis.\n\ndtype\n\nAn HDataType to indicate which type of HArray to be created.\nMust be a float dtype.\n\n\nReturns\nAn HArray.\n\n\nExamples\nlibrary(harmnonium)\nHWindow$hann(npoints = 10L, sym = TRUE, dtype = HDataType$Float64)",
+    "crumbs": [
+      "Classes",
+      "HWindow"
+    ]
+  },
+  {
+    "objectID": "contents/hfft.html",
+    "href": "contents/hfft.html",
+    "title": "HFft",
+    "section": "",
+    "text": "An HFft is used to create FFTs. It caches results internally, so when making more than one FFT it is advisable to reuse the same HFft instance.",
+    "crumbs": [
+      "Classes",
+      "HFft"
+    ]
+  },
+  {
+    "objectID": "contents/hfft.html#new_fft_forward",
+    "href": "contents/hfft.html#new_fft_forward",
+    "title": "HFft",
+    "section": "new_fft_forward",
+    "text": "new_fft_forward\nnew_fft_forward(length: integer, dtype: HDataType) -&gt; HFft source \n\nCreates a new HFft instance which will be used to calculate forward FFTs.\nIf you plan on creating multiple FFT instances, it is recommended to reuse the same planner for all of them. This is because the planner re-uses internal data across FFT instances wherever possible, saving memory and reducing setup time (FFT instances created with one planner will never re-use data and buffers with FFT instances created by a different planner).\nIn the constructor, the FftPlanner will detect available CPU features. If AVX, SSE, Neon, or WASM SIMD are available, it will set itself up to plan FFTs with the fastest available instruction set. If no SIMD instruction sets are available, the planner will seamlessly fall back to planning non-SIMD FFTs.\n\nArguments\n\nlength\n\nAn integer denoting the length of the input. For 2D HArray’s, nrows must be provided.\n\ndtype\n\nA complex HDataType to indicate the dtype that the HFft will be working with.\n\n\nReturns\nAn HFft.\nWill return an error if dtype is of a float type.\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1+1i,2+2i,3+3i,4+4i,5+5i,6+6i), c(3,2))\ndtype = HDataType$Complex32\nharray = HArray$new_from_values(arr, dtype)\nhfft = HFft$new_fft_forward(3L, harray$dtype())",
+    "crumbs": [
+      "Classes",
+      "HFft"
+    ]
+  },
+  {
+    "objectID": "contents/hfft.html#new_fft_inverse",
+    "href": "contents/hfft.html#new_fft_inverse",
+    "title": "HFft",
+    "section": "new_fft_inverse",
+    "text": "new_fft_inverse\nnew_fft_inverse(length: integer, dtype: HDataType) -&gt; HFft source \n\nCreates a new HFft instance which will be used to calculate inverse FFTs.\nIf you plan on creating multiple FFT instances, it is recommended to reuse the same planner for all of them. This is because the planner re-uses internal data across FFT instances wherever possible, saving memory and reducing setup time (FFT instances created with one planner will never re-use data and buffers with FFT instances created by a different planner).\nIn the constructor, the FftPlanner will detect available CPU features. If AVX, SSE, Neon, or WASM SIMD are available, it will set itself up to plan FFTs with the fastest available instruction set. If no SIMD instruction sets are available, the planner will seamlessly fall back to planning non-SIMD FFTs.\n\nArguments\n\nlength\n\nAn integer denoting the length of the input. For 2D HArray’s, nrows must be provided.\n\ndtype\n\nA complex HDataType to indicate the dtype that the HFft will be working with.\n\n\nReturns\nAn HFft.\nWill return an error if dtype is of a float type.\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1+1i,2+2i,3+3i,4+4i,5+5i,6+6i), c(3,2))\ndtype = HDataType$Complex32\nharray = HArray$new_from_values(arr, dtype)\nhfft = HFft$new_fft_inverse(3L, harray$dtype())",
+    "crumbs": [
+      "Classes",
+      "HFft"
+    ]
+  },
+  {
+    "objectID": "contents/hfft.html#process",
+    "href": "contents/hfft.html#process",
+    "title": "HFft",
+    "section": "process",
+    "text": "process\nprocess(harray: HArray) source \n\nComputes the fast fourier transform of a complex HArray. The FFT computed may be forward or inverse, depending on the HFFT created.\nThe operation is done in-place.\nFFT (Fast Fourier Transform) refers to a way the discrete Fourier Transform (DFT) can be calculated efficiently, by using symmetries in the calculated terms. The symmetry is highest when n is a power of 2, and the transform is therefore most efficient for these sizes.\nThe function does not normalize outputs. Callers must manually normalize the results by scaling each element by 1/sqrt(n). Multiple normalization steps can be merged into one via pairwise multiplication, so when doing a forward FFT followed by an inverse callers can normalize once by scaling each element by 1/n.\nElements in the output are ordered by ascending frequency, with the first element corresponding to frequency 0.\n\nArguments\n\nharray\n\nA complex HArray.\n\n\nReturns\nWill return an error if:\n\nThe HArray’s dtype is incompatible with the HFft’s dtype.\nThe HArray’s ndim is greater than 2.\n\n\n\nExamples\n# Forward FFT.\nlibrary(harmonium)\narr = array(c(1+1i,2+2i,3+3i,4+4i,5+5i,6+6i), c(3,2))\ndtype = HDataType$Complex32\nharray = HArray$new_from_values(arr, dtype)\nhfft = HFft$new_fft_forward(3L, harray$dtype())\nhfft$process(harray)\n\n# Inverse FFT.\narr = array(c(1+1i,2+2i,3+3i,4+4i,5+5i,6+6i), c(3,2))\ndtype = HDataType$Complex32\nharray = HArray$new_from_values(arr, dtype)\nhfft = HFft$new_fft_inverse(3L, harray$dtype())\nhfft$process(harray)",
+    "crumbs": [
+      "Classes",
+      "HFft"
+    ]
+  },
+  {
+    "objectID": "contents/hfft.html#dtype",
+    "href": "contents/hfft.html#dtype",
+    "title": "HFft",
+    "section": "dtype",
+    "text": "dtype\ndtype() -&gt; HDataType source \n\nGets the HFft’s dtype.\n\nReturns\nAn HDataType.\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1+1i,2+2i,3+3i,4+4i,5+5i,6+6i), c(3,2))\ndtype = HDataType$Complex32\nharray = HArray$new_from_values(arr, dtype)\nhfft = HFft$new_fft_forward(3L, harray$dtype())\nhfft$dtype()",
+    "crumbs": [
+      "Classes",
+      "HFft"
+    ]
+  },
+  {
+    "objectID": "contents/hfft.html#print",
+    "href": "contents/hfft.html#print",
+    "title": "HFft",
     "section": "print",
-    "text": "print\nprint() source \n\nPrints the HInterpolationType.\nDifferently from R’s behaviour, print doesn’t return the value invisibly.\n\nExamples\nlibrary(harmonium)\ninterpolationtype = HInterpolationType$Cubic\ninterpolationtype$print()\n\n# or similarly:\nprint(interpolationtype)",
+    "text": "print\nprint() source \n\nPrints the HFft.\nDifferently from R’s normal behaviour, print doesn’t return the value invisibly.\n\nExamples\nlibrary(harmonium)\narr = array(c(1+1i,2+2i,3+3i,4+4i,5+5i,6+6i), c(3,2))\ndtype = HDataType$Complex32\nharray = HArray$new_from_values(arr, dtype)\nhfft = HFft$new_fft_forward(3L, harray$dtype())\nhfft$print()\n\n# or similarly:\nprint(hfft)",
     "crumbs": [
       "Classes",
-      "HInterpolationType"
+      "HFft"
     ]
   },
   {
-    "objectID": "contents/hinterpolationtype.html#eq",
-    "href": "contents/hinterpolationtype.html#eq",
-    "title": "HInterpolationType",
-    "section": "eq",
-    "text": "eq\neq(other: HInterpolationType) -&gt; bool source \n\nEquality with another HInterpolationType.\n\nArguments\n\nother\n\nAn HInterpolationType.\n\n\nReturns\nA bool.\n\n\nExamples\nlibrary(harmonium)\ninterpolationtype1 = HInterpolationType$Cubic\ninterpolationtype2 = HInterpolationType$Cubic\ninterpolationtype1$eq(interpolationtype2) # TRUE\n\n# or similarly:\ninterpolationtype1 == interpolationtype2",
+    "objectID": "contents/hfft.html#clone",
+    "href": "contents/hfft.html#clone",
+    "title": "HFft",
+    "section": "clone",
+    "text": "clone\nclone() -&gt; HFft source \n\nClones the HFft.\nCreates a new HFft, with the underlying data pointing to the same place in memory. When HFFT is cloned, thus having more than one reference to the same internal struct, and process is run, it uses the same cached Fft instance, but a new scratch buffer will have to be allocated.\n\nReturns\nAn HFft.\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1+1i,2+2i,3+3i,4+4i,5+5i,6+6i), c(3,2))\ndtype = HDataType$Complex32\nharray = HArray$new_from_values(arr, dtype)\nhfft = HFft$new_fft_forward(3L, harray$dtype())\nhfft$clone()",
     "crumbs": [
       "Classes",
-      "HInterpolationType"
+      "HFft"
     ]
   },
   {
-    "objectID": "contents/hinterpolationtype.html#ne",
-    "href": "contents/hinterpolationtype.html#ne",
-    "title": "HInterpolationType",
-    "section": "ne",
-    "text": "ne\nne(other: HInterpolationType) -&gt; bool source \n\nDifference with another HInterpolationType.\n\nArguments\n\nother\n\nAn HInterpolationType.\n\n\nReturns\nA bool.\n\n\nExamples\nlibrary(harmonium)\ninterpolationtype1 = HInterpolationType$Cubic\ninterpolationtype2 = HInterpolationType$Cubic\ninterpolationtype1$ne(interpolationtype2) # FALSE\n\n# or similarly:\ninterpolationtype1 != interpolationtype2",
+    "objectID": "contents/hfft.html#is_shared",
+    "href": "contents/hfft.html#is_shared",
+    "title": "HFft",
+    "section": "is_shared",
+    "text": "is_shared\nis_shared() -&gt; bool source \n\nChecks if the object is shared.\nSince HFft has a COW (clone-on-write) behaviour, this function is useful to check if a new object will be created or if the change will be done in-place.\n\nReturns\nA bool.\n\n\nExamples\nlibrary(harmonium)\narr = array(c(1+1i,2+2i,3+3i,4+4i,5+5i,6+6i), c(3,2))\ndtype = HDataType$Complex32\nharray = HArray$new_from_values(arr, dtype)\nhfft = HFft$new_fft_forward(3L, harray$dtype())\nhfft$is_shared() # FALSE.\n\nhfft2 = hfft$clone()\nhfft$is_shared() # TRUE, hfft shares the same inner object with hfft2.",
     "crumbs": [
       "Classes",
-      "HInterpolationType"
+      "HFft"
+    ]
+  },
+  {
+    "objectID": "contents/hfft.html#invalidate",
+    "href": "contents/hfft.html#invalidate",
+    "title": "HFft",
+    "section": "invalidate",
+    "text": "invalidate\ninvalidate() source \n\nReplaces the inner value of the external pointer, invalidating it. This function is useful to remove one of the shared references of the inner pointer in rust.\n\nExamples\nlibrary(harmonium)\narr = array(c(1+1i,2+2i,3+3i,4+4i,5+5i,6+6i), c(3,2))\ndtype = HDataType$Complex32\nharray = HArray$new_from_values(arr, dtype)\nhfft = HFft$new_fft_forward(3L, harray$dtype())\nhfft$invalidate()",
+    "crumbs": [
+      "Classes",
+      "HFft"
+    ]
+  },
+  {
+    "objectID": "contents/hdecoderstream.html",
+    "href": "contents/hdecoderstream.html",
+    "title": "HDecoderStream",
+    "section": "",
+    "text": "An iterator that decodes audio in streams.",
+    "crumbs": [
+      "Classes",
+      "HDecoderStream"
+    ]
+  },
+  {
+    "objectID": "contents/hdecoderstream.html#stream",
+    "href": "contents/hdecoderstream.html#stream",
+    "title": "HDecoderStream",
+    "section": "stream",
+    "text": "stream\nstream() -&gt; HArray source \n\nGets the next wave of frames as an HArray.\nReturns an error if it’s end of stream or if an error ocurred in the decoding process.\n\nReturns\nThe decoded audio as a float HArray.\nThe number of frames streamed is the one used as input in the creation of HDecoderStream.\n\n\nExamples\nlibrary(harmonium)\nfpath = \"../../../testfiles/gs-16b-2c-44100hz.flac\"\ndtype = HDataType$Float32\nframes = 1000L\nhdecoder_stream = HFile$decode_stream(fpath, frames, dtype)\nhdecoder_stream$stream()",
+    "crumbs": [
+      "Classes",
+      "HDecoderStream"
     ]
   },
   {
@@ -1331,6 +1199,138 @@
     "crumbs": [
       "Classes",
       "HRealFft"
+    ]
+  },
+  {
+    "objectID": "contents/hresamplertype.html",
+    "href": "contents/hresamplertype.html",
+    "title": "HResamplerType",
+    "section": "",
+    "text": "A resampler type representation.\nSupports FftFixedIn, FftFixedInOut, FftFixedOut, SincFixedIn, SincFixedOut, FastFixedIn and FastFixedOut types.",
+    "crumbs": [
+      "Classes",
+      "HResamplerType"
+    ]
+  },
+  {
+    "objectID": "contents/hresamplertype.html#print",
+    "href": "contents/hresamplertype.html#print",
+    "title": "HResamplerType",
+    "section": "print",
+    "text": "print\nprint() source \n\nPrints the HResamplerType.\nDifferently from R’s behaviour, print doesn’t return the value invisibly.\n\nExamples\nlibrary(harmonium)\nhresamplertype = HResamplerType$SincFixedIn\nhresamplertype$print()\n\n# or similarly:\nprint(hresamplertype)",
+    "crumbs": [
+      "Classes",
+      "HResamplerType"
+    ]
+  },
+  {
+    "objectID": "contents/hresamplertype.html#eq",
+    "href": "contents/hresamplertype.html#eq",
+    "title": "HResamplerType",
+    "section": "eq",
+    "text": "eq\neq(other: HResamplerType) -&gt; bool source \n\nEquality with another HResamplerType.\n\nArguments\n\nother\n\nAn HResamplerType.\n\n\nReturns\nA bool.\n\n\nExamples\nlibrary(harmonium)\nhresamplertype1 = HResamplerType$SincFixedIn\nhresamplertype2 = HResamplerType$SincFixedIn\nhresamplertype1$eq(hresamplertype2) # TRUE\n\n# or similarly:\nhresamplertype1 == hresamplertype2",
+    "crumbs": [
+      "Classes",
+      "HResamplerType"
+    ]
+  },
+  {
+    "objectID": "contents/hresamplertype.html#ne",
+    "href": "contents/hresamplertype.html#ne",
+    "title": "HResamplerType",
+    "section": "ne",
+    "text": "ne\nne(other: HResamplerType) -&gt; bool source \n\nDifference with another HResamplerType.\n\nArguments\n\nother\n\nAn HResamplerType.\n\n\nReturns\nA bool.\n\n\nExamples\nlibrary(harmonium)\nhresamplertype1 = HResamplerType$SincFixedIn\nhresamplertype2 = HResamplerType$SincFixedIn\nhresamplertype1$ne(hresamplertype2) # FALSE\n\n# or similarly:\nhresamplertype1 != hresamplertype2",
+    "crumbs": [
+      "Classes",
+      "HResamplerType"
+    ]
+  },
+  {
+    "objectID": "contents/hinterpolationtype.html",
+    "href": "contents/hinterpolationtype.html",
+    "title": "HInterpolationType",
+    "section": "",
+    "text": "A interpolation type representation.\nSupports Cubic, Linear, Quadratic and Nearest types.",
+    "crumbs": [
+      "Classes",
+      "HInterpolationType"
+    ]
+  },
+  {
+    "objectID": "contents/hinterpolationtype.html#print",
+    "href": "contents/hinterpolationtype.html#print",
+    "title": "HInterpolationType",
+    "section": "print",
+    "text": "print\nprint() source \n\nPrints the HInterpolationType.\nDifferently from R’s behaviour, print doesn’t return the value invisibly.\n\nExamples\nlibrary(harmonium)\ninterpolationtype = HInterpolationType$Cubic\ninterpolationtype$print()\n\n# or similarly:\nprint(interpolationtype)",
+    "crumbs": [
+      "Classes",
+      "HInterpolationType"
+    ]
+  },
+  {
+    "objectID": "contents/hinterpolationtype.html#eq",
+    "href": "contents/hinterpolationtype.html#eq",
+    "title": "HInterpolationType",
+    "section": "eq",
+    "text": "eq\neq(other: HInterpolationType) -&gt; bool source \n\nEquality with another HInterpolationType.\n\nArguments\n\nother\n\nAn HInterpolationType.\n\n\nReturns\nA bool.\n\n\nExamples\nlibrary(harmonium)\ninterpolationtype1 = HInterpolationType$Cubic\ninterpolationtype2 = HInterpolationType$Cubic\ninterpolationtype1$eq(interpolationtype2) # TRUE\n\n# or similarly:\ninterpolationtype1 == interpolationtype2",
+    "crumbs": [
+      "Classes",
+      "HInterpolationType"
+    ]
+  },
+  {
+    "objectID": "contents/hinterpolationtype.html#ne",
+    "href": "contents/hinterpolationtype.html#ne",
+    "title": "HInterpolationType",
+    "section": "ne",
+    "text": "ne\nne(other: HInterpolationType) -&gt; bool source \n\nDifference with another HInterpolationType.\n\nArguments\n\nother\n\nAn HInterpolationType.\n\n\nReturns\nA bool.\n\n\nExamples\nlibrary(harmonium)\ninterpolationtype1 = HInterpolationType$Cubic\ninterpolationtype2 = HInterpolationType$Cubic\ninterpolationtype1$ne(interpolationtype2) # FALSE\n\n# or similarly:\ninterpolationtype1 != interpolationtype2",
+    "crumbs": [
+      "Classes",
+      "HInterpolationType"
+    ]
+  },
+  {
+    "objectID": "contents/hwindowtype.html",
+    "href": "contents/hwindowtype.html",
+    "title": "HWindowType",
+    "section": "",
+    "text": "A window type representation.\nSupports Blackman, Blackman2, BlackmanHarris, BlackmanHarris2, Hann and Hann2 types.",
+    "crumbs": [
+      "Classes",
+      "HWindowType"
+    ]
+  },
+  {
+    "objectID": "contents/hwindowtype.html#print",
+    "href": "contents/hwindowtype.html#print",
+    "title": "HWindowType",
+    "section": "print",
+    "text": "print\nprint() source \n\nPrints the HWindowType.\nDifferently from R’s behaviour, print doesn’t return the value invisibly.\n\nExamples\nlibrary(harmonium)\nwindowtype = HWindowType$Blackman\nwindowtype$print()\n\n# or similarly:\nprint(windowtype)",
+    "crumbs": [
+      "Classes",
+      "HWindowType"
+    ]
+  },
+  {
+    "objectID": "contents/hwindowtype.html#eq",
+    "href": "contents/hwindowtype.html#eq",
+    "title": "HWindowType",
+    "section": "eq",
+    "text": "eq\neq(other: HWindowType) -&gt; bool source \n\nEquality with another HWindowType.\n\nArguments\n\nother\n\nAn HWindowType.\n\n\nReturns\nA bool.\n\n\nExamples\nlibrary(harmonium)\nwindowtype1 = HWindowType$Blackman\nwindowtype2 = HWindowType$Blackman\nwindowtype1$eq(windowtype2) # TRUE\n\n# or similarly:\nwindowtype1 == windowtype2",
+    "crumbs": [
+      "Classes",
+      "HWindowType"
+    ]
+  },
+  {
+    "objectID": "contents/hwindowtype.html#ne",
+    "href": "contents/hwindowtype.html#ne",
+    "title": "HWindowType",
+    "section": "ne",
+    "text": "ne\nne(other: HWindowType) -&gt; bool source \n\nDifference with another HWindowType.\n\nArguments\n\nother\n\nAn HWindowType.\n\n\nReturns\nA bool.\n\n\nExamples\nlibrary(harmonium)\nwindowtype1 = HWindowType$Blackman\nwindowtype2 = HWindowType$Blackman\nwindowtype1$ne(windowtype2) # FALSE\n\n# or similarly:\nwindowtype1 != windowtype2",
+    "crumbs": [
+      "Classes",
+      "HWindowType"
     ]
   }
 ]
