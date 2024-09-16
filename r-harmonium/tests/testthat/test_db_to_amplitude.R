@@ -3,7 +3,7 @@ test_that(
   {
     check_db_to_amplitude = function(dtype, input, result) {
       harray = HArray$new_from_values(input, dtype)
-      HAudioOp$db_to_amplitude(harray, 1, 1)
+      HArrayAudio$db_to_amplitude(harray, 1, 1)
       expect_true(all.equal(harray$collect(), result, tolerance = 1e-4))
     }
     

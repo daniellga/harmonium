@@ -6,10 +6,10 @@ test_that(
     harray = HArray$new_from_values(arr, dtype = HDataType$Float64)
     hparams = HSincInterpolationParameters$new(256L, 0.95, 256L, HInterpolationType$Linear, HWindowType$BlackmanHarris2)
 
-    res = HResampler$new_sinc(48000 / 44100, 2, hparams, 512L, HAudioOp$nchannels(harray), HResamplerType$SincFixedIn, HDataType$Float32)
+    res = HResampler$new_sinc(48000 / 44100, 2, hparams, 512L, HArrayAudio$nchannels(harray), HResamplerType$SincFixedIn, HDataType$Float32)
     expect_error(res$process(harray))
 
-    res = HResampler$new_sinc(48000 / 44100, 2, hparams, 512L, HAudioOp$nchannels(harray), HResamplerType$SincFixedIn, HDataType$Float64)
+    res = HResampler$new_sinc(48000 / 44100, 2, hparams, 512L, HArrayAudio$nchannels(harray), HResamplerType$SincFixedIn, HDataType$Float64)
     expect_true(res$res_type() == HResamplerType$SincFixedIn)
     expect_true(res$dtype() == HDataType$Float64)
     expect_no_error(res$process(harray))
@@ -28,10 +28,10 @@ test_that(
     harray = HArray$new_from_values(arr, dtype = HDataType$Float64)
     hparams = HSincInterpolationParameters$new(256L, 0.95, 256L, HInterpolationType$Linear, HWindowType$BlackmanHarris2)
     
-    res = HResampler$new_sinc(48000 / 44100, 2, hparams, 512L, HAudioOp$nchannels(harray), HResamplerType$SincFixedOut, HDataType$Float32)
+    res = HResampler$new_sinc(48000 / 44100, 2, hparams, 512L, HArrayAudio$nchannels(harray), HResamplerType$SincFixedOut, HDataType$Float32)
     expect_error(res$process(haudio, sr_out = 48000))
     
-    res = HResampler$new_sinc(48000 / 44100, 2, hparams, 512L, HAudioOp$nchannels(harray), HResamplerType$SincFixedOut, HDataType$Float64)
+    res = HResampler$new_sinc(48000 / 44100, 2, hparams, 512L, HArrayAudio$nchannels(harray), HResamplerType$SincFixedOut, HDataType$Float64)
     expect_true(res$res_type() == HResamplerType$SincFixedOut)
     expect_true(res$dtype() == HDataType$Float64)
     expect_no_error(res$process(harray))
@@ -112,10 +112,10 @@ test_that(
     arr = matrix(0, nrow = 1024, ncol = 2)
     harray = HArray$new_from_values(arr, dtype = HDataType$Float64)
     
-    res = HResampler$new_fast(48000 / 44100, 2, HPolynomialDegree$Linear, 512L, HAudioOp$nchannels(harray), HResamplerType$FastFixedIn, HDataType$Float32)
+    res = HResampler$new_fast(48000 / 44100, 2, HPolynomialDegree$Linear, 512L, HArrayAudio$nchannels(harray), HResamplerType$FastFixedIn, HDataType$Float32)
     expect_error(res$process(harray))
     
-    res = HResampler$new_fast(48000 / 44100, 2, HPolynomialDegree$Linear, 512L, HAudioOp$nchannels(harray), HResamplerType$FastFixedIn, HDataType$Float64)
+    res = HResampler$new_fast(48000 / 44100, 2, HPolynomialDegree$Linear, 512L, HArrayAudio$nchannels(harray), HResamplerType$FastFixedIn, HDataType$Float64)
     expect_true(res$res_type() == HResamplerType$FastFixedIn)
     expect_true(res$dtype() == HDataType$Float64)
     expect_no_error(res$process(harray))
@@ -133,10 +133,10 @@ test_that(
     arr = matrix(0, nrow = 512, ncol = 2)
     harray = HArray$new_from_values(arr, dtype = HDataType$Float64)
     
-    res = HResampler$new_fast(48000 / 44100, 2, HPolynomialDegree$Linear, 512L, HAudioOp$nchannels(harray), HResamplerType$FastFixedOut, HDataType$Float32)
+    res = HResampler$new_fast(48000 / 44100, 2, HPolynomialDegree$Linear, 512L, HArrayAudio$nchannels(harray), HResamplerType$FastFixedOut, HDataType$Float32)
     expect_error(res$process(harray))
     
-    res = HResampler$new_fast(48000 / 44100, 2, HPolynomialDegree$Linear, 512L, HAudioOp$nchannels(harray), HResamplerType$FastFixedOut, HDataType$Float64)
+    res = HResampler$new_fast(48000 / 44100, 2, HPolynomialDegree$Linear, 512L, HArrayAudio$nchannels(harray), HResamplerType$FastFixedOut, HDataType$Float64)
     expect_true(res$res_type() == HResamplerType$FastFixedOut)
     expect_true(res$dtype() == HDataType$Float64)
     expect_no_error(res$process(harray))

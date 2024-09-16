@@ -2,7 +2,7 @@ use harmonium_core::{array::HArray, errors::HError, errors::HResult};
 use ndarray::{ArcArray1, ArcArray2, Axis, Dimension, Ix1, Ix2, IxDyn, Zip};
 use realfft::{ComplexToReal, RealFftPlanner, RealToComplex};
 use rustfft::{
-    num_complex::Complex,
+    num_complex::{Complex, ComplexFloat},
     num_traits::{ConstZero, Float, FloatConst},
     FftNum, FftPlanner,
 };
@@ -27,7 +27,7 @@ pub struct RealFftInverse<T> {
 }
 
 impl<T: FftNum + Float + FloatConst + ConstZero> Fft<T> {
-    pub fn new_fft_forward(length: usize) -> Self {
+    pub fn new_forward(length: usize) -> Self {
         let mut planner = FftPlanner::new();
         let fft = planner.plan_fft_forward(length);
         let scratch_len = fft.get_inplace_scratch_len();
@@ -40,7 +40,7 @@ impl<T: FftNum + Float + FloatConst + ConstZero> Fft<T> {
         }
     }
 
-    pub fn new_fft_inverse(length: usize) -> Self {
+    pub fn new_inverse(length: usize) -> Self {
         let mut planner = FftPlanner::new();
         let fft = planner.plan_fft_inverse(length);
         let scratch_len = fft.get_inplace_scratch_len();
@@ -55,7 +55,7 @@ impl<T: FftNum + Float + FloatConst + ConstZero> Fft<T> {
 }
 
 impl<T: FftNum + Float + FloatConst + ConstZero> RealFftForward<T> {
-    pub fn new_real_fft_forward(length: usize) -> Self {
+    pub fn new(length: usize) -> Self {
         let mut planner = RealFftPlanner::new();
         let fft = planner.plan_fft_forward(length);
         let scratch_len = fft.get_scratch_len();
@@ -70,7 +70,7 @@ impl<T: FftNum + Float + FloatConst + ConstZero> RealFftForward<T> {
 }
 
 impl<T: FftNum + Float + FloatConst + ConstZero> RealFftInverse<T> {
-    pub fn new_real_fft_inverse(length: usize) -> Self {
+    pub fn new(length: usize) -> Self {
         let mut planner = RealFftPlanner::new();
         let fft = planner.plan_fft_inverse(length);
         let scratch_len = fft.get_scratch_len();
@@ -84,35 +84,24 @@ impl<T: FftNum + Float + FloatConst + ConstZero> RealFftInverse<T> {
     }
 }
 
-pub trait ProcessFft<T, D>
+pub trait ProcessFft<'a, D>
 where
-    T: FftNum + Float + FloatConst,
     D: Dimension,
 {
-    fn process(&mut self, harray: &mut HArray<Complex<T>, D>) -> HResult<()>;
+    type U: ComplexFloat;
+    type Output;
+
+    fn process(&mut self, harray: &'a mut HArray<Self::U, D>) -> HResult<Self::Output>;
 }
 
-pub trait ProcessRealFftForward<T, D>
-where
-    T: FftNum + Float + FloatConst,
-    D: Dimension,
-{
-    fn process(&mut self, harray: &mut HArray<T, D>) -> HResult<HArray<Complex<T>, D>>;
-}
-
-pub trait ProcessRealFftInverse<T, D>
-where
-    T: FftNum + Float + FloatConst,
-    D: Dimension,
-{
-    fn process(&mut self, harray: &mut HArray<Complex<T>, D>) -> HResult<HArray<T, D>>;
-}
-
-impl<T> ProcessFft<T, Ix1> for Fft<T>
+impl<'a, T> ProcessFft<'a, Ix1> for Fft<T>
 where
     T: FftNum + Float + FloatConst,
 {
-    fn process(&mut self, harray: &mut HArray<Complex<T>, Ix1>) -> HResult<()> {
+    type U = Complex<T>;
+    type Output = ();
+
+    fn process(&mut self, harray: &'a mut HArray<Complex<T>, Ix1>) -> HResult<()> {
         let scratch_buffer = make_mut_slice(&mut self.scratch_buffer);
         self.fft
             .process_with_scratch(harray.as_slice_mut().unwrap(), scratch_buffer);
@@ -120,11 +109,61 @@ where
     }
 }
 
-impl<T> ProcessRealFftForward<T, Ix1> for RealFftForward<T>
+impl<'a, T> ProcessFft<'a, Ix2> for Fft<T>
+where
+    T: FftNum + Float + FloatConst,
+{
+    type U = Complex<T>;
+    type Output = ();
+
+    fn process(&mut self, harray: &'a mut HArray<Complex<T>, Ix2>) -> HResult<()> {
+        let scratch_buffer = make_mut_slice(&mut self.scratch_buffer);
+
+        for mut row in harray.0.lanes_mut(Axis(1)) {
+            self.fft
+                .process_with_scratch(row.as_slice_mut().unwrap(), scratch_buffer);
+        }
+        Ok(())
+    }
+}
+
+impl<'a, T> ProcessFft<'a, IxDyn> for Fft<T>
+where
+    T: FftNum + Float + FloatConst,
+{
+    type U = Complex<T>;
+    type Output = ();
+
+    fn process(&mut self, harray: &mut HArray<Complex<T>, IxDyn>) -> HResult<()> {
+        let scratch_buffer = make_mut_slice(&mut self.scratch_buffer);
+        match harray.ndim() {
+            1 => {
+                self.fft
+                    .process_with_scratch(harray.as_slice_mut().unwrap(), scratch_buffer);
+                Ok(())
+            }
+            2 => {
+                for mut row in harray.0.lanes_mut(Axis(1)) {
+                    self.fft
+                        .process_with_scratch(row.as_slice_mut().unwrap(), scratch_buffer);
+                }
+                Ok(())
+            }
+            _ => Err(HError::OutOfSpecError(
+                "The HArray's ndim should be 1 or 2.".into(),
+            )),
+        }
+    }
+}
+
+impl<'a, T> ProcessFft<'a, Ix1> for RealFftForward<T>
 where
     T: FftNum + Float + FloatConst + ConstZero,
 {
-    fn process(&mut self, harray: &mut HArray<T, Ix1>) -> HResult<HArray<Complex<T>, Ix1>> {
+    type U = T;
+    type Output = HArray<Complex<T>, Ix1>;
+
+    fn process(&mut self, harray: &'a mut HArray<T, Ix1>) -> HResult<HArray<Complex<T>, Ix1>> {
         let length = harray.len();
         let mut ndarray = ArcArray1::from_elem(length / 2 + 1, Complex::<T>::ZERO);
         let scratch_buffer = make_mut_slice(&mut self.scratch_buffer);
@@ -139,45 +178,14 @@ where
     }
 }
 
-impl<T> ProcessRealFftInverse<T, Ix1> for RealFftInverse<T>
+impl<'a, T> ProcessFft<'a, Ix2> for RealFftForward<T>
 where
     T: FftNum + Float + FloatConst + ConstZero,
 {
-    fn process(&mut self, harray: &mut HArray<Complex<T>, Ix1>) -> HResult<HArray<T, Ix1>> {
-        let length = self.fft.len();
-        let scratch_buffer = make_mut_slice(&mut self.scratch_buffer);
-        let mut ndarray = ArcArray1::from_elem(length, T::ZERO);
-        self.fft
-            .process_with_scratch(
-                harray.as_slice_mut().unwrap(),
-                ndarray.as_slice_mut().unwrap(),
-                scratch_buffer,
-            )
-            .unwrap();
-        Ok(HArray(ndarray))
-    }
-}
+    type U = T;
+    type Output = HArray<Complex<T>, Ix2>;
 
-impl<T> ProcessFft<T, Ix2> for Fft<T>
-where
-    T: FftNum + Float + FloatConst,
-{
-    fn process(&mut self, harray: &mut HArray<Complex<T>, Ix2>) -> HResult<()> {
-        let scratch_buffer = make_mut_slice(&mut self.scratch_buffer);
-
-        for mut row in harray.0.lanes_mut(Axis(1)) {
-            self.fft
-                .process_with_scratch(row.as_slice_mut().unwrap(), scratch_buffer);
-        }
-        Ok(())
-    }
-}
-
-impl<T> ProcessRealFftForward<T, Ix2> for RealFftForward<T>
-where
-    T: FftNum + Float + FloatConst + ConstZero,
-{
-    fn process(&mut self, harray: &mut HArray<T, Ix2>) -> HResult<HArray<Complex<T>, Ix2>> {
+    fn process(&mut self, harray: &'a mut HArray<T, Ix2>) -> HResult<HArray<Complex<T>, Ix2>> {
         let nrows = harray.0.nrows();
         let ncols = harray.0.ncols();
         let scratch_buffer = make_mut_slice(&mut self.scratch_buffer);
@@ -199,63 +207,14 @@ where
     }
 }
 
-impl<T> ProcessRealFftInverse<T, Ix2> for RealFftInverse<T>
+impl<'a, T> ProcessFft<'a, IxDyn> for RealFftForward<T>
 where
     T: FftNum + Float + FloatConst + ConstZero,
 {
-    fn process(&mut self, harray: &mut HArray<Complex<T>, Ix2>) -> HResult<HArray<T, Ix2>> {
-        let length = self.fft.len();
-        let nrows = harray.0.nrows();
-        let scratch_buffer = make_mut_slice(&mut self.scratch_buffer);
-        let mut ndarray = ArcArray2::from_elem((nrows, length), T::ZERO);
+    type U = T;
+    type Output = HArray<Complex<T>, IxDyn>;
 
-        Zip::from(ndarray.lanes_mut(Axis(1)))
-            .and(harray.0.lanes_mut(Axis(1)))
-            .for_each(|mut row_output, mut row_input| {
-                self.fft
-                    .process_with_scratch(
-                        row_input.as_slice_mut().unwrap(),
-                        row_output.as_slice_mut().unwrap(),
-                        scratch_buffer,
-                    )
-                    .unwrap();
-            });
-
-        Ok(HArray(ndarray))
-    }
-}
-
-impl<T> ProcessFft<T, IxDyn> for Fft<T>
-where
-    T: FftNum + Float + FloatConst,
-{
-    fn process(&mut self, harray: &mut HArray<Complex<T>, IxDyn>) -> HResult<()> {
-        let scratch_buffer = make_mut_slice(&mut self.scratch_buffer);
-        match harray.ndim() {
-            1 => {
-                self.fft
-                    .process_with_scratch(harray.as_slice_mut().unwrap(), scratch_buffer);
-                Ok(())
-            }
-            2 => {
-                Zip::from(harray.0.lanes_mut(Axis(1))).for_each(|mut row| {
-                    self.fft
-                        .process_with_scratch(row.as_slice_mut().unwrap(), scratch_buffer);
-                });
-                Ok(())
-            }
-            _ => Err(HError::OutOfSpecError(
-                "The HArray's ndim should be 1 or 2.".into(),
-            )),
-        }
-    }
-}
-
-impl<T> ProcessRealFftForward<T, IxDyn> for RealFftForward<T>
-where
-    T: FftNum + Float + FloatConst + ConstZero,
-{
-    fn process(&mut self, harray: &mut HArray<T, IxDyn>) -> HResult<HArray<Complex<T>, IxDyn>> {
+    fn process(&mut self, harray: &'a mut HArray<T, IxDyn>) -> HResult<HArray<Complex<T>, IxDyn>> {
         let scratch_buffer = make_mut_slice(&mut self.scratch_buffer);
         match harray.ndim() {
             1 => {
@@ -297,10 +256,64 @@ where
     }
 }
 
-impl<T> ProcessRealFftInverse<T, IxDyn> for RealFftInverse<T>
+impl<'a, T> ProcessFft<'a, Ix1> for RealFftInverse<T>
 where
     T: FftNum + Float + FloatConst + ConstZero,
 {
+    type U = Complex<T>;
+    type Output = HArray<T, Ix1>;
+
+    fn process(&mut self, harray: &'a mut HArray<Complex<T>, Ix1>) -> HResult<HArray<T, Ix1>> {
+        let length = self.fft.len();
+        let scratch_buffer = make_mut_slice(&mut self.scratch_buffer);
+        let mut ndarray = ArcArray1::from_elem(length, T::ZERO);
+        self.fft
+            .process_with_scratch(
+                harray.as_slice_mut().unwrap(),
+                ndarray.as_slice_mut().unwrap(),
+                scratch_buffer,
+            )
+            .unwrap();
+        Ok(HArray(ndarray))
+    }
+}
+
+impl<'a, T> ProcessFft<'a, Ix2> for RealFftInverse<T>
+where
+    T: FftNum + Float + FloatConst + ConstZero,
+{
+    type U = Complex<T>;
+    type Output = HArray<T, Ix2>;
+
+    fn process(&mut self, harray: &mut HArray<Complex<T>, Ix2>) -> HResult<HArray<T, Ix2>> {
+        let length = self.fft.len();
+        let nrows = harray.0.nrows();
+        let scratch_buffer = make_mut_slice(&mut self.scratch_buffer);
+        let mut ndarray = ArcArray2::from_elem((nrows, length), T::ZERO);
+
+        Zip::from(ndarray.lanes_mut(Axis(1)))
+            .and(harray.0.lanes_mut(Axis(1)))
+            .for_each(|mut row_output, mut row_input| {
+                self.fft
+                    .process_with_scratch(
+                        row_input.as_slice_mut().unwrap(),
+                        row_output.as_slice_mut().unwrap(),
+                        scratch_buffer,
+                    )
+                    .unwrap();
+            });
+
+        Ok(HArray(ndarray))
+    }
+}
+
+impl<'a, T> ProcessFft<'a, IxDyn> for RealFftInverse<T>
+where
+    T: FftNum + Float + FloatConst + ConstZero,
+{
+    type U = Complex<T>;
+    type Output = HArray<T, IxDyn>;
+
     fn process(&mut self, harray: &mut HArray<Complex<T>, IxDyn>) -> HResult<HArray<T, IxDyn>> {
         let length = self.fft.len();
         let scratch_buffer = make_mut_slice(&mut self.scratch_buffer);
@@ -372,7 +385,7 @@ mod tests {
         ];
         let mut lhs = HArray::new_from_shape_vec(6, v).unwrap();
         let length = lhs.len();
-        let mut fft = Fft::new_fft_forward(length);
+        let mut fft = Fft::new_forward(length);
         fft.process(&mut lhs).unwrap();
         let result = vec![
             Complex::new(36.0, 42.0),
@@ -397,7 +410,7 @@ mod tests {
         ];
         let mut lhs = HArray::new_from_shape_vec((3, 2), v).unwrap();
         let ncols = lhs.0.ncols();
-        let mut fft = Fft::new_fft_forward(ncols);
+        let mut fft = Fft::new_forward(ncols);
         fft.process(&mut lhs).unwrap();
         let result = vec![
             Complex::new(4_f32, 6_f32),
@@ -424,7 +437,7 @@ mod tests {
             .unwrap()
             .into_dynamic();
         let ncols = lhs.0.len_of(Axis(1));
-        let mut fft = Fft::new_fft_forward(ncols);
+        let mut fft = Fft::new_forward(ncols);
         fft.process(&mut lhs).unwrap();
         let result = vec![
             Complex::new(4_f32, 6_f32),
@@ -452,7 +465,7 @@ mod tests {
         ];
         let mut lhs = HArray::new_from_shape_vec(6, v.clone()).unwrap();
         let length = lhs.len();
-        let mut fft = Fft::new_fft_inverse(length);
+        let mut fft = Fft::new_inverse(length);
         fft.process(&mut lhs).unwrap();
         let result = vec![
             Complex::new(36.0, 42.0),
@@ -478,7 +491,7 @@ mod tests {
         ];
         let mut lhs = HArray::new_from_shape_vec((3, 2), v).unwrap();
         let ncols = lhs.0.ncols();
-        let mut fft = Fft::new_fft_forward(ncols);
+        let mut fft = Fft::new_forward(ncols);
         fft.process(&mut lhs).unwrap();
         let result = vec![
             Complex::new(4.0, 6.0),
@@ -506,7 +519,7 @@ mod tests {
             .unwrap()
             .into_dynamic();
         let ncols = lhs.0.len_of(Axis(1));
-        let mut fft = Fft::new_fft_forward(ncols);
+        let mut fft = Fft::new_forward(ncols);
         fft.process(&mut lhs).unwrap();
         let result = vec![
             Complex::new(4.0, 6.0),
@@ -527,7 +540,7 @@ mod tests {
         let v = vec![1_f32, 2_f32, 3_f32, 4_f32, 5_f32, 6_f32];
         let mut harray = HArray::new_from_shape_vec(6, v).unwrap();
         let length = harray.len();
-        let mut rfft = RealFftForward::new_real_fft_forward(length);
+        let mut rfft = RealFftForward::new(length);
         let lhs = rfft.process(&mut harray).unwrap();
         let result = vec![
             Complex::new(21.0, 0.0),
@@ -546,7 +559,7 @@ mod tests {
         ];
         let mut harray = HArray::new_from_shape_vec((3, 4), v).unwrap();
         let ncols = harray.0.ncols();
-        let mut rfft = RealFftForward::new_real_fft_forward(ncols);
+        let mut rfft = RealFftForward::new(ncols);
         let lhs = rfft.process(&mut harray).unwrap();
         let result = vec![
             Complex::new(10_f32, 0_f32),
@@ -572,7 +585,7 @@ mod tests {
             .unwrap()
             .into_dynamic();
         let ncols = harray.0.len_of(Axis(1));
-        let mut rfft = RealFftForward::new_real_fft_forward(ncols);
+        let mut rfft = RealFftForward::new(ncols);
         let lhs = rfft.process(&mut harray).unwrap();
         let result = vec![
             Complex::new(10_f32, 0_f32),
@@ -597,9 +610,9 @@ mod tests {
         let v = vec![1_f32, 2., 3., 4., 5., 6.];
         let mut harray = HArray::new_from_shape_vec(6, v).unwrap();
         let length = harray.len();
-        let mut rfft = RealFftForward::new_real_fft_forward(length);
+        let mut rfft = RealFftForward::new(length);
         let mut spectrum = rfft.process(&mut harray).unwrap();
-        let mut irfft = RealFftInverse::new_real_fft_inverse(length);
+        let mut irfft = RealFftInverse::new(length);
         let lhs = irfft.process(&mut spectrum).unwrap();
         let result = vec![6_f32, 12., 18., 24., 30., 36.];
         let rhs = HArray::new_from_shape_vec(length, result).unwrap();
@@ -608,9 +621,9 @@ mod tests {
         let v = vec![1_f32, 2., 3., 4., 5., 6.];
         let mut harray = HArray::new_from_shape_vec(6, v).unwrap();
         let length = harray.len() + 1;
-        let mut rfft = RealFftForward::new_real_fft_forward(length - 1);
+        let mut rfft = RealFftForward::new(length - 1);
         let mut spectrum = rfft.process(&mut harray).unwrap();
-        let mut irfft = RealFftInverse::new_real_fft_inverse(length);
+        let mut irfft = RealFftInverse::new(length);
         let lhs = irfft.process(&mut spectrum).unwrap();
         let result = vec![
             3.000000000000007_f32,
@@ -631,9 +644,9 @@ mod tests {
         let v = vec![1_f32, 2., 3., 4., 5., 6.];
         let mut harray = HArray::new_from_shape_vec((3, 2), v).unwrap();
         let length = harray.0.ncols();
-        let mut rfft = RealFftForward::new_real_fft_forward(length);
+        let mut rfft = RealFftForward::new(length);
         let mut spectrum = rfft.process(&mut harray).unwrap();
-        let mut irfft = RealFftInverse::new_real_fft_inverse(length);
+        let mut irfft = RealFftInverse::new(length);
         let lhs = irfft.process(&mut spectrum).unwrap();
         let result = vec![2., 4., 6., 8., 10., 12.];
         let rhs = HArray::new_from_shape_vec((3, length), result).unwrap();
@@ -642,9 +655,9 @@ mod tests {
         let v = vec![1_f32, 2., 3., 4., 5., 6.];
         let mut harray = HArray::new_from_shape_vec((3, 2), v).unwrap();
         let length = harray.0.ncols() + 1;
-        let mut rfft = RealFftForward::new_real_fft_forward(length - 1);
+        let mut rfft = RealFftForward::new(length - 1);
         let mut spectrum = rfft.process(&mut harray).unwrap();
-        let mut irfft = RealFftInverse::new_real_fft_inverse(length);
+        let mut irfft = RealFftInverse::new(length);
         let lhs = irfft.process(&mut spectrum).unwrap();
         let result = vec![1., 4., 4., 5., 8., 8., 9., 12., 12.];
         let rhs = HArray::new_from_shape_vec((3, length), result).unwrap();
@@ -659,9 +672,9 @@ mod tests {
             .unwrap()
             .into_dynamic();
         let length = harray.0.len_of(Axis(1));
-        let mut rfft = RealFftForward::new_real_fft_forward(length);
+        let mut rfft = RealFftForward::new(length);
         let mut spectrum = rfft.process(&mut harray).unwrap();
-        let mut irfft = RealFftInverse::new_real_fft_inverse(length);
+        let mut irfft = RealFftInverse::new(length);
         let lhs = irfft.process(&mut spectrum).unwrap();
         let result = vec![2., 4., 6., 8., 10., 12.];
         let rhs = HArray::new_from_shape_vec((3, length), result)
@@ -674,9 +687,9 @@ mod tests {
             .unwrap()
             .into_dynamic();
         let length = harray.0.len_of(Axis(1)) + 1;
-        let mut rfft = RealFftForward::new_real_fft_forward(length - 1);
+        let mut rfft = RealFftForward::new(length - 1);
         let mut spectrum = rfft.process(&mut harray).unwrap();
-        let mut irfft = RealFftInverse::new_real_fft_inverse(length);
+        let mut irfft = RealFftInverse::new(length);
         let lhs = irfft.process(&mut spectrum).unwrap();
         let result = vec![1., 4., 4., 5., 8., 8., 9., 12., 12.];
         let rhs = HArray::new_from_shape_vec((3, length), result)

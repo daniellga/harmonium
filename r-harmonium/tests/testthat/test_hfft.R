@@ -8,7 +8,7 @@ test_that(
 
       dtype = HDataType$Complex64
       harray = HArray$new_from_values(x, dtype)
-      hfft = HFft$new_fft_forward(30L, dtype)
+      hfft = HFft$new_forward(30L, dtype)
       hfft$process(harray)
       expect_equal(stats::fft(x), harray$collect(), tolerance = 1.0e-06)
     }
@@ -20,7 +20,7 @@ test_that(
 
       dtype = HDataType$Complex64
       harray = HArray$new_from_values(x, dtype)
-      hfft = HFft$new_fft_inverse(30L, dtype)
+      hfft = HFft$new_inverse(30L, dtype)
       hfft$process(harray)
       expect_equal(stats::fft(x, inverse = TRUE), harray$collect(), tolerance = 1.0e-06)
     }
@@ -33,7 +33,7 @@ test_that(
 
       dtype = HDataType$Complex64
       harray = HArray$new_from_values(x, dtype)
-      hfft = HFft$new_fft_forward(as.integer(30/10), dtype)
+      hfft = HFft$new_forward(as.integer(30/10), dtype)
       hfft$process(harray)
       expect_equal(stats::mvfft(x), harray$collect(), tolerance = 1.0e-06)
     }
@@ -46,7 +46,7 @@ test_that(
 
       dtype = HDataType$Complex64
       harray = HArray$new_from_values(x, dtype)
-      hfft = HFft$new_fft_inverse(as.integer(30/10), dtype)
+      hfft = HFft$new_inverse(as.integer(30/10), dtype)
       hfft$process(harray)
       expect_equal(stats::mvfft(x, inverse = TRUE), harray$collect(), tolerance = 1.0e-06)
     }
@@ -55,7 +55,7 @@ test_that(
       x = as.array(as.double(1:6))
       dtype = HDataType$Float64
       harray = HArray$new_from_values(x, dtype)
-      hfft = HRealFft$new_real_fft(as.integer(6), dtype)
+      hfft = HFft$new_real_forward(as.integer(6), dtype)
       hfft$process(harray)
       result = as.array(c(21+0i, -3+5.196152i, -3+1.732051i, -3+0i))
       expect_equal(harray$collect(), result, tolerance = 1.0e-06)
@@ -66,7 +66,7 @@ test_that(
       x = matrix(x, ncol = 3)
       dtype = HDataType$Float64
       harray = HArray$new_from_values(x, dtype)
-      hfft = HRealFft$new_real_fft(as.integer(4), dtype)
+      hfft = HFft$new_real_forward(as.integer(4), dtype)
       hfft$process(harray)
       result = matrix(c(10+0i, -2+2i, -2+0i, 26+0i, -2+2i, -2+0i, 42+0i, -2+2i, -2+0i), ncol = 3)
       expect_equal(harray$collect(), result, tolerance = 1.0e-06)

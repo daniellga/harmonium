@@ -10,14 +10,14 @@ members = [
 ]
 
 [workspace.dependencies]
-num-traits = "0.2"
-rustfft = "6.2"
-realfft = "3.3"
-rubato = "0.15.0"
-ndarray = "0.15.6"
+num-traits = { version = "0.2", default-features = false }
+rustfft = { version = "6.2", default-features = false, features = ["avx", "sse", "neon"] }
+realfft = { version = "3.3", default-features = false } 
+rubato = { version = "0.15.0", default-features = false, features = ["fft_resampler"] }
+ndarray = { version = "0.16", default-features = false }
 symphonia = { version = "0.5.4", default-features = false }
 rodio = { version = "0.19.0", default-features = false }
-num-complex = { version = "0.4" }
+num-complex = { version = "0.4", default-features = false } 
 
 harmonium-core = { path = "harmonium-core", default-features = false }
 harmonium-io = { path = "harmonium-io", default-features = false }

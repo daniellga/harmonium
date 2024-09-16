@@ -53,8 +53,3 @@ print.HInterpolationType = function(x, ...) {
 print.HFft = function(x, ...) {
   x$print()
 }
-
-print.HRealFft = function(x, ...) {
-  x$print()
-}
-

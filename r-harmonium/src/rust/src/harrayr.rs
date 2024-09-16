@@ -1,11 +1,10 @@
-use crate::{errors::HErrorR, hdatatype::HDataType};
-use harmonium_core::audioop::AudioOp;
+use crate::{haudioop::HAudioOp, hdatatype::HDataType};
 use ndarray::{IxDyn, SliceInfo, SliceInfoElem};
 use num_complex::Complex;
 use savvy::{r_println, OwnedComplexSexp, OwnedIntegerSexp, OwnedLogicalSexp, OwnedRealSexp, Sexp};
 use std::{any::Any, sync::Arc};
 
-pub trait HArrayR: Send + Sync {
+pub trait HArrayR: Send + Sync + HAudioOp {
     fn as_any(&self) -> &dyn Any;
     fn as_any_mut(&mut self) -> &mut dyn Any;
     fn len(&self) -> usize;
@@ -17,11 +16,8 @@ pub trait HArrayR: Send + Sync {
     fn dtype(&self) -> HDataType;
     fn mem_adress(&self) -> String;
     fn is_standard_layout(&self) -> savvy::Result<Sexp>;
+    fn is_unique(&mut self) -> savvy::Result<Sexp>;
     fn clone_inner(&self) -> Arc<dyn HArrayR>;
-    fn nchannels(&self) -> savvy::Result<usize>;
-    fn nframes(&self) -> savvy::Result<usize>;
-    fn db_to_amplitude(&mut self, reference: f64, power: f64) -> savvy::Result<()>;
-    fn to_mono(&mut self) -> savvy::Result<()>;
 }
 
 impl HArrayR for harmonium_core::array::HArray<f32, IxDyn> {
@@ -90,26 +86,14 @@ impl HArrayR for harmonium_core::array::HArray<f32, IxDyn> {
         logical_sexp.into()
     }
 
+    fn is_unique(&mut self) -> savvy::Result<Sexp> {
+        let is_unique = self.0.is_unique();
+        let logical_sexp: OwnedLogicalSexp = is_unique.try_into()?;
+        logical_sexp.into()
+    }
+
     fn clone_inner(&self) -> Arc<dyn HArrayR> {
         Arc::new(self.clone())
-    }
-
-    fn nchannels(&self) -> savvy::Result<usize> {
-        Ok(AudioOp::nchannels(self))
-    }
-
-    fn nframes(&self) -> savvy::Result<usize> {
-        Ok(AudioOp::nframes(self))
-    }
-
-    fn db_to_amplitude(&mut self, reference: f64, power: f64) -> savvy::Result<()> {
-        AudioOp::db_to_amplitude(self, reference as f32, power as f32);
-        Ok(())
-    }
-
-    fn to_mono(&mut self) -> savvy::Result<()> {
-        *self = AudioOp::to_mono(self).map_err(HErrorR::from)?;
-        Ok(())
     }
 }
 
@@ -178,26 +162,14 @@ impl HArrayR for harmonium_core::array::HArray<f64, IxDyn> {
         logical_sexp.into()
     }
 
+    fn is_unique(&mut self) -> savvy::Result<Sexp> {
+        let is_unique = self.0.is_unique();
+        let logical_sexp: OwnedLogicalSexp = is_unique.try_into()?;
+        logical_sexp.into()
+    }
+
     fn clone_inner(&self) -> Arc<dyn HArrayR> {
         Arc::new(self.clone())
-    }
-
-    fn nchannels(&self) -> savvy::Result<usize> {
-        Ok(AudioOp::nchannels(self))
-    }
-
-    fn nframes(&self) -> savvy::Result<usize> {
-        Ok(AudioOp::nframes(self))
-    }
-
-    fn db_to_amplitude(&mut self, reference: f64, power: f64) -> savvy::Result<()> {
-        AudioOp::db_to_amplitude(self, reference, power);
-        Ok(())
-    }
-
-    fn to_mono(&mut self) -> savvy::Result<()> {
-        *self = AudioOp::to_mono(self).map_err(HErrorR::from)?;
-        Ok(())
     }
 }
 
@@ -266,24 +238,14 @@ impl HArrayR for harmonium_core::array::HArray<Complex<f32>, IxDyn> {
         logical_sexp.into()
     }
 
+    fn is_unique(&mut self) -> savvy::Result<Sexp> {
+        let is_unique = self.0.is_unique();
+        let logical_sexp: OwnedLogicalSexp = is_unique.try_into()?;
+        logical_sexp.into()
+    }
+
     fn clone_inner(&self) -> Arc<dyn HArrayR> {
         Arc::new(self.clone())
-    }
-
-    fn nchannels(&self) -> savvy::Result<usize> {
-        Err("Operation only allowed for float HArrays.".into())
-    }
-
-    fn nframes(&self) -> savvy::Result<usize> {
-        Err("Operation only allowed for float HArrays.".into())
-    }
-
-    fn db_to_amplitude(&mut self, _: f64, _: f64) -> savvy::Result<()> {
-        Err("Operation only allowed for float HArrays.".into())
-    }
-
-    fn to_mono(&mut self) -> savvy::Result<()> {
-        Err("Operation only allowed for float HArrays.".into())
     }
 }
 
@@ -352,23 +314,13 @@ impl HArrayR for harmonium_core::array::HArray<Complex<f64>, IxDyn> {
         logical_sexp.into()
     }
 
+    fn is_unique(&mut self) -> savvy::Result<Sexp> {
+        let is_unique = self.0.is_unique();
+        let logical_sexp: OwnedLogicalSexp = is_unique.try_into()?;
+        logical_sexp.into()
+    }
+
     fn clone_inner(&self) -> Arc<dyn HArrayR> {
         Arc::new(self.clone())
-    }
-
-    fn nchannels(&self) -> savvy::Result<usize> {
-        Err("Operation only allowed for float HArrays.".into())
-    }
-
-    fn nframes(&self) -> savvy::Result<usize> {
-        Err("Operation only allowed for float HArrays.".into())
-    }
-
-    fn db_to_amplitude(&mut self, _: f64, _: f64) -> savvy::Result<()> {
-        Err("Operation only allowed for float HArrays.".into())
-    }
-
-    fn to_mono(&mut self) -> savvy::Result<()> {
-        Err("Operation only allowed for float HArrays.".into())
     }
 }

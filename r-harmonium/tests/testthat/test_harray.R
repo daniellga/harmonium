@@ -10,7 +10,7 @@ test_that(
       expect_equal(harray$ndim(), length(dim(arr)))
       expect_true(harray$eq(harray))
       expect_false(harray$ne(harray))
-      expect_false(harray$is_shared())
+      expect_true(harray$is_unique())
       expect_equal(harray$collect(), arr)
     }
 

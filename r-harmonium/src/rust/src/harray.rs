@@ -489,41 +489,6 @@ impl HArray {
     }
 
     /// HArray
-    /// ## is_shared
-    ///
-    /// `is_shared() -> bool`
-    ///
-    /// Checks if the object is shared.
-    ///
-    /// Since `HArray` has a COW ([clone-on-write](https://doc.rust-lang.org/std/borrow/enum.Cow.html)) behaviour, this function is useful to check if a new
-    /// object will be created or if the change will be done in-place.
-    ///
-    /// #### Returns
-    ///
-    /// A bool.
-    ///
-    /// #### Examples
-    ///
-    /// ```r
-    /// library(harmonium)
-    /// arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
-    /// dtype = HDataType$Float32
-    /// harray1 = HArray$new_from_values(arr, dtype)
-    /// harray1$is_shared() # FALSE.
-    ///
-    /// harray2 = harray1$clone()
-    /// harray1$is_shared() # TRUE, HArray object shared with harray2.
-    /// ```
-    ///
-    /// _________
-    ///
-    fn is_shared(&self) -> savvy::Result<Sexp> {
-        let bool = Arc::weak_count(&self.0) + Arc::strong_count(&self.0) != 1;
-        let logical_sexp: OwnedLogicalSexp = bool.try_into()?;
-        logical_sexp.into()
-    }
-
-    /// HArray
     /// ## mem_adress
     ///
     /// `mem_adress() -> string`
@@ -584,6 +549,41 @@ impl HArray {
     ///
     pub fn is_standard_layout(&self) -> savvy::Result<Sexp> {
         self.0.is_standard_layout()
+    }
+
+    /// HArray
+    /// ## is_unique
+    ///
+    /// `is_unique() -> bool`
+    ///
+    /// Checks if the object is shared.
+    ///
+    /// Since `HArray` has a COW ([clone-on-write](https://doc.rust-lang.org/std/borrow/enum.Cow.html)) behaviour, this function is useful to check if a new
+    /// object will be created or if the change will be done in-place.
+    ///
+    /// #### Returns
+    ///
+    /// A bool.
+    ///
+    /// #### Examples
+    ///
+    /// ```r
+    /// library(harmonium)
+    /// arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
+    /// dtype = HDataType$Float32
+    /// harray1 = HArray$new_from_values(arr, dtype)
+    /// harray1$is_unique() # TRUE.
+    ///
+    /// harray2 = harray1$clone()
+    /// harray1$is_unique() # FALSE, HArray object shared with harray2.
+    /// ```
+    ///
+    /// _________
+    ///
+    fn is_unique(&mut self) -> savvy::Result<Sexp> {
+        // Requires &mut to avoid race condition.
+        let inner_mut = self.get_inner_mut();
+        inner_mut.is_unique()
     }
 
     /// HArray

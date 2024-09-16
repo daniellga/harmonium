@@ -90,11 +90,6 @@ SEXP savvy_HArray_dtype__impl(SEXP self__) {
     return handle_result(res);
 }
 
-SEXP savvy_HArray_is_shared__impl(SEXP self__) {
-    SEXP res = savvy_HArray_is_shared__ffi(self__);
-    return handle_result(res);
-}
-
 SEXP savvy_HArray_mem_adress__impl(SEXP self__) {
     SEXP res = savvy_HArray_mem_adress__ffi(self__);
     return handle_result(res);
@@ -105,28 +100,33 @@ SEXP savvy_HArray_is_standard_layout__impl(SEXP self__) {
     return handle_result(res);
 }
 
+SEXP savvy_HArray_is_unique__impl(SEXP self__) {
+    SEXP res = savvy_HArray_is_unique__ffi(self__);
+    return handle_result(res);
+}
+
 SEXP savvy_HArray_invalidate__impl(SEXP self__) {
     SEXP res = savvy_HArray_invalidate__ffi(self__);
     return handle_result(res);
 }
 
-SEXP savvy_HAudioOp_nchannels__impl(SEXP harray) {
-    SEXP res = savvy_HAudioOp_nchannels__ffi(harray);
+SEXP savvy_HArrayAudio_nchannels__impl(SEXP harray) {
+    SEXP res = savvy_HArrayAudio_nchannels__ffi(harray);
     return handle_result(res);
 }
 
-SEXP savvy_HAudioOp_nframes__impl(SEXP harray) {
-    SEXP res = savvy_HAudioOp_nframes__ffi(harray);
+SEXP savvy_HArrayAudio_nframes__impl(SEXP harray) {
+    SEXP res = savvy_HArrayAudio_nframes__ffi(harray);
     return handle_result(res);
 }
 
-SEXP savvy_HAudioOp_db_to_amplitude__impl(SEXP harray, SEXP reference, SEXP power) {
-    SEXP res = savvy_HAudioOp_db_to_amplitude__ffi(harray, reference, power);
+SEXP savvy_HArrayAudio_db_to_amplitude__impl(SEXP harray, SEXP reference, SEXP power) {
+    SEXP res = savvy_HArrayAudio_db_to_amplitude__ffi(harray, reference, power);
     return handle_result(res);
 }
 
-SEXP savvy_HAudioOp_to_mono__impl(SEXP harray) {
-    SEXP res = savvy_HAudioOp_to_mono__ffi(harray);
+SEXP savvy_HArrayAudio_to_mono__impl(SEXP harray) {
+    SEXP res = savvy_HArrayAudio_to_mono__ffi(harray);
     return handle_result(res);
 }
 
@@ -275,13 +275,23 @@ SEXP savvy_HDecoderStream_stream__impl(SEXP self__) {
     return handle_result(res);
 }
 
-SEXP savvy_HFft_new_fft_forward__impl(SEXP length, SEXP dtype) {
-    SEXP res = savvy_HFft_new_fft_forward__ffi(length, dtype);
+SEXP savvy_HFft_new_forward__impl(SEXP length, SEXP dtype) {
+    SEXP res = savvy_HFft_new_forward__ffi(length, dtype);
     return handle_result(res);
 }
 
-SEXP savvy_HFft_new_fft_inverse__impl(SEXP length, SEXP dtype) {
-    SEXP res = savvy_HFft_new_fft_inverse__ffi(length, dtype);
+SEXP savvy_HFft_new_inverse__impl(SEXP length, SEXP dtype) {
+    SEXP res = savvy_HFft_new_inverse__ffi(length, dtype);
+    return handle_result(res);
+}
+
+SEXP savvy_HFft_new_real_forward__impl(SEXP length, SEXP dtype) {
+    SEXP res = savvy_HFft_new_real_forward__ffi(length, dtype);
+    return handle_result(res);
+}
+
+SEXP savvy_HFft_new_real_inverse__impl(SEXP length, SEXP dtype) {
+    SEXP res = savvy_HFft_new_real_inverse__ffi(length, dtype);
     return handle_result(res);
 }
 
@@ -305,8 +315,8 @@ SEXP savvy_HFft_clone__impl(SEXP self__) {
     return handle_result(res);
 }
 
-SEXP savvy_HFft_is_shared__impl(SEXP self__) {
-    SEXP res = savvy_HFft_is_shared__ffi(self__);
+SEXP savvy_HFft_is_unique__impl(SEXP self__) {
+    SEXP res = savvy_HFft_is_unique__ffi(self__);
     return handle_result(res);
 }
 
@@ -385,8 +395,8 @@ SEXP savvy_HPolynomialDegree_ne__impl(SEXP self__, SEXP other) {
     return handle_result(res);
 }
 
-SEXP savvy_HRealFft_new_real_fft__impl(SEXP length, SEXP dtype) {
-    SEXP res = savvy_HRealFft_new_real_fft__ffi(length, dtype);
+SEXP savvy_HRealFft_new__impl(SEXP length, SEXP dtype) {
+    SEXP res = savvy_HRealFft_new__ffi(length, dtype);
     return handle_result(res);
 }
 
@@ -564,14 +574,14 @@ static const R_CallMethodDef CallEntries[] = {
     {"savvy_HArray_clone__impl", (DL_FUNC) &savvy_HArray_clone__impl, 1},
     {"savvy_HArray_collect__impl", (DL_FUNC) &savvy_HArray_collect__impl, 1},
     {"savvy_HArray_dtype__impl", (DL_FUNC) &savvy_HArray_dtype__impl, 1},
-    {"savvy_HArray_is_shared__impl", (DL_FUNC) &savvy_HArray_is_shared__impl, 1},
     {"savvy_HArray_mem_adress__impl", (DL_FUNC) &savvy_HArray_mem_adress__impl, 1},
     {"savvy_HArray_is_standard_layout__impl", (DL_FUNC) &savvy_HArray_is_standard_layout__impl, 1},
+    {"savvy_HArray_is_unique__impl", (DL_FUNC) &savvy_HArray_is_unique__impl, 1},
     {"savvy_HArray_invalidate__impl", (DL_FUNC) &savvy_HArray_invalidate__impl, 1},
-    {"savvy_HAudioOp_nchannels__impl", (DL_FUNC) &savvy_HAudioOp_nchannels__impl, 1},
-    {"savvy_HAudioOp_nframes__impl", (DL_FUNC) &savvy_HAudioOp_nframes__impl, 1},
-    {"savvy_HAudioOp_db_to_amplitude__impl", (DL_FUNC) &savvy_HAudioOp_db_to_amplitude__impl, 3},
-    {"savvy_HAudioOp_to_mono__impl", (DL_FUNC) &savvy_HAudioOp_to_mono__impl, 1},
+    {"savvy_HArrayAudio_nchannels__impl", (DL_FUNC) &savvy_HArrayAudio_nchannels__impl, 1},
+    {"savvy_HArrayAudio_nframes__impl", (DL_FUNC) &savvy_HArrayAudio_nframes__impl, 1},
+    {"savvy_HArrayAudio_db_to_amplitude__impl", (DL_FUNC) &savvy_HArrayAudio_db_to_amplitude__impl, 3},
+    {"savvy_HArrayAudio_to_mono__impl", (DL_FUNC) &savvy_HArrayAudio_to_mono__impl, 1},
     {"savvy_HAudioSink_new__impl", (DL_FUNC) &savvy_HAudioSink_new__impl, 0},
     {"savvy_HAudioSink_append_from_harray__impl", (DL_FUNC) &savvy_HAudioSink_append_from_harray__impl, 3},
     {"savvy_HAudioSink_append_from_file__impl", (DL_FUNC) &savvy_HAudioSink_append_from_file__impl, 2},
@@ -601,13 +611,15 @@ static const R_CallMethodDef CallEntries[] = {
     {"savvy_HDecodedAudio_sr__impl", (DL_FUNC) &savvy_HDecodedAudio_sr__impl, 1},
     {"savvy_HDecodedAudio_invalidate__impl", (DL_FUNC) &savvy_HDecodedAudio_invalidate__impl, 1},
     {"savvy_HDecoderStream_stream__impl", (DL_FUNC) &savvy_HDecoderStream_stream__impl, 1},
-    {"savvy_HFft_new_fft_forward__impl", (DL_FUNC) &savvy_HFft_new_fft_forward__impl, 2},
-    {"savvy_HFft_new_fft_inverse__impl", (DL_FUNC) &savvy_HFft_new_fft_inverse__impl, 2},
+    {"savvy_HFft_new_forward__impl", (DL_FUNC) &savvy_HFft_new_forward__impl, 2},
+    {"savvy_HFft_new_inverse__impl", (DL_FUNC) &savvy_HFft_new_inverse__impl, 2},
+    {"savvy_HFft_new_real_forward__impl", (DL_FUNC) &savvy_HFft_new_real_forward__impl, 2},
+    {"savvy_HFft_new_real_inverse__impl", (DL_FUNC) &savvy_HFft_new_real_inverse__impl, 2},
     {"savvy_HFft_process__impl", (DL_FUNC) &savvy_HFft_process__impl, 2},
     {"savvy_HFft_dtype__impl", (DL_FUNC) &savvy_HFft_dtype__impl, 1},
     {"savvy_HFft_print__impl", (DL_FUNC) &savvy_HFft_print__impl, 1},
     {"savvy_HFft_clone__impl", (DL_FUNC) &savvy_HFft_clone__impl, 1},
-    {"savvy_HFft_is_shared__impl", (DL_FUNC) &savvy_HFft_is_shared__impl, 1},
+    {"savvy_HFft_is_unique__impl", (DL_FUNC) &savvy_HFft_is_unique__impl, 1},
     {"savvy_HFft_invalidate__impl", (DL_FUNC) &savvy_HFft_invalidate__impl, 1},
     {"savvy_HFile_decode__impl", (DL_FUNC) &savvy_HFile_decode__impl, 2},
     {"savvy_HFile_decode_stream__impl", (DL_FUNC) &savvy_HFile_decode_stream__impl, 3},
@@ -623,7 +635,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"savvy_HPolynomialDegree_print__impl", (DL_FUNC) &savvy_HPolynomialDegree_print__impl, 1},
     {"savvy_HPolynomialDegree_eq__impl", (DL_FUNC) &savvy_HPolynomialDegree_eq__impl, 2},
     {"savvy_HPolynomialDegree_ne__impl", (DL_FUNC) &savvy_HPolynomialDegree_ne__impl, 2},
-    {"savvy_HRealFft_new_real_fft__impl", (DL_FUNC) &savvy_HRealFft_new_real_fft__impl, 2},
+    {"savvy_HRealFft_new__impl", (DL_FUNC) &savvy_HRealFft_new__impl, 2},
     {"savvy_HRealFft_process__impl", (DL_FUNC) &savvy_HRealFft_process__impl, 2},
     {"savvy_HRealFft_dtype__impl", (DL_FUNC) &savvy_HRealFft_dtype__impl, 1},
     {"savvy_HRealFft_print__impl", (DL_FUNC) &savvy_HRealFft_print__impl, 1},

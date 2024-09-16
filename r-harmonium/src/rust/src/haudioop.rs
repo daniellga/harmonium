@@ -1,20 +1,24 @@
 use crate::{
     conversions::{try_from_usize_to_int_sexp, ToScalar},
+    errors::HErrorR,
     harray::HArray,
 };
+use harmonium_core::audioop::AudioOp;
+use ndarray::IxDyn;
+use num_complex::Complex;
 use savvy::{savvy, Sexp};
 
-/// HAudioOp
+/// HArrayAudio
 /// A collection of methods that can be applied to float 1D or 2D `HArray`s which represents audio data.
 ///
 /// # Methods
 ///
 #[savvy]
-pub struct HAudioOp;
+pub struct HArrayAudio;
 
 #[savvy]
-impl HAudioOp {
-    /// HAudioOp
+impl HArrayAudio {
+    /// HArrayAudio
     /// ## nchannels
     ///
     /// `nchannels() -> integer`
@@ -34,7 +38,7 @@ impl HAudioOp {
     /// arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
     /// dtype = HDataType$Float32
     /// harray = HArray$new_from_values(arr, dtype)
-    /// HAudioOp$nchannels(harray)
+    /// HArrayAudio$nchannels(harray)
     /// ```
     ///
     /// _________
@@ -45,7 +49,7 @@ impl HAudioOp {
         integer_sexp.into()
     }
 
-    /// HAudioOp
+    /// HArrayAudio
     /// ## nframes
     ///
     /// `nframes() -> integer`
@@ -67,7 +71,7 @@ impl HAudioOp {
     /// arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
     /// dtype = HDataType$Float32
     /// harray = HArray$new_from_values(arr, dtype)
-    /// HAudioOp$nframes(harray)
+    /// HArrayAudio$nframes(harray)
     /// ```
     ///
     /// _________
@@ -78,7 +82,7 @@ impl HAudioOp {
         integer_sexp.into()
     }
 
-    /// HAudioOp
+    /// HArrayAudio
     /// ## db_to_amplitude
     ///
     /// `db_to_amplitude(harray: HArray, reference: double)`
@@ -110,7 +114,7 @@ impl HAudioOp {
     /// arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
     /// dtype = HDataType$Float32
     /// harray = HArray$new_from_values(arr, dtype)
-    /// HAudioOp$db_to_amplitude(harray, 2, 1)
+    /// HArrayAudio$db_to_amplitude(harray, 2, 1)
     /// ```
     ///
     /// _________
@@ -122,7 +126,7 @@ impl HAudioOp {
         inner_mut.db_to_amplitude(reference, power)
     }
 
-    /// HAudioOp
+    /// HArrayAudio
     /// ## to_mono
     ///
     /// `to_mono(harray: HArray)`
@@ -144,7 +148,7 @@ impl HAudioOp {
     /// arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
     /// dtype = HDataType$Float32
     /// harray = HArray$new_from_values(arr, dtype)
-    /// HAudioOp$to_mono(harray)
+    /// HArrayAudio$to_mono(harray)
     /// ```
     ///
     /// _________
@@ -152,5 +156,88 @@ impl HAudioOp {
     fn to_mono(harray: &mut HArray) -> savvy::Result<()> {
         let inner_mut = harray.get_inner_mut();
         inner_mut.to_mono()
+    }
+}
+
+pub trait HAudioOp {
+    fn nchannels(&self) -> savvy::Result<usize>;
+    fn nframes(&self) -> savvy::Result<usize>;
+    fn db_to_amplitude(&mut self, reference: f64, power: f64) -> savvy::Result<()>;
+    fn to_mono(&mut self) -> savvy::Result<()>;
+}
+
+impl HAudioOp for harmonium_core::array::HArray<f32, IxDyn> {
+    fn nchannels(&self) -> savvy::Result<usize> {
+        Ok(AudioOp::nchannels(self))
+    }
+
+    fn nframes(&self) -> savvy::Result<usize> {
+        Ok(AudioOp::nframes(self))
+    }
+
+    fn db_to_amplitude(&mut self, reference: f64, power: f64) -> savvy::Result<()> {
+        AudioOp::db_to_amplitude(self, reference as f32, power as f32);
+        Ok(())
+    }
+
+    fn to_mono(&mut self) -> savvy::Result<()> {
+        *self = AudioOp::to_mono(self).map_err(HErrorR::from)?;
+        Ok(())
+    }
+}
+
+impl HAudioOp for harmonium_core::array::HArray<f64, IxDyn> {
+    fn nchannels(&self) -> savvy::Result<usize> {
+        Ok(AudioOp::nchannels(self))
+    }
+
+    fn nframes(&self) -> savvy::Result<usize> {
+        Ok(AudioOp::nframes(self))
+    }
+
+    fn db_to_amplitude(&mut self, reference: f64, power: f64) -> savvy::Result<()> {
+        AudioOp::db_to_amplitude(self, reference, power);
+        Ok(())
+    }
+
+    fn to_mono(&mut self) -> savvy::Result<()> {
+        *self = AudioOp::to_mono(self).map_err(HErrorR::from)?;
+        Ok(())
+    }
+}
+
+impl HAudioOp for harmonium_core::array::HArray<Complex<f32>, IxDyn> {
+    fn nchannels(&self) -> savvy::Result<usize> {
+        Err("Operation only allowed for float HArrays.".into())
+    }
+
+    fn nframes(&self) -> savvy::Result<usize> {
+        Err("Operation only allowed for float HArrays.".into())
+    }
+
+    fn db_to_amplitude(&mut self, _: f64, _: f64) -> savvy::Result<()> {
+        Err("Operation only allowed for float HArrays.".into())
+    }
+
+    fn to_mono(&mut self) -> savvy::Result<()> {
+        Err("Operation only allowed for float HArrays.".into())
+    }
+}
+
+impl HAudioOp for harmonium_core::array::HArray<Complex<f64>, IxDyn> {
+    fn nchannels(&self) -> savvy::Result<usize> {
+        Err("Operation only allowed for float HArrays.".into())
+    }
+
+    fn nframes(&self) -> savvy::Result<usize> {
+        Err("Operation only allowed for float HArrays.".into())
+    }
+
+    fn db_to_amplitude(&mut self, _: f64, _: f64) -> savvy::Result<()> {
+        Err("Operation only allowed for float HArrays.".into())
+    }
+
+    fn to_mono(&mut self) -> savvy::Result<()> {
+        Err("Operation only allowed for float HArrays.".into())
     }
 }

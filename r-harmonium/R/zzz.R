@@ -6,6 +6,7 @@
   lockEnvironment(HInterpolationType, bindings = TRUE)
   lockEnvironment(HPolynomialDegree, bindings = TRUE)
   lockEnvironment(HArray, bindings = TRUE)
+  lockEnvironment(HArrayAudio, bindings = TRUE)
   lockEnvironment(HAudioSink, bindings = TRUE)
   lockEnvironment(HWindow, bindings = TRUE)
   lockEnvironment(HFile, bindings = TRUE)

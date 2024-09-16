@@ -12,16 +12,16 @@ SEXP savvy_HArray_ne__ffi(SEXP self__, SEXP other);
 SEXP savvy_HArray_clone__ffi(SEXP self__);
 SEXP savvy_HArray_collect__ffi(SEXP self__);
 SEXP savvy_HArray_dtype__ffi(SEXP self__);
-SEXP savvy_HArray_is_shared__ffi(SEXP self__);
 SEXP savvy_HArray_mem_adress__ffi(SEXP self__);
 SEXP savvy_HArray_is_standard_layout__ffi(SEXP self__);
+SEXP savvy_HArray_is_unique__ffi(SEXP self__);
 SEXP savvy_HArray_invalidate__ffi(SEXP self__);
 
-// methods and associated functions for HAudioOp
-SEXP savvy_HAudioOp_nchannels__ffi(SEXP harray);
-SEXP savvy_HAudioOp_nframes__ffi(SEXP harray);
-SEXP savvy_HAudioOp_db_to_amplitude__ffi(SEXP harray, SEXP reference, SEXP power);
-SEXP savvy_HAudioOp_to_mono__ffi(SEXP harray);
+// methods and associated functions for HArrayAudio
+SEXP savvy_HArrayAudio_nchannels__ffi(SEXP harray);
+SEXP savvy_HArrayAudio_nframes__ffi(SEXP harray);
+SEXP savvy_HArrayAudio_db_to_amplitude__ffi(SEXP harray, SEXP reference, SEXP power);
+SEXP savvy_HArrayAudio_to_mono__ffi(SEXP harray);
 
 // methods and associated functions for HAudioSink
 SEXP savvy_HAudioSink_new__ffi(void);
@@ -61,13 +61,15 @@ SEXP savvy_HDecodedAudio_invalidate__ffi(SEXP self__);
 SEXP savvy_HDecoderStream_stream__ffi(SEXP self__);
 
 // methods and associated functions for HFft
-SEXP savvy_HFft_new_fft_forward__ffi(SEXP length, SEXP dtype);
-SEXP savvy_HFft_new_fft_inverse__ffi(SEXP length, SEXP dtype);
+SEXP savvy_HFft_new_forward__ffi(SEXP length, SEXP dtype);
+SEXP savvy_HFft_new_inverse__ffi(SEXP length, SEXP dtype);
+SEXP savvy_HFft_new_real_forward__ffi(SEXP length, SEXP dtype);
+SEXP savvy_HFft_new_real_inverse__ffi(SEXP length, SEXP dtype);
 SEXP savvy_HFft_process__ffi(SEXP self__, SEXP harray);
 SEXP savvy_HFft_dtype__ffi(SEXP self__);
 SEXP savvy_HFft_print__ffi(SEXP self__);
 SEXP savvy_HFft_clone__ffi(SEXP self__);
-SEXP savvy_HFft_is_shared__ffi(SEXP self__);
+SEXP savvy_HFft_is_unique__ffi(SEXP self__);
 SEXP savvy_HFft_invalidate__ffi(SEXP self__);
 
 // methods and associated functions for HFile
@@ -93,7 +95,7 @@ SEXP savvy_HPolynomialDegree_eq__ffi(SEXP self__, SEXP other);
 SEXP savvy_HPolynomialDegree_ne__ffi(SEXP self__, SEXP other);
 
 // methods and associated functions for HRealFft
-SEXP savvy_HRealFft_new_real_fft__ffi(SEXP length, SEXP dtype);
+SEXP savvy_HRealFft_new__ffi(SEXP length, SEXP dtype);
 SEXP savvy_HRealFft_process__ffi(SEXP self__, SEXP harray);
 SEXP savvy_HRealFft_dtype__ffi(SEXP self__);
 SEXP savvy_HRealFft_print__ffi(SEXP self__);

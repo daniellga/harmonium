@@ -88,12 +88,6 @@ NULL
   }
 }
 
-`HArray_is_shared` <- function(self) {
-  function() {
-    .Call(savvy_HArray_is_shared__impl, `self`)
-  }
-}
-
 `HArray_mem_adress` <- function(self) {
   function() {
     .Call(savvy_HArray_mem_adress__impl, `self`)
@@ -103,6 +97,12 @@ NULL
 `HArray_is_standard_layout` <- function(self) {
   function() {
     .Call(savvy_HArray_is_standard_layout__impl, `self`)
+  }
+}
+
+`HArray_is_unique` <- function(self) {
+  function() {
+    .Call(savvy_HArray_is_unique__impl, `self`)
   }
 }
 
@@ -125,9 +125,9 @@ NULL
   e$`clone` <- `HArray_clone`(ptr)
   e$`collect` <- `HArray_collect`(ptr)
   e$`dtype` <- `HArray_dtype`(ptr)
-  e$`is_shared` <- `HArray_is_shared`(ptr)
   e$`mem_adress` <- `HArray_mem_adress`(ptr)
   e$`is_standard_layout` <- `HArray_is_standard_layout`(ptr)
+  e$`is_unique` <- `HArray_is_unique`(ptr)
   e$`invalidate` <- `HArray_invalidate`(ptr)
 
   class(e) <- "HArray"
@@ -175,73 +175,73 @@ class(`HArray`) <- "HArray__bundle"
 #' @export
 `[[<-.HArray__bundle` <- function(x, i, value) stop("HArray cannot be modified", call. = FALSE)
 
-### wrapper functions for HAudioOp
+### wrapper functions for HArrayAudio
 
 
-`.savvy_wrap_HAudioOp` <- function(ptr) {
+`.savvy_wrap_HArrayAudio` <- function(ptr) {
   e <- new.env(parent = emptyenv())
   e$.ptr <- ptr
 
 
-  class(e) <- "HAudioOp"
+  class(e) <- "HArrayAudio"
   e
 }
 
 #' @export
-`$<-.HAudioOp` <- function(x, name, value) stop("HAudioOp cannot be modified", call. = FALSE)
+`$<-.HArrayAudio` <- function(x, name, value) stop("HArrayAudio cannot be modified", call. = FALSE)
 
 #' @export
-`[[<-.HAudioOp` <- function(x, i, value) stop("HAudioOp cannot be modified", call. = FALSE)
+`[[<-.HArrayAudio` <- function(x, i, value) stop("HArrayAudio cannot be modified", call. = FALSE)
 
 
-#' HAudioOp
+#' HArrayAudio
 #' A collection of methods that can be applied to float 1D or 2D `HArray`s which represents audio data.
 #'
 #' # Methods
 #'
-`HAudioOp` <- new.env(parent = emptyenv())
+`HArrayAudio` <- new.env(parent = emptyenv())
 
 #' @export
-`$<-.HAudioOp` <- function(x, name, value) stop("HAudioOp cannot be modified", call. = FALSE)
+`$<-.HArrayAudio` <- function(x, name, value) stop("HArrayAudio cannot be modified", call. = FALSE)
 
 #' @export
-`[[<-.HAudioOp` <- function(x, i, value) stop("HAudioOp cannot be modified", call. = FALSE)
+`[[<-.HArrayAudio` <- function(x, i, value) stop("HArrayAudio cannot be modified", call. = FALSE)
 
-### associated functions for HAudioOp
+### associated functions for HArrayAudio
 
-`HAudioOp`$`nchannels` <- function(`harray`) {
+`HArrayAudio`$`nchannels` <- function(`harray`) {
   `harray` <- .savvy_extract_ptr(`harray`, "HArray")
-  .Call(savvy_HAudioOp_nchannels__impl, `harray`)
+  .Call(savvy_HArrayAudio_nchannels__impl, `harray`)
 }
 
-`HAudioOp`$`nframes` <- function(`harray`) {
+`HArrayAudio`$`nframes` <- function(`harray`) {
   `harray` <- .savvy_extract_ptr(`harray`, "HArray")
-  .Call(savvy_HAudioOp_nframes__impl, `harray`)
+  .Call(savvy_HArrayAudio_nframes__impl, `harray`)
 }
 
-`HAudioOp`$`db_to_amplitude` <- function(`harray`, `reference`, `power`) {
+`HArrayAudio`$`db_to_amplitude` <- function(`harray`, `reference`, `power`) {
   `harray` <- .savvy_extract_ptr(`harray`, "HArray")
-  invisible(.Call(savvy_HAudioOp_db_to_amplitude__impl, `harray`, `reference`, `power`))
+  invisible(.Call(savvy_HArrayAudio_db_to_amplitude__impl, `harray`, `reference`, `power`))
 }
 
-`HAudioOp`$`to_mono` <- function(`harray`) {
+`HArrayAudio`$`to_mono` <- function(`harray`) {
   `harray` <- .savvy_extract_ptr(`harray`, "HArray")
-  invisible(.Call(savvy_HAudioOp_to_mono__impl, `harray`))
+  invisible(.Call(savvy_HArrayAudio_to_mono__impl, `harray`))
 }
 
 
-class(`HAudioOp`) <- "HAudioOp__bundle"
+class(`HArrayAudio`) <- "HArrayAudio__bundle"
 
 #' @export
-`print.HAudioOp__bundle` <- function(x, ...) {
-  cat('HAudioOp')
+`print.HArrayAudio__bundle` <- function(x, ...) {
+  cat('HArrayAudio')
 }
 
 #' @export
-`$<-.HAudioOp__bundle` <- function(x, name, value) stop("HAudioOp cannot be modified", call. = FALSE)
+`$<-.HArrayAudio__bundle` <- function(x, name, value) stop("HArrayAudio cannot be modified", call. = FALSE)
 
 #' @export
-`[[<-.HAudioOp__bundle` <- function(x, i, value) stop("HAudioOp cannot be modified", call. = FALSE)
+`[[<-.HArrayAudio__bundle` <- function(x, i, value) stop("HArrayAudio cannot be modified", call. = FALSE)
 
 ### wrapper functions for HAudioSink
 
@@ -690,9 +690,9 @@ class(`HDecoderStream`) <- "HDecoderStream__bundle"
   }
 }
 
-`HFft_is_shared` <- function(self) {
+`HFft_is_unique` <- function(self) {
   function() {
-    .Call(savvy_HFft_is_shared__impl, `self`)
+    .Call(savvy_HFft_is_unique__impl, `self`)
   }
 }
 
@@ -709,7 +709,7 @@ class(`HDecoderStream`) <- "HDecoderStream__bundle"
   e$`dtype` <- `HFft_dtype`(ptr)
   e$`print` <- `HFft_print`(ptr)
   e$`clone` <- `HFft_clone`(ptr)
-  e$`is_shared` <- `HFft_is_shared`(ptr)
+  e$`is_unique` <- `HFft_is_unique`(ptr)
   e$`invalidate` <- `HFft_invalidate`(ptr)
 
   class(e) <- "HFft"
@@ -738,14 +738,24 @@ class(`HDecoderStream`) <- "HDecoderStream__bundle"
 
 ### associated functions for HFft
 
-`HFft`$`new_fft_forward` <- function(`length`, `dtype`) {
+`HFft`$`new_forward` <- function(`length`, `dtype`) {
   `dtype` <- .savvy_extract_ptr(`dtype`, "HDataType")
-  .savvy_wrap_HFft(.Call(savvy_HFft_new_fft_forward__impl, `length`, `dtype`))
+  .savvy_wrap_HFft(.Call(savvy_HFft_new_forward__impl, `length`, `dtype`))
 }
 
-`HFft`$`new_fft_inverse` <- function(`length`, `dtype`) {
+`HFft`$`new_inverse` <- function(`length`, `dtype`) {
   `dtype` <- .savvy_extract_ptr(`dtype`, "HDataType")
-  .savvy_wrap_HFft(.Call(savvy_HFft_new_fft_inverse__impl, `length`, `dtype`))
+  .savvy_wrap_HFft(.Call(savvy_HFft_new_inverse__impl, `length`, `dtype`))
+}
+
+`HFft`$`new_real_forward` <- function(`length`, `dtype`) {
+  `dtype` <- .savvy_extract_ptr(`dtype`, "HDataType")
+  .savvy_wrap_HRealFft(.Call(savvy_HFft_new_real_forward__impl, `length`, `dtype`))
+}
+
+`HFft`$`new_real_inverse` <- function(`length`, `dtype`) {
+  `dtype` <- .savvy_extract_ptr(`dtype`, "HDataType")
+  .savvy_wrap_HRealFft(.Call(savvy_HFft_new_real_inverse__impl, `length`, `dtype`))
 }
 
 
@@ -1249,9 +1259,9 @@ class(`HPolynomialDegree`) <- "HPolynomialDegree__bundle"
 
 ### associated functions for HRealFft
 
-`HRealFft`$`new_real_fft` <- function(`length`, `dtype`) {
+`HRealFft`$`new` <- function(`length`, `dtype`) {
   `dtype` <- .savvy_extract_ptr(`dtype`, "HDataType")
-  .savvy_wrap_HRealFft(.Call(savvy_HRealFft_new_real_fft__impl, `length`, `dtype`))
+  .savvy_wrap_HRealFft(.Call(savvy_HRealFft_new__impl, `length`, `dtype`))
 }
 
 
