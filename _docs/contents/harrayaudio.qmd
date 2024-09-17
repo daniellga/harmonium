@@ -1,5 +1,5 @@
 ---
-title: HAudioOp
+title: HArrayAudio
 ---
 
 A collection of methods that can be applied to float 1D or 2D `HArray`s which represents audio data.
@@ -8,7 +8,7 @@ A collection of methods that can be applied to float 1D or 2D `HArray`s which re
 
 ## nchannels
 
-`nchannels() -> integer`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudioop.rs#L42) </span> \
+`nchannels() -> integer`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudioop.rs#L46) </span> \
 
 Returns the number of channels.
 
@@ -25,14 +25,14 @@ library(harmonium)
 arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
 dtype = HDataType$Float32
 harray = HArray$new_from_values(arr, dtype)
-HAudioOp$nchannels(harray)
+HArrayAudio$nchannels(harray)
 ```
 
 _________
 
 ## nframes
 
-`nframes() -> integer`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudioop.rs#L75) </span> \
+`nframes() -> integer`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudioop.rs#L79) </span> \
 
 Returns the number of frames.
 
@@ -51,14 +51,14 @@ library(harmonium)
 arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
 dtype = HDataType$Float32
 harray = HArray$new_from_values(arr, dtype)
-HAudioOp$nframes(harray)
+HArrayAudio$nframes(harray)
 ```
 
 _________
 
 ## db_to_amplitude
 
-`db_to_amplitude(harray: HArray, reference: double)`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudioop.rs#L118) </span> \
+`db_to_amplitude(harray: HArray, reference: double)`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudioop.rs#L122) </span> \
 
 Converts the `HArray` input from dB to amplitude.
 
@@ -87,14 +87,14 @@ library(harmonium)
 arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
 dtype = HDataType$Float32
 harray = HArray$new_from_values(arr, dtype)
-HAudioOp$db_to_amplitude(harray, 2, 1)
+HArrayAudio$db_to_amplitude(harray, 2, 1)
 ```
 
 _________
 
 ## to_mono
 
-`to_mono(harray: HArray)`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudioop.rs#L152) </span> \
+`to_mono(harray: HArray)`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/haudioop.rs#L156) </span> \
 
 Convert to 1 channel by taking the average across channels.
 
@@ -113,7 +113,7 @@ library(harmonium)
 arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
 dtype = HDataType$Float32
 harray = HArray$new_from_values(arr, dtype)
-HAudioOp$to_mono(harray)
+HArrayAudio$to_mono(harray)
 ```
 
 _________

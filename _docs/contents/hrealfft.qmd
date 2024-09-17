@@ -2,9 +2,9 @@
 title: HRealFft
 ---
 
-## new_real_fft
+## new
 
-`new_real_fft(length: integer, dtype: HDataType) -> HRealFft`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L412) </span> \
+`new(length: integer, dtype: HDataType) -> HRealFft`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L522) </span> \
 
 Creates a new `HRealFft` instance which will be used to calculate forward FFTs.
 
@@ -40,18 +40,18 @@ library(harmonium)
 arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
 dtype = HDataType$Float32
 harray = HArray$new_from_values(arr, dtype)
-hfft = HRealFft$new_real_fft(3L, harray$dtype())
+hfft = HRealFft$new(3L, harray$dtype())
 ```
 
 _________
 
 ## process
 
-`process(harray: HArray)`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L489) </span> \
+`process(harray: HArray)`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L591) </span> \
 
 Computes the fast fourier transform of a float `HArray` or the inverse fast fourier transform of a complex `HArray`.
-For a forward FFT, transforms a real signal of length `N` to a complex-valued spectrum of length `N/2+1` (with `N/2` rounded down).
-For an inverse FFT, transforms a complex spectrum of length `N/2+1` (with `N/2` rounded down) to a real-valued
+For a real forward FFT, transforms a real signal of length `N` to a complex-valued spectrum of length `N/2+1` (with `N/2` rounded down).
+For a real inverse FFT, transforms a complex spectrum of length `N/2+1` (with `N/2` rounded down) to a real-valued
 signal of length `N`.
 
 The operation is not done in-place, although the same external pointer is used to store the new HArray.
@@ -91,10 +91,10 @@ arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
 dtype = HDataType$Float32
 harray = HArray$new_from_values(arr, dtype)
 # Forward fft
-fft = HRealFft$new_real_fft(3L, harray$dtype())
+fft = HRealFft$new(3L, harray$dtype())
 fft$process(harray)
 # Inverse fft
-ifft = HRealFft$new_real_fft(3L, HDataType$Complex32)
+ifft = HRealFft$new(3L, HDataType$Complex32)
 ifft$process(harray)
 ```
 
@@ -102,7 +102,7 @@ _________
 
 ## dtype
 
-`dtype() -> HDataType`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L518) </span> \
+`dtype() -> HDataType`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L620) </span> \
 
 Gets the `HRealFft`'s dtype.
 
@@ -117,7 +117,7 @@ library(harmonium)
 arr = array(c(1+1i,2+2i,3+3i,4+4i,5+5i,6+6i), c(3,2))
 dtype = HDataType$Complex32
 harray = HArray$new_from_values(arr, dtype)
-hfft = HRealFft$new_real_fft(3L, HDataType$Complex32)
+hfft = HRealFft$new(3L, HDataType$Complex32)
 hfft$dtype()
 ```
 
@@ -125,7 +125,7 @@ _________
 
 ## print
 
-`print()`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L547) </span> \
+`print()`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L649) </span> \
 
 Prints the `HRealFft`.
 
@@ -138,7 +138,7 @@ library(harmonium)
 arr = array(c(1+1i,2+2i,3+3i,4+4i,5+5i,6+6i), c(3,2))
 dtype = HDataType$Complex32
 harray = HArray$new_from_values(arr, dtype)
-hfft = HRealFft$new_real_fft(3L, HDataType$Complex32)
+hfft = HRealFft$new(3L, HDataType$Complex32)
 hfft$print()
 
 # or similarly:
@@ -149,7 +149,7 @@ _________
 
 ## clone
 
-`clone() -> HRealFft`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L580) </span> \
+`clone() -> HRealFft`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L682) </span> \
 
 Clones the `HRealFft`.
 
@@ -168,15 +168,15 @@ library(harmonium)
 arr = array(c(1+1i,2+2i,3+3i,4+4i,5+5i,6+6i), c(3,2))
 dtype = HDataType$Complex32
 harray = HArray$new_from_values(arr, dtype)
-hfft = HRealFft$new_real_fft(3L, HDataType$Complex32)
+hfft = HRealFft$new(3L, HDataType$Complex32)
 hfft$clone()
 ```
 
 _________
 
-## is_shared
+## is_unique
 
-`is_shared() -> bool`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L614) </span> \
+`is_unique() -> bool`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L716) </span> \
 
 Checks if the object is shared.
 
@@ -194,18 +194,18 @@ library(harmonium)
 arr = array(c(1+1i,2+2i,3+3i,4+4i,5+5i,6+6i), c(3,2))
 dtype = HDataType$Complex32
 harray = HArray$new_from_values(arr, dtype)
-hfft = HRealFft$new_real_fft(3L, HDataType$Complex32)
-hfft$is_shared() # FALSE.
+hfft = HRealFft$new(3L, HDataType$Complex32)
+hfft$is_unique() # TRUE.
 
 hfft2 = hfft$clone()
-hfft$is_shared() # TRUE, HRealFft object shared with hfft2.
+hfft$is_unique() # FALSE, HRealFft object shared with hfft2.
 ```
 
 _________
 
 ## invalidate
 
-`invalidate()`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L641) </span> \
+`invalidate()`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L744) </span> \
 
 Replaces the inner value of the external pointer, invalidating it.
 This function is useful to remove one of the shared references of the inner pointer in rust.
@@ -217,7 +217,7 @@ library(harmonium)
 arr = array(c(1+1i,2+2i,3+3i,4+4i,5+5i,6+6i), c(3,2))
 dtype = HDataType$Complex32
 harray = HArray$new_from_values(arr, dtype)
-hfft = HRealFft$new_real_fft(3L, HDataType$Complex32)
+hfft = HRealFft$new(3L, HDataType$Complex32)
 hfft$invalidate()
 ```
 

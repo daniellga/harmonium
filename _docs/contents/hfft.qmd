@@ -6,9 +6,9 @@ An `HFft` is used to create FFTs. It caches results internally, so when making m
 
 # Methods
 
-## new_fft_forward
+## new_forward
 
-`new_fft_forward(length: integer, dtype: HDataType) -> HFft`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L85) </span> \
+`new_forward(length: integer, dtype: HDataType) -> HFft`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L79) </span> \
 
 Creates a new `HFft` instance which will be used to calculate forward FFTs.
 
@@ -43,14 +43,14 @@ library(harmonium)
 arr = array(c(1+1i,2+2i,3+3i,4+4i,5+5i,6+6i), c(3,2))
 dtype = HDataType$Complex32
 harray = HArray$new_from_values(arr, dtype)
-hfft = HFft$new_fft_forward(3L, harray$dtype())
+hfft = HFft$new_forward(3L, harray$dtype())
 ```
 
 _________
 
-## new_fft_inverse
+## new_inverse
 
-`new_fft_inverse(length: integer, dtype: HDataType) -> HFft`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L141) </span> \
+`new_inverse(length: integer, dtype: HDataType) -> HFft`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L135) </span> \
 
 Creates a new `HFft` instance which will be used to calculate inverse FFTs.
 
@@ -85,17 +85,104 @@ library(harmonium)
 arr = array(c(1+1i,2+2i,3+3i,4+4i,5+5i,6+6i), c(3,2))
 dtype = HDataType$Complex32
 harray = HArray$new_from_values(arr, dtype)
-hfft = HFft$new_fft_inverse(3L, harray$dtype())
+hfft = HFft$new_inverse(3L, harray$dtype())
+```
+
+_________
+
+## new_real_forward
+
+`new_real_forward(length: integer, dtype: HDataType) -> HFft`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L191) </span> \
+
+Creates a new `HFft` instance which will be used to calculate real forward FFTs.
+
+If you plan on creating multiple FFT instances, it is recommended to reuse the same planner for all of them. This is because the planner re-uses internal data
+across FFT instances wherever possible, saving memory and reducing setup time (FFT instances created with one planner will never re-use data and buffers with
+FFT instances created by a different planner).
+
+In the constructor, the FftPlanner will detect available CPU features. If AVX, SSE, Neon, or WASM SIMD are available, it will set itself up to plan FFTs with
+the fastest available instruction set. If no SIMD instruction sets are available, the planner will seamlessly fall back to planning non-SIMD FFTs.
+
+#### Arguments
+
+- `length`
+
+An integer denoting the length of the input for forward FFTs and the length of the output for inverse FFTs. For 2D `HArray`'s, nrows must
+be provided.
+
+- `dtype`
+
+A float `HDataType` to indicate the dtype that the `HFft` will be working with.
+
+#### Returns
+
+An `HFft`.
+
+Will return an error if dtype is of complex type.
+
+#### Examples
+
+```r
+library(harmonium)
+arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
+dtype = HDataType$Float32
+harray = HArray$new_from_values(arr, dtype)
+hfft = HFft$new_real_forward(3L, harray$dtype())
+```
+
+_________
+
+## new_real_inverse
+
+`new_real_inverse(length: integer, dtype: HDataType) -> HFft`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L247) </span> \
+
+Creates a new `HFft` instance which will be used to calculate real inverse FFTs.
+
+If you plan on creating multiple FFT instances, it is recommended to reuse the same planner for all of them. This is because the planner re-uses internal data
+across FFT instances wherever possible, saving memory and reducing setup time (FFT instances created with one planner will never re-use data and buffers with
+FFT instances created by a different planner).
+
+In the constructor, the FftPlanner will detect available CPU features. If AVX, SSE, Neon, or WASM SIMD are available, it will set itself up to plan FFTs with
+the fastest available instruction set. If no SIMD instruction sets are available, the planner will seamlessly fall back to planning non-SIMD FFTs.
+
+#### Arguments
+
+- `length`
+
+An integer denoting the length of the input for forward FFTs and the length of the output for inverse FFTs. For 2D `HArray`'s, nrows must
+be provided.
+
+- `dtype`
+
+A complex `HDataType` to indicate the dtype that the `HFft` will be working with.
+
+#### Returns
+
+An `HFft`.
+
+Will return an error if dtype is of float type.
+
+#### Examples
+
+```r
+library(harmonium)
+arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
+dtype = HDataType$Float32
+harray = HArray$new_from_values(arr, dtype)
+hfft = HFft$new_real_inverse(3L, harray$dtype())
 ```
 
 _________
 
 ## process
 
-`process(harray: HArray)`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L209) </span> \
+`process(harray: HArray)`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L318) </span> \
 
 Computes the fast fourier transform of a complex `HArray`.
 The FFT computed may be forward or inverse, depending on the `HFFT` created.
+For a real forward FFT, transforms a real signal of length `N` to a complex-valued spectrum of length `N/2+1` (with `N/2` rounded down).
+For a real inverse FFT, transforms a complex spectrum of length `N/2+1` (with `N/2` rounded down) to a real-valued
+signal of length `N`.
 
 The operation is done in-place.
 
@@ -131,14 +218,14 @@ library(harmonium)
 arr = array(c(1+1i,2+2i,3+3i,4+4i,5+5i,6+6i), c(3,2))
 dtype = HDataType$Complex32
 harray = HArray$new_from_values(arr, dtype)
-hfft = HFft$new_fft_forward(3L, harray$dtype())
+hfft = HFft$new_forward(3L, harray$dtype())
 hfft$process(harray)
 
 # Inverse FFT.
 arr = array(c(1+1i,2+2i,3+3i,4+4i,5+5i,6+6i), c(3,2))
 dtype = HDataType$Complex32
 harray = HArray$new_from_values(arr, dtype)
-hfft = HFft$new_fft_inverse(3L, harray$dtype())
+hfft = HFft$new_inverse(3L, harray$dtype())
 hfft$process(harray)
 ```
 
@@ -146,7 +233,7 @@ _________
 
 ## dtype
 
-`dtype() -> HDataType`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L238) </span> \
+`dtype() -> HDataType`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L347) </span> \
 
 Gets the `HFft`'s dtype.
 
@@ -161,7 +248,7 @@ library(harmonium)
 arr = array(c(1+1i,2+2i,3+3i,4+4i,5+5i,6+6i), c(3,2))
 dtype = HDataType$Complex32
 harray = HArray$new_from_values(arr, dtype)
-hfft = HFft$new_fft_forward(3L, harray$dtype())
+hfft = HFft$new_forward(3L, harray$dtype())
 hfft$dtype()
 ```
 
@@ -169,7 +256,7 @@ _________
 
 ## print
 
-`print()`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L267) </span> \
+`print()`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L376) </span> \
 
 Prints the `HFft`.
 
@@ -182,7 +269,7 @@ library(harmonium)
 arr = array(c(1+1i,2+2i,3+3i,4+4i,5+5i,6+6i), c(3,2))
 dtype = HDataType$Complex32
 harray = HArray$new_from_values(arr, dtype)
-hfft = HFft$new_fft_forward(3L, harray$dtype())
+hfft = HFft$new_forward(3L, harray$dtype())
 hfft$print()
 
 # or similarly:
@@ -193,7 +280,7 @@ _________
 
 ## clone
 
-`clone() -> HFft`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L300) </span> \
+`clone() -> HFft`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L409) </span> \
 
 Clones the `HFft`.
 
@@ -212,17 +299,17 @@ library(harmonium)
 arr = array(c(1+1i,2+2i,3+3i,4+4i,5+5i,6+6i), c(3,2))
 dtype = HDataType$Complex32
 harray = HArray$new_from_values(arr, dtype)
-hfft = HFft$new_fft_forward(3L, harray$dtype())
+hfft = HFft$new_forward(3L, harray$dtype())
 hfft$clone()
 ```
 
 _________
 
-## is_shared
+## is_unique
 
-`is_shared() -> bool`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L334) </span> \
+`is_unique() -> bool`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L443) </span> \
 
-Checks if the object is shared.
+Checks if the object is unique.
 
 Since `HFft` has a COW ([clone-on-write](https://doc.rust-lang.org/std/borrow/enum.Cow.html)) behaviour, this function is useful to check if a new
 object will be created or if the change will be done in-place.
@@ -238,18 +325,18 @@ library(harmonium)
 arr = array(c(1+1i,2+2i,3+3i,4+4i,5+5i,6+6i), c(3,2))
 dtype = HDataType$Complex32
 harray = HArray$new_from_values(arr, dtype)
-hfft = HFft$new_fft_forward(3L, harray$dtype())
-hfft$is_shared() # FALSE.
+hfft = HFft$new_forward(3L, harray$dtype())
+hfft$is_unique() # TRUE.
 
 hfft2 = hfft$clone()
-hfft$is_shared() # TRUE, hfft shares the same inner object with hfft2.
+hfft$is_unique() # FALSE, hfft shares the same inner object with hfft2.
 ```
 
 _________
 
 ## invalidate
 
-`invalidate()`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L361) </span> \
+`invalidate()`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L471) </span> \
 
 Replaces the inner value of the external pointer, invalidating it.
 This function is useful to remove one of the shared references of the inner pointer in rust.
@@ -261,7 +348,7 @@ library(harmonium)
 arr = array(c(1+1i,2+2i,3+3i,4+4i,5+5i,6+6i), c(3,2))
 dtype = HDataType$Complex32
 harray = HArray$new_from_values(arr, dtype)
-hfft = HFft$new_fft_forward(3L, harray$dtype())
+hfft = HFft$new_forward(3L, harray$dtype())
 hfft$invalidate()
 ```
 

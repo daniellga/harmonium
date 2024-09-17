@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.56">
+<meta name="generator" content="quarto-1.5.57">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -159,8 +159,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../contents/haudioop.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">HAudioOp</span></a>
+  <a href="../contents/harrayaudio.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">HArrayAudio</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -278,9 +278,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#clone" id="toc-clone" class="nav-link" data-scroll-target="#clone">clone</a></li>
   <li><a href="#collect" id="toc-collect" class="nav-link" data-scroll-target="#collect">collect</a></li>
   <li><a href="#dtype" id="toc-dtype" class="nav-link" data-scroll-target="#dtype">dtype</a></li>
-  <li><a href="#is_shared" id="toc-is_shared" class="nav-link" data-scroll-target="#is_shared">is_shared</a></li>
   <li><a href="#mem_adress" id="toc-mem_adress" class="nav-link" data-scroll-target="#mem_adress">mem_adress</a></li>
   <li><a href="#is_standard_layout" id="toc-is_standard_layout" class="nav-link" data-scroll-target="#is_standard_layout">is_standard_layout</a></li>
+  <li><a href="#is_unique" id="toc-is_unique" class="nav-link" data-scroll-target="#is_unique">is_unique</a></li>
   <li><a href="#invalidate" id="toc-invalidate" class="nav-link" data-scroll-target="#invalidate">invalidate</a></li>
   </ul></li>
   </ul>
@@ -581,38 +581,36 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <hr>
 </section>
 </section>
-<section id="is_shared" class="level2">
-<h2 class="anchored" data-anchor-id="is_shared">is_shared</h2>
-<p><code>is_shared() -&gt; bool</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L520">source</a> </span><br>
+<section id="mem_adress" class="level2">
+<h2 class="anchored" data-anchor-id="mem_adress">mem_adress</h2>
+<p><code>mem_adress() -&gt; string</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L516">source</a> </span><br>
 </p>
-<p>Checks if the object is shared.</p>
-<p>Since <code>HArray</code> has a COW (<a href="https://doc.rust-lang.org/std/borrow/enum.Cow.html">clone-on-write</a>) behaviour, this function is useful to check if a new object will be created or if the change will be done in-place.</p>
+<p>The memory adress of the first element of the inner array.</p>
+<p>This is useful to check if different objects share the same underlying data.</p>
 <section id="returns-10" class="level4">
 <h4 class="anchored" data-anchor-id="returns-10">Returns</h4>
-<p>A bool.</p>
+<p>A string.</p>
 </section>
 <section id="examples-11" class="level4">
 <h4 class="anchored" data-anchor-id="examples-11">Examples</h4>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>arr <span class="ot">=</span> <span class="fu">array</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>,<span class="dv">9</span>,<span class="dv">10</span>,<span class="dv">11</span>,<span class="dv">12</span>), <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">4</span>))</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>dtype <span class="ot">=</span> HDataType<span class="sc">$</span>Float32</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>harray1 <span class="ot">=</span> HArray<span class="sc">$</span><span class="fu">new_from_values</span>(arr, dtype)</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>harray1<span class="sc">$</span><span class="fu">is_shared</span>() <span class="co"># FALSE.</span></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>harray2 <span class="ot">=</span> harray1<span class="sc">$</span><span class="fu">clone</span>()</span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>harray1<span class="sc">$</span><span class="fu">is_shared</span>() <span class="co"># TRUE, HArray object shared with harray2.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>harray <span class="ot">=</span> HArray<span class="sc">$</span><span class="fu">new_from_values</span>(arr, dtype)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>harray<span class="sc">$</span><span class="fu">mem_adress</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 </section>
 </section>
-<section id="mem_adress" class="level2">
-<h2 class="anchored" data-anchor-id="mem_adress">mem_adress</h2>
-<p><code>mem_adress() -&gt; string</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L551">source</a> </span><br>
+<section id="is_standard_layout" class="level2">
+<h2 class="anchored" data-anchor-id="is_standard_layout">is_standard_layout</h2>
+<p><code>is_standard_layout() -&gt; bool</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L550">source</a> </span><br>
 </p>
-<p>The memory adress of the first element of the inner array.</p>
-<p>This is useful to check if different objects share the same underlying data.</p>
+<p>Returns true if the array data is laid out in contiguous “C order” in memory (where the last index is the most rapidly varying).</p>
+<p>Returns false otherwise, i.e.&nbsp;the array is possibly not contiguous in memory, it has custom strides, etc.</p>
+<p>This function is useful mainly to check if an <code>HArray</code> is contiguous after some operation as, for example, <code>slice()</code>.</p>
 <section id="returns-11" class="level4">
 <h4 class="anchored" data-anchor-id="returns-11">Returns</h4>
-<p>A string.</p>
+<p>A bool.</p>
 </section>
 <section id="examples-12" class="level4">
 <h4 class="anchored" data-anchor-id="examples-12">Examples</h4>
@@ -620,17 +618,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>arr <span class="ot">=</span> <span class="fu">array</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>,<span class="dv">9</span>,<span class="dv">10</span>,<span class="dv">11</span>,<span class="dv">12</span>), <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">4</span>))</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>dtype <span class="ot">=</span> HDataType<span class="sc">$</span>Float32</span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>harray <span class="ot">=</span> HArray<span class="sc">$</span><span class="fu">new_from_values</span>(arr, dtype)</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>harray<span class="sc">$</span><span class="fu">mem_adress</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>harray<span class="sc">$</span><span class="fu">is_standard_layout</span>() <span class="co"># TRUE, contiguous data</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>sliced_harray <span class="ot">=</span> harray<span class="sc">$</span><span class="fu">slice</span>(<span class="fu">list</span>(<span class="fu">c</span>(<span class="dv">0</span>L, <span class="dv">2</span>L, <span class="dv">1</span>L), <span class="fu">c</span>(<span class="dv">1</span>L, <span class="dv">3</span>L, <span class="dv">1</span>L)))</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>sliced_harray<span class="sc">$</span><span class="fu">is_standard_layout</span>() <span class="co"># FALSE, non contiguous data</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 </section>
 </section>
-<section id="is_standard_layout" class="level2">
-<h2 class="anchored" data-anchor-id="is_standard_layout">is_standard_layout</h2>
-<p><code>is_standard_layout() -&gt; bool</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L585">source</a> </span><br>
+<section id="is_unique" class="level2">
+<h2 class="anchored" data-anchor-id="is_unique">is_unique</h2>
+<p><code>is_unique() -&gt; bool</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/harray.rs#L583">source</a> </span><br>
 </p>
-<p>Returns true if the array data is laid out in contiguous “C order” in memory (where the last index is the most rapidly varying).</p>
-<p>Returns false otherwise, i.e.&nbsp;the array is possibly not contiguous in memory, it has custom strides, etc.</p>
-<p>This function is useful mainly to check if an <code>HArray</code> is contiguous after some operation as, for example, <code>slice()</code>.</p>
+<p>Checks if the object is shared.</p>
+<p>Since <code>HArray</code> has a COW (<a href="https://doc.rust-lang.org/std/borrow/enum.Cow.html">clone-on-write</a>) behaviour, this function is useful to check if a new object will be created or if the change will be done in-place.</p>
 <section id="returns-12" class="level4">
 <h4 class="anchored" data-anchor-id="returns-12">Returns</h4>
 <p>A bool.</p>
@@ -640,10 +639,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>arr <span class="ot">=</span> <span class="fu">array</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>,<span class="dv">9</span>,<span class="dv">10</span>,<span class="dv">11</span>,<span class="dv">12</span>), <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">4</span>))</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>dtype <span class="ot">=</span> HDataType<span class="sc">$</span>Float32</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>harray <span class="ot">=</span> HArray<span class="sc">$</span><span class="fu">new_from_values</span>(arr, dtype)</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>harray<span class="sc">$</span><span class="fu">is_standard_layout</span>() <span class="co"># TRUE, contiguous data</span></span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>sliced_harray <span class="ot">=</span> harray<span class="sc">$</span><span class="fu">slice</span>(<span class="fu">list</span>(<span class="fu">c</span>(<span class="dv">0</span>L, <span class="dv">2</span>L, <span class="dv">1</span>L), <span class="fu">c</span>(<span class="dv">1</span>L, <span class="dv">3</span>L, <span class="dv">1</span>L)))</span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>sliced_harray<span class="sc">$</span><span class="fu">is_standard_layout</span>() <span class="co"># FALSE, non contiguous data</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>harray1 <span class="ot">=</span> HArray<span class="sc">$</span><span class="fu">new_from_values</span>(arr, dtype)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>harray1<span class="sc">$</span><span class="fu">is_unique</span>() <span class="co"># TRUE.</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>harray2 <span class="ot">=</span> harray1<span class="sc">$</span><span class="fu">clone</span>()</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>harray1<span class="sc">$</span><span class="fu">is_unique</span>() <span class="co"># FALSE, HArray object shared with harray2.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 </section>
 </section>
