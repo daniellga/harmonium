@@ -420,8 +420,8 @@ SEXP savvy_HRealFft_clone__impl(SEXP self__) {
     return handle_result(res);
 }
 
-SEXP savvy_HRealFft_is_shared__impl(SEXP self__) {
-    SEXP res = savvy_HRealFft_is_shared__ffi(self__);
+SEXP savvy_HRealFft_is_unique__impl(SEXP self__) {
+    SEXP res = savvy_HRealFft_is_unique__ffi(self__);
     return handle_result(res);
 }
 
@@ -640,7 +640,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"savvy_HRealFft_dtype__impl", (DL_FUNC) &savvy_HRealFft_dtype__impl, 1},
     {"savvy_HRealFft_print__impl", (DL_FUNC) &savvy_HRealFft_print__impl, 1},
     {"savvy_HRealFft_clone__impl", (DL_FUNC) &savvy_HRealFft_clone__impl, 1},
-    {"savvy_HRealFft_is_shared__impl", (DL_FUNC) &savvy_HRealFft_is_shared__impl, 1},
+    {"savvy_HRealFft_is_unique__impl", (DL_FUNC) &savvy_HRealFft_is_unique__impl, 1},
     {"savvy_HRealFft_invalidate__impl", (DL_FUNC) &savvy_HRealFft_invalidate__impl, 1},
     {"savvy_HResampler_new_fft__impl", (DL_FUNC) &savvy_HResampler_new_fft__impl, 7},
     {"savvy_HResampler_new_sinc__impl", (DL_FUNC) &savvy_HResampler_new_sinc__impl, 7},

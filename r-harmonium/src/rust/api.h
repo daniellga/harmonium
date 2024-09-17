@@ -100,7 +100,7 @@ SEXP savvy_HRealFft_process__ffi(SEXP self__, SEXP harray);
 SEXP savvy_HRealFft_dtype__ffi(SEXP self__);
 SEXP savvy_HRealFft_print__ffi(SEXP self__);
 SEXP savvy_HRealFft_clone__ffi(SEXP self__);
-SEXP savvy_HRealFft_is_shared__ffi(SEXP self__);
+SEXP savvy_HRealFft_is_unique__ffi(SEXP self__);
 SEXP savvy_HRealFft_invalidate__ffi(SEXP self__);
 
 // methods and associated functions for HResampler

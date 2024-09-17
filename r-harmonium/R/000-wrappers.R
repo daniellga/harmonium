@@ -1215,9 +1215,9 @@ class(`HPolynomialDegree`) <- "HPolynomialDegree__bundle"
   }
 }
 
-`HRealFft_is_shared` <- function(self) {
+`HRealFft_is_unique` <- function(self) {
   function() {
-    .Call(savvy_HRealFft_is_shared__impl, `self`)
+    .Call(savvy_HRealFft_is_unique__impl, `self`)
   }
 }
 
@@ -1234,7 +1234,7 @@ class(`HPolynomialDegree`) <- "HPolynomialDegree__bundle"
   e$`dtype` <- `HRealFft_dtype`(ptr)
   e$`print` <- `HRealFft_print`(ptr)
   e$`clone` <- `HRealFft_clone`(ptr)
-  e$`is_shared` <- `HRealFft_is_shared`(ptr)
+  e$`is_unique` <- `HRealFft_is_unique`(ptr)
   e$`invalidate` <- `HRealFft_invalidate`(ptr)
 
   class(e) <- "HRealFft"
