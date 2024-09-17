@@ -684,9 +684,9 @@ impl HRealFft {
     }
 
     /// HRealFft
-    /// ## is_shared
+    /// ## is_unique
     ///
-    /// `is_shared() -> bool`
+    /// `is_unique() -> bool`
     ///
     /// Checks if the object is shared.
     ///
@@ -705,16 +705,17 @@ impl HRealFft {
     /// dtype = HDataType$Complex32
     /// harray = HArray$new_from_values(arr, dtype)
     /// hfft = HRealFft$new(3L, HDataType$Complex32)
-    /// hfft$is_shared() # FALSE.
+    /// hfft$is_unique() # TRUE.
     ///
     /// hfft2 = hfft$clone()
-    /// hfft$is_shared() # TRUE, HRealFft object shared with hfft2.
+    /// hfft$is_unique() # FALSE, HRealFft object shared with hfft2.
     /// ```
     ///
     /// _________
     ///
-    fn is_shared(&self) -> savvy::Result<Sexp> {
-        let bool = Arc::weak_count(&self.0) + Arc::strong_count(&self.0) != 1;
+    fn is_unique(&mut self) -> savvy::Result<Sexp> {
+        // Requires &mut to avoid race condition.
+        let bool = Arc::strong_count(&self.0) == 1;
         let logical_sexp: OwnedLogicalSexp = bool.try_into()?;
         logical_sexp.into()
     }
