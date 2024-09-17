@@ -17,16 +17,16 @@ panic = "unwind" # otherwise savvy crashes R when panic.
 # prevents package from thinking it's in the workspace.
 
 [dependencies]
-harmonium-core = { path = "../../../harmonium-core" }
-harmonium-io = { path = "../../../harmonium-io" }
-harmonium-resample = { path = "../../../harmonium-resample" }
-harmonium-fft = { path = "../../../harmonium-fft" }
-harmonium-window = { path = "../../../harmonium-window" }
-#harmonium-core = { git = "https://github.com/daniellga/harmonium.git" }
-#harmonium-io = { git = "https://github.com/daniellga/harmonium.git", features = ["all", "opt-simd"] }
-#harmonium-resample = { git = "https://github.com/daniellga/harmonium.git" }
-#harmonium-fft = { git = "https://github.com/daniellga/harmonium.git" }
-#harmonium-window = { git = "https://github.com/daniellga/harmonium.git" }
+#harmonium-core = { path = "../../../harmonium-core" }
+#harmonium-io = { path = "../../../harmonium-io" }
+#harmonium-resample = { path = "../../../harmonium-resample" }
+#harmonium-fft = { path = "../../../harmonium-fft" }
+#harmonium-window = { path = "../../../harmonium-window" }
+harmonium-core = { git = "https://github.com/daniellga/harmonium.git" }
+harmonium-io = { git = "https://github.com/daniellga/harmonium.git", features = ["all", "opt-simd"] }
+harmonium-resample = { git = "https://github.com/daniellga/harmonium.git" }
+harmonium-fft = { git = "https://github.com/daniellga/harmonium.git" }
+harmonium-window = { git = "https://github.com/daniellga/harmonium.git" }
 rubato = { version = "0.15.0", default-features = false, features = ["fft_resampler"] }
 rustfft = { version = "6.2", default-features = false, features = ["avx", "sse", "neon"] }
 realfft = { version = "3.3", default-features = false } 
