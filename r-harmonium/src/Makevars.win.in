@@ -1,4 +1,4 @@
-TARGET = x86_64-pc-windows-gnu
+TARGET = @TARGET@
 
 TARGET_DIR = ./rust/target
 LIBDIR = $(TARGET_DIR)/$(TARGET)/release
