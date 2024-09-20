@@ -43,7 +43,7 @@ _________
 
 ## new_real_forward
 
-`new_real_forward(length: integer, dtype: HDataType) -> HStft`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hstft.rs#L118) </span> \
+`new_real_forward(length: integer, dtype: HDataType) -> HStft`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hstft.rs#L116) </span> \
 
 Creates a new `HStft` instance which will be used to calculate real forward STFTs.
 
@@ -70,17 +70,15 @@ Will return an error if dtype is of complex type.
 
 ```r
 library(harmonium)
-arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
 dtype = HDataType$Float32
-harray = HArray$new_from_values(arr, dtype)
-hstft = HStft$new_real_forward(3L, harray$dtype())
+hstft = HStft$new_real_forward(3L, dtype)
 ```
 
 _________
 
 ## process
 
-`process(harray: HArray, hop_length: Integer, window_length: Integer, window: Optional<HArray>)`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hstft.rs#L191) </span> \
+`process(harray: HArray, hop_length: Integer, window_length: Integer, window: Optional<HArray>)`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hstft.rs#L189) </span> \
 
 Computes the STFT of a complex `HArray`.
 The STFT computed may be forward or inverse, depending on the `HStft` created.
@@ -139,7 +137,7 @@ _________
 
 ## dtype
 
-`dtype() -> HDataType`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hstft.rs#L236) </span> \
+`dtype() -> HDataType`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hstft.rs#L234) </span> \
 
 Gets the `HStft`'s dtype.
 
@@ -160,7 +158,7 @@ _________
 
 ## print
 
-`print()`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hstft.rs#L263) </span> \
+`print()`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hstft.rs#L261) </span> \
 
 Prints the `HStft`.
 
@@ -182,7 +180,7 @@ _________
 
 ## clone
 
-`clone() -> HStft`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hstft.rs#L294) </span> \
+`clone() -> HStft`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hstft.rs#L292) </span> \
 
 Clones the `HStft`.
 
@@ -207,7 +205,7 @@ _________
 
 ## is_unique
 
-`is_unique() -> bool`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hstft.rs#L326) </span> \
+`is_unique() -> bool`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hstft.rs#L324) </span> \
 
 Checks if the object is unique.
 
@@ -234,7 +232,7 @@ _________
 
 ## invalidate
 
-`invalidate()`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hstft.rs#L352) </span> \
+`invalidate()`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hstft.rs#L350) </span> \
 
 Replaces the inner value of the external pointer, invalidating it.
 This function is useful to remove one of the shared references of the inner pointer in rust.
