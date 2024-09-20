@@ -1,8 +1,8 @@
+use crate::fft::{make_mut_slice, Fft, ProcessFft, RealFftForward};
 use harmonium_core::{
     array::HArray,
     errors::{HError, HResult},
 };
-use harmonium_fft::fft::{make_mut_slice, Fft, ProcessFft, RealFftForward};
 use ndarray::{s, ArcArray, ArcArray2, Axis, Dimension, Ix1, Ix2, Ix3, IxDyn};
 use rustfft::{
     num_complex::{Complex, ComplexFloat},
@@ -11,8 +11,10 @@ use rustfft::{
 };
 use std::{num::NonZero, sync::Arc};
 
+#[derive(Clone)]
 pub struct Stft<T>(Fft<T>);
 
+#[derive(Clone)]
 pub struct RealStftForward<T> {
     inner: RealFftForward<T>,
     scratch_real_buffer: Arc<[T]>,
@@ -24,7 +26,7 @@ impl<T> Stft<T>
 where
     T: FftNum + Float + FloatConst + ConstZero,
 {
-    pub fn new_stft_forward(length: usize) -> Self {
+    pub fn new_forward(length: usize) -> Self {
         Stft(Fft::new_forward(length))
     }
 
@@ -35,12 +37,12 @@ where
 
 #[allow(clippy::len_without_is_empty)]
 // A `RealStftForward` is used to process real stft. It caches results internally, so when making more than one stft it is advisable to reuse the same
-// `RealdStftForward` instance.
+// `RealStftForward` instance.
 impl<T> RealStftForward<T>
 where
     T: FftNum + Float + FloatConst + ConstZero,
 {
-    pub fn new_real_stft_forward(length: usize) -> Self {
+    pub fn new(length: usize) -> Self {
         let scratch_real_buffer = vec![T::ZERO; length];
         let scratch_real_buffer: Arc<[T]> = Arc::from(scratch_real_buffer);
 
@@ -55,9 +57,8 @@ where
     }
 }
 
-pub trait ProcessStft<T, D>
+pub trait ProcessStft<D>
 where
-    T: FftNum + Float + FloatConst,
     D: Dimension,
 {
     type U: ComplexFloat;
@@ -72,48 +73,38 @@ where
     /// `harray` - A 1D or 2D HArray to be used as input.
     /// `hop_length` - The distance between neighboring sliding window frames.
     /// `window_length` - Size of window frame. Must be greater than the fft length.
-    /// `window` - An optional window function. `window.len()` must be equal to `window_length`.
+    /// `window` - An optional window. `window.len()` must be equal to `window_length`.
     fn process(
         &mut self,
         harray: &HArray<Self::U, D>,
         hop_length: NonZero<usize>,
         window_length: NonZero<usize>,
-        window: Option<&[T]>,
+        window: Option<&[<Self::U as ComplexFloat>::Real]>,
     ) -> HResult<Self::Output>;
 }
 
-impl<T> ProcessStft<T, Ix1> for Stft<T>
+impl<T> ProcessStft<Ix1> for Stft<T>
 where
     T: FftNum + Float + FloatConst + ConstZero,
 {
     type U = Complex<T>;
-    type Output = HArray<Complex<T>, Ix2>;
+    type Output = HArray<Self::U, Ix2>;
 
     fn process(
         &mut self,
-        harray: &HArray<Complex<T>, Ix1>,
+        harray: &HArray<Self::U, Ix1>,
         hop_length: NonZero<usize>,
         window_length: NonZero<usize>,
         window: Option<&[T]>,
-    ) -> HResult<HArray<Complex<T>, Ix2>> {
+    ) -> HResult<Self::Output> {
         // Since fft_length is checked to be >= window_length and window_length is NonZero<usize>, we can be sure fft_length > 0.
         let fft_length = self.len();
         let window_length = window_length.get();
         let hop_length = hop_length.get();
         let length = harray.len();
 
-        if fft_length < window_length || fft_length > length {
-            return Err(HError::OutOfSpecError(
-                "Expected harray.len() >= fft_length >= window_length.".to_string(),
-            ));
-        }
-        if let Some(slice) = window {
-            if slice.len() != window_length {
-                return Err(HError::OutOfSpecError(
-                    "Expected window.len() == window_length.".to_string(),
-                ));
-            }
-        }
+        validate_fft_length(fft_length, window_length, length)?;
+        validate_window_length(window, window_length)?;
 
         let n_fft = 1 + (length - fft_length) / hop_length;
         let mut stft_ndarray = ArcArray2::<Complex<T>>::zeros((n_fft, fft_length));
@@ -143,20 +134,20 @@ where
     }
 }
 
-impl<T> ProcessStft<T, Ix2> for Stft<T>
+impl<T> ProcessStft<Ix2> for Stft<T>
 where
     T: FftNum + Float + FloatConst + ConstZero,
 {
     type U = Complex<T>;
-    type Output = HArray<Complex<T>, Ix3>;
+    type Output = HArray<Self::U, Ix3>;
 
     fn process(
         &mut self,
-        harray: &HArray<Complex<T>, Ix2>,
+        harray: &HArray<Self::U, Ix2>,
         hop_length: NonZero<usize>,
         window_length: NonZero<usize>,
         window: Option<&[T]>,
-    ) -> HResult<HArray<Complex<T>, Ix3>> {
+    ) -> HResult<Self::Output> {
         // Since fft_length is checked to be >= window_length and window_length is NonZero<usize>, we can be sure fft_length > 0.
         let fft_length = self.len();
         let window_length = window_length.get();
@@ -164,18 +155,8 @@ where
         let nrows = harray.0.len_of(Axis(0));
         let ncols = harray.0.len_of(Axis(1));
 
-        if fft_length < window_length || fft_length > ncols {
-            return Err(HError::OutOfSpecError(
-                "Expected ncols >= fft_length >= window_length.".to_string(),
-            ));
-        }
-        if let Some(slice) = window {
-            if slice.len() != window_length {
-                return Err(HError::OutOfSpecError(
-                    "Expected window.len() == window_length.".to_string(),
-                ));
-            }
-        }
+        validate_fft_length(fft_length, window_length, ncols)?;
+        validate_window_length(window, window_length)?;
 
         let n_fft = 1 + (ncols - fft_length) / hop_length;
         let mut stft_ndarray = ArcArray::<Complex<T>, Ix3>::zeros((nrows, n_fft, fft_length));
@@ -209,20 +190,20 @@ where
     }
 }
 
-impl<T> ProcessStft<T, IxDyn> for Stft<T>
+impl<T> ProcessStft<IxDyn> for Stft<T>
 where
     T: FftNum + Float + FloatConst + ConstZero,
 {
     type U = Complex<T>;
-    type Output = HArray<Complex<T>, IxDyn>;
+    type Output = HArray<Self::U, IxDyn>;
 
     fn process(
         &mut self,
-        harray: &HArray<Complex<T>, IxDyn>,
+        harray: &HArray<Self::U, IxDyn>,
         hop_length: NonZero<usize>,
         window_length: NonZero<usize>,
         window: Option<&[T]>,
-    ) -> HResult<HArray<Complex<T>, IxDyn>> {
+    ) -> HResult<Self::Output> {
         // Since fft_length is checked to be >= window_length and window_length is NonZero<usize>, we can be sure fft_length > 0.
         let fft_length = self.len();
         let window_length = window_length.get();
@@ -236,18 +217,8 @@ where
             1 => {
                 let length = harray.len();
 
-                if fft_length < window_length || fft_length > length {
-                    return Err(HError::OutOfSpecError(
-                        "Expected harray.len() >= fft_length >= window_length.".to_string(),
-                    ));
-                }
-                if let Some(slice) = window {
-                    if slice.len() != window_length {
-                        return Err(HError::OutOfSpecError(
-                            "Expected window.len() == window_length.".to_string(),
-                        ));
-                    }
-                }
+                validate_fft_length(fft_length, window_length, length)?;
+                validate_window_length(window, window_length)?;
 
                 let n_fft = 1 + (length - fft_length) / hop_length;
                 let mut stft_ndarray = ArcArray2::<Complex<T>>::zeros((n_fft, fft_length));
@@ -282,18 +253,8 @@ where
                 let nrows = harray.0.len_of(Axis(0));
                 let ncols = harray.0.len_of(Axis(1));
 
-                if fft_length < window_length || fft_length > ncols {
-                    return Err(HError::OutOfSpecError(
-                        "Expected ncols >= fft_length >= window_length.".to_string(),
-                    ));
-                }
-                if let Some(slice) = window {
-                    if slice.len() != window_length {
-                        return Err(HError::OutOfSpecError(
-                            "Expected window.len() == window_length.".to_string(),
-                        ));
-                    }
-                }
+                validate_fft_length(fft_length, window_length, ncols)?;
+                validate_window_length(window, window_length)?;
 
                 let n_fft = 1 + (ncols - fft_length) / hop_length;
                 let mut stft_ndarray =
@@ -336,20 +297,20 @@ where
     }
 }
 
-impl<T> ProcessStft<T, Ix1> for RealStftForward<T>
+impl<T> ProcessStft<Ix1> for RealStftForward<T>
 where
     T: FftNum + Float + FloatConst + ConstZero,
 {
     type U = T;
-    type Output = HArray<Complex<T>, Ix2>;
+    type Output = HArray<Complex<Self::U>, Ix2>;
 
     fn process(
         &mut self,
-        harray: &HArray<T, Ix1>,
+        harray: &HArray<Self::U, Ix1>,
         hop_length: NonZero<usize>,
         window_length: NonZero<usize>,
         window: Option<&[T]>,
-    ) -> HResult<HArray<Complex<T>, Ix2>> {
+    ) -> HResult<Self::Output> {
         // Since fft_length is checked to be >= window_length and window_length is NonZero<usize>, we can be sure fft_length > 0.
         let fft_length = self.len();
         let real_fft_length = fft_length / 2 + 1;
@@ -359,18 +320,8 @@ where
         let scratch_real_buffer = make_mut_slice(&mut self.scratch_real_buffer);
         let scratch_buffer = make_mut_slice(&mut self.inner.scratch_buffer);
 
-        if fft_length < window_length || fft_length > length {
-            return Err(HError::OutOfSpecError(
-                "Expected harray.len() >= fft_length >= window_length.".to_string(),
-            ));
-        }
-        if let Some(slice) = window {
-            if slice.len() != window_length {
-                return Err(HError::OutOfSpecError(
-                    "Expected window.len() == window_length.".to_string(),
-                ));
-            }
-        }
+        validate_fft_length(fft_length, window_length, length)?;
+        validate_window_length(window, window_length)?;
 
         let n_fft = 1 + (length - fft_length) / hop_length;
         let mut stft_ndarray = ArcArray2::<Complex<T>>::zeros((n_fft, real_fft_length));
@@ -405,20 +356,20 @@ where
     }
 }
 
-impl<T> ProcessStft<T, Ix2> for RealStftForward<T>
+impl<T> ProcessStft<Ix2> for RealStftForward<T>
 where
     T: FftNum + Float + FloatConst + ConstZero,
 {
     type U = T;
-    type Output = HArray<Complex<T>, Ix3>;
+    type Output = HArray<Complex<Self::U>, Ix3>;
 
     fn process(
         &mut self,
-        harray: &HArray<T, Ix2>,
+        harray: &HArray<Self::U, Ix2>,
         hop_length: NonZero<usize>,
         window_length: NonZero<usize>,
         window: Option<&[T]>,
-    ) -> HResult<HArray<Complex<T>, Ix3>> {
+    ) -> HResult<Self::Output> {
         // Since fft_length is checked to be >= window_length and window_length is NonZero<usize>, we can be sure fft_length > 0.
         let fft_length = self.len();
         let real_fft_length = fft_length / 2 + 1;
@@ -429,18 +380,8 @@ where
         let scratch_real_buffer = make_mut_slice(&mut self.scratch_real_buffer);
         let scratch_buffer = make_mut_slice(&mut self.inner.scratch_buffer);
 
-        if fft_length < window_length || fft_length > ncols {
-            return Err(HError::OutOfSpecError(
-                "Expected harray.len() >= fft_length >= window_length.".to_string(),
-            ));
-        }
-        if let Some(slice) = window {
-            if slice.len() != window_length {
-                return Err(HError::OutOfSpecError(
-                    "Expected window.len() == window_length.".to_string(),
-                ));
-            }
-        }
+        validate_fft_length(fft_length, window_length, ncols)?;
+        validate_window_length(window, window_length)?;
 
         let n_fft = 1 + (ncols - fft_length) / hop_length;
         let mut stft_ndarray = ArcArray::<Complex<T>, Ix3>::zeros((nrows, n_fft, real_fft_length));
@@ -478,128 +419,115 @@ where
     }
 }
 
-//impl<T> ProcessRealStftForward<T, IxDyn> for RealStftForward<T>
-//where
-//    T: FftNum + Float + FloatConst + ConstZero,
-//{
-//    fn process(
-//        &mut self,
-//        harray: &HArray<T, IxDyn>,
-//        hop_length: NonZero<usize>,
-//        window_length: NonZero<usize>,
-//        window: Option<&[T]>,
-//    ) -> HResult<HArray<Complex<T>, IxDyn>> {
-//        let fft_length = self.len(); // Since fft_length is checked to be >= window_length and window_length is NonZero<usize>, we can be sure fft_length > 0.
-//        let window_length = window_length.get();
-//        let hop_length = hop_length.get();
-//
-//        // Center PAD the window if fft_length > window_length.
-//        let left = (fft_length - window_length) / 2;
-//        let right = left + window_length;
-//
-//        match harray.ndim() {
-//            1 => {
-//                let length = harray.len();
-//
-//                if fft_length < window_length || fft_length > length {
-//                    return Err(HError::OutOfSpecError(
-//                        "Expected harray.len() >= fft_length >= window_length.".to_string(),
-//                    ));
-//                }
-//                if let Some(slice) = window {
-//                    if slice.len() != window_length {
-//                        return Err(HError::OutOfSpecError(
-//                            "Expected window.len() == window_length.".to_string(),
-//                        ));
-//                    }
-//                }
-//
-//                let n_fft = 1 + (length - fft_length) / hop_length;
-//                let mut stft_ndarray = ArcArray2::<Complex<T>>::zeros((n_fft, fft_length));
-//
-//                let slice_info = s![.., left..right];
-//                let slice_info_1d = s![left..right];
-//
-//                for (mut row, win) in stft_ndarray
-//                    .slice_mut(slice_info)
-//                    .lanes_mut(Axis(1))
-//                    .into_iter()
-//                    .zip(
-//                        harray
-//                            .0
-//                            .windows(IxDyn(&[fft_length]))
-//                            .into_iter()
-//                            .step_by(hop_length),
-//                    )
-//                {
-//                    row.assign(&win.slice(slice_info_1d));
-//                    if let Some(w) = window {
-//                        row.as_slice_mut().unwrap().apply_window(w);
-//                    }
-//                }
-//
-//                let mut output = HArray(stft_ndarray.into_dyn());
-//                self.0.process(&mut output)?;
-//
-//                Ok(output)
-//            }
-//            2 => {
-//                let nrows = harray.0.len_of(Axis(0));
-//                let ncols = harray.0.len_of(Axis(1));
-//
-//                if fft_length < window_length || fft_length > ncols {
-//                    return Err(HError::OutOfSpecError(
-//                        "Expected ncols >= fft_length >= window_length.".to_string(),
-//                    ));
-//                }
-//                if let Some(slice) = window {
-//                    if slice.len() != window_length {
-//                        return Err(HError::OutOfSpecError(
-//                            "Expected window.len() == window_length.".to_string(),
-//                        ));
-//                    }
-//                }
-//
-//                let n_fft = 1 + (ncols - fft_length) / hop_length;
-//                let mut stft_ndarray =
-//                    ArcArray::<Complex<T>, Ix3>::zeros((nrows, n_fft, fft_length));
-//
-//                let slice_info = s![.., left..right];
-//                let slice_info_1d = s![left..right];
-//                let scratch_buffer = make_mut_slice(&mut self.0.scratch_buffer);
-//
-//                for (mut matrix, win) in stft_ndarray.axis_iter_mut(Axis(1)).zip(
-//                    harray
-//                        .0
-//                        .windows(IxDyn(&[nrows, fft_length]))
-//                        .into_iter()
-//                        .step_by(hop_length),
-//                ) {
-//                    matrix.slice_mut(slice_info).assign(&win.slice(slice_info));
-//
-//                    for mut col in matrix.lanes_mut(Axis(1)) {
-//                        if let Some(w) = window {
-//                            col.slice_mut(slice_info_1d)
-//                                .as_slice_mut()
-//                                .unwrap()
-//                                .apply_window(w);
-//                        }
-//                        self.0
-//                            .fft
-//                            .process_with_scratch(col.as_slice_mut().unwrap(), scratch_buffer);
-//                    }
-//                }
-//
-//                let output = HArray(stft_ndarray.into_dyn());
-//
-//                Ok(output)
-//            }
-//            _ => Err(HError::OutOfSpecError(
-//                "The HArray's ndim should be 1 or 2.".into(),
-//            )),
-//        }
-//    }
-//}
+impl<T> ProcessStft<IxDyn> for RealStftForward<T>
+where
+    T: FftNum + Float + FloatConst + ConstZero,
+{
+    type U = T;
+    type Output = HArray<Complex<Self::U>, IxDyn>;
+
+    fn process(
+        &mut self,
+        harray: &HArray<Self::U, IxDyn>,
+        hop_length: NonZero<usize>,
+        window_length: NonZero<usize>,
+        window: Option<&[T]>,
+    ) -> HResult<Self::Output> {
+        // Since fft_length is checked to be >= window_length and window_length is NonZero<usize>, we can be sure fft_length > 0.
+        let fft_length = self.len();
+        let real_fft_length = fft_length / 2 + 1;
+        let window_length = window_length.get();
+        let hop_length = hop_length.get();
+
+        // Center PAD the window if fft_length > window_length.
+        let left = (fft_length - window_length) / 2;
+        let right = left + window_length;
+
+        let scratch_real_buffer = make_mut_slice(&mut self.scratch_real_buffer);
+        let scratch_buffer = make_mut_slice(&mut self.inner.scratch_buffer);
+
+        match harray.ndim() {
+            1 => {
+                let length = harray.len();
+
+                validate_fft_length(fft_length, window_length, length)?;
+                validate_window_length(window, window_length)?;
+
+                let n_fft = 1 + (length - fft_length) / hop_length;
+                let mut stft_ndarray = ArcArray2::<Complex<T>>::zeros((n_fft, real_fft_length));
+
+                for (mut row, win) in stft_ndarray.lanes_mut(Axis(1)).into_iter().zip(
+                    harray
+                        .0
+                        .windows(IxDyn(&[fft_length]))
+                        .into_iter()
+                        .step_by(hop_length),
+                ) {
+                    let scratch_real_buffer_slice = &mut scratch_real_buffer[left..right];
+                    scratch_real_buffer_slice
+                        .copy_from_slice(&win.as_slice().unwrap()[left..right]);
+                    if let Some(w) = window {
+                        scratch_real_buffer_slice.apply_window(w);
+                    }
+                    self.inner
+                        .fft
+                        .process_with_scratch(
+                            scratch_real_buffer,
+                            row.as_slice_mut().unwrap(),
+                            scratch_buffer,
+                        )
+                        .unwrap();
+                }
+
+                let output = HArray(stft_ndarray.into_dyn());
+
+                Ok(output)
+            }
+            2 => {
+                let nrows = harray.0.len_of(Axis(0));
+                let ncols = harray.0.len_of(Axis(1));
+
+                validate_fft_length(fft_length, window_length, ncols)?;
+                validate_window_length(window, window_length)?;
+
+                let n_fft = 1 + (ncols - fft_length) / hop_length;
+                let mut stft_ndarray =
+                    ArcArray::<Complex<T>, Ix3>::zeros((nrows, n_fft, real_fft_length));
+
+                for (mut col, win_col) in stft_ndarray.lanes_mut(Axis(2)).into_iter().zip(
+                    harray
+                        .0
+                        .windows(IxDyn(&[1, fft_length]))
+                        .into_iter()
+                        .step_by(hop_length),
+                ) {
+                    let scratch_real_buffer_slice = &mut scratch_real_buffer[left..right];
+                    scratch_real_buffer_slice
+                        .copy_from_slice(&win_col.as_slice().unwrap()[left..right]);
+
+                    if let Some(w) = window {
+                        scratch_real_buffer_slice.apply_window(w);
+                    }
+                    self.inner
+                        .fft
+                        .process_with_scratch(
+                            scratch_real_buffer,
+                            col.as_slice_mut().unwrap(),
+                            scratch_buffer,
+                        )
+                        .unwrap();
+                }
+
+                let output = HArray(stft_ndarray.into_dyn());
+
+                Ok(output)
+            }
+            _ => Err(HError::OutOfSpecError(
+                "The HArray's ndim should be 1 or 2.".into(),
+            )),
+        }
+    }
+}
 
 trait ApplyWindow<T> {
     fn apply_window(&mut self, window: &[T]);
@@ -618,12 +546,37 @@ where
 
 impl<T> ApplyWindow<T> for [T]
 where
-    T: ComplexFloat,
+    T: Float,
 {
     fn apply_window(&mut self, window: &[T]) {
         for (i, w) in self.iter_mut().zip(window.iter()) {
             *i = *i * *w;
         }
+    }
+}
+
+fn validate_fft_length(fft_length: usize, lower: usize, upper: usize) -> HResult<()> {
+    if fft_length < lower || fft_length > upper {
+        Err(HError::OutOfSpecError(format!(
+            "Expected {upper} >= fft_length >= {lower}. Got {fft_length}."
+        )))
+    } else {
+        Ok(())
+    }
+}
+
+fn validate_window_length<T>(window: Option<&[T]>, window_length: usize) -> HResult<()> {
+    if let Some(slice) = window {
+        if slice.len() != window_length {
+            let got_length = slice.len();
+            Err(HError::OutOfSpecError(format!(
+                "Expected window length == {window_length}. Got {got_length}."
+            )))
+        } else {
+            Ok(())
+        }
+    } else {
+        Ok(())
     }
 }
 
@@ -712,7 +665,7 @@ mod tests {
         {
             // Ix1 test.
             let harray = HArray::new_from_shape_vec(length, input.clone()).unwrap();
-            let mut stft = Stft::<f32>::new_stft_forward(fft_length);
+            let mut stft = Stft::<f32>::new_forward(fft_length);
             let stft_harray = stft
                 .process(&harray, hop_length, window_length, window)
                 .unwrap();
@@ -724,7 +677,7 @@ mod tests {
             let harray = HArray::new_from_shape_vec(length, input.clone())
                 .unwrap()
                 .into_dynamic();
-            let mut stft = Stft::<f32>::new_stft_forward(fft_length);
+            let mut stft = Stft::<f32>::new_forward(fft_length);
             let stft_harray = stft
                 .process(&harray, hop_length, window_length, window)
                 .unwrap();
@@ -854,7 +807,7 @@ mod tests {
         {
             // Ix2 test.
             let harray = HArray::new_from_shape_vec((2, length / 2), input.clone()).unwrap();
-            let mut stft = Stft::<f32>::new_stft_forward(fft_length);
+            let mut stft = Stft::<f32>::new_forward(fft_length);
             let stft_harray = stft
                 .process(&harray, hop_length, window_length, window)
                 .unwrap();
@@ -867,7 +820,7 @@ mod tests {
             let harray = HArray::new_from_shape_vec((2, length / 2), input.clone())
                 .unwrap()
                 .into_dynamic();
-            let mut stft = Stft::<f32>::new_stft_forward(fft_length);
+            let mut stft = Stft::<f32>::new_forward(fft_length);
             let stft_harray = stft
                 .process(&harray, hop_length, window_length, window)
                 .unwrap();
@@ -941,7 +894,7 @@ mod tests {
         {
             // Ix1 test.
             let harray = HArray::new_from_shape_vec(length, input.clone()).unwrap();
-            let mut stft = RealStftForward::<f32>::new_real_stft_forward(fft_length);
+            let mut stft = RealStftForward::<f32>::new(fft_length);
             let stft_harray = stft
                 .process(&harray, hop_length, window_length, window)
                 .unwrap();
@@ -950,19 +903,19 @@ mod tests {
                 HArray::new_from_shape_vec((n_fft, fft_length / 2 + 1), result.clone()).unwrap();
             assert!(compare_harray_complex(&stft_harray, &rhs));
 
-            //// IxDyn test.
-            //let harray = HArray::new_from_shape_vec(length, input.clone())
-            //    .unwrap()
-            //    .into_dynamic();
-            //let mut stft = RealStftForward::<f32>::new_real_stft_forward(fft_length);
-            //let stft_harray = stft
-            //    .process(&harray, hop_length, window_length, window)
-            //    .unwrap();
-            //let n_fft = 1 + (harray.len() - fft_length) / hop_length;
-            //let rhs = HArray::new_from_shape_vec((n_fft, fft_length / 2 + 1), result.clone())
-            //    .unwrap()
-            //    .into_dynamic();
-            //assert!(compare_harray_complex(&stft_harray, &rhs));
+            // IxDyn test.
+            let harray = HArray::new_from_shape_vec(length, input.clone())
+                .unwrap()
+                .into_dynamic();
+            let mut stft = RealStftForward::<f32>::new(fft_length);
+            let stft_harray = stft
+                .process(&harray, hop_length, window_length, window)
+                .unwrap();
+            let n_fft = 1 + (harray.len() - fft_length) / hop_length;
+            let rhs = HArray::new_from_shape_vec((n_fft, fft_length / 2 + 1), result.clone())
+                .unwrap()
+                .into_dynamic();
+            assert!(compare_harray_complex(&stft_harray, &rhs));
         }
     }
 
@@ -1047,7 +1000,7 @@ mod tests {
         {
             // Ix2 test.
             let harray = HArray::new_from_shape_vec((2, length / 2), input.clone()).unwrap();
-            let mut stft = RealStftForward::<f32>::new_real_stft_forward(fft_length);
+            let mut stft = RealStftForward::<f32>::new(fft_length);
             let stft_harray = stft
                 .process(&harray, hop_length, window_length, window)
                 .unwrap();
@@ -1057,19 +1010,20 @@ mod tests {
                 HArray::new_from_shape_vec((2, n_fft, fft_length / 2 + 1), result.clone()).unwrap();
             assert!(compare_harray_complex(&stft_harray, &rhs));
 
-            //// IxDyn test.
-            //let harray = HArray::new_from_shape_vec(length, input.clone())
-            //    .unwrap()
-            //    .into_dynamic();
-            //let mut stft = RealStftForward::<f32>::new_real_stft_forward(fft_length);
-            //let stft_harray = stft
-            //    .process(&harray, hop_length, window_length, window)
-            //    .unwrap();
-            //let n_fft = 1 + (harray.len() - fft_length) / hop_length;
-            //let rhs = HArray::new_from_shape_vec((n_fft, fft_length / 2 + 1), result.clone())
-            //    .unwrap()
-            //    .into_dynamic();
-            //assert!(compare_harray_complex(&stft_harray, &rhs));
+            // IxDyn test.
+            let harray = HArray::new_from_shape_vec((2, length / 2), input.clone())
+                .unwrap()
+                .into_dynamic();
+            let mut stft = RealStftForward::<f32>::new(fft_length);
+            let stft_harray = stft
+                .process(&harray, hop_length, window_length, window)
+                .unwrap();
+            let ncols = harray.0.len_of(Axis(1));
+            let n_fft = 1 + (ncols - fft_length) / hop_length;
+            let rhs = HArray::new_from_shape_vec((2, n_fft, fft_length / 2 + 1), result.clone())
+                .unwrap()
+                .into_dynamic();
+            assert!(compare_harray_complex(&stft_harray, &rhs));
         }
     }
 }

@@ -750,12 +750,12 @@ class(`HDecoderStream`) <- "HDecoderStream__bundle"
 
 `HFft`$`new_real_forward` <- function(`length`, `dtype`) {
   `dtype` <- .savvy_extract_ptr(`dtype`, "HDataType")
-  .savvy_wrap_HRealFft(.Call(savvy_HFft_new_real_forward__impl, `length`, `dtype`))
+  .savvy_wrap_HFft(.Call(savvy_HFft_new_real_forward__impl, `length`, `dtype`))
 }
 
 `HFft`$`new_real_inverse` <- function(`length`, `dtype`) {
   `dtype` <- .savvy_extract_ptr(`dtype`, "HDataType")
-  .savvy_wrap_HRealFft(.Call(savvy_HFft_new_real_inverse__impl, `length`, `dtype`))
+  .savvy_wrap_HFft(.Call(savvy_HFft_new_real_inverse__impl, `length`, `dtype`))
 }
 
 
@@ -1188,96 +1188,6 @@ class(`HPolynomialDegree`) <- "HPolynomialDegree__bundle"
 #' @export
 `[[<-.HPolynomialDegree__bundle` <- function(x, i, value) stop("HPolynomialDegree cannot be modified", call. = FALSE)
 
-### wrapper functions for HRealFft
-
-`HRealFft_process` <- function(self) {
-  function(`harray`) {
-    `harray` <- .savvy_extract_ptr(`harray`, "HArray")
-    invisible(.Call(savvy_HRealFft_process__impl, `self`, `harray`))
-  }
-}
-
-`HRealFft_dtype` <- function(self) {
-  function() {
-    .savvy_wrap_HDataType(.Call(savvy_HRealFft_dtype__impl, `self`))
-  }
-}
-
-`HRealFft_print` <- function(self) {
-  function() {
-    invisible(.Call(savvy_HRealFft_print__impl, `self`))
-  }
-}
-
-`HRealFft_clone` <- function(self) {
-  function() {
-    .savvy_wrap_HRealFft(.Call(savvy_HRealFft_clone__impl, `self`))
-  }
-}
-
-`HRealFft_is_unique` <- function(self) {
-  function() {
-    .Call(savvy_HRealFft_is_unique__impl, `self`)
-  }
-}
-
-`HRealFft_invalidate` <- function(self) {
-  function() {
-    invisible(.Call(savvy_HRealFft_invalidate__impl, `self`))
-  }
-}
-
-`.savvy_wrap_HRealFft` <- function(ptr) {
-  e <- new.env(parent = emptyenv())
-  e$.ptr <- ptr
-  e$`process` <- `HRealFft_process`(ptr)
-  e$`dtype` <- `HRealFft_dtype`(ptr)
-  e$`print` <- `HRealFft_print`(ptr)
-  e$`clone` <- `HRealFft_clone`(ptr)
-  e$`is_unique` <- `HRealFft_is_unique`(ptr)
-  e$`invalidate` <- `HRealFft_invalidate`(ptr)
-
-  class(e) <- "HRealFft"
-  e
-}
-
-#' @export
-`$<-.HRealFft` <- function(x, name, value) stop("HRealFft cannot be modified", call. = FALSE)
-
-#' @export
-`[[<-.HRealFft` <- function(x, i, value) stop("HRealFft cannot be modified", call. = FALSE)
-
-
-
-`HRealFft` <- new.env(parent = emptyenv())
-
-#' @export
-`$<-.HRealFft` <- function(x, name, value) stop("HRealFft cannot be modified", call. = FALSE)
-
-#' @export
-`[[<-.HRealFft` <- function(x, i, value) stop("HRealFft cannot be modified", call. = FALSE)
-
-### associated functions for HRealFft
-
-`HRealFft`$`new` <- function(`length`, `dtype`) {
-  `dtype` <- .savvy_extract_ptr(`dtype`, "HDataType")
-  .savvy_wrap_HRealFft(.Call(savvy_HRealFft_new__impl, `length`, `dtype`))
-}
-
-
-class(`HRealFft`) <- "HRealFft__bundle"
-
-#' @export
-`print.HRealFft__bundle` <- function(x, ...) {
-  cat('HRealFft')
-}
-
-#' @export
-`$<-.HRealFft__bundle` <- function(x, name, value) stop("HRealFft cannot be modified", call. = FALSE)
-
-#' @export
-`[[<-.HRealFft__bundle` <- function(x, i, value) stop("HRealFft cannot be modified", call. = FALSE)
-
 ### wrapper functions for HResampler
 
 `HResampler_process` <- function(self) {
@@ -1592,6 +1502,106 @@ class(`HSincInterpolationParameters`) <- "HSincInterpolationParameters__bundle"
 
 #' @export
 `[[<-.HSincInterpolationParameters__bundle` <- function(x, i, value) stop("HSincInterpolationParameters cannot be modified", call. = FALSE)
+
+### wrapper functions for HStft
+
+`HStft_process` <- function(self) {
+  function(`harray`, `hop_length`, `window_length`, `window` = NULL) {
+    `harray` <- .savvy_extract_ptr(`harray`, "HArray")
+    `window` <- .savvy_extract_ptr(`window`, "HArray")
+    invisible(.Call(savvy_HStft_process__impl, `self`, `harray`, `hop_length`, `window_length`, `window`))
+  }
+}
+
+`HStft_dtype` <- function(self) {
+  function() {
+    .savvy_wrap_HDataType(.Call(savvy_HStft_dtype__impl, `self`))
+  }
+}
+
+`HStft_print` <- function(self) {
+  function() {
+    invisible(.Call(savvy_HStft_print__impl, `self`))
+  }
+}
+
+`HStft_clone` <- function(self) {
+  function() {
+    .savvy_wrap_HStft(.Call(savvy_HStft_clone__impl, `self`))
+  }
+}
+
+`HStft_is_unique` <- function(self) {
+  function() {
+    .Call(savvy_HStft_is_unique__impl, `self`)
+  }
+}
+
+`HStft_invalidate` <- function(self) {
+  function() {
+    invisible(.Call(savvy_HStft_invalidate__impl, `self`))
+  }
+}
+
+`.savvy_wrap_HStft` <- function(ptr) {
+  e <- new.env(parent = emptyenv())
+  e$.ptr <- ptr
+  e$`process` <- `HStft_process`(ptr)
+  e$`dtype` <- `HStft_dtype`(ptr)
+  e$`print` <- `HStft_print`(ptr)
+  e$`clone` <- `HStft_clone`(ptr)
+  e$`is_unique` <- `HStft_is_unique`(ptr)
+  e$`invalidate` <- `HStft_invalidate`(ptr)
+
+  class(e) <- "HStft"
+  e
+}
+
+#' @export
+`$<-.HStft` <- function(x, name, value) stop("HStft cannot be modified", call. = FALSE)
+
+#' @export
+`[[<-.HStft` <- function(x, i, value) stop("HStft cannot be modified", call. = FALSE)
+
+
+#' HStft
+#' An `HStft` is used to create STFTs. It caches results internally, so when making more than one Stft it is advisable to reuse the same `HStft` instance.
+#'
+#' # Methods
+#'
+`HStft` <- new.env(parent = emptyenv())
+
+#' @export
+`$<-.HStft` <- function(x, name, value) stop("HStft cannot be modified", call. = FALSE)
+
+#' @export
+`[[<-.HStft` <- function(x, i, value) stop("HStft cannot be modified", call. = FALSE)
+
+### associated functions for HStft
+
+`HStft`$`new_forward` <- function(`length`, `dtype`) {
+  `dtype` <- .savvy_extract_ptr(`dtype`, "HDataType")
+  .savvy_wrap_HStft(.Call(savvy_HStft_new_forward__impl, `length`, `dtype`))
+}
+
+`HStft`$`new_real_forward` <- function(`length`, `dtype`) {
+  `dtype` <- .savvy_extract_ptr(`dtype`, "HDataType")
+  .savvy_wrap_HStft(.Call(savvy_HStft_new_real_forward__impl, `length`, `dtype`))
+}
+
+
+class(`HStft`) <- "HStft__bundle"
+
+#' @export
+`print.HStft__bundle` <- function(x, ...) {
+  cat('HStft')
+}
+
+#' @export
+`$<-.HStft__bundle` <- function(x, name, value) stop("HStft cannot be modified", call. = FALSE)
+
+#' @export
+`[[<-.HStft__bundle` <- function(x, i, value) stop("HStft cannot be modified", call. = FALSE)
 
 ### wrapper functions for HWindow
 

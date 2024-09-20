@@ -12,10 +12,10 @@
   lockEnvironment(HFile, bindings = TRUE)
   lockEnvironment(HResampler, bindings = TRUE)
   lockEnvironment(HFft, bindings = TRUE)
-  lockEnvironment(HRealFft, bindings = TRUE)
+  lockEnvironment(HStft, bindings = TRUE)
   lockEnvironment(HDecoderStream, bindings = TRUE)
 }
 
 .onAttach <- function(libname, pkgname) {
-  packageStartupMessage(paste0("harmonium ",packageVersion("harmonium"),", see harmonium::hdocs() for documentation."))
+  packageStartupMessage(paste0("harmonium ",packageVersion("harmonium"),". Use harmonium::hdocs() for documentation."))
 }

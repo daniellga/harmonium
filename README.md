@@ -6,7 +6,7 @@ Harmonium is an audio interface inspired by Python's [librosa](https://github.co
 - Decode audio
 - Retrieve audio metadata
 - Asynchronous and Synchronous resampling
-- FFT
+- FFT and STFT
 
 To learn more, read the [documentation](https://daniellga.github.io/harmonium/).
 

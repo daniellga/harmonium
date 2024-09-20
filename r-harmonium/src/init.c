@@ -35,8 +35,8 @@ SEXP handle_result(SEXP res_) {
 }
 
 
-SEXP savvy_HArray_new_from_values__impl(SEXP arr, SEXP dtype) {
-    SEXP res = savvy_HArray_new_from_values__ffi(arr, dtype);
+SEXP savvy_HArray_new_from_values__impl(SEXP c_arg__arr, SEXP c_arg__dtype) {
+    SEXP res = savvy_HArray_new_from_values__ffi(c_arg__arr, c_arg__dtype);
     return handle_result(res);
 }
 
@@ -55,8 +55,8 @@ SEXP savvy_HArray_ndim__impl(SEXP self__) {
     return handle_result(res);
 }
 
-SEXP savvy_HArray_slice__impl(SEXP self__, SEXP range) {
-    SEXP res = savvy_HArray_slice__ffi(self__, range);
+SEXP savvy_HArray_slice__impl(SEXP self__, SEXP c_arg__range) {
+    SEXP res = savvy_HArray_slice__ffi(self__, c_arg__range);
     return handle_result(res);
 }
 
@@ -65,13 +65,13 @@ SEXP savvy_HArray_print__impl(SEXP self__) {
     return handle_result(res);
 }
 
-SEXP savvy_HArray_eq__impl(SEXP self__, SEXP other) {
-    SEXP res = savvy_HArray_eq__ffi(self__, other);
+SEXP savvy_HArray_eq__impl(SEXP self__, SEXP c_arg__other) {
+    SEXP res = savvy_HArray_eq__ffi(self__, c_arg__other);
     return handle_result(res);
 }
 
-SEXP savvy_HArray_ne__impl(SEXP self__, SEXP other) {
-    SEXP res = savvy_HArray_ne__ffi(self__, other);
+SEXP savvy_HArray_ne__impl(SEXP self__, SEXP c_arg__other) {
+    SEXP res = savvy_HArray_ne__ffi(self__, c_arg__other);
     return handle_result(res);
 }
 
@@ -110,23 +110,23 @@ SEXP savvy_HArray_invalidate__impl(SEXP self__) {
     return handle_result(res);
 }
 
-SEXP savvy_HArrayAudio_nchannels__impl(SEXP harray) {
-    SEXP res = savvy_HArrayAudio_nchannels__ffi(harray);
+SEXP savvy_HArrayAudio_nchannels__impl(SEXP c_arg__harray) {
+    SEXP res = savvy_HArrayAudio_nchannels__ffi(c_arg__harray);
     return handle_result(res);
 }
 
-SEXP savvy_HArrayAudio_nframes__impl(SEXP harray) {
-    SEXP res = savvy_HArrayAudio_nframes__ffi(harray);
+SEXP savvy_HArrayAudio_nframes__impl(SEXP c_arg__harray) {
+    SEXP res = savvy_HArrayAudio_nframes__ffi(c_arg__harray);
     return handle_result(res);
 }
 
-SEXP savvy_HArrayAudio_db_to_amplitude__impl(SEXP harray, SEXP reference, SEXP power) {
-    SEXP res = savvy_HArrayAudio_db_to_amplitude__ffi(harray, reference, power);
+SEXP savvy_HArrayAudio_db_to_amplitude__impl(SEXP c_arg__harray, SEXP c_arg__reference, SEXP c_arg__power) {
+    SEXP res = savvy_HArrayAudio_db_to_amplitude__ffi(c_arg__harray, c_arg__reference, c_arg__power);
     return handle_result(res);
 }
 
-SEXP savvy_HArrayAudio_to_mono__impl(SEXP harray) {
-    SEXP res = savvy_HArrayAudio_to_mono__ffi(harray);
+SEXP savvy_HArrayAudio_to_mono__impl(SEXP c_arg__harray) {
+    SEXP res = savvy_HArrayAudio_to_mono__ffi(c_arg__harray);
     return handle_result(res);
 }
 
@@ -135,13 +135,13 @@ SEXP savvy_HAudioSink_new__impl(void) {
     return handle_result(res);
 }
 
-SEXP savvy_HAudioSink_append_from_harray__impl(SEXP self__, SEXP harray, SEXP sr) {
-    SEXP res = savvy_HAudioSink_append_from_harray__ffi(self__, harray, sr);
+SEXP savvy_HAudioSink_append_from_harray__impl(SEXP self__, SEXP c_arg__harray, SEXP c_arg__sr) {
+    SEXP res = savvy_HAudioSink_append_from_harray__ffi(self__, c_arg__harray, c_arg__sr);
     return handle_result(res);
 }
 
-SEXP savvy_HAudioSink_append_from_file__impl(SEXP self__, SEXP fpath) {
-    SEXP res = savvy_HAudioSink_append_from_file__ffi(self__, fpath);
+SEXP savvy_HAudioSink_append_from_file__impl(SEXP self__, SEXP c_arg__fpath) {
+    SEXP res = savvy_HAudioSink_append_from_file__ffi(self__, c_arg__fpath);
     return handle_result(res);
 }
 
@@ -195,13 +195,13 @@ SEXP savvy_HAudioSink_play__impl(SEXP self__) {
     return handle_result(res);
 }
 
-SEXP savvy_HAudioSink_set_speed__impl(SEXP self__, SEXP value) {
-    SEXP res = savvy_HAudioSink_set_speed__ffi(self__, value);
+SEXP savvy_HAudioSink_set_speed__impl(SEXP self__, SEXP c_arg__value) {
+    SEXP res = savvy_HAudioSink_set_speed__ffi(self__, c_arg__value);
     return handle_result(res);
 }
 
-SEXP savvy_HAudioSink_set_volume__impl(SEXP self__, SEXP value) {
-    SEXP res = savvy_HAudioSink_set_volume__ffi(self__, value);
+SEXP savvy_HAudioSink_set_volume__impl(SEXP self__, SEXP c_arg__value) {
+    SEXP res = savvy_HAudioSink_set_volume__ffi(self__, c_arg__value);
     return handle_result(res);
 }
 
@@ -225,8 +225,8 @@ SEXP savvy_HAudioSink_stop__impl(SEXP self__) {
     return handle_result(res);
 }
 
-SEXP savvy_HAudioSink_try_seek__impl(SEXP self__, SEXP pos) {
-    SEXP res = savvy_HAudioSink_try_seek__ffi(self__, pos);
+SEXP savvy_HAudioSink_try_seek__impl(SEXP self__, SEXP c_arg__pos) {
+    SEXP res = savvy_HAudioSink_try_seek__ffi(self__, c_arg__pos);
     return handle_result(res);
 }
 
@@ -245,13 +245,13 @@ SEXP savvy_HDataType_print__impl(SEXP self__) {
     return handle_result(res);
 }
 
-SEXP savvy_HDataType_eq__impl(SEXP self__, SEXP other) {
-    SEXP res = savvy_HDataType_eq__ffi(self__, other);
+SEXP savvy_HDataType_eq__impl(SEXP self__, SEXP c_arg__other) {
+    SEXP res = savvy_HDataType_eq__ffi(self__, c_arg__other);
     return handle_result(res);
 }
 
-SEXP savvy_HDataType_ne__impl(SEXP self__, SEXP other) {
-    SEXP res = savvy_HDataType_ne__ffi(self__, other);
+SEXP savvy_HDataType_ne__impl(SEXP self__, SEXP c_arg__other) {
+    SEXP res = savvy_HDataType_ne__ffi(self__, c_arg__other);
     return handle_result(res);
 }
 
@@ -275,28 +275,28 @@ SEXP savvy_HDecoderStream_stream__impl(SEXP self__) {
     return handle_result(res);
 }
 
-SEXP savvy_HFft_new_forward__impl(SEXP length, SEXP dtype) {
-    SEXP res = savvy_HFft_new_forward__ffi(length, dtype);
+SEXP savvy_HFft_new_forward__impl(SEXP c_arg__length, SEXP c_arg__dtype) {
+    SEXP res = savvy_HFft_new_forward__ffi(c_arg__length, c_arg__dtype);
     return handle_result(res);
 }
 
-SEXP savvy_HFft_new_inverse__impl(SEXP length, SEXP dtype) {
-    SEXP res = savvy_HFft_new_inverse__ffi(length, dtype);
+SEXP savvy_HFft_new_inverse__impl(SEXP c_arg__length, SEXP c_arg__dtype) {
+    SEXP res = savvy_HFft_new_inverse__ffi(c_arg__length, c_arg__dtype);
     return handle_result(res);
 }
 
-SEXP savvy_HFft_new_real_forward__impl(SEXP length, SEXP dtype) {
-    SEXP res = savvy_HFft_new_real_forward__ffi(length, dtype);
+SEXP savvy_HFft_new_real_forward__impl(SEXP c_arg__length, SEXP c_arg__dtype) {
+    SEXP res = savvy_HFft_new_real_forward__ffi(c_arg__length, c_arg__dtype);
     return handle_result(res);
 }
 
-SEXP savvy_HFft_new_real_inverse__impl(SEXP length, SEXP dtype) {
-    SEXP res = savvy_HFft_new_real_inverse__ffi(length, dtype);
+SEXP savvy_HFft_new_real_inverse__impl(SEXP c_arg__length, SEXP c_arg__dtype) {
+    SEXP res = savvy_HFft_new_real_inverse__ffi(c_arg__length, c_arg__dtype);
     return handle_result(res);
 }
 
-SEXP savvy_HFft_process__impl(SEXP self__, SEXP harray) {
-    SEXP res = savvy_HFft_process__ffi(self__, harray);
+SEXP savvy_HFft_process__impl(SEXP self__, SEXP c_arg__harray) {
+    SEXP res = savvy_HFft_process__ffi(self__, c_arg__harray);
     return handle_result(res);
 }
 
@@ -325,28 +325,28 @@ SEXP savvy_HFft_invalidate__impl(SEXP self__) {
     return handle_result(res);
 }
 
-SEXP savvy_HFile_decode__impl(SEXP fpath, SEXP dtype) {
-    SEXP res = savvy_HFile_decode__ffi(fpath, dtype);
+SEXP savvy_HFile_decode__impl(SEXP c_arg__fpath, SEXP c_arg__dtype) {
+    SEXP res = savvy_HFile_decode__ffi(c_arg__fpath, c_arg__dtype);
     return handle_result(res);
 }
 
-SEXP savvy_HFile_decode_stream__impl(SEXP fpath, SEXP frames, SEXP dtype) {
-    SEXP res = savvy_HFile_decode_stream__ffi(fpath, frames, dtype);
+SEXP savvy_HFile_decode_stream__impl(SEXP c_arg__fpath, SEXP c_arg__frames, SEXP c_arg__dtype) {
+    SEXP res = savvy_HFile_decode_stream__ffi(c_arg__fpath, c_arg__frames, c_arg__dtype);
     return handle_result(res);
 }
 
-SEXP savvy_HFile_metadata__impl(SEXP fpath, SEXP metadata_type) {
-    SEXP res = savvy_HFile_metadata__ffi(fpath, metadata_type);
+SEXP savvy_HFile_metadata__impl(SEXP c_arg__fpath, SEXP c_arg__metadata_type) {
+    SEXP res = savvy_HFile_metadata__ffi(c_arg__fpath, c_arg__metadata_type);
     return handle_result(res);
 }
 
-SEXP savvy_HFile_params__impl(SEXP fpath) {
-    SEXP res = savvy_HFile_params__ffi(fpath);
+SEXP savvy_HFile_params__impl(SEXP c_arg__fpath) {
+    SEXP res = savvy_HFile_params__ffi(c_arg__fpath);
     return handle_result(res);
 }
 
-SEXP savvy_HFile_verify__impl(SEXP fpath) {
-    SEXP res = savvy_HFile_verify__ffi(fpath);
+SEXP savvy_HFile_verify__impl(SEXP c_arg__fpath) {
+    SEXP res = savvy_HFile_verify__ffi(c_arg__fpath);
     return handle_result(res);
 }
 
@@ -355,13 +355,13 @@ SEXP savvy_HInterpolationType_print__impl(SEXP self__) {
     return handle_result(res);
 }
 
-SEXP savvy_HInterpolationType_eq__impl(SEXP self__, SEXP other) {
-    SEXP res = savvy_HInterpolationType_eq__ffi(self__, other);
+SEXP savvy_HInterpolationType_eq__impl(SEXP self__, SEXP c_arg__other) {
+    SEXP res = savvy_HInterpolationType_eq__ffi(self__, c_arg__other);
     return handle_result(res);
 }
 
-SEXP savvy_HInterpolationType_ne__impl(SEXP self__, SEXP other) {
-    SEXP res = savvy_HInterpolationType_ne__ffi(self__, other);
+SEXP savvy_HInterpolationType_ne__impl(SEXP self__, SEXP c_arg__other) {
+    SEXP res = savvy_HInterpolationType_ne__ffi(self__, c_arg__other);
     return handle_result(res);
 }
 
@@ -370,13 +370,13 @@ SEXP savvy_HMetadataType_print__impl(SEXP self__) {
     return handle_result(res);
 }
 
-SEXP savvy_HMetadataType_eq__impl(SEXP self__, SEXP other) {
-    SEXP res = savvy_HMetadataType_eq__ffi(self__, other);
+SEXP savvy_HMetadataType_eq__impl(SEXP self__, SEXP c_arg__other) {
+    SEXP res = savvy_HMetadataType_eq__ffi(self__, c_arg__other);
     return handle_result(res);
 }
 
-SEXP savvy_HMetadataType_ne__impl(SEXP self__, SEXP other) {
-    SEXP res = savvy_HMetadataType_ne__ffi(self__, other);
+SEXP savvy_HMetadataType_ne__impl(SEXP self__, SEXP c_arg__other) {
+    SEXP res = savvy_HMetadataType_ne__ffi(self__, c_arg__other);
     return handle_result(res);
 }
 
@@ -385,78 +385,43 @@ SEXP savvy_HPolynomialDegree_print__impl(SEXP self__) {
     return handle_result(res);
 }
 
-SEXP savvy_HPolynomialDegree_eq__impl(SEXP self__, SEXP other) {
-    SEXP res = savvy_HPolynomialDegree_eq__ffi(self__, other);
+SEXP savvy_HPolynomialDegree_eq__impl(SEXP self__, SEXP c_arg__other) {
+    SEXP res = savvy_HPolynomialDegree_eq__ffi(self__, c_arg__other);
     return handle_result(res);
 }
 
-SEXP savvy_HPolynomialDegree_ne__impl(SEXP self__, SEXP other) {
-    SEXP res = savvy_HPolynomialDegree_ne__ffi(self__, other);
+SEXP savvy_HPolynomialDegree_ne__impl(SEXP self__, SEXP c_arg__other) {
+    SEXP res = savvy_HPolynomialDegree_ne__ffi(self__, c_arg__other);
     return handle_result(res);
 }
 
-SEXP savvy_HRealFft_new__impl(SEXP length, SEXP dtype) {
-    SEXP res = savvy_HRealFft_new__ffi(length, dtype);
+SEXP savvy_HResampler_new_fft__impl(SEXP c_arg__sr_in, SEXP c_arg__sr_out, SEXP c_arg__chunk_size, SEXP c_arg__sub_chunks, SEXP c_arg__nchannels, SEXP c_arg__res_type, SEXP c_arg__dtype) {
+    SEXP res = savvy_HResampler_new_fft__ffi(c_arg__sr_in, c_arg__sr_out, c_arg__chunk_size, c_arg__sub_chunks, c_arg__nchannels, c_arg__res_type, c_arg__dtype);
     return handle_result(res);
 }
 
-SEXP savvy_HRealFft_process__impl(SEXP self__, SEXP harray) {
-    SEXP res = savvy_HRealFft_process__ffi(self__, harray);
+SEXP savvy_HResampler_new_sinc__impl(SEXP c_arg__resample_ratio, SEXP c_arg__max_resample_ratio_relative, SEXP c_arg__parameters, SEXP c_arg__chunk_size, SEXP c_arg__nchannels, SEXP c_arg__res_type, SEXP c_arg__dtype) {
+    SEXP res = savvy_HResampler_new_sinc__ffi(c_arg__resample_ratio, c_arg__max_resample_ratio_relative, c_arg__parameters, c_arg__chunk_size, c_arg__nchannels, c_arg__res_type, c_arg__dtype);
     return handle_result(res);
 }
 
-SEXP savvy_HRealFft_dtype__impl(SEXP self__) {
-    SEXP res = savvy_HRealFft_dtype__ffi(self__);
+SEXP savvy_HResampler_new_fast__impl(SEXP c_arg__resample_ratio, SEXP c_arg__max_resample_ratio_relative, SEXP c_arg__pol_deg, SEXP c_arg__chunk_size, SEXP c_arg__nchannels, SEXP c_arg__res_type, SEXP c_arg__dtype) {
+    SEXP res = savvy_HResampler_new_fast__ffi(c_arg__resample_ratio, c_arg__max_resample_ratio_relative, c_arg__pol_deg, c_arg__chunk_size, c_arg__nchannels, c_arg__res_type, c_arg__dtype);
     return handle_result(res);
 }
 
-SEXP savvy_HRealFft_print__impl(SEXP self__) {
-    SEXP res = savvy_HRealFft_print__ffi(self__);
+SEXP savvy_HResampler_process__impl(SEXP self__, SEXP c_arg__harray) {
+    SEXP res = savvy_HResampler_process__ffi(self__, c_arg__harray);
     return handle_result(res);
 }
 
-SEXP savvy_HRealFft_clone__impl(SEXP self__) {
-    SEXP res = savvy_HRealFft_clone__ffi(self__);
+SEXP savvy_HResampler_set_resample_ratio__impl(SEXP self__, SEXP c_arg__new_ratio, SEXP c_arg__ramp) {
+    SEXP res = savvy_HResampler_set_resample_ratio__ffi(self__, c_arg__new_ratio, c_arg__ramp);
     return handle_result(res);
 }
 
-SEXP savvy_HRealFft_is_unique__impl(SEXP self__) {
-    SEXP res = savvy_HRealFft_is_unique__ffi(self__);
-    return handle_result(res);
-}
-
-SEXP savvy_HRealFft_invalidate__impl(SEXP self__) {
-    SEXP res = savvy_HRealFft_invalidate__ffi(self__);
-    return handle_result(res);
-}
-
-SEXP savvy_HResampler_new_fft__impl(SEXP sr_in, SEXP sr_out, SEXP chunk_size, SEXP sub_chunks, SEXP nchannels, SEXP res_type, SEXP dtype) {
-    SEXP res = savvy_HResampler_new_fft__ffi(sr_in, sr_out, chunk_size, sub_chunks, nchannels, res_type, dtype);
-    return handle_result(res);
-}
-
-SEXP savvy_HResampler_new_sinc__impl(SEXP resample_ratio, SEXP max_resample_ratio_relative, SEXP parameters, SEXP chunk_size, SEXP nchannels, SEXP res_type, SEXP dtype) {
-    SEXP res = savvy_HResampler_new_sinc__ffi(resample_ratio, max_resample_ratio_relative, parameters, chunk_size, nchannels, res_type, dtype);
-    return handle_result(res);
-}
-
-SEXP savvy_HResampler_new_fast__impl(SEXP resample_ratio, SEXP max_resample_ratio_relative, SEXP pol_deg, SEXP chunk_size, SEXP nchannels, SEXP res_type, SEXP dtype) {
-    SEXP res = savvy_HResampler_new_fast__ffi(resample_ratio, max_resample_ratio_relative, pol_deg, chunk_size, nchannels, res_type, dtype);
-    return handle_result(res);
-}
-
-SEXP savvy_HResampler_process__impl(SEXP self__, SEXP harray) {
-    SEXP res = savvy_HResampler_process__ffi(self__, harray);
-    return handle_result(res);
-}
-
-SEXP savvy_HResampler_set_resample_ratio__impl(SEXP self__, SEXP new_ratio, SEXP ramp) {
-    SEXP res = savvy_HResampler_set_resample_ratio__ffi(self__, new_ratio, ramp);
-    return handle_result(res);
-}
-
-SEXP savvy_HResampler_set_resample_ratio_relative__impl(SEXP self__, SEXP rel_ratio, SEXP ramp) {
-    SEXP res = savvy_HResampler_set_resample_ratio_relative__ffi(self__, rel_ratio, ramp);
+SEXP savvy_HResampler_set_resample_ratio_relative__impl(SEXP self__, SEXP c_arg__rel_ratio, SEXP c_arg__ramp) {
+    SEXP res = savvy_HResampler_set_resample_ratio_relative__ffi(self__, c_arg__rel_ratio, c_arg__ramp);
     return handle_result(res);
 }
 
@@ -485,18 +450,18 @@ SEXP savvy_HResamplerType_print__impl(SEXP self__) {
     return handle_result(res);
 }
 
-SEXP savvy_HResamplerType_eq__impl(SEXP self__, SEXP other) {
-    SEXP res = savvy_HResamplerType_eq__ffi(self__, other);
+SEXP savvy_HResamplerType_eq__impl(SEXP self__, SEXP c_arg__other) {
+    SEXP res = savvy_HResamplerType_eq__ffi(self__, c_arg__other);
     return handle_result(res);
 }
 
-SEXP savvy_HResamplerType_ne__impl(SEXP self__, SEXP other) {
-    SEXP res = savvy_HResamplerType_ne__ffi(self__, other);
+SEXP savvy_HResamplerType_ne__impl(SEXP self__, SEXP c_arg__other) {
+    SEXP res = savvy_HResamplerType_ne__ffi(self__, c_arg__other);
     return handle_result(res);
 }
 
-SEXP savvy_HSincInterpolationParameters_new__impl(SEXP sinc_len, SEXP f_cutoff, SEXP oversampling_factor, SEXP interpolation, SEXP window) {
-    SEXP res = savvy_HSincInterpolationParameters_new__ffi(sinc_len, f_cutoff, oversampling_factor, interpolation, window);
+SEXP savvy_HSincInterpolationParameters_new__impl(SEXP c_arg__sinc_len, SEXP c_arg__f_cutoff, SEXP c_arg__oversampling_factor, SEXP c_arg__interpolation, SEXP c_arg__window) {
+    SEXP res = savvy_HSincInterpolationParameters_new__ffi(c_arg__sinc_len, c_arg__f_cutoff, c_arg__oversampling_factor, c_arg__interpolation, c_arg__window);
     return handle_result(res);
 }
 
@@ -505,43 +470,83 @@ SEXP savvy_HSincInterpolationParameters_print__impl(SEXP self__) {
     return handle_result(res);
 }
 
-SEXP savvy_HWindow_barthann__impl(SEXP npoints, SEXP sym, SEXP dtype) {
-    SEXP res = savvy_HWindow_barthann__ffi(npoints, sym, dtype);
+SEXP savvy_HStft_new_forward__impl(SEXP c_arg__length, SEXP c_arg__dtype) {
+    SEXP res = savvy_HStft_new_forward__ffi(c_arg__length, c_arg__dtype);
     return handle_result(res);
 }
 
-SEXP savvy_HWindow_bartlett__impl(SEXP npoints, SEXP sym, SEXP dtype) {
-    SEXP res = savvy_HWindow_bartlett__ffi(npoints, sym, dtype);
+SEXP savvy_HStft_new_real_forward__impl(SEXP c_arg__length, SEXP c_arg__dtype) {
+    SEXP res = savvy_HStft_new_real_forward__ffi(c_arg__length, c_arg__dtype);
     return handle_result(res);
 }
 
-SEXP savvy_HWindow_blackman__impl(SEXP npoints, SEXP sym, SEXP dtype) {
-    SEXP res = savvy_HWindow_blackman__ffi(npoints, sym, dtype);
+SEXP savvy_HStft_process__impl(SEXP self__, SEXP c_arg__harray, SEXP c_arg__hop_length, SEXP c_arg__window_length, SEXP c_arg__window) {
+    SEXP res = savvy_HStft_process__ffi(self__, c_arg__harray, c_arg__hop_length, c_arg__window_length, c_arg__window);
     return handle_result(res);
 }
 
-SEXP savvy_HWindow_blackmanharris__impl(SEXP npoints, SEXP sym, SEXP dtype) {
-    SEXP res = savvy_HWindow_blackmanharris__ffi(npoints, sym, dtype);
+SEXP savvy_HStft_dtype__impl(SEXP self__) {
+    SEXP res = savvy_HStft_dtype__ffi(self__);
     return handle_result(res);
 }
 
-SEXP savvy_HWindow_bohman__impl(SEXP npoints, SEXP sym, SEXP dtype) {
-    SEXP res = savvy_HWindow_bohman__ffi(npoints, sym, dtype);
+SEXP savvy_HStft_print__impl(SEXP self__) {
+    SEXP res = savvy_HStft_print__ffi(self__);
     return handle_result(res);
 }
 
-SEXP savvy_HWindow_boxcar__impl(SEXP npoints, SEXP dtype) {
-    SEXP res = savvy_HWindow_boxcar__ffi(npoints, dtype);
+SEXP savvy_HStft_clone__impl(SEXP self__) {
+    SEXP res = savvy_HStft_clone__ffi(self__);
     return handle_result(res);
 }
 
-SEXP savvy_HWindow_cosine__impl(SEXP npoints, SEXP sym, SEXP dtype) {
-    SEXP res = savvy_HWindow_cosine__ffi(npoints, sym, dtype);
+SEXP savvy_HStft_is_unique__impl(SEXP self__) {
+    SEXP res = savvy_HStft_is_unique__ffi(self__);
     return handle_result(res);
 }
 
-SEXP savvy_HWindow_hann__impl(SEXP npoints, SEXP sym, SEXP dtype) {
-    SEXP res = savvy_HWindow_hann__ffi(npoints, sym, dtype);
+SEXP savvy_HStft_invalidate__impl(SEXP self__) {
+    SEXP res = savvy_HStft_invalidate__ffi(self__);
+    return handle_result(res);
+}
+
+SEXP savvy_HWindow_barthann__impl(SEXP c_arg__npoints, SEXP c_arg__sym, SEXP c_arg__dtype) {
+    SEXP res = savvy_HWindow_barthann__ffi(c_arg__npoints, c_arg__sym, c_arg__dtype);
+    return handle_result(res);
+}
+
+SEXP savvy_HWindow_bartlett__impl(SEXP c_arg__npoints, SEXP c_arg__sym, SEXP c_arg__dtype) {
+    SEXP res = savvy_HWindow_bartlett__ffi(c_arg__npoints, c_arg__sym, c_arg__dtype);
+    return handle_result(res);
+}
+
+SEXP savvy_HWindow_blackman__impl(SEXP c_arg__npoints, SEXP c_arg__sym, SEXP c_arg__dtype) {
+    SEXP res = savvy_HWindow_blackman__ffi(c_arg__npoints, c_arg__sym, c_arg__dtype);
+    return handle_result(res);
+}
+
+SEXP savvy_HWindow_blackmanharris__impl(SEXP c_arg__npoints, SEXP c_arg__sym, SEXP c_arg__dtype) {
+    SEXP res = savvy_HWindow_blackmanharris__ffi(c_arg__npoints, c_arg__sym, c_arg__dtype);
+    return handle_result(res);
+}
+
+SEXP savvy_HWindow_bohman__impl(SEXP c_arg__npoints, SEXP c_arg__sym, SEXP c_arg__dtype) {
+    SEXP res = savvy_HWindow_bohman__ffi(c_arg__npoints, c_arg__sym, c_arg__dtype);
+    return handle_result(res);
+}
+
+SEXP savvy_HWindow_boxcar__impl(SEXP c_arg__npoints, SEXP c_arg__dtype) {
+    SEXP res = savvy_HWindow_boxcar__ffi(c_arg__npoints, c_arg__dtype);
+    return handle_result(res);
+}
+
+SEXP savvy_HWindow_cosine__impl(SEXP c_arg__npoints, SEXP c_arg__sym, SEXP c_arg__dtype) {
+    SEXP res = savvy_HWindow_cosine__ffi(c_arg__npoints, c_arg__sym, c_arg__dtype);
+    return handle_result(res);
+}
+
+SEXP savvy_HWindow_hann__impl(SEXP c_arg__npoints, SEXP c_arg__sym, SEXP c_arg__dtype) {
+    SEXP res = savvy_HWindow_hann__ffi(c_arg__npoints, c_arg__sym, c_arg__dtype);
     return handle_result(res);
 }
 
@@ -550,13 +555,13 @@ SEXP savvy_HWindowType_print__impl(SEXP self__) {
     return handle_result(res);
 }
 
-SEXP savvy_HWindowType_eq__impl(SEXP self__, SEXP other) {
-    SEXP res = savvy_HWindowType_eq__ffi(self__, other);
+SEXP savvy_HWindowType_eq__impl(SEXP self__, SEXP c_arg__other) {
+    SEXP res = savvy_HWindowType_eq__ffi(self__, c_arg__other);
     return handle_result(res);
 }
 
-SEXP savvy_HWindowType_ne__impl(SEXP self__, SEXP other) {
-    SEXP res = savvy_HWindowType_ne__ffi(self__, other);
+SEXP savvy_HWindowType_ne__impl(SEXP self__, SEXP c_arg__other) {
+    SEXP res = savvy_HWindowType_ne__ffi(self__, c_arg__other);
     return handle_result(res);
 }
 
@@ -635,13 +640,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"savvy_HPolynomialDegree_print__impl", (DL_FUNC) &savvy_HPolynomialDegree_print__impl, 1},
     {"savvy_HPolynomialDegree_eq__impl", (DL_FUNC) &savvy_HPolynomialDegree_eq__impl, 2},
     {"savvy_HPolynomialDegree_ne__impl", (DL_FUNC) &savvy_HPolynomialDegree_ne__impl, 2},
-    {"savvy_HRealFft_new__impl", (DL_FUNC) &savvy_HRealFft_new__impl, 2},
-    {"savvy_HRealFft_process__impl", (DL_FUNC) &savvy_HRealFft_process__impl, 2},
-    {"savvy_HRealFft_dtype__impl", (DL_FUNC) &savvy_HRealFft_dtype__impl, 1},
-    {"savvy_HRealFft_print__impl", (DL_FUNC) &savvy_HRealFft_print__impl, 1},
-    {"savvy_HRealFft_clone__impl", (DL_FUNC) &savvy_HRealFft_clone__impl, 1},
-    {"savvy_HRealFft_is_unique__impl", (DL_FUNC) &savvy_HRealFft_is_unique__impl, 1},
-    {"savvy_HRealFft_invalidate__impl", (DL_FUNC) &savvy_HRealFft_invalidate__impl, 1},
     {"savvy_HResampler_new_fft__impl", (DL_FUNC) &savvy_HResampler_new_fft__impl, 7},
     {"savvy_HResampler_new_sinc__impl", (DL_FUNC) &savvy_HResampler_new_sinc__impl, 7},
     {"savvy_HResampler_new_fast__impl", (DL_FUNC) &savvy_HResampler_new_fast__impl, 7},
@@ -657,6 +655,14 @@ static const R_CallMethodDef CallEntries[] = {
     {"savvy_HResamplerType_ne__impl", (DL_FUNC) &savvy_HResamplerType_ne__impl, 2},
     {"savvy_HSincInterpolationParameters_new__impl", (DL_FUNC) &savvy_HSincInterpolationParameters_new__impl, 5},
     {"savvy_HSincInterpolationParameters_print__impl", (DL_FUNC) &savvy_HSincInterpolationParameters_print__impl, 1},
+    {"savvy_HStft_new_forward__impl", (DL_FUNC) &savvy_HStft_new_forward__impl, 2},
+    {"savvy_HStft_new_real_forward__impl", (DL_FUNC) &savvy_HStft_new_real_forward__impl, 2},
+    {"savvy_HStft_process__impl", (DL_FUNC) &savvy_HStft_process__impl, 5},
+    {"savvy_HStft_dtype__impl", (DL_FUNC) &savvy_HStft_dtype__impl, 1},
+    {"savvy_HStft_print__impl", (DL_FUNC) &savvy_HStft_print__impl, 1},
+    {"savvy_HStft_clone__impl", (DL_FUNC) &savvy_HStft_clone__impl, 1},
+    {"savvy_HStft_is_unique__impl", (DL_FUNC) &savvy_HStft_is_unique__impl, 1},
+    {"savvy_HStft_invalidate__impl", (DL_FUNC) &savvy_HStft_invalidate__impl, 1},
     {"savvy_HWindow_barthann__impl", (DL_FUNC) &savvy_HWindow_barthann__impl, 3},
     {"savvy_HWindow_bartlett__impl", (DL_FUNC) &savvy_HWindow_bartlett__impl, 3},
     {"savvy_HWindow_blackman__impl", (DL_FUNC) &savvy_HWindow_blackman__impl, 3},
