@@ -107,10 +107,8 @@ impl HStft {
     ///
     /// ```r
     /// library(harmonium)
-    /// arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))
     /// dtype = HDataType$Float32
-    /// harray = HArray$new_from_values(arr, dtype)
-    /// hstft = HStft$new_real_forward(3L, harray$dtype())
+    /// hstft = HStft$new_real_forward(3L, dtype)
     /// ```
     ///
     /// _________
