@@ -219,12 +219,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../contents/hrealfft.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">HRealFft</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="../contents/hresampler.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">HResampler</span></a>
   </div>
@@ -239,6 +233,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <div class="sidebar-item-container"> 
   <a href="../contents/hsincinterpolationparameters.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">HSincInterpolationParameters</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../contents/hstft.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">HStft</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -308,7 +308,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h1>Methods</h1>
 <section id="new_forward" class="level2">
 <h2 class="anchored" data-anchor-id="new_forward">new_forward</h2>
-<p><code>new_forward(length: integer, dtype: HDataType) -&gt; HFft</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L79">source</a> </span><br>
+<p><code>new_forward(length: integer, dtype: HDataType) -&gt; HFft</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L66">source</a> </span><br>
 </p>
 <p>Creates a new <code>HFft</code> instance which will be used to calculate forward FFTs.</p>
 <p>If you plan on creating multiple FFT instances, it is recommended to reuse the same planner for all of them. This is because the planner re-uses internal data across FFT instances wherever possible, saving memory and reducing setup time (FFT instances created with one planner will never re-use data and buffers with FFT instances created by a different planner).</p>
@@ -332,16 +332,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="examples" class="level4">
 <h4 class="anchored" data-anchor-id="examples">Examples</h4>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>arr <span class="ot">=</span> <span class="fu">array</span>(<span class="fu">c</span>(<span class="dv">1</span><span class="sc">+</span><span class="dv">1</span>i,<span class="dv">2</span><span class="sc">+</span><span class="dv">2</span>i,<span class="dv">3</span><span class="sc">+</span><span class="dv">3</span>i,<span class="dv">4</span><span class="sc">+</span><span class="dv">4</span>i,<span class="dv">5</span><span class="sc">+</span><span class="dv">5</span>i,<span class="dv">6</span><span class="sc">+</span><span class="dv">6</span>i), <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">2</span>))</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>dtype <span class="ot">=</span> HDataType<span class="sc">$</span>Complex32</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>harray <span class="ot">=</span> HArray<span class="sc">$</span><span class="fu">new_from_values</span>(arr, dtype)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>hfft <span class="ot">=</span> HFft<span class="sc">$</span><span class="fu">new_forward</span>(<span class="dv">3</span>L, harray<span class="sc">$</span><span class="fu">dtype</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>dtype <span class="ot">=</span> HDataType<span class="sc">$</span>Complex32</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>hfft <span class="ot">=</span> HFft<span class="sc">$</span><span class="fu">new_forward</span>(<span class="dv">3</span>L, dtype)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 </section>
 </section>
 <section id="new_inverse" class="level2">
 <h2 class="anchored" data-anchor-id="new_inverse">new_inverse</h2>
-<p><code>new_inverse(length: integer, dtype: HDataType) -&gt; HFft</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L135">source</a> </span><br>
+<p><code>new_inverse(length: integer, dtype: HDataType) -&gt; HFft</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L120">source</a> </span><br>
 </p>
 <p>Creates a new <code>HFft</code> instance which will be used to calculate inverse FFTs.</p>
 <p>If you plan on creating multiple FFT instances, it is recommended to reuse the same planner for all of them. This is because the planner re-uses internal data across FFT instances wherever possible, saving memory and reducing setup time (FFT instances created with one planner will never re-use data and buffers with FFT instances created by a different planner).</p>
@@ -365,16 +363,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="examples-1" class="level4">
 <h4 class="anchored" data-anchor-id="examples-1">Examples</h4>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>arr <span class="ot">=</span> <span class="fu">array</span>(<span class="fu">c</span>(<span class="dv">1</span><span class="sc">+</span><span class="dv">1</span>i,<span class="dv">2</span><span class="sc">+</span><span class="dv">2</span>i,<span class="dv">3</span><span class="sc">+</span><span class="dv">3</span>i,<span class="dv">4</span><span class="sc">+</span><span class="dv">4</span>i,<span class="dv">5</span><span class="sc">+</span><span class="dv">5</span>i,<span class="dv">6</span><span class="sc">+</span><span class="dv">6</span>i), <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">2</span>))</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>dtype <span class="ot">=</span> HDataType<span class="sc">$</span>Complex32</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>harray <span class="ot">=</span> HArray<span class="sc">$</span><span class="fu">new_from_values</span>(arr, dtype)</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>hfft <span class="ot">=</span> HFft<span class="sc">$</span><span class="fu">new_inverse</span>(<span class="dv">3</span>L, harray<span class="sc">$</span><span class="fu">dtype</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>dtype <span class="ot">=</span> HDataType<span class="sc">$</span>Complex32</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>hfft <span class="ot">=</span> HFft<span class="sc">$</span><span class="fu">new_inverse</span>(<span class="dv">3</span>L, dtype)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 </section>
 </section>
 <section id="new_real_forward" class="level2">
 <h2 class="anchored" data-anchor-id="new_real_forward">new_real_forward</h2>
-<p><code>new_real_forward(length: integer, dtype: HDataType) -&gt; HFft</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L191">source</a> </span><br>
+<p><code>new_real_forward(length: integer, dtype: HDataType) -&gt; HFft</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L173">source</a> </span><br>
 </p>
 <p>Creates a new <code>HFft</code> instance which will be used to calculate real forward FFTs.</p>
 <p>If you plan on creating multiple FFT instances, it is recommended to reuse the same planner for all of them. This is because the planner re-uses internal data across FFT instances wherever possible, saving memory and reducing setup time (FFT instances created with one planner will never re-use data and buffers with FFT instances created by a different planner).</p>
@@ -384,7 +380,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ul>
 <li><code>length</code></li>
 </ul>
-<p>An integer denoting the length of the input for forward FFTs and the length of the output for inverse FFTs. For 2D <code>HArray</code>’s, nrows must be provided.</p>
+<p>An integer denoting the length of the input. For 2D <code>HArray</code>’s, nrows must be provided.</p>
 <ul>
 <li><code>dtype</code></li>
 </ul>
@@ -398,16 +394,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="examples-2" class="level4">
 <h4 class="anchored" data-anchor-id="examples-2">Examples</h4>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>arr <span class="ot">=</span> <span class="fu">array</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>,<span class="dv">9</span>,<span class="dv">10</span>,<span class="dv">11</span>,<span class="dv">12</span>), <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">4</span>))</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>dtype <span class="ot">=</span> HDataType<span class="sc">$</span>Float32</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>harray <span class="ot">=</span> HArray<span class="sc">$</span><span class="fu">new_from_values</span>(arr, dtype)</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>hfft <span class="ot">=</span> HFft<span class="sc">$</span><span class="fu">new_real_forward</span>(<span class="dv">3</span>L, harray<span class="sc">$</span><span class="fu">dtype</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>dtype <span class="ot">=</span> HDataType<span class="sc">$</span>Float32</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>hfft <span class="ot">=</span> HFft<span class="sc">$</span><span class="fu">new_real_forward</span>(<span class="dv">3</span>L, dtype)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 </section>
 </section>
 <section id="new_real_inverse" class="level2">
 <h2 class="anchored" data-anchor-id="new_real_inverse">new_real_inverse</h2>
-<p><code>new_real_inverse(length: integer, dtype: HDataType) -&gt; HFft</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L247">source</a> </span><br>
+<p><code>new_real_inverse(length: integer, dtype: HDataType) -&gt; HFft</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L226">source</a> </span><br>
 </p>
 <p>Creates a new <code>HFft</code> instance which will be used to calculate real inverse FFTs.</p>
 <p>If you plan on creating multiple FFT instances, it is recommended to reuse the same planner for all of them. This is because the planner re-uses internal data across FFT instances wherever possible, saving memory and reducing setup time (FFT instances created with one planner will never re-use data and buffers with FFT instances created by a different planner).</p>
@@ -417,7 +411,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ul>
 <li><code>length</code></li>
 </ul>
-<p>An integer denoting the length of the input for forward FFTs and the length of the output for inverse FFTs. For 2D <code>HArray</code>’s, nrows must be provided.</p>
+<p>An integer denoting the length of the output. For 2D <code>HArray</code>’s, nrows of the output must be provided.</p>
 <ul>
 <li><code>dtype</code></li>
 </ul>
@@ -431,19 +425,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="examples-3" class="level4">
 <h4 class="anchored" data-anchor-id="examples-3">Examples</h4>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>arr <span class="ot">=</span> <span class="fu">array</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>,<span class="dv">9</span>,<span class="dv">10</span>,<span class="dv">11</span>,<span class="dv">12</span>), <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">4</span>))</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>dtype <span class="ot">=</span> HDataType<span class="sc">$</span>Float32</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>harray <span class="ot">=</span> HArray<span class="sc">$</span><span class="fu">new_from_values</span>(arr, dtype)</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>hfft <span class="ot">=</span> HFft<span class="sc">$</span><span class="fu">new_real_inverse</span>(<span class="dv">3</span>L, harray<span class="sc">$</span><span class="fu">dtype</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>dtype <span class="ot">=</span> HDataType<span class="sc">$</span>Float32</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>hfft <span class="ot">=</span> HFft<span class="sc">$</span><span class="fu">new_real_inverse</span>(<span class="dv">3</span>L, dtype)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 </section>
 </section>
 <section id="process" class="level2">
 <h2 class="anchored" data-anchor-id="process">process</h2>
-<p><code>process(harray: HArray)</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L318">source</a> </span><br>
+<p><code>process(harray: HArray)</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L298">source</a> </span><br>
 </p>
-<p>Computes the fast fourier transform of a complex <code>HArray</code>. The FFT computed may be forward or inverse, depending on the <code>HFFT</code> created. For a real forward FFT, transforms a real signal of length <code>N</code> to a complex-valued spectrum of length <code>N/2+1</code> (with <code>N/2</code> rounded down). For a real inverse FFT, transforms a complex spectrum of length <code>N/2+1</code> (with <code>N/2</code> rounded down) to a real-valued signal of length <code>N</code>.</p>
-<p>The operation is done in-place.</p>
+<p>Computes the fast fourier transform of an <code>HArray</code>. The FFT computed may be forward or inverse, depending on the <code>HFft</code> created. For a real forward FFT, transforms a real signal of length <code>N</code> to a complex-valued spectrum of length <code>N/2+1</code> (with <code>N/2</code> rounded down). For a real inverse FFT, transforms a complex spectrum of length <code>N/2+1</code> (with <code>N/2</code> rounded down) to a real-valued signal of length <code>N</code>.</p>
+<p>The operation is done in-place for FFT. The operation is done in-place for real FFT, which means the same external pointer will be used to store it. A new <code>HArray</code> is created in this case.</p>
 <p>FFT (Fast Fourier Transform) refers to a way the discrete Fourier Transform (DFT) can be calculated efficiently, by using symmetries in the calculated terms. The symmetry is highest when n is a power of 2, and the transform is therefore most efficient for these sizes.</p>
 <p>The function does not normalize outputs. Callers must manually normalize the results by scaling each element by <code>1/sqrt(n)</code>. Multiple normalization steps can be merged into one via pairwise multiplication, so when doing a forward FFT followed by an inverse callers can normalize once by scaling each element by <code>1/n</code>.</p>
 <p>Elements in the output are ordered by ascending frequency, with the first element corresponding to frequency 0.</p>
@@ -483,7 +475,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="dtype" class="level2">
 <h2 class="anchored" data-anchor-id="dtype">dtype</h2>
-<p><code>dtype() -&gt; HDataType</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L347">source</a> </span><br>
+<p><code>dtype() -&gt; HDataType</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L325">source</a> </span><br>
 </p>
 <p>Gets the <code>HFft</code>’s dtype.</p>
 <section id="returns-5" class="level4">
@@ -493,37 +485,33 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="examples-5" class="level4">
 <h4 class="anchored" data-anchor-id="examples-5">Examples</h4>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>arr <span class="ot">=</span> <span class="fu">array</span>(<span class="fu">c</span>(<span class="dv">1</span><span class="sc">+</span><span class="dv">1</span>i,<span class="dv">2</span><span class="sc">+</span><span class="dv">2</span>i,<span class="dv">3</span><span class="sc">+</span><span class="dv">3</span>i,<span class="dv">4</span><span class="sc">+</span><span class="dv">4</span>i,<span class="dv">5</span><span class="sc">+</span><span class="dv">5</span>i,<span class="dv">6</span><span class="sc">+</span><span class="dv">6</span>i), <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">2</span>))</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>dtype <span class="ot">=</span> HDataType<span class="sc">$</span>Complex32</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>harray <span class="ot">=</span> HArray<span class="sc">$</span><span class="fu">new_from_values</span>(arr, dtype)</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>hfft <span class="ot">=</span> HFft<span class="sc">$</span><span class="fu">new_forward</span>(<span class="dv">3</span>L, harray<span class="sc">$</span><span class="fu">dtype</span>())</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>hfft<span class="sc">$</span><span class="fu">dtype</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>dtype <span class="ot">=</span> HDataType<span class="sc">$</span>Complex32</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>hfft <span class="ot">=</span> HFft<span class="sc">$</span><span class="fu">new_forward</span>(<span class="dv">3</span>L, dtype)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>hfft<span class="sc">$</span><span class="fu">dtype</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 </section>
 </section>
 <section id="print" class="level2">
 <h2 class="anchored" data-anchor-id="print">print</h2>
-<p><code>print()</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L376">source</a> </span><br>
+<p><code>print()</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L352">source</a> </span><br>
 </p>
 <p>Prints the <code>HFft</code>.</p>
 <p>Differently from R’s normal behaviour, <code>print</code> doesn’t return the value invisibly.</p>
 <section id="examples-6" class="level4">
 <h4 class="anchored" data-anchor-id="examples-6">Examples</h4>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>arr <span class="ot">=</span> <span class="fu">array</span>(<span class="fu">c</span>(<span class="dv">1</span><span class="sc">+</span><span class="dv">1</span>i,<span class="dv">2</span><span class="sc">+</span><span class="dv">2</span>i,<span class="dv">3</span><span class="sc">+</span><span class="dv">3</span>i,<span class="dv">4</span><span class="sc">+</span><span class="dv">4</span>i,<span class="dv">5</span><span class="sc">+</span><span class="dv">5</span>i,<span class="dv">6</span><span class="sc">+</span><span class="dv">6</span>i), <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">2</span>))</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>dtype <span class="ot">=</span> HDataType<span class="sc">$</span>Complex32</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>harray <span class="ot">=</span> HArray<span class="sc">$</span><span class="fu">new_from_values</span>(arr, dtype)</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>hfft <span class="ot">=</span> HFft<span class="sc">$</span><span class="fu">new_forward</span>(<span class="dv">3</span>L, harray<span class="sc">$</span><span class="fu">dtype</span>())</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>hfft<span class="sc">$</span><span class="fu">print</span>()</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co"># or similarly:</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(hfft)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>dtype <span class="ot">=</span> HDataType<span class="sc">$</span>Complex32</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>hfft <span class="ot">=</span> HFft<span class="sc">$</span><span class="fu">new_forward</span>(<span class="dv">3</span>L, dtype)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>hfft<span class="sc">$</span><span class="fu">print</span>()</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co"># or similarly:</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(hfft)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 </section>
 </section>
 <section id="clone" class="level2">
 <h2 class="anchored" data-anchor-id="clone">clone</h2>
-<p><code>clone() -&gt; HFft</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L409">source</a> </span><br>
+<p><code>clone() -&gt; HFft</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L383">source</a> </span><br>
 </p>
 <p>Clones the <code>HFft</code>.</p>
 <p>Creates a new <code>HFft</code>, with the underlying data pointing to the same place in memory. When <code>HFFT</code> is cloned, thus having more than one reference to the same internal struct, and <code>process</code> is run, it uses the same cached <code>Fft</code> instance, but a new scratch buffer will have to be allocated.</p>
@@ -534,17 +522,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="examples-7" class="level4">
 <h4 class="anchored" data-anchor-id="examples-7">Examples</h4>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>arr <span class="ot">=</span> <span class="fu">array</span>(<span class="fu">c</span>(<span class="dv">1</span><span class="sc">+</span><span class="dv">1</span>i,<span class="dv">2</span><span class="sc">+</span><span class="dv">2</span>i,<span class="dv">3</span><span class="sc">+</span><span class="dv">3</span>i,<span class="dv">4</span><span class="sc">+</span><span class="dv">4</span>i,<span class="dv">5</span><span class="sc">+</span><span class="dv">5</span>i,<span class="dv">6</span><span class="sc">+</span><span class="dv">6</span>i), <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">2</span>))</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>dtype <span class="ot">=</span> HDataType<span class="sc">$</span>Complex32</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>harray <span class="ot">=</span> HArray<span class="sc">$</span><span class="fu">new_from_values</span>(arr, dtype)</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>hfft <span class="ot">=</span> HFft<span class="sc">$</span><span class="fu">new_forward</span>(<span class="dv">3</span>L, harray<span class="sc">$</span><span class="fu">dtype</span>())</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>hfft<span class="sc">$</span><span class="fu">clone</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>dtype <span class="ot">=</span> HDataType<span class="sc">$</span>Complex32</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>hfft <span class="ot">=</span> HFft<span class="sc">$</span><span class="fu">new_forward</span>(<span class="dv">3</span>L, dtype)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>hfft<span class="sc">$</span><span class="fu">clone</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 </section>
 </section>
 <section id="is_unique" class="level2">
 <h2 class="anchored" data-anchor-id="is_unique">is_unique</h2>
-<p><code>is_unique() -&gt; bool</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L443">source</a> </span><br>
+<p><code>is_unique() -&gt; bool</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L415">source</a> </span><br>
 </p>
 <p>Checks if the object is unique.</p>
 <p>Since <code>HFft</code> has a COW (<a href="https://doc.rust-lang.org/std/borrow/enum.Cow.html">clone-on-write</a>) behaviour, this function is useful to check if a new object will be created or if the change will be done in-place.</p>
@@ -555,30 +541,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="examples-8" class="level4">
 <h4 class="anchored" data-anchor-id="examples-8">Examples</h4>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>arr <span class="ot">=</span> <span class="fu">array</span>(<span class="fu">c</span>(<span class="dv">1</span><span class="sc">+</span><span class="dv">1</span>i,<span class="dv">2</span><span class="sc">+</span><span class="dv">2</span>i,<span class="dv">3</span><span class="sc">+</span><span class="dv">3</span>i,<span class="dv">4</span><span class="sc">+</span><span class="dv">4</span>i,<span class="dv">5</span><span class="sc">+</span><span class="dv">5</span>i,<span class="dv">6</span><span class="sc">+</span><span class="dv">6</span>i), <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">2</span>))</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>dtype <span class="ot">=</span> HDataType<span class="sc">$</span>Complex32</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>harray <span class="ot">=</span> HArray<span class="sc">$</span><span class="fu">new_from_values</span>(arr, dtype)</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>hfft <span class="ot">=</span> HFft<span class="sc">$</span><span class="fu">new_forward</span>(<span class="dv">3</span>L, harray<span class="sc">$</span><span class="fu">dtype</span>())</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>hfft<span class="sc">$</span><span class="fu">is_unique</span>() <span class="co"># TRUE.</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>hfft2 <span class="ot">=</span> hfft<span class="sc">$</span><span class="fu">clone</span>()</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>hfft<span class="sc">$</span><span class="fu">is_unique</span>() <span class="co"># FALSE, hfft shares the same inner object with hfft2.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>dtype <span class="ot">=</span> HDataType<span class="sc">$</span>Complex32</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>hfft <span class="ot">=</span> HFft<span class="sc">$</span><span class="fu">new_forward</span>(<span class="dv">3</span>L, dtype)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>hfft<span class="sc">$</span><span class="fu">is_unique</span>() <span class="co"># TRUE.</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>hfft2 <span class="ot">=</span> hfft<span class="sc">$</span><span class="fu">clone</span>()</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>hfft<span class="sc">$</span><span class="fu">is_unique</span>() <span class="co"># FALSE, hfft shares the same inner object with hfft2.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 </section>
 </section>
 <section id="invalidate" class="level2">
 <h2 class="anchored" data-anchor-id="invalidate">invalidate</h2>
-<p><code>invalidate()</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L471">source</a> </span><br>
+<p><code>invalidate()</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L441">source</a> </span><br>
 </p>
 <p>Replaces the inner value of the external pointer, invalidating it. This function is useful to remove one of the shared references of the inner pointer in rust.</p>
 <section id="examples-9" class="level4">
 <h4 class="anchored" data-anchor-id="examples-9">Examples</h4>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(harmonium)</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>arr <span class="ot">=</span> <span class="fu">array</span>(<span class="fu">c</span>(<span class="dv">1</span><span class="sc">+</span><span class="dv">1</span>i,<span class="dv">2</span><span class="sc">+</span><span class="dv">2</span>i,<span class="dv">3</span><span class="sc">+</span><span class="dv">3</span>i,<span class="dv">4</span><span class="sc">+</span><span class="dv">4</span>i,<span class="dv">5</span><span class="sc">+</span><span class="dv">5</span>i,<span class="dv">6</span><span class="sc">+</span><span class="dv">6</span>i), <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">2</span>))</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>dtype <span class="ot">=</span> HDataType<span class="sc">$</span>Complex32</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>harray <span class="ot">=</span> HArray<span class="sc">$</span><span class="fu">new_from_values</span>(arr, dtype)</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>hfft <span class="ot">=</span> HFft<span class="sc">$</span><span class="fu">new_forward</span>(<span class="dv">3</span>L, harray<span class="sc">$</span><span class="fu">dtype</span>())</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>hfft<span class="sc">$</span><span class="fu">invalidate</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>dtype <span class="ot">=</span> HDataType<span class="sc">$</span>Complex32</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>hfft <span class="ot">=</span> HFft<span class="sc">$</span><span class="fu">new_forward</span>(<span class="dv">3</span>L, dtype)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>hfft<span class="sc">$</span><span class="fu">invalidate</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 
 
