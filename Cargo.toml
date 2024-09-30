@@ -11,7 +11,7 @@ members = [
 [workspace.dependencies]
 rustfft = { version = "6.2", default-features = false, features = ["avx", "sse", "neon"] }
 realfft = { version = "3.3", default-features = false } 
-rubato = { version = "0.15.0", default-features = false, features = ["fft_resampler"] }
+rubato = { version = "0.16.0", default-features = false, features = ["fft_resampler"] }
 ndarray = { version = "0.16", default-features = false }
 symphonia = { version = "0.5.4", default-features = false }
 rodio = { version = "0.19.0", default-features = false }
