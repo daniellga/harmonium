@@ -1,4 +1,9 @@
-use crate::{conversions::ToScalar, errors::HErrorR, harray::HArray, hdatatype::HDataType};
+use crate::{
+    conversions::{try_from_i32_to_usize, ToScalar},
+    errors::HErrorR,
+    harray::HArray,
+    hdatatype::HDataType,
+};
 use harmonium_fft::fft::{Fft, RealFftForward, RealFftInverse};
 use ndarray::IxDyn;
 use num_complex::Complex;
@@ -65,9 +70,7 @@ impl HFft {
     ///
     fn new_forward(length: Sexp, dtype: &HDataType) -> savvy::Result<HFft> {
         let length: i32 = length.to_scalar()?;
-        let length: usize = length
-            .try_into()
-            .map_err(|_| savvy::Error::new("Cannot convert i32 to usize."))?;
+        let length = try_from_i32_to_usize(length)?;
         match dtype {
             HDataType::Float32 => Err("This HFft is for Complex dtypes.".into()),
             HDataType::Float64 => Err("This HFft is for Complex dtypes.".into()),
@@ -119,9 +122,7 @@ impl HFft {
     ///
     fn new_inverse(length: Sexp, dtype: &HDataType) -> savvy::Result<HFft> {
         let length: i32 = length.to_scalar()?;
-        let length: usize = length
-            .try_into()
-            .map_err(|_| savvy::Error::new("Cannot convert i32 to usize."))?;
+        let length = try_from_i32_to_usize(length)?;
         match dtype {
             HDataType::Float32 => Err("This HFft is for Complex dtypes.".into()),
             HDataType::Float64 => Err("This HFft is for Complex dtypes.".into()),
@@ -172,9 +173,7 @@ impl HFft {
     ///
     fn new_real_forward(length: Sexp, dtype: &HDataType) -> savvy::Result<HFft> {
         let length: i32 = length.to_scalar()?;
-        let length: usize = length
-            .try_into()
-            .map_err(|_| savvy::Error::new("Cannot convert i32 to usize."))?;
+        let length = try_from_i32_to_usize(length)?;
         match dtype {
             HDataType::Float32 => Ok(HFft(Arc::new(RealFftForward::<f32>::new(length)))),
             HDataType::Float64 => Ok(HFft(Arc::new(RealFftForward::<f64>::new(length)))),
@@ -225,9 +224,7 @@ impl HFft {
     ///
     fn new_real_inverse(length: Sexp, dtype: &HDataType) -> savvy::Result<HFft> {
         let length: i32 = length.to_scalar()?;
-        let length: usize = length
-            .try_into()
-            .map_err(|_| savvy::Error::new("Cannot convert i32 to usize."))?;
+        let length = try_from_i32_to_usize(length)?;
         match dtype {
             HDataType::Float32 => Err("This HFft is for complex dtypes.".into()),
             HDataType::Float64 => Err("This HFft is for complex dtypes.".into()),

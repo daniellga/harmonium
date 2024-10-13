@@ -1,7 +1,7 @@
 [package]
 name = 'r-harmonium'
 edition = '2021'
-version = '0.3.0'
+version = '0.4.0'
 
 [lib]
 crate-type = [ 'staticlib' ]
@@ -27,7 +27,7 @@ harmonium-io = { git = "https://github.com/daniellga/harmonium.git", features = 
 harmonium-resample = { git = "https://github.com/daniellga/harmonium.git" }
 harmonium-fft = { git = "https://github.com/daniellga/harmonium.git" }
 harmonium-window = { git = "https://github.com/daniellga/harmonium.git" }
-rubato = { version = "0.15.0", default-features = false, features = ["fft_resampler"] }
+rubato = { version = "0.16.0", default-features = false, features = ["fft_resampler"] }
 rustfft = { version = "6.2", default-features = false, features = ["avx", "sse", "neon"] }
 realfft = { version = "3.3", default-features = false } 
 ndarray = { version = "0.16", default-features = false }

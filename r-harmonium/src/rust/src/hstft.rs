@@ -1,4 +1,9 @@
-use crate::{conversions::ToScalar, errors::HErrorR, harray::HArray, hdatatype::HDataType};
+use crate::{
+    conversions::{try_from_i32_to_usize, ToScalar},
+    errors::HErrorR,
+    harray::HArray,
+    hdatatype::HDataType,
+};
 use harmonium_fft::stft::{RealStftForward, Stft};
 use ndarray::IxDyn;
 use num_complex::Complex;
@@ -66,9 +71,7 @@ impl HStft {
     ///
     fn new_forward(length: Sexp, dtype: &HDataType) -> savvy::Result<HStft> {
         let length: i32 = length.to_scalar()?;
-        let length: usize = length
-            .try_into()
-            .map_err(|_| savvy::Error::new("Cannot convert i32 to usize."))?;
+        let length = try_from_i32_to_usize(length)?;
         match dtype {
             HDataType::Float32 => Err("This HStft is for Complex dtypes.".into()),
             HDataType::Float64 => Err("This HStft is for Complex dtypes.".into()),
@@ -115,9 +118,7 @@ impl HStft {
     ///
     fn new_real_forward(length: Sexp, dtype: &HDataType) -> savvy::Result<HStft> {
         let length: i32 = length.to_scalar()?;
-        let length: usize = length
-            .try_into()
-            .map_err(|_| savvy::Error::new("Cannot convert i32 to usize."))?;
+        let length = try_from_i32_to_usize(length)?;
         match dtype {
             HDataType::Float32 => Ok(HStft(Arc::new(RealStftForward::<f32>::new(length)))),
             HDataType::Float64 => Ok(HStft(Arc::new(RealStftForward::<f64>::new(length)))),
@@ -195,15 +196,11 @@ impl HStft {
     ) -> savvy::Result<()> {
         let inner_mut = self.get_inner_mut();
         let hop_length: i32 = hop_length.to_scalar()?;
-        let hop_length: usize = hop_length
-            .try_into()
-            .map_err(|_| savvy::Error::new("Cannot convert i32 to usize."))?;
+        let hop_length = try_from_i32_to_usize(hop_length)?;
         let hop_length = NonZero::new(hop_length)
             .ok_or_else(|| savvy::Error::new("hop_length can't be zero."))?;
         let window_length: i32 = window_length.to_scalar()?;
-        let window_length: usize = window_length
-            .try_into()
-            .map_err(|_| savvy::Error::new("Cannot convert i32 to usize."))?;
+        let window_length = try_from_i32_to_usize(window_length)?;
         let window_length = NonZero::new(window_length)
             .ok_or_else(|| savvy::Error::new("window_length can't be zero."))?;
         inner_mut.process(harray, hop_length, window_length, window)

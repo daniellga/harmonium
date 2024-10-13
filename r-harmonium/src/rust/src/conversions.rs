@@ -62,9 +62,16 @@ impl ToScalar<bool> for Sexp {
     }
 }
 
-pub fn try_from_usize_to_int_sexp(n: usize) -> savvy::Result<OwnedIntegerSexp> {
+#[inline]
+pub(crate) fn try_from_usize_to_int_sexp(n: usize) -> savvy::Result<OwnedIntegerSexp> {
     let n: i32 = n
         .try_into()
         .map_err(|_| savvy::Error::new("Cannot convert usize to i32."))?;
     n.try_into()
+}
+
+#[inline]
+pub(crate) fn try_from_i32_to_usize(n: i32) -> savvy::Result<usize> {
+    n.try_into()
+        .map_err(|_| savvy::Error::new("Cannot convert i32 to usize."))
 }

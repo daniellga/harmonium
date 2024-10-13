@@ -14,3 +14,7 @@ impl From<HErrorR> for savvy::Error {
         Self::GeneralError(err.0.to_string())
     }
 }
+
+pub(crate) fn to_savvy_error(err: rubato::ResampleError) -> savvy::Error {
+    savvy::Error::from(HErrorR::from(HError::from(err)))
+}

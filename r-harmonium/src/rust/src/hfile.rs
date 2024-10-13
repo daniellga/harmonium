@@ -1,5 +1,8 @@
 use crate::{
-    conversions::ToScalar, errors::HErrorR, harray::HArray, hdatatype::HDataType,
+    conversions::{try_from_i32_to_usize, ToScalar},
+    errors::HErrorR,
+    harray::HArray,
+    hdatatype::HDataType,
     hmetadatatype::HMetadataType,
 };
 use harmonium_core::conversions::IntoDynamic;
@@ -226,8 +229,7 @@ impl HFile {
     ) -> savvy::Result<HDecoderStream> {
         let fpath: &str = fpath.to_scalar()?;
         let frames: i32 = frames.to_scalar()?;
-        let frames = usize::try_from(frames)
-            .map_err(|_| savvy::Error::new("Cannot convert i32 to usize."))?;
+        let frames = try_from_i32_to_usize(frames)?;
         match dtype {
             HDataType::Float32 => {
                 let streamer =
