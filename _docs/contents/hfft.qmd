@@ -8,7 +8,7 @@ An `HFft` is used to create FFTs. It caches results internally, so when making m
 
 ## new_forward
 
-`new_forward(length: integer, dtype: HDataType) -> HFft`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L66) </span> \
+`new_forward(length: integer, dtype: HDataType) -> HFft`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L71) </span> \
 
 Creates a new `HFft` instance which will be used to calculate forward FFTs.
 
@@ -48,7 +48,7 @@ _________
 
 ## new_inverse
 
-`new_inverse(length: integer, dtype: HDataType) -> HFft`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L120) </span> \
+`new_inverse(length: integer, dtype: HDataType) -> HFft`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L123) </span> \
 
 Creates a new `HFft` instance which will be used to calculate inverse FFTs.
 
@@ -88,7 +88,7 @@ _________
 
 ## new_real_forward
 
-`new_real_forward(length: integer, dtype: HDataType) -> HFft`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L173) </span> \
+`new_real_forward(length: integer, dtype: HDataType) -> HFft`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L174) </span> \
 
 Creates a new `HFft` instance which will be used to calculate real forward FFTs.
 
@@ -127,7 +127,7 @@ _________
 
 ## new_real_inverse
 
-`new_real_inverse(length: integer, dtype: HDataType) -> HFft`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L226) </span> \
+`new_real_inverse(length: integer, dtype: HDataType) -> HFft`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L225) </span> \
 
 Creates a new `HFft` instance which will be used to calculate real inverse FFTs.
 
@@ -166,7 +166,7 @@ _________
 
 ## process
 
-`process(harray: HArray)`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L298) </span> \
+`process(harray: HArray)`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L295) </span> \
 
 Computes the fast fourier transform of an `HArray`.
 The FFT computed may be forward or inverse, depending on the `HFft` created.
@@ -224,7 +224,7 @@ _________
 
 ## dtype
 
-`dtype() -> HDataType`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L325) </span> \
+`dtype() -> HDataType`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L322) </span> \
 
 Gets the `HFft`'s dtype.
 
@@ -245,7 +245,7 @@ _________
 
 ## print
 
-`print()`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L352) </span> \
+`print()`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L349) </span> \
 
 Prints the `HFft`.
 
@@ -267,7 +267,7 @@ _________
 
 ## clone
 
-`clone() -> HFft`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L383) </span> \
+`clone() -> HFft`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L380) </span> \
 
 Clones the `HFft`.
 
@@ -292,7 +292,7 @@ _________
 
 ## is_unique
 
-`is_unique() -> bool`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L415) </span> \
+`is_unique() -> bool`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L412) </span> \
 
 Checks if the object is unique.
 
@@ -319,7 +319,7 @@ _________
 
 ## invalidate
 
-`invalidate()`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L441) </span> \
+`invalidate()`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfft.rs#L438) </span> \
 
 Replaces the inner value of the external pointer, invalidating it.
 This function is useful to remove one of the shared references of the inner pointer in rust.

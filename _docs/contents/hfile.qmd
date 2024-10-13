@@ -8,7 +8,7 @@ A collection of methods designed to streamline input and output operations.
 
 ## decode
 
-`decode(fpath: string, dtype: HDataType) -> HDecodedAudio`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L164) </span> \
+`decode(fpath: string, dtype: HDataType) -> HDecodedAudio`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L167) </span> \
 
 Decode an audio file, providing its decoded data and the sampling rate.
 
@@ -45,7 +45,7 @@ _________
 
 ## decode_stream
 
-`decode_stream(fpath: string, frames: integer, dtype: HDataType) -> HDecoderStream`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L222) </span> \
+`decode_stream(fpath: string, frames: integer, dtype: HDataType) -> HDecoderStream`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L225) </span> \
 
 Creates an `HDecoderStream`, used as an iterator to stream frames of decoded audio.
 
@@ -81,7 +81,7 @@ _________
 
 ## metadata
 
-`metadata(fpath: string, metadata_type: HMetadataType) -> list`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L364) </span> \
+`metadata(fpath: string, metadata_type: HMetadataType) -> list`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L366) </span> \
 
 Extract text and visual metadata from a file.
 
@@ -198,7 +198,7 @@ _________
 
 ## params
 
-`params(fpath: string) -> atomicvector`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L439) </span> \
+`params(fpath: string) -> atomicvector`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L441) </span> \
 
 Get audio parameters from a file.
 
@@ -231,7 +231,7 @@ _________
 
 ## verify
 
-`verify(fpath: string) -> string`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L479) </span> \
+`verify(fpath: string) -> string`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L481) </span> \
 
 Verify an audio file, if supported by the decoder.
 

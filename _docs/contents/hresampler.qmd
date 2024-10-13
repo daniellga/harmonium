@@ -35,7 +35,7 @@ This type of resampler is considerably faster but doesn’t support changing the
 
 ## new_fft
 
-`new_fft(sr_in: integer, sr_out: integer, chunk_size: integer, sub_chunks: integer, nbr_channels: integer, res_type: HResamplerType, dtype: HDataType) -> HResampler`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hresampler.rs#L142) </span> \
+`new_fft(sr_in: integer, sr_out: integer, chunk_size: integer, sub_chunks: integer, nbr_channels: integer, res_type: HResamplerType, dtype: HDataType) -> HResampler`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hresampler.rs#L148) </span> \
 
 Creates a new FFT type HResampler.
 
@@ -115,7 +115,7 @@ _________
 
 ## new_sinc
 
-`new_sinc(resample_ratio: double, max_resample_ratio_relative: double, parameters: HSincInterpolationParameters, chunk_size: integer, nchannels: integer, res_type: HResamplerType, dtype: HDataType) -> HResampler`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hresampler.rs#L302) </span> \
+`new_sinc(resample_ratio: double, max_resample_ratio_relative: double, parameters: HSincInterpolationParameters, chunk_size: integer, nchannels: integer, res_type: HResamplerType, dtype: HDataType) -> HResampler`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hresampler.rs#L292) </span> \
 
 Creates a new Sinc type HResampler.
 
@@ -193,7 +193,7 @@ _________
 
 ## new_fast
 
-`new_sinc(resample_ratio: double, max_resample_ratio_relative: double, pol_deg: HPolynomialDegree, chunk_size: integer, nchannels: integer, res_type: HResamplerType, dtype: HDataType) -> HResampler`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hresampler.rs#L453) </span> \
+`new_sinc(resample_ratio: double, max_resample_ratio_relative: double, pol_deg: HPolynomialDegree, chunk_size: integer, nchannels: integer, res_type: HResamplerType, dtype: HDataType) -> HResampler`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hresampler.rs#L439) </span> \
 
 Creates a new Fast type HResampler.
 
@@ -273,7 +273,7 @@ _________
 
 ## process
 
-`process(harray: HArray)`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hresampler.rs#L542) </span> \
+`process(harray: HArray)`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hresampler.rs#L530) </span> \
 
 Process the resampler, changing the `HArray`'s sampling rate.
 
@@ -298,7 +298,7 @@ _________
 
 ## set_resample_ratio
 
-`set_resample_ratio(new_ratio: double, ramp: bool)`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hresampler.rs#L582) </span> \
+`set_resample_ratio(new_ratio: double, ramp: bool)`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hresampler.rs#L570) </span> \
 
 Update the resample ratio.
 
@@ -333,26 +333,22 @@ _________
 
 ## set_resample_ratio_relative
 
-`set_resample_ratio_relative(rel_ratio: double, ramp: bool)`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hresampler.rs#L625) </span> \
+`set_resample_ratio_relative(rel_ratio: double, ramp: bool)`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hresampler.rs#L609) </span> \
 
 Update the resample ratio as a factor relative to the original one.
 
-For asynchronous resamplers, the relative ratio must be within `1 / maximum` to `maximum`, where `maximum` is the maximum resampling ratio that was provided to the constructor.
-Trying to set the ratio outside these bounds will return an error.
+For asynchronous resamplers, the relative ratio must be within `1 / maximum` to `maximum`, where `maximum` is the maximum resampling ratio that
+was provided to the constructor. Trying to set the ratio outside these bounds will return an error.
 Higher ratios above `1.0` slow down the output and lower the pitch. Lower ratios below `1.0` speed up the output and raise the pitch.
 
 For synchronous resamplers, this will always return an error.
 
 #### Arguments
 
-- `rel_ratio`
+- `rel_ratio`: A factor to update the resample_ratio relative to the original one.
 
-A factor to update the resample_ratio relative to the original one.
-
-- `ramp`
-
-If `TRUE`, the ratio will be ramped from the old to the new value during processing of the next chunk. This allows smooth transitions from one ratio to another.
-If ramp is false, the new ratio will be applied from the start of the next chunk.
+- `ramp`: If `TRUE`, the ratio will be ramped from the old to the new value during processing of the next chunk. This allows smooth transitions
+from one ratio to another. If ramp is false, the new ratio will be applied from the start of the next chunk.
 
 #### Examples
 
@@ -367,9 +363,50 @@ res$set_resample_ratio_relative(0.5, FALSE)
 
 _________
 
+## nbr_channels
+
+Get the maximum number of channels this Resampler is configured for.<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hresampler.rs#L631) </span> \
+
+#### Examples
+
+```r
+library(harmonium)
+hparams = HSincInterpolationParameters$new(256L, 0.95, 256L, "linear", "blackmanharris2")
+res = HResampler$new_sinc(48000L / 44100L, 2, hparams, 512L, 2L, HResamplerType$SincFixedIn, HDataType$Float64)
+res$nbr_channels()
+```
+
+_________
+
+## set_chunk_size
+
+`set_chunk_size(chunk_size: integer)`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hresampler.rs#L662) </span> \
+
+Change the chunk size for the resampler. This is not supported by all resampler types. The value must be equal to or smaller than
+the chunk size the value that the resampler was created with. ResampleError::InvalidChunkSize is returned if the value is zero or too large.
+
+The meaning of chunk size depends on the resampler, it refers to the input size for FixedIn, and output size for FixedOut types.
+
+Types that do not support changing the chunk size return ResampleError::ChunkSizeNotAdjustable.
+
+#### Arguments
+
+- `chunk_size`: The new `chunk_size` to be set.
+
+#### Examples
+
+```r
+library(harmonium)
+hparams = HSincInterpolationParameters$new(256L, 0.95, 256L, "linear", "blackmanharris2")
+res = HResampler$new_sinc(48000L / 44100L, 2, hparams, 512L, 2L, HResamplerType$SincFixedIn, HDataType$Float64)
+res$set_chunk_size(1024L)
+```
+
+_________
+
 ## reset
 
-`reset()`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hresampler.rs#L658) </span> \
+`reset()`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hresampler.rs#L695) </span> \
 
 Reset the resampler state and clear all internal buffers.
 
@@ -395,7 +432,7 @@ _________
 
 ## res_type
 
-`res_type() -> HResamplerType`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hresampler.rs#L694) </span> \
+`res_type() -> HResamplerType`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hresampler.rs#L730) </span> \
 
 Gets the `HResampler`'s type.
 
@@ -425,7 +462,7 @@ _________
 
 ## dtype
 
-`dtype() -> HDataType`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hresampler.rs#L729) </span> \
+`dtype() -> HDataType`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hresampler.rs#L765) </span> \
 
 Gets the `HResampler`'s dtype.
 
@@ -455,7 +492,7 @@ _________
 
 ## print
 
-`print()`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hresampler.rs#L765) </span> \
+`print()`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hresampler.rs#L801) </span> \
 
 Prints the `HResampler`.
 

@@ -8,7 +8,7 @@ An audio represented by an HArray of samples and its corresponding sampling rate
 
 ## harray
 
-`harray() -> HArray`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L62) </span> \
+`harray() -> HArray`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L65) </span> \
 
 Get the decoded HArray.
 
@@ -30,7 +30,7 @@ _________
 
 ## sr
 
-`sr() -> integer`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L88) </span> \
+`sr() -> integer`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L91) </span> \
 
 Get the sampling rate of the decoded audio.
 
@@ -52,7 +52,7 @@ _________
 
 ## invalidate
 
-`invalidate()`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L119) </span> \
+`invalidate()`<span style="float: right;"> [source](https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L122) </span> \
 
 Replaces the inner value of the external pointer, invalidating it.
 

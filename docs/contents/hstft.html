@@ -306,7 +306,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h1>Methods</h1>
 <section id="new_forward" class="level2">
 <h2 class="anchored" data-anchor-id="new_forward">new_forward</h2>
-<p><code>new_forward(length: integer, dtype: HDataType) -&gt; HStft</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hstft.rs#L67">source</a> </span><br>
+<p><code>new_forward(length: integer, dtype: HDataType) -&gt; HStft</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hstft.rs#L72">source</a> </span><br>
 </p>
 <p>Creates a new <code>HStft</code> instance which will be used to calculate forward STFTs.</p>
 <p>If you plan on creating multiple STFT instances, it is recommended to reuse the same planner for all of them. This is because the planner re-uses internal data across STFT instances wherever possible, saving memory and reducing setup time (STFT instances created with one planner will never re-use data and buffers with STFT instances created by a different planner).</p>
@@ -333,7 +333,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="new_real_forward" class="level2">
 <h2 class="anchored" data-anchor-id="new_real_forward">new_real_forward</h2>
-<p><code>new_real_forward(length: integer, dtype: HDataType) -&gt; HStft</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hstft.rs#L116">source</a> </span><br>
+<p><code>new_real_forward(length: integer, dtype: HDataType) -&gt; HStft</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hstft.rs#L119">source</a> </span><br>
 </p>
 <p>Creates a new <code>HStft</code> instance which will be used to calculate real forward STFTs.</p>
 <p>If you plan on creating multiple STFT instances, it is recommended to reuse the same planner for all of them. This is because the planner re-uses internal data across STFT instances wherever possible, saving memory and reducing setup time (STFT instances created with one planner will never re-use data and buffers with STFT instances created by a different planner).</p>
@@ -360,7 +360,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="process" class="level2">
 <h2 class="anchored" data-anchor-id="process">process</h2>
-<p><code>process(harray: HArray, hop_length: Integer, window_length: Integer, window: Optional&lt;HArray&gt;)</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hstft.rs#L189">source</a> </span><br>
+<p><code>process(harray: HArray, hop_length: Integer, window_length: Integer, window: Optional&lt;HArray&gt;)</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hstft.rs#L190">source</a> </span><br>
 </p>
 <p>Computes the STFT of a complex <code>HArray</code>. The STFT computed may be forward or inverse, depending on the <code>HStft</code> created.</p>
 <p>The STFT computes the Fourier transform of short overlapping windows of the input. This giving frequency components of the signal as they change over time.</p>
@@ -401,7 +401,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="dtype" class="level2">
 <h2 class="anchored" data-anchor-id="dtype">dtype</h2>
-<p><code>dtype() -&gt; HDataType</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hstft.rs#L234">source</a> </span><br>
+<p><code>dtype() -&gt; HDataType</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hstft.rs#L231">source</a> </span><br>
 </p>
 <p>Gets the <code>HStft</code>’s dtype.</p>
 <section id="returns-3" class="level4">
@@ -419,7 +419,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="print" class="level2">
 <h2 class="anchored" data-anchor-id="print">print</h2>
-<p><code>print()</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hstft.rs#L261">source</a> </span><br>
+<p><code>print()</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hstft.rs#L258">source</a> </span><br>
 </p>
 <p>Prints the <code>HStft</code>.</p>
 <p>Differently from R’s normal behaviour, <code>print</code> doesn’t return the value invisibly.</p>
@@ -437,7 +437,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="clone" class="level2">
 <h2 class="anchored" data-anchor-id="clone">clone</h2>
-<p><code>clone() -&gt; HStft</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hstft.rs#L292">source</a> </span><br>
+<p><code>clone() -&gt; HStft</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hstft.rs#L289">source</a> </span><br>
 </p>
 <p>Clones the <code>HStft</code>.</p>
 <p>Creates a new <code>HStft</code>, with the underlying data pointing to the same place in memory. When <code>HSTFT</code> is cloned, thus having more than one reference to the same internal struct, and <code>process</code> is run, it uses the same cached <code>Fft</code> instance, but a new scratch buffer will have to be allocated.</p>
@@ -456,7 +456,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="is_unique" class="level2">
 <h2 class="anchored" data-anchor-id="is_unique">is_unique</h2>
-<p><code>is_unique() -&gt; bool</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hstft.rs#L324">source</a> </span><br>
+<p><code>is_unique() -&gt; bool</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hstft.rs#L321">source</a> </span><br>
 </p>
 <p>Checks if the object is unique.</p>
 <p>Since <code>HStft</code> has a COW (<a href="https://doc.rust-lang.org/std/borrow/enum.Cow.html">clone-on-write</a>) behaviour, this function is useful to check if a new object will be created or if the change will be done in-place.</p>
@@ -478,7 +478,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="invalidate" class="level2">
 <h2 class="anchored" data-anchor-id="invalidate">invalidate</h2>
-<p><code>invalidate()</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hstft.rs#L350">source</a> </span><br>
+<p><code>invalidate()</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hstft.rs#L347">source</a> </span><br>
 </p>
 <p>Replaces the inner value of the external pointer, invalidating it. This function is useful to remove one of the shared references of the inner pointer in rust.</p>
 <section id="examples-7" class="level4">

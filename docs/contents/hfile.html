@@ -303,7 +303,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h1>Methods</h1>
 <section id="decode" class="level2">
 <h2 class="anchored" data-anchor-id="decode">decode</h2>
-<p><code>decode(fpath: string, dtype: HDataType) -&gt; HDecodedAudio</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L164">source</a> </span><br>
+<p><code>decode(fpath: string, dtype: HDataType) -&gt; HDecodedAudio</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L167">source</a> </span><br>
 </p>
 <p>Decode an audio file, providing its decoded data and the sampling rate.</p>
 <p>The samples are normalized to fit in the range of [-1.0, 1.0].</p>
@@ -337,7 +337,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="decode_stream" class="level2">
 <h2 class="anchored" data-anchor-id="decode_stream">decode_stream</h2>
-<p><code>decode_stream(fpath: string, frames: integer, dtype: HDataType) -&gt; HDecoderStream</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L222">source</a> </span><br>
+<p><code>decode_stream(fpath: string, frames: integer, dtype: HDataType) -&gt; HDecoderStream</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L225">source</a> </span><br>
 </p>
 <p>Creates an <code>HDecoderStream</code>, used as an iterator to stream frames of decoded audio.</p>
 <section id="arguments-1" class="level4">
@@ -371,7 +371,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="metadata" class="level2">
 <h2 class="anchored" data-anchor-id="metadata">metadata</h2>
-<p><code>metadata(fpath: string, metadata_type: HMetadataType) -&gt; list</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L364">source</a> </span><br>
+<p><code>metadata(fpath: string, metadata_type: HMetadataType) -&gt; list</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L366">source</a> </span><br>
 </p>
 <p>Extract text and visual metadata from a file.</p>
 <p>Tags that are part of the container format are preferentially extracted. Additional tags that were found while probing will not be extracted.</p>
@@ -449,7 +449,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="params" class="level2">
 <h2 class="anchored" data-anchor-id="params">params</h2>
-<p><code>params(fpath: string) -&gt; atomicvector</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L439">source</a> </span><br>
+<p><code>params(fpath: string) -&gt; atomicvector</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L441">source</a> </span><br>
 </p>
 <p>Get audio parameters from a file.</p>
 <p>Note that this avoids loading the contents into memory, and is therefore useful for querying these parameters from long files.</p>
@@ -480,7 +480,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="verify" class="level2">
 <h2 class="anchored" data-anchor-id="verify">verify</h2>
-<p><code>verify(fpath: string) -&gt; string</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L479">source</a> </span><br>
+<p><code>verify(fpath: string) -&gt; string</code><span style="float: right;"> <a href="https://github.com/daniellga/harmonium/tree/master/r-harmonium/src/rust/src/hfile.rs#L481">source</a> </span><br>
 </p>
 <p>Verify an audio file, if supported by the decoder.</p>
 <p>The verification is done after the decoding process is finished.</p>
